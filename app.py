@@ -22,7 +22,8 @@ traffic when the user explicitly connects.
 """
 
 from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import StreamingResponse, PlainTextResponse
+from fastapi.responses import StreamingResponse, PlainTextResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
@@ -80,6 +81,20 @@ yesterday tomorrow day days week weeks month months year years
 """.split())
 
 app = FastAPI(title="Innerbloom — AI Journal")
+
+# Serve only the UI assets, never the journal data or the repository itself.
+_UI_ROOT = os.path.dirname(os.path.abspath(__file__))
+app.mount("/assets", StaticFiles(directory=os.path.join(_UI_ROOT, "assets")), name="assets")
+
+
+@app.get("/index.html", response_class=HTMLResponse, include_in_schema=False)
+@app.get("/app", response_class=HTMLResponse, include_in_schema=False)
+def journal_workspace():
+    with open(os.path.join(_UI_ROOT, "index.html"), encoding="utf-8") as file:
+        html = file.read()
+    if os.environ.get("INNERBLOOM_DEMO") == "1":
+        html = html.replace('<head>', '<head><meta name="innerbloom-demo" content="true">', 1)
+    return HTMLResponse(html, headers={"Cache-Control": "no-store"})
 
 app.add_middleware(
     CORSMiddleware,
