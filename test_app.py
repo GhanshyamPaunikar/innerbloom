@@ -528,6 +528,7 @@ def test_people():
     client.put("/people/carol", json={"cadence_days": 7})
     r = client.get("/people/carol").json()
     check("Carol overdue before catch-up", r["overdue"] is True, str(r.get("days_since_last_seen")))
+    check("first edit keeps the written name", r["name"] == "Carol", r.get("name"))
 
     r = client.post("/people/carol/checkin")
     check("POST /people/{key}/checkin 200", r.status_code == 200)

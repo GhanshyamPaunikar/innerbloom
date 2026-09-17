@@ -5380,6 +5380,14 @@ def _save_people_store(store: Dict[str, dict]) -> None:
     save_file(PEOPLE_FILE, store)
 
 
+def _record_for(store: Dict[str, dict], key: str) -> dict:
+    """Existing CRM record, or a new one named as the journal writes it."""
+    if key in store:
+        return store[key]
+    derived = _derive_people_stats(load_file(JOURNAL_FILE)).get(key) or {}
+    return _new_person_record(key, derived.get("derived_name") or key)
+
+
 def _new_person_record(key: str, name: str, now: Optional[str] = None) -> dict:
     """A blank CRM record. Manual fields start empty; the name is a seed the
     user can override."""
@@ -5625,7 +5633,7 @@ def update_person(key: str, data: PersonUpdate):
     if not key:
         raise HTTPException(400, "Invalid person key")
     store = _load_people_store()
-    rec = store.get(key) or _new_person_record(key, key)
+    rec = _record_for(store, key)
 
     fields = data.model_dump(exclude_unset=True)
     if "relationship" in fields:
@@ -5665,7 +5673,7 @@ def add_person_note(key: str, data: PersonNoteInput):
     if not text:
         raise HTTPException(400, "Note is empty")
     store = _load_people_store()
-    rec = store.get(key) or _new_person_record(key, key)
+    rec = _record_for(store, key)
     note = {"id": str(uuid.uuid4()), "text": text[:2000],
             "created_at": datetime.now().isoformat()}
     rec.setdefault("notes", []).append(note)
@@ -5701,7 +5709,7 @@ def log_person_checkin(key: str):
     if not key:
         raise HTTPException(400, "Invalid person key")
     store = _load_people_store()
-    rec = store.get(key) or _new_person_record(key, key)
+    rec = _record_for(store, key)
     now = datetime.now().isoformat()
     rec["last_contact"] = now
     rec["updated_at"] = now
