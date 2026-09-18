@@ -40,3 +40,6 @@ eval*
 # Coverage
 htmlcov/
 .coverage
+
+# Local journal backup before adding fictional UI samples
+data/journal.before-ui-samples.json
