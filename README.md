@@ -24,26 +24,20 @@ Then everything builds on those signals:
 - **Chat** with your journal. A real agent loop plans, searches your entries, and answers in your terms — citing the exact entries it pulled from. Pick a voice: Companion, Observer, or Challenger.
 - **People** is a personal social CRM. Names you write are auto-added; each person carries a relationship type, birthday, check-in cadence, and your own notes — merged with what your journal already knows (dominant emotion, how often, recent entries). Status chips flag who's *overdue* for a check-in or has a *birthday coming up*.
 - **Insights** run four engines over your history: **Contradictions**, **Emotional Triggers**, a **Wellbeing Radar** (Burnout + Negative Spiral levels), and **Your Story** (identity, values, tensions, becoming). They refresh in the background as you write.
-- **Memory Graph** maps entries as nodes, links the ones that share meaning, and names each cluster automatically.
+- **Memory Map** gathers entries that share themes and tags into named groups. Select any memory to read it beside the entries it connects to, and narrow the map to the last two years or three months.
 - **Music & Mood** correlates your Spotify listening with how you felt (optional, PKCE OAuth).
 - **Month Ago Today** is a then-vs-now mirror — what stayed, what shifted, what you're still avoiding, what you're becoming, each claim cited.
-- **Stats & streaks** track your current/longest streak, total entries, an activity heatmap, word counts, and mood distribution.
+- **Stats & streaks** track your current/longest streak, total entries, a monthly writing calendar that opens each day's entries, daily model-estimated intensity, word counts, and mood distribution.
 - **Adaptive prompts** offer a writing question tuned to your recent mood; **per-entry reflection questions** and **weekly/monthly reviews** go deeper when you want them.
 - **Search & export** — hybrid keyword + semantic search across everything, plus one-click Markdown export.
 - **Gentle nudges** — local, PWA-installable notifications: a morning prompt, an evening reflection if you skipped today, a streak-risk alert, a month-ago surfacing, and a wellbeing alert if burnout or a spiral creeps up. No server, no network.
 - **Crisis detection** quietly surfaces help resources if your writing signals self-harm or suicidal ideation.
 
-![Chat](docs/Chat.webp)
+The workspace is a warm, quiet room: cream architecture, frosted navigation, near-opaque ivory pages for reading and writing, and charcoal controls. Fonts, images, styles and scripts are bundled locally, with no CDN or analytics. Settings can switch to a plain background or fully opaque panels.
 
-![Insights](docs/insights.webp)
+![Write](docs/design-mockups/innerbloom/writing.png)
 
-![Emotional Triggers](docs/emotional-trigger.webp)
-
-![Memory Graph](docs/memory-graph.webp)
-
-![Music and Mood](docs/music-and-mood.webp)
-
-![AI Reflection](docs/ai-reflection.webp)
+![Memory Map](docs/design-mockups/innerbloom/memory-map.png)
 
 Everything stays on your machine. No cloud, no account, no telemetry. The only outbound traffic is to local Ollama, and to Spotify *if* you connect it.
 
@@ -84,8 +78,8 @@ Four engines, each cached to `data/insights.json` and refreshable on demand or a
 
 A background pipeline runs the engines in threads; `/insights/status` drives a progress indicator in the UI.
 
-### Memory graph
-`/graph` builds nodes (entries) and edges scored by an **IDF-weighted Jaccard** over shared tags/themes/emotion — so common-everywhere tags don't dominate. It runs connected components, splits any mega-cluster by its most discriminating sub-feature, and names each cluster after a term that *distinguishes* it (LLM-named, cached in `data/cluster_names.json`).
+### Memory map
+The map is computed in the browser from `/journal`: entries are linked when they share at least two themes or tags, grouped by weighted label propagation, and each group is named from its two most common terms. `/graph` is still available and builds nodes (entries) and edges scored by an **IDF-weighted Jaccard** over shared tags/themes/emotion — so common-everywhere tags don't dominate. It runs connected components, splits any mega-cluster by its most discriminating sub-feature, and names each cluster after a term that *distinguishes* it (LLM-named, cached in `data/cluster_names.json`).
 
 ### People (social CRM)
 Two layers that merge at read time:
@@ -124,20 +118,23 @@ ollama pull qwen2.5:7b
 ollama pull mxbai-embed-large
 ```
 
-### 3. Run the backend
+### 3. Start Innerbloom
 
 ```bash
-uvicorn app:app --host 0.0.0.0 --port 5000
+python run_local.py
+# open http://127.0.0.1:5000/app
 ```
 
-All data lives in `./data/`.
+One server runs the UI and the API, bound to this computer only. It serves `index.html` and `assets/`, and never the repository or `./data/`, where all your data lives. On macOS, if AirPlay Receiver already uses port 5000, add `--port 5500`.
 
-### 4. Serve the frontend
+### Try it without your journal
 
 ```bash
-python -m http.server 8000
-# open http://localhost:8000/index.html
+python run_local.py --demo --port 8766
+# open http://127.0.0.1:8766/app
 ```
+
+The preview uses temporary fictional entries and clearly labelled simulated AI. It never reads `./data/`, needs no Ollama, and discards everything when it stops.
 
 ---
 
@@ -145,7 +142,7 @@ python -m http.server 8000
 
 ### Writing
 1. Go to **Write**
-2. Type or dictate (mic button uses the Web Speech API)
+2. Type or dictate (the mic uses on-device speech recognition where the browser supports it, and never falls back to a cloud service)
 3. `Cmd/Ctrl-S` to save — analysis runs instantly, tags and emotion appear
 
 ### Chatting
@@ -157,8 +154,8 @@ python -m http.server 8000
 ### Insights
 Go to **Insights** for four cards — Contradictions, Triggers, Wellbeing, Narrative. They refresh in the background as you add entries; each card links to cited entries.
 
-### Memory graph
-Go to **Graph**. Drag nodes, hover for details, scroll to zoom, click a node to open the entry. Clusters are named automatically.
+### Memory map
+Go to **Memory map**. Each named group shows its memories as dots; select one to read it and see its connected entries alongside, or open a group to explore all of it. Use the period menu to focus on recent writing.
 
 ### People
 Go to **People** to see who shows up in your writing and the emotional shape of each relationship. Click anyone to set their relationship type, birthday, and check-in cadence, and to keep running notes — overdue and birthday chips surface who to reach out to.
@@ -268,9 +265,10 @@ INNERBLOOM_MODEL=llama3.1:8b uvicorn app:app --port 5000
 
 ```bash
 python test_app.py
+python -m unittest tests.test_workspace
 ```
 
-Runs end-to-end against FastAPI's `TestClient` with Ollama and Spotify mocked. Expected: **84 checks passing** across entry CRUD, chat, the agent loop, insight engines, search, crisis detection, stats, Spotify, and the People CRM.
+Runs end-to-end against FastAPI's `TestClient` with Ollama and Spotify mocked. Expected: **89 checks passing** across entry CRUD, chat, the agent loop, insight engines, search, crisis detection, stats, Spotify, and the People CRM. `tests/test_workspace.py` checks that only the UI and its assets are served, never repository or journal files.
 
 ---
 
@@ -278,7 +276,7 @@ Runs end-to-end against FastAPI's `TestClient` with Ollama and Spotify mocked. E
 
 ```
 ┌─────────────────────────┐         ┌──────────────────────┐
-│   index.html (SPA)      │◄───────►│   app.py (FastAPI)   │
+│ index.html + assets/    │◄───────►│   app.py (FastAPI)   │
 │   Write / Entries       │  HTTP   │   Routes + RAG       │
 │   Chat / Insights       │         │   Hybrid search      │
 │   Graph / People        │         │   Insight engines    │
@@ -299,11 +297,13 @@ Runs end-to-end against FastAPI's `TestClient` with Ollama and Spotify mocked. E
 ```
 
 **Key design decisions:**
-- **Single-file frontend** — no build step, no dependencies, no `node_modules`.
+- **Plain HTML, CSS and JS** — `index.html` plus `assets/` (styles, scripts, bundled Urbanist font, backdrop image). No build step, no `node_modules`.
 - **JSON on disk** — every artifact (journal, chat, insights, cluster names, Spotify tokens) is a local file in `./data/`.
 - **Lazy, versioned embeddings** — computed on first use, cached, re-run when the model changes.
 - **JSONL streaming** — agent steps and tokens arrive in real time.
 - **Background insight pipeline** — engines run in threads; the UI polls `/insights/status`.
+
+Design decisions, accessibility work and verification notes for the UI are in [docs/UI-DESIGN.md](docs/UI-DESIGN.md).
 
 ---
 
@@ -330,11 +330,11 @@ Runs end-to-end against FastAPI's `TestClient` with Ollama and Spotify mocked. E
 
 1. Go to [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard)
 2. Create an app and copy the **Client ID**
-3. In Innerbloom's **Settings**, paste the Client ID and note the redirect URI shown
+3. In Innerbloom's **Settings**, paste the Client ID and note the redirect URI shown (for example `http://127.0.0.1:5500/index.html` when started with `--port 5500`)
 4. Add that redirect URI to your Spotify app (must match exactly)
 5. Click **Connect Spotify** and complete the OAuth flow
 
-Innerbloom uses PKCE (no client secrets); your token is stored locally and auto-refreshes.
+Innerbloom uses PKCE with a checked `state` value (no client secrets); your token is stored locally and auto-refreshes. Connected, the Music page shows your recent and top tracks with album art, genre-based estimates on request, and a reflection on your listening alongside your writing.
 
 ---
 
