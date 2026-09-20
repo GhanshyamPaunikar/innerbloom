@@ -11,7 +11,11 @@ Write honestly. Innerbloom finds the emotion under your words, sees who's actual
 [![Ollama](https://img.shields.io/badge/ollama-local-black.svg)](https://ollama.ai/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
+**[Try the live demo](https://ghanshyampaunikar.com/innerbloom)**
+
 </div>
+
+https://github.com/user-attachments/assets/0198c9be-e45e-4eb8-8db1-d62f3fb72713
 
 ---
 
@@ -34,10 +38,6 @@ Then everything builds on those signals:
 - **Crisis detection** quietly surfaces help resources if your writing signals self-harm or suicidal ideation.
 
 The workspace is a warm, quiet room: cream architecture, frosted navigation, near-opaque ivory pages for reading and writing, and charcoal controls. Fonts, images, styles and scripts are bundled locally, with no CDN or analytics. Settings can switch to a plain background or fully opaque panels.
-
-![Write](docs/design-mockups/innerbloom/writing.png)
-
-![Memory Map](docs/design-mockups/innerbloom/memory-map.png)
 
 Everything stays on your machine. No cloud, no account, no telemetry. The only outbound traffic is to local Ollama, and to Spotify *if* you connect it.
 
