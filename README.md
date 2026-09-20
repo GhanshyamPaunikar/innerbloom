@@ -15,7 +15,7 @@ Write honestly. Innerbloom finds the emotion under your words, sees who's actual
 
 </div>
 
-https://github.com/user-attachments/assets/0198c9be-e45e-4eb8-8db1-d62f3fb72713
+https://github.com/user-attachments/assets/96337b4e-9c80-4f42-8095-d7b92266657f
 
 ---
 
