@@ -1,375 +1,152 @@
-<div align="center">
+<p align="center"><img src="docs/media/banner.gif" alt="Innerbloom: a journal that reads you back. Open source, runs on local AI, no cloud, no account, no internet." width="100%"></p>
 
-# Innerbloom — Advanced AI Journal
+<p align="center">
+  <a href="https://ghanshyampaunikar.com/innerbloom"><img src="https://img.shields.io/badge/Live_demo-e0782f?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live demo"></a>
+  <a href="https://ghanshyampaunikar.com/"><img src="https://img.shields.io/badge/Website-252422?style=for-the-badge&logo=globe&logoColor=white" alt="Website"></a>
+  <a href="https://www.linkedin.com/in/ghanshyampaunikar/"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
+  <a href="https://medium.com/@ghanshyampaunikar/ai-journal-for-my-mental-health-8a687edb13db"><img src="https://img.shields.io/badge/Medium-000000?style=for-the-badge&logo=medium&logoColor=white" alt="Medium"></a>
+  <a href="https://www.instagram.com/ghanshyampaunikar/"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram"></a>
+  <a href="https://github.com/GhanshyamPaunikar"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+</p>
 
-### A journal that reads you back.
+<h1 align="center">Innerbloom</h1>
 
-Write honestly. Innerbloom finds the emotion under your words, sees who's actually in your life, and watches you becoming — all on local AI, so nothing leaves your machine.
+<p align="center"><b>A journal that reads you back.</b></p>
 
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/fastapi-0.110-teal.svg)](https://fastapi.tiangolo.com/)
-[![Ollama](https://img.shields.io/badge/ollama-local-black.svg)](https://ollama.ai/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+<p align="center">An open-source AI journal that runs on your own computer.<br>Write the way you always do. It notices the feeling, the people and the patterns,<br>answers questions about your own life, and never sends a word to the cloud.</p>
 
-**[Try the live demo](https://ghanshyampaunikar.com/innerbloom)**
+<p align="center"><b><a href="https://ghanshyampaunikar.com/innerbloom">Try the live demo</a></b> · <a href="#get-started">Run it yourself</a> · <a href="docs/ARCHITECTURE.md">How it works inside</a></p>
 
-</div>
+<br>
+
+
 
 https://github.com/user-attachments/assets/96337b4e-9c80-4f42-8095-d7b92266657f
 
----
 
-## What It Does
 
-You open a blank page and start typing — or dictate it with your voice. When you save, Innerbloom reads the entry once and tags it — the dominant **emotion** (one of 16), an **intensity** (1–10), a one-line **summary**, **tags**, deeper **themes**, and the **people** you mentioned. No friction, no forms. It just does it.
+<p align="center"><sub>Product tour · sound on</sub></p>
 
-Then everything builds on those signals:
+<br>
 
-- **Chat** with your journal. A real agent loop plans, searches your entries, and answers in your terms — citing the exact entries it pulled from. Pick a voice: Companion, Observer, or Challenger.
-- **People** is a personal social CRM. Names you write are auto-added; each person carries a relationship type, birthday, check-in cadence, and your own notes — merged with what your journal already knows (dominant emotion, how often, recent entries). Status chips flag who's *overdue* for a check-in or has a *birthday coming up*.
-- **Insights** run four engines over your history: **Contradictions**, **Emotional Triggers**, a **Wellbeing Radar** (Burnout + Negative Spiral levels), and **Your Story** (identity, values, tensions, becoming). They refresh in the background as you write.
-- **Memory Map** gathers entries that share themes and tags into named groups. Select any memory to read it beside the entries it connects to, and narrow the map to the last two years or three months.
-- **Music & Mood** correlates your Spotify listening with how you felt (optional, PKCE OAuth).
-- **Month Ago Today** is a then-vs-now mirror — what stayed, what shifted, what you're still avoiding, what you're becoming, each claim cited.
-- **Stats & streaks** track your current/longest streak, total entries, a monthly writing calendar that opens each day's entries, daily model-estimated intensity, word counts, and mood distribution.
-- **Adaptive prompts** offer a writing question tuned to your recent mood; **per-entry reflection questions** and **weekly/monthly reviews** go deeper when you want them.
-- **Search & export** — hybrid keyword + semantic search across everything, plus one-click Markdown export.
-- **Gentle nudges** — local, PWA-installable notifications: a morning prompt, an evening reflection if you skipped today, a streak-risk alert, a month-ago surfacing, and a wellbeing alert if burnout or a spiral creeps up. No server, no network.
-- **Crisis detection** quietly surfaces help resources if your writing signals self-harm or suicidal ideation.
+## Write. It reads you back.
 
-The workspace is a warm, quiet room: cream architecture, frosted navigation, near-opaque ivory pages for reading and writing, and charcoal controls. Fonts, images, styles and scripts are bundled locally, with no CDN or analytics. Settings can switch to a plain background or fully opaque panels.
+<p align="center"><img src="docs/media/things.gif" alt="Ten things Innerbloom does: reads the feeling and intensity of each entry, answers questions about your journal with sources, finds contradictions and triggers, watches for burnout, tells your story, maps your memories, keeps track of the people in your life, and shows you a month ago today." width="100%"></p>
 
-Everything stays on your machine. No cloud, no account, no telemetry. The only outbound traffic is to local Ollama, and to Spotify *if* you connect it.
+<details>
+<summary>Read all ten</summary>
+<br>
 
----
+**"Work was heavy today, but I kept the laptop closed."**<br>
+You save, and it reads the entry once: frustrated, 6 out of 10, about work and boundaries, with Jane mentioned. No forms to fill in.
 
-## How It Works
+**"What has been draining me lately?"**<br>
+Ask anything. An agent searches your past entries by meaning, not just by words, and answers like a friend who has read every page.
 
-### Entry analysis
-Every saved entry is classified by the LLM in a single pass into a strict JSON shape: `emotion`, `intensity`, `summary`, `tags`, `themes`, and `people`. Emotion is constrained to a fixed vocabulary of 16 (`happy, sad, anxious, calm, grateful, frustrated, excited, reflective, hopeful, tired, angry, content, lonely, proud, overwhelmed, neutral`) so downstream stats stay consistent.
+**Answers with sources.**<br>
+Every answer links the exact entries it drew from. Click one and it opens.
 
-### Semantic memory (grounded, not hallucinated)
-- Entries are embedded with `mxbai-embed-large` (1024-dim vectors).
-- Long entries are **semantically chunked** — split into paragraph-sized pieces, each embedded separately. Retrieval max-pools over a parent's chunks so a long entry doesn't dilute itself.
-- Search is **hybrid**: keyword matching plus cosine similarity over embeddings.
-- Embeddings are **stamped with the model name** and lazily backfilled — switch embedding models and Innerbloom re-embeds on next access.
+**Contradictions.**<br>
+You promised yourself no work email after 9pm. A week later you checked it at 11. It notices, gently, and shows both entries side by side.
 
-### Agent loop with streaming steps
-The chat (`/chat/agent`) is a real agent, streamed as JSONL:
-1. **Classify** — is this small talk, a follow-up, or a real question?
-2. **Plan** — the LLM decides which tools to call (or asks you a clarifying question).
-3. **Tools** — `search_entries`, `get_entry`, `list_themes`, `period_summary`, `emotion_extremes`.
-4. **Draft** — the LLM synthesizes findings and streams tokens back.
+**Triggers.**<br>
+Runs with Sam reliably lift your mood. Launch weeks reliably drain it. It finds what moves you, with the evidence.
 
-You watch each step appear live. Citations use `[cite:id]` and link straight to the source entry.
+**Wellbeing radar.**<br>
+Early, quiet warnings when burnout or a low spiral starts to build, rated ok, watch, elevated or high.
 
-### Personality modes
-Three voices, each a different system prompt:
-- **Companion** — warm friend who's read it all.
-- **Observer** — quiet, evidence-first; notices patterns without moralizing.
-- **Challenger** — kind but direct; names the gap between what you say and what you do.
+**Your story.**<br>
+Who you are, in your own words: the values you act on, the tensions you carry, and who you are becoming.
 
-### Insight engines
-Four engines, each cached to `data/insights.json` and refreshable on demand or automatically in the background as new entries land:
-- **Contradictions** — stated values vs. actual behavior, every claim backed by entry IDs.
-- **Emotional Triggers** — a positive/negative trigger map: which tags consistently lift or drop your mood, scored statistically and characterized in plain language.
-- **Wellbeing Radar** — two gauges, each rated *ok / watch / elevated / high*: **Burnout** (14-day rolling trend) and **Negative Spiral** (7-day emotional trajectory). Levels are stats-driven; the LLM only writes the one-line read.
-- **Your Story** — the narrative engine: identity, recurring values, the tensions you're holding, and where you're becoming.
+**Memory map.**<br>
+Entries that share a theme gather into named groups. Pick a memory and see everything it connects to.
 
-A background pipeline runs the engines in threads; `/insights/status` drives a progress indicator in the UI.
+**People.**<br>
+Everyone you write about, how they tend to make you feel, and gentle reminders when it has been a while.
 
-### Memory map
-The map is computed in the browser from `/journal`: entries are linked when they share at least two themes or tags, grouped by weighted label propagation, and each group is named from its two most common terms. `/graph` is still available and builds nodes (entries) and edges scored by an **IDF-weighted Jaccard** over shared tags/themes/emotion — so common-everywhere tags don't dominate. It runs connected components, splits any mega-cluster by its most discriminating sub-feature, and names each cluster after a term that *distinguishes* it (LLM-named, cached in `data/cluster_names.json`).
+**A month ago today.**<br>
+Then and now, side by side: what stayed, what shifted, and what you are still avoiding.
 
-### People (social CRM)
-Two layers that merge at read time:
-- **Derived** (recomputed from entries): mention count, first/last seen, dominant emotion, average intensity, co-occurring themes/tags, recent entries.
-- **CRM** (persisted in `data/people.json`, survives entry edits/deletes): relationship type, birthday, desired check-in cadence, manual notes, pinned/hidden state.
+</details>
 
-Anyone you name in an entry is **auto-added** on save (`_upsert_people_from_entry`). The merged `/people` response also computes deterministic signals — `days_since_last_seen`, `overdue` (vs. your cadence), and `birthday_in_days` — that drive the status chips. Open a person to set their fields and keep dated notes.
+<br>
 
-### Crisis detection
-Two-stage and non-blocking. A fast regex pass catches explicit signals; ambiguous cases go to a tight LLM classifier. The reply is never withheld — a `safety` block with helplines (iCall, AASRA, 988, Samaritans, Find a Helpline) is attached alongside it.
+## Compared with a cloud AI journal.
 
----
+| | Innerbloom | Typical cloud AI journal |
+|---|:---:|:---:|
+| Your entries stay on your own computer | ✅ Yes | ❌ No |
+| Works with no internet connection | ✅ Yes | ❌ No |
+| No account, no subscription | ✅ Yes | ❌ No |
+| Answers cite the exact entries they used | ✅ Yes | ❌ Rarely |
+| Contradictions, triggers and burnout signals | ✅ Yes | ❌ Rarely |
+| You choose and swap the AI model | ✅ Yes | ❌ No |
+| Your journal is plain files you can read and copy | ✅ Yes | ❌ No |
+| Open source | ✅ Yes | ❌ No |
 
-## Quickstart
+<br>
 
-### Prerequisites
-- **Python 3.10+**
-- **Ollama** running: https://ollama.ai
-- A chat model — default `qwen2.5:7b` (~4.7 GB)
-- An embedding model — default `mxbai-embed-large` (or `nomic-embed-text`)
+## How it works.
 
-### 1. Install
+<p align="center"><img src="docs/media/how-it-works.gif" alt="How it works: you write in the browser; the Python backend asks your local model to read the entry and embeds it; everything is saved as plain JSON; an agent searches your entries to answer questions with citations; four insight engines look across weeks of writing." width="100%"></p>
+
+Six parts, all on your computer. Here is the path one entry takes.
+
+**1 · You write.** A quiet page in your browser. Type, or dictate with speech recognition that stays on your device.
+
+**2 · Your local model reads it.** A small Python server (FastAPI) asks the model running in Ollama to read the entry once: the feeling, how intense it was, the themes, and the people in it.
+
+**3 · It understands meaning.** The entry is embedded too, so search finds "being overlooked" when you ask about feeling unappreciated.
+
+**4 · It is saved as plain files.** Entries, chats, people and insights are JSON in `./data`. Yours to read, back up, or delete.
+
+**5 · You ask, an agent answers.** It plans, searches your entries, and streams an answer with clickable sources. Pick a voice: Companion, Observer or Challenger.
+
+**6 · Insights grow in the background.** Four engines look across weeks of writing for contradictions, triggers, burnout and the story you are living.
+
+The details, from chunked embeddings to how contradictions stay grounded in your own words, are in **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
+
+<br>
+
+## Private by design.
+
+<p align="center"><img src="docs/media/private.gif" alt="Private by design: your journal, your AI model and the app all live on your computer. No cloud server, no account, no analytics. Spotify is optional." width="100%"></p>
+
+There is no company in the middle. Your journal lives where you put it.
+
+- **On your computer.** The page, the API and the AI model all run locally. The app only listens on `127.0.0.1`.
+- **Plain files.** Your journal is readable JSON in `./data`. Copy it, back it up, or delete the folder and every trace is gone.
+- **No cloud, no account.** Nothing to sign up for, no analytics, no tracking.
+- **Nothing to download at runtime.** Fonts, images and scripts are bundled. No CDN.
+- **Spotify is optional.** Music and mood only talks to Spotify if you connect it, with your own app.
+- **There when it matters.** If your writing suggests you are in crisis, it shows helplines alongside its reply.
+
+<br>
+
+## Get started.
+
+You need Python 3.10+ and [Ollama](https://ollama.ai).
 
 ```bash
 git clone https://github.com/GhanshyamPaunikar/innerbloom.git
 cd innerbloom
 pip install -r requirements.txt
-```
-
-### 2. Start Ollama and pull models
-
-```bash
-ollama serve
-# in another terminal:
-ollama pull qwen2.5:7b
-ollama pull mxbai-embed-large
-```
-
-### 3. Start Innerbloom
-
-```bash
+ollama pull qwen2.5:7b && ollama pull mxbai-embed-large
 python run_local.py
-# open http://127.0.0.1:5000/app
 ```
 
-One server runs the UI and the API, bound to this computer only. It serves `index.html` and `assets/`, and never the repository or `./data/`, where all your data lives. On macOS, if AirPlay Receiver already uses port 5000, add `--port 5500`.
+Then open **http://127.0.0.1:5000/app** and start writing.
 
-### Try it without your journal
+Want to look around first? `python run_local.py --demo` opens a fictional journal with simulated AI, or try the **[live demo](https://ghanshyampaunikar.com/innerbloom)** in your browser.
 
-```bash
-python run_local.py --demo --port 8766
-# open http://127.0.0.1:8766/app
-```
+Choosing a model, settings, Spotify, tests and the full API are in **[docs/SETUP.md](docs/SETUP.md)**.
 
-The preview uses temporary fictional entries and clearly labelled simulated AI. It never reads `./data/`, needs no Ollama, and discards everything when it stops.
+**Cost: nothing.** Every model it uses is free and runs on your machine.
 
----
+<br>
 
-## Usage
+## Contributing
 
-### Writing
-1. Go to **Write**
-2. Type or dictate (the mic uses on-device speech recognition where the browser supports it, and never falls back to a cloud service)
-3. `Cmd/Ctrl-S` to save — analysis runs instantly, tags and emotion appear
+Issues and pull requests are welcome. Run the tests with `python tests/test_app.py` and `python -m unittest tests.test_workspace tests.test_public_demo`.
 
-### Chatting
-1. Go to **Chat**
-2. Pick a **voice** (Companion / Observer / Challenger) — switchable per message
-3. Ask a question and watch the agent plan → search → answer
-4. Click `[cite:…]` pills to open the source entry
-
-### Insights
-Go to **Insights** for four cards — Contradictions, Triggers, Wellbeing, Narrative. They refresh in the background as you add entries; each card links to cited entries.
-
-### Memory map
-Go to **Memory map**. Each named group shows its memories as dots; select one to read it and see its connected entries alongside, or open a group to explore all of it. Use the period menu to focus on recent writing.
-
-### People
-Go to **People** to see who shows up in your writing and the emotional shape of each relationship. Click anyone to set their relationship type, birthday, and check-in cadence, and to keep running notes — overdue and birthday chips surface who to reach out to.
-
-### Music & Mood
-Connect Spotify in **Settings**, then open **Music** for a listening snapshot (recent plays, active days, top genres), an AI reflection that reads your listening against your journal, your top tracks, and your recently played.
-
-### Search & export
-Search is keyword + semantic. **Export** dumps your whole journal to Markdown.
-
----
-
-## Environment Variables
-
-```bash
-INNERBLOOM_MODEL=qwen2.5:7b                                      # chat model
-INNERBLOOM_EMBED_MODEL=mxbai-embed-large                         # embedding model
-INNERBLOOM_OLLAMA_URL=http://localhost:11434/api/generate        # generation
-INNERBLOOM_OLLAMA_EMBED_URL=http://localhost:11434/api/embeddings# embeddings
-INNERBLOOM_OLLAMA_TAGS_URL=http://localhost:11434/api/tags       # model list / health
-INNERBLOOM_DATA_DIR=./data                                       # storage
-```
-
-### Using Google Gemini instead of Ollama
-
-```bash
-INNERBLOOM_PROVIDER=gemini           # default: ollama
-GEMINI_API_KEY=...                   # from aistudio.google.com
-INNERBLOOM_MODEL=gemini-flash-lite-latest      # default with Gemini
-INNERBLOOM_EMBED_MODEL=gemini-embedding-001    # default with Gemini
-```
-
-Entries and questions are then sent to Google for analysis. Keep Ollama for a fully private journal.
-
-### Public demo
-
-The live demo at [ghanshyampaunikar.com/innerbloom](https://ghanshyampaunikar.com/innerbloom) runs this backend with Gemini and `INNERBLOOM_SANDBOX=1`. Each visitor gets a private copy of a fictional 40-day journal (`demo_seed/`), dated so it always ends today and deleted after six idle hours. Spotify is off, and AI calls are capped per visitor, per IP and per day (`INNERBLOOM_AI_PER_VISITOR`, `INNERBLOOM_AI_PER_IP`, `INNERBLOOM_AI_PER_DAY`).
-
-- `scripts/build_demo_seed.py` regenerates the sample journal with Gemini.
-- `scripts/export_website_demo.py <website folder>` copies the page, backend and sample into the website project.
-
-### Picking a model
-
-The default is **`qwen2.5:7b`** — the best quality that fits inside 8 GB of RAM. Swapping the model only changes *quality*; every endpoint and engine works at any size.
-
-| Model                           | RAM            | Speed (M1)   | What gets better                                                                  |
-| ------------------------------- | -------------- | ------------ | -------------------------------------------------------------------------------- |
-| `llama3.2:3b`                   | 8 GB           | ~30 tok/s    | Fast, but bot-y and invents intentions. Demo-grade.                              |
-| `qwen2.5:7b` *(default)*        | 8 GB tight     | ~15 tok/s    | The right floor. Chat feels human, contradictions ground in real text.          |
-| `mistral:7b-instruct`           | 8 GB tight     | ~18 tok/s    | Drier voice, strong at *triggers* (stats-style reasoning).                       |
-| `llama3.1:8b`                   | 16 GB ideal    | ~10 tok/s    | Sharper long-context narrative. Background-only on 8 GB.                         |
-| `qwen2.5:14b`                   | 16+ GB         | ~4 tok/s     | Therapist-grade nuance. Chat is slow.                                            |
-| `gpt-oss:20b` / `mixtral:8x7b`  | 24+ / 48+ GB   | 2–6 tok/s    | *Narrative* and *wellbeing summary* become genuinely worth re-reading.           |
-
-```bash
-ollama pull llama3.1:8b
-INNERBLOOM_MODEL=llama3.1:8b uvicorn app:app --port 5000
-```
-
-**The embedding model matters most.** Pulling `mxbai-embed-large` (or `nomic-embed-text`) is the single biggest upgrade — without it, retrieval falls back to keyword matching; with it, "when did I feel unappreciated?" finds entries about *being overlooked* even if neither word appears.
-
----
-
-## API Reference
-
-### Entries
-| Method | Path | Purpose |
-|---|---|---|
-| `POST` | `/save` | Create & analyze entry |
-| `GET` | `/journal` | List entries (filters: `q`, `tag`, `emotion`) |
-| `GET` | `/journal/{id}` | Retrieve one |
-| `PUT` | `/journal/{id}` | Edit |
-| `DELETE` | `/journal/{id}` | Delete |
-| `GET` | `/search?q=` | Keyword + semantic search |
-| `GET` | `/export` | Markdown export |
-
-### Chat & agent
-| Method | Path | Purpose |
-|---|---|---|
-| `POST` | `/chat/agent` | Agent loop, JSONL streaming (classify→plan→tools→draft) |
-| `POST` | `/chat` | One-shot chat with citations |
-| `POST` | `/chat/stream` | Token-streamed reply |
-| `GET` | `/chat` | History |
-| `DELETE` | `/chat` | Clear history |
-
-### Insights & analysis
-| Method | Path | Purpose |
-|---|---|---|
-| `GET` | `/insights/contradictions` · `/triggers` · `/wellbeing` · `/narrative` | Read cached insight |
-| `POST` | `/insights/{engine}/refresh` | Recompute one engine (background) |
-| `POST` | `/insights/refresh-all` | Recompute all |
-| `GET` | `/insights/status` | Background pipeline progress |
-| `GET` | `/analyze` | Long-term synthesis |
-| `GET` | `/stats` | Streaks, word counts, mood distribution, heatmap |
-| `GET` | `/graph` | Memory graph nodes, edges, named clusters |
-| `GET` | `/people` | People list: derived stats + CRM fields + signals (`include_hidden` opt) |
-| `GET` | `/people/{key}` | One person, merged, with a longer entry timeline |
-| `PUT` | `/people/{key}` | Set CRM fields (relationship, birthday, cadence, name, pin/hide) |
-| `POST` | `/people/{key}/notes` | Add a dated note |
-| `DELETE` | `/people/{key}/notes/{note_id}` | Delete a note |
-| `GET` | `/anniversary?days=30` | Then-vs-now reflection |
-| `GET` | `/weekly-review` · `/monthly-review` | Period reflections |
-| `GET` | `/connections/{id}` | Related past entries |
-| `GET` | `/reflect/{id}` | Reflection questions for an entry |
-| `POST` | `/reflect/{id}/answers` | Save reflection answers |
-| `GET` | `/prompt` | Adaptive writing prompt |
-
-### Spotify (optional)
-| Method | Path | Purpose |
-|---|---|---|
-| `GET` | `/spotify/status` | Connection state |
-| `POST` | `/spotify/config` · `/exchange` · `/disconnect` | PKCE setup / teardown |
-| `GET` | `/spotify/recent` · `/top` | Recent plays, top tracks |
-| `GET` | `/spotify/genre-mood` · `/insight` | Listening snapshot + AI reflection |
-
-### Health
-| Method | Path | Purpose |
-|---|---|---|
-| `GET` | `/` | App status |
-| `GET` | `/health` | Ollama connection status |
-
----
-
-## Testing
-
-```bash
-python test_app.py
-python -m unittest tests.test_workspace
-```
-
-Runs end-to-end against FastAPI's `TestClient` with Ollama and Spotify mocked. Expected: **89 checks passing** across entry CRUD, chat, the agent loop, insight engines, search, crisis detection, stats, Spotify, and the People CRM. `tests/test_workspace.py` checks that only the UI and its assets are served, never repository or journal files.
-
----
-
-## Architecture
-
-```
-┌─────────────────────────┐         ┌──────────────────────┐
-│ index.html + assets/    │◄───────►│   app.py (FastAPI)   │
-│   Write / Entries       │  HTTP   │   Routes + RAG       │
-│   Chat / Insights       │         │   Hybrid search      │
-│   Graph / People        │         │   Insight engines    │
-│   Music / Settings      │         │   Agent loop         │
-└─────────────────────────┘         └──────────┬───────────┘
-          │                                     │
-          │                                     ▼
-          │                         ┌──────────────────────┐
-          │                         │  Ollama (localhost)  │
-          │                         │  qwen2.5:7b          │
-          │                         │  mxbai-embed-large   │
-          │                         └──────────────────────┘
-          │ (optional, PKCE OAuth)
-          ▼
-    ┌──────────────┐
-    │   Spotify    │
-    └──────────────┘
-```
-
-**Key design decisions:**
-- **Plain HTML, CSS and JS** — `index.html` plus `assets/` (styles, scripts, bundled Urbanist font, backdrop image). No build step, no `node_modules`.
-- **JSON on disk** — every artifact (journal, chat, insights, cluster names, Spotify tokens) is a local file in `./data/`.
-- **Lazy, versioned embeddings** — computed on first use, cached, re-run when the model changes.
-- **JSONL streaming** — agent steps and tokens arrive in real time.
-- **Background insight pipeline** — engines run in threads; the UI polls `/insights/status`.
-
-Design decisions, accessibility work and verification notes for the UI are in [docs/UI-DESIGN.md](docs/UI-DESIGN.md).
-
----
-
-## Privacy & Security
-
-- **100% private by default** — no cloud, no account, no telemetry.
-- Entries live in `./data/` on your machine only.
-- **Outbound traffic:** `localhost:11434` (Ollama) and Spotify (only if you connect it, via PKCE — no client secret).
-- **Erase everything:** `rm -rf data/`
-
----
-
-## Keyboard Shortcuts
-
-| Key | Action |
-|---|---|
-| `Cmd/Ctrl-K` | Command palette (jump to any view) |
-| `Cmd/Ctrl-S` | Save entry (in Write) |
-| `Esc` | Close modals / palette |
-
----
-
-## Spotify Setup (Optional)
-
-1. Go to [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard)
-2. Create an app and copy the **Client ID**
-3. In Innerbloom's **Settings**, paste the Client ID and note the redirect URI shown (for example `http://127.0.0.1:5500/index.html` when started with `--port 5500`)
-4. Add that redirect URI to your Spotify app (must match exactly)
-5. Click **Connect Spotify** and complete the OAuth flow
-
-Innerbloom uses PKCE with a checked `state` value (no client secrets); your token is stored locally and auto-refreshes. Connected, the Music page shows your recent and top tracks with album art, genre-based estimates on request, and a reflection on your listening alongside your writing.
-
----
-
-## Deploying the Frontend (Optional)
-
-The SPA is static and can be hosted anywhere (a `vercel.json` is included for Vercel). The backend needs local Ollama, so deploy the frontend and point it at your machine, or run the whole thing locally.
-
----
-
-## License
-
-**MIT** — build, modify, and use Innerbloom however you want.
-
----
-
-<div align="center">
-
-*The best person to understand your mind is you — with a little help from local AI.*
-
-</div>
+Font: Urbanist, under the SIL Open Font License (see `assets/fonts/`). MIT licensed, see [LICENSE](LICENSE).

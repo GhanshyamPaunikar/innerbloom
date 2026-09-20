@@ -1,0 +1,98 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<style>
+  body { width: 1280px; height: 800px; }
+  header { position: absolute; top: 40px; width: 100%; text-align: center; }
+  header h2 { font-size: 52px; }
+  header .mono { margin-top: 10px; }
+  .node { position: absolute; width: 330px; padding: 20px 22px; color: var(--soft); }
+  .node .head { display: flex; align-items: center; gap: 10px; }
+  .node h3 { font-size: 21px; font-weight: 400; color: #a4968a; }
+  .node .mono { font-size: 9.5px; margin: 6px 0 12px; }
+  .node li { list-style: none; font-size: 13.5px; color: #b3a596; padding: 3px 0; }
+  .node li::before { content: "·"; margin-right: 8px; }
+  .node.on { color: var(--orange); }
+  .node.on h3 { color: var(--ink); }
+  .node.on li { color: #5f564b; }
+  svg.wires { position: absolute; inset: 0; width: 1280px; height: 800px; }
+  svg.wires path { fill: none; stroke: #ddd0be; stroke-width: 1.5; }
+  svg.wires path.on { stroke: var(--orange); stroke-width: 2.2; stroke-dasharray: 7 7; }
+  .tag { position: absolute; font: 9.5px "SF Mono", Menlo, monospace; letter-spacing: .18em; color: var(--soft);
+         background: var(--bg); padding: 3px 6px; transform: translate(-50%, -50%); }
+  .tag.on { color: var(--orange); }
+  .caption { position: absolute; bottom: 30px; width: 100%; text-align: center; }
+</style></head>
+<body>
+  <div class="glow" style="width:640px;height:320px;left:320px;top:-140px;background:#fff6ea"></div>
+  <header><h2 class="title">How it works.</h2><div class="mono">Six parts, all on your computer</div></header>
+  <svg class="wires" id="wires"></svg>
+  <div id="nodes"></div>
+  <div id="tags"></div>
+  <div class="caption"><span class="chip"><b id="n">01</b><span id="cap"></span></span></div>
+<script>
+  const ICON = {
+    write: '<path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+    server: '<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/>',
+    chip: '<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/>',
+    disk: '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
+    agent: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
+    spark: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>',
+  };
+  const NODES = {
+    write: [70, 170, "write", "You write", "Browser · index.html", ["Write or dictate an entry", "Ask your journal a question", "Read insights, map, people"]],
+    backend: [475, 170, "server", "Backend", "Python · FastAPI · app.py", ["Analysis and memory", "Agent loop and tools", "Runs on 127.0.0.1 only"]],
+    model: [880, 170, "chip", "Your local model", "Ollama · qwen2.5:7b", ["Reads each entry once", "Embeddings: mxbai-embed-large", "No internet needed"]],
+    data: [70, 450, "disk", "Your journal", "Plain JSON in ./data", ["Entries, chats, people", "Insights and embeddings", "Yours to copy or delete"]],
+    agent: [475, 450, "agent", "Agent", "Plan · search · answer", ["Hybrid keyword + meaning search", "Cites the entries it used", "Streams its steps live"]],
+    insights: [880, 450, "spark", "Insight engines", "Four, in the background", ["Contradictions, triggers", "Wellbeing radar", "Your story"]],
+  };
+  const nodes = document.getElementById("nodes");
+  for (const [key, [x, y, icon, title, sub, items]] of Object.entries(NODES)) {
+    const d = document.createElement("div");
+    d.className = "card node"; d.id = key; d.style.left = x + "px"; d.style.top = y + "px";
+    d.innerHTML = `<div class="head"><svg class="icon" viewBox="0 0 24 24">${ICON[icon]}</svg><h3>${title}</h3></div>
+      <div class="mono">${sub}</div><ul>${items.map(i => `<li>${i}</li>`).join("")}</ul>`;
+    nodes.appendChild(d);
+  }
+  // Wires: [id, path, label, label x, label y]
+  const WIRES = [
+    ["w-write", "M400 255 H475", "SAVE", 437, 238],
+    ["w-model", "M805 255 H880", "READ", 842, 238],
+    ["w-data", "M560 360 C560 405, 235 405, 235 450", "STORE", 330, 404],
+    ["w-agent", "M640 360 V450", "ASK", 664, 405],
+    ["w-agentdata", "M475 535 H400", "SEARCH", 437, 518],
+    ["w-insights", "M1045 450 V360", "THINK", 1072, 405],
+    ["w-insdata", "M880 625 C800 690, 300 690, 235 620", "WEEKS OF WRITING", 560, 676],
+  ];
+  const wires = document.getElementById("wires"), tags = document.getElementById("tags");
+  for (const [id, d, label, x, y] of WIRES) {
+    const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    p.setAttribute("d", d); p.id = id; wires.appendChild(p);
+    const t = document.createElement("div"); t.className = "tag"; t.id = "t-" + id;
+    t.textContent = label; t.style.left = x + "px"; t.style.top = y + "px"; tags.appendChild(t);
+  }
+  const STEPS = [
+    [["write", "backend"], ["w-write"], "You write a few lines and save."],
+    [["backend", "model"], ["w-model"], "Your local model reads it once: feeling, intensity, themes, people."],
+    [["model", "backend"], ["w-model"], "It is embedded too, so search understands meaning, not just words."],
+    [["backend", "data"], ["w-data"], "Everything is saved as plain JSON on your own disk."],
+    [["write", "backend", "agent", "data"], ["w-agent", "w-agentdata", "w-write"], "Ask a question: an agent searches your entries and answers with citations."],
+    [["insights", "data", "model"], ["w-insights", "w-insdata"], "In the background, four engines look across weeks of your writing."],
+  ];
+  const STEP = 2.6, DURATION = STEP * STEPS.length;
+  function render(t) {
+    const k = Math.floor(t / STEP) % STEPS.length, local = t % STEP;
+    const [onNodes, onWires, cap] = STEPS[k];
+    for (const key of Object.keys(NODES)) document.getElementById(key).classList.toggle("on", onNodes.includes(key));
+    for (const [id] of WIRES) {
+      const on = onWires.includes(id), p = document.getElementById(id);
+      p.classList.toggle("on", on);
+      p.style.strokeDashoffset = on ? String(-local * 28) : "0";
+      document.getElementById("t-" + id).classList.toggle("on", on);
+    }
+    document.getElementById("n").textContent = String(k + 1).padStart(2, "0");
+    document.getElementById("cap").textContent = cap;
+  }
+  render(0);
+</script>
+</body></html>

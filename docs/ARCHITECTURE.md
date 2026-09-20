@@ -1,0 +1,55 @@
+# How Innerbloom works
+
+A plain HTML, CSS and JavaScript page (`index.html` and `assets/`) talks to one Python file (`app.py`, FastAPI), which talks to a model running in Ollama on the same computer. Everything is stored as JSON in `./data/`. There is no build step and no `node_modules`.
+
+## Reading an entry
+
+Every saved entry is read once by the model and returned in a strict JSON shape: `emotion`, `intensity` (1 to 10), `summary`, `tags`, `themes` and `people`. Emotion comes from a fixed list of 16 (happy, sad, anxious, calm, grateful, frustrated, excited, reflective, hopeful, tired, angry, content, lonely, proud, overwhelmed, neutral) so stats stay consistent over months.
+
+## Memory that understands meaning
+
+- Entries are embedded with `mxbai-embed-large`.
+- Long entries are split into paragraph-sized chunks, each embedded on its own. Search takes the best chunk, so a long entry does not dilute itself.
+- Search is hybrid: keywords plus similarity of meaning.
+- Every embedding is stamped with the model that made it. Switch embedding models and Innerbloom re-embeds as it goes.
+
+## The agent
+
+Chat (`/chat/agent`) is a real agent, streamed as JSONL so you watch each step:
+
+1. **Classify.** Small talk, a follow-up, or a real question?
+2. **Plan.** The model chooses tools, or asks you to clarify.
+3. **Tools.** `search_entries`, `get_entry`, `list_themes`, `period_summary`, `emotion_extremes`.
+4. **Draft.** The model writes the answer and streams it, citing entries as `[cite:id]`, which become clickable sources.
+
+Three voices change the system prompt: **Companion** (a warm friend who has read it all), **Observer** (quiet and evidence-first) and **Challenger** (kind, but names the gap between what you say and what you do).
+
+## Insight engines
+
+Four engines, cached in `data/insights.json`, refreshed on request or in the background every few new entries:
+
+- **Contradictions.** Real intention sentences ("I'll stop checking email at night") are found in your text first; the model only matches them to later entries, and anything not grounded in your words is dropped.
+- **Emotional triggers.** Which tags and people reliably lift or drain your mood, scored statistically, explained in plain language.
+- **Wellbeing radar.** Burnout (a 14-day trend) and a low spiral (a 7-day trajectory), each rated ok, watch, elevated or high. Levels come from the numbers; the model only writes the one-line read.
+- **Your story.** Identity, values in action, the tensions you hold, and who you are becoming.
+
+## Memory map
+
+The map is computed in the browser from `/journal`. Entries are linked when they share at least two themes or tags; groups form by weighted label propagation and are named from their two most common terms. `/graph` also builds a server-side graph with IDF-weighted similarity and model-named clusters.
+
+## People
+
+Two layers, merged when read:
+
+- **From your entries:** mentions, first and last seen, dominant emotion, average intensity, themes, recent entries.
+- **What you add** (`data/people.json`): relationship, birthday, check-in cadence, dated notes, pinned or hidden.
+
+Anyone you name is added when you save. Each person also gets simple signals (days since last mentioned, overdue for a check-in, birthday soon) that drive the reminders.
+
+## Care
+
+If writing suggests self-harm or suicidal thoughts, a fast keyword check and a small classifier attach helplines (iCall, AASRA, 988, Samaritans, Find a Helpline) to the reply. The reply itself is never withheld.
+
+## The page
+
+The interface is a warm, quiet room: cream architecture, frosted navigation, near-opaque ivory pages for reading and writing, charcoal controls and one orange accent. Fonts, images, styles and scripts are bundled, with no CDN or analytics. Settings can switch to a plain background or fully opaque panels. Design notes and accessibility work are in [UI-DESIGN.md](UI-DESIGN.md).

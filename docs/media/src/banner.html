@@ -1,0 +1,67 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<style>
+  body { width: 1280px; height: 420px; }
+  .left { position: absolute; left: 86px; top: 92px; }
+  .left h1 { font-size: 112px; margin: 14px 0 6px -4px; }
+  .left p { font-size: 29px; font-weight: 300; color: #5f564b; }
+  .left small { display: block; margin-top: 22px; font-size: 17px; color: var(--muted); font-weight: 400; }
+  .disc { position: absolute; width: 300px; height: 300px; right: 120px; top: 58px; border-radius: 50%;
+          background: radial-gradient(circle at 35% 30%, #f7a868, #e0782f 55%, #c95f1c); }
+  .frost { position: absolute; right: 250px; top: 30px; width: 150px; height: 360px; border-radius: 26px;
+           background: rgba(255, 250, 243, .55); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.7); }
+  svg.bloom { position: absolute; right: 120px; top: 58px; width: 300px; height: 300px; }
+  .entry { position: absolute; right: 48px; top: 270px; width: 382px; padding: 16px 18px; border-radius: 18px; }
+  .entry q { display: block; font-size: 15px; color: #3f3831; quotes: none; min-height: 40px; }
+  .tags { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tags span { font-size: 12px; padding: 4px 10px; border-radius: 999px; background: #f4ece1; color: #6f6252; opacity: 0; }
+  .tags span.feel { background: var(--charcoal); color: #fffaf2; }
+</style></head>
+<body>
+  <div class="glow" style="width:520px;height:420px;left:-120px;top:-160px;background:#fff6ea"></div>
+  <div class="glow" style="width:420px;height:420px;right:20px;top:20px;background:#f6c7a0;opacity:.45"></div>
+  <div class="left">
+    <div class="mono">Open source · Local AI journal</div>
+    <h1 class="title">Innerbloom</h1>
+    <p>A journal that reads you back.</p>
+    <small>Runs on your own computer. No cloud, no account, no internet.</small>
+  </div>
+  <div class="disc" id="disc"></div>
+  <svg class="bloom" viewBox="-150 -150 300 300" id="bloom"></svg>
+  <div class="frost"></div>
+  <div class="card entry">
+    <q id="q"></q>
+    <div class="tags"><span class="feel">frustrated · 6/10</span><span>#boundaries</span><span>#work</span><span>Jane</span></div>
+  </div>
+<script>
+  const DURATION = 6;
+  const text = "Work was heavy, but I kept the laptop closed tonight and called Jane.";
+  const bloom = document.getElementById("bloom");
+  for (let i = 0; i < 36; i++) {
+    const l = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    l.setAttribute("stroke", "#fffaf2"); l.setAttribute("stroke-width", "1.4"); l.setAttribute("stroke-linecap", "round");
+    l.setAttribute("opacity", ".75"); bloom.appendChild(l);
+  }
+  const ease = x => x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x);
+  function render(t) {
+    const p = t / DURATION;
+    [...bloom.children].forEach((l, i) => {
+      const a = (i / 36) * Math.PI * 2 + p * Math.PI * 2 / 12;
+      const breathe = 0.5 + 0.5 * Math.sin(p * Math.PI * 2 + i * 0.6);
+      const r0 = 26, r1 = 92 + (i % 2 ? 18 : 34) + breathe * 10;
+      l.setAttribute("x1", Math.cos(a) * r0); l.setAttribute("y1", Math.sin(a) * r0);
+      l.setAttribute("x2", Math.cos(a) * r1); l.setAttribute("y2", Math.sin(a) * r1);
+    });
+    document.getElementById("disc").style.transform = `scale(${1 + 0.015 * Math.sin(p * Math.PI * 2)})`;
+    const typed = Math.round(ease(t / 2.6) * text.length);
+    document.getElementById("q").textContent = text.slice(0, typed);
+    document.querySelectorAll(".tags span").forEach((s, i) => {
+      const show = ease((t - 2.9 - i * 0.28) / 0.35), hide = ease((t - 5.4) / 0.5);
+      s.style.opacity = show * (1 - hide);
+      s.style.transform = `translateY(${(1 - show) * 6}px)`;
+    });
+    if (t > 5.4) document.getElementById("q").style.opacity = 1 - ease((t - 5.4) / 0.5); else document.getElementById("q").style.opacity = 1;
+  }
+  render(0);
+</script>
+</body></html>

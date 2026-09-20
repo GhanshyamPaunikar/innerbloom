@@ -15,7 +15,7 @@ os.environ["INNERBLOOM_DATA_DIR"] = TMP
 os.environ["INNERBLOOM_MODEL"] = "test-model"
 
 # Import after env is set
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import app as innerbloom_app  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
 

@@ -1,0 +1,96 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<style>
+  body { width: 1280px; height: 720px; }
+  header { position: absolute; top: 40px; width: 100%; text-align: center; }
+  header h2 { font-size: 52px; }
+  header .mono { margin-top: 10px; }
+  .machine { position: absolute; left: 60px; top: 170px; width: 790px; height: 430px; border-radius: 30px;
+             border: 1.5px solid #d9cbb6; background: rgba(255, 250, 243, .45); }
+  .machine > .mono { position: absolute; left: 30px; top: 24px; display: flex; gap: 10px; align-items: center; color: #6f6252; }
+  .item { position: absolute; top: 90px; width: 226px; height: 300px; padding: 22px; color: var(--soft); }
+  .item h3 { font-size: 21px; font-weight: 400; margin: 18px 0 6px; color: #a4968a; }
+  .item .mono { font-size: 9.5px; margin-bottom: 16px; }
+  .item p { font-size: 14px; line-height: 1.5; color: #b3a596; }
+  .item.on { color: var(--orange); }
+  .item.on h3 { color: var(--ink); }
+  .item.on p { color: #5f564b; }
+  .lock { position: absolute; left: 400px; top: 166px; width: 42px; height: 42px; border-radius: 50%; background: var(--charcoal);
+          color: #fffaf2; display: grid; place-items: center; transform: translate(-50%, -50%); }
+  .lock svg { width: 20px; height: 20px; }
+  .ring { position: absolute; left: 60px; top: 170px; width: 790px; height: 430px; border-radius: 30px; border: 2px solid var(--orange); opacity: 0; }
+  .outside { position: absolute; left: 900px; top: 170px; width: 320px; }
+  .outside .mono { margin-bottom: 14px; }
+  .no { display: flex; align-items: center; gap: 12px; padding: 13px 18px; margin-bottom: 10px; border-radius: 16px;
+        border: 1px dashed #d9cbb6; color: #a4968a; font-size: 17px; position: relative; }
+  .no span { position: relative; }
+  .no i { position: absolute; left: -3px; right: -3px; top: 52%; height: 1.5px; background: var(--orange); transform-origin: left; transform: scaleX(0); }
+  .spotify { margin-top: 26px; padding: 14px 18px; border-radius: 16px; border: 1.5px dashed #cdbda6; color: #a4968a; font-size: 15px; }
+  .spotify b { display: block; font-weight: 500; font-size: 17px; color: #8b7d6b; margin-bottom: 2px; }
+  .spotify.on { border-color: var(--orange); color: #5f564b; }
+  .spotify.on b { color: var(--ink); }
+  .caption { position: absolute; bottom: 34px; width: 100%; text-align: center; }
+</style></head>
+<body>
+  <div class="glow" style="width:640px;height:320px;left:320px;top:-140px;background:#fff6ea"></div>
+  <header><h2 class="title">Private by design.</h2><div class="mono">Your journal never leaves your computer</div></header>
+  <div class="machine">
+    <div class="mono"><svg class="icon" viewBox="0 0 24 24" style="width:18px;height:18px"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Your computer</div>
+  </div>
+  <div class="ring" id="ring"></div>
+  <div class="lock"><svg class="icon" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+  <div id="items"></div>
+  <div class="outside">
+    <div class="mono">The internet</div>
+    <div class="no" id="no0"><span>No cloud server<i></i></span></div>
+    <div class="no" id="no1"><span>No account or sign-up<i></i></span></div>
+    <div class="no" id="no2"><span>No analytics or tracking<i></i></span></div>
+    <div class="spotify" id="spotify"><b>Spotify, optional</b>Only if you connect it, with your own app key</div>
+  </div>
+  <div class="caption"><span class="chip"><b id="n">01</b><span id="cap"></span></span></div>
+<script>
+  const ICON = {
+    disk: '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
+    chip: '<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/>',
+    app: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5"/>',
+  };
+  const ITEMS = [
+    ["disk", "Your journal", "./data · plain JSON", "Entries, chats, people and insights are ordinary files you can read, copy or back up."],
+    ["chip", "Your AI model", "Ollama · port 11434", "The model that reads your entries runs on your own machine. Nothing is sent away."],
+    ["app", "The app", "127.0.0.1 only", "One small local server for the page and the API. It never listens to the network."],
+  ];
+  const items = document.getElementById("items");
+  ITEMS.forEach(([icon, title, sub, text], i) => {
+    const d = document.createElement("div");
+    d.className = "card item"; d.style.left = (90 + i * 252) + "px"; d.style.top = "260px";
+    d.innerHTML = `<svg class="icon" viewBox="0 0 24 24">${ICON[icon]}</svg><h3>${title}</h3><div class="mono">${sub}</div><p>${text}</p>`;
+    items.appendChild(d);
+  });
+  const STEPS = [
+    "Your entries are plain files on your own disk.",
+    "The AI model runs on your machine through Ollama.",
+    "The app listens on 127.0.0.1 only, never on the network.",
+    "No cloud, no account, no analytics. Nothing to sign up for.",
+    "Spotify is optional, and only used if you connect it.",
+    "Delete the data folder and every trace is gone.",
+  ];
+  const STEP = 2.4, DURATION = STEP * STEPS.length;
+  const ease = x => x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x);
+  function render(t) {
+    const k = Math.floor(t / STEP) % STEPS.length, local = t % STEP;
+    [...items.children].forEach((c, i) => {
+      c.classList.toggle("on", i === k || (k === 5 && i === 0));
+      c.style.opacity = k === 5 && i === 0 ? String(1 - 0.75 * ease((local - 0.6) / 0.9)) : "1";
+    });
+    for (let i = 0; i < 3; i++) {
+      const done = k > 3 ? 1 : k === 3 ? ease((local - 0.2 - i * 0.35) / 0.4) : 0;
+      document.querySelector(`#no${i} i`).style.transform = `scaleX(${done})`;
+    }
+    document.getElementById("spotify").classList.toggle("on", k === 4);
+    document.getElementById("ring").style.opacity = String(0.55 * Math.max(0, Math.sin(Math.PI * local / STEP)) * (k < 3 ? 1 : 0.4));
+    document.getElementById("n").textContent = String(k + 1).padStart(2, "0");
+    document.getElementById("cap").textContent = STEPS[k];
+  }
+  render(0);
+</script>
+</body></html>

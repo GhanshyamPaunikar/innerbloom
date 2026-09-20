@@ -47,8 +47,6 @@ Run `python run_local.py --demo --port 8766` for an isolated design preview. The
 - Browser: draft title/body/rating survived reload; save and edit persisted to the temporary preview backend. Archive search, day filtering, empty results and sorting worked. All seven insight panels navigated; reflection and conversation responses rendered. Preferences persisted after reload. Command navigation worked. Mobile navigation, chart layout and graph checked at 390px; desktop checked at 1280px and the native browser viewport. No captured browser console errors.
 - Live Ollama inference, microphone capture and real Spotify login have not been tested in this session. Those require the local service/browser support or a connected account.
 
-Screenshots: `docs/design-mockups/implemented-insights.png` and `docs/design-mockups/implemented-writing.png` show the running implementation with fictional data. Older mockups remain as design history.
-
 ## Second review: user feedback, November 1
 
 The user identified remaining dashboard-like components. These were replaced, rather than simply recolored:
@@ -69,8 +67,6 @@ Removed the outlined placeholders for days without entries: these now use a quie
 
 ## Innerbloom rename, People and memory groups
 
-Screenshots of this state, with fictional data, are in `docs/design-mockups/innerbloom/`.
-
 The design was first built on an older copy of the code, then reapplied on top of the later Innerbloom work: the rename, month-ago surfacing, local notifications, the Companion/Observer/Challenger voices, background insight refresh, and the People CRM. Those features keep their behaviour and are restyled to fit:
 
 - People uses the server-side CRM (`/people`): cards per person with dominant emotions, themes and entry dates, and a detail drawer for relationship, birthday, check-in cadence, notes and "I reached out". A person first seen in imported entries keeps their written name when first edited.
@@ -81,6 +77,6 @@ The design was first built on an older copy of the code, then reapplied on top o
 - The Music page keeps this design's record-sleeve layout (recent and top tracks with album art, genre estimates on request, a reflection). The unused mood chart and listening-pattern code was removed.
 - `assets/innerbloom.css` holds the styles for these views and the restyled components. Storage keys and page events use the `innerbloom.` prefix; environment variables use `INNERBLOOM_`.
 
-The design-prototype files have been removed now that a direction is chosen. The three exploration mockups remain in `docs/design-mockups/` as design history.
+The design-prototype files and the earlier mockup screenshots have been removed. The README now shows the product video and animations in `docs/media/`, rendered from `docs/media/src` by `scripts/build_readme_media.py`.
 
 Verification after the merge: 89 backend checks and four UI-serving tests pass. In the demo preview, Write (with the month-ago pill), Conversations (voice picker and a streamed reply), Insights, Memory map, People (cards, detail drawer, adding a note) and Settings (notifications) were checked at 1440px with a clear console; People was also checked at 390px with no horizontal overflow. Live Ollama, Spotify login and dictation were not exercised after the merge.
