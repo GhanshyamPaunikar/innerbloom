@@ -6,19 +6,19 @@
     "emotion": "tired",
     "intensity": 5,
     "tags": [
-      "journaling",
       "work",
-      "launch"
+      "launch",
+      "journaling"
     ],
     "themes": [
-      "fresh start",
-      "work pressure"
+      "work pressure",
+      "boundaries"
     ],
     "people": [],
     "summary": "Starting a journal again.",
     "user_mood": null,
     "word_count": 75,
-    "timestamp": "2026-09-23T18:50:00",
+    "timestamp": "2026-09-24T18:50:00",
     "embedding": [
       -0.019219277,
       0.008012836,
@@ -799,8 +799,8 @@
     "intensity": 7,
     "tags": [
       "work",
-      "deadline",
-      "email"
+      "launch",
+      "deadline"
     ],
     "themes": [
       "work pressure",
@@ -812,7 +812,7 @@
     "summary": "Alex Johnson pulled the launch a whole week earlier in this morning's meeting.",
     "user_mood": null,
     "word_count": 64,
-    "timestamp": "2026-09-24T21:10:00",
+    "timestamp": "2026-09-25T21:10:00",
     "embedding": [
       -0.0029970799,
       0.0046611563,
@@ -1592,9 +1592,9 @@
     "emotion": "hopeful",
     "intensity": 5,
     "tags": [
-      "family",
-      "sleep",
-      "email"
+      "email",
+      "evenings",
+      "family"
     ],
     "themes": [
       "boundaries",
@@ -1606,7 +1606,7 @@
     "summary": "Called Mom on the walk home.",
     "user_mood": null,
     "word_count": 64,
-    "timestamp": "2026-09-25T21:10:00",
+    "timestamp": "2026-09-26T21:10:00",
     "embedding": [
       -0.0019311483,
       0.03305695,
@@ -2387,18 +2387,18 @@
     "intensity": 6,
     "tags": [
       "email",
-      "work",
-      "phone"
+      "evenings",
+      "work"
     ],
     "themes": [
       "boundaries",
-      "self criticism"
+      "self care"
     ],
     "people": [],
     "summary": "11pm.",
     "user_mood": null,
     "word_count": 67,
-    "timestamp": "2026-09-26T07:40:00",
+    "timestamp": "2026-09-27T07:40:00",
     "embedding": [
       0.0018612699,
       -0.01222616,
@@ -3192,7 +3192,7 @@
     "summary": "First run in months with Sam Lee.",
     "user_mood": null,
     "word_count": 61,
-    "timestamp": "2026-09-27T08:15:00",
+    "timestamp": "2026-09-28T08:15:00",
     "embedding": [
       0.009897497,
       0.0022462802,
@@ -3973,12 +3973,12 @@
     "intensity": 7,
     "tags": [
       "family",
-      "engagement",
-      "sister"
+      "sister",
+      "engagement"
     ],
     "themes": [
       "family",
-      "comparison"
+      "courage"
     ],
     "people": [
       "Jane Smith"
@@ -3986,7 +3986,7 @@
     "summary": "Jane Smith called screaming.",
     "user_mood": null,
     "word_count": 68,
-    "timestamp": "2026-09-28T12:30:00",
+    "timestamp": "2026-09-29T12:30:00",
     "embedding": [
       -0.0116157625,
       0.01720882,
@@ -4766,9 +4766,9 @@
     "emotion": "content",
     "intensity": 3,
     "tags": [
+      "rest",
       "weekend",
-      "cooking",
-      "rest"
+      "cooking"
     ],
     "themes": [
       "rest",
@@ -4778,7 +4778,7 @@
     "summary": "Slow Sunday.",
     "user_mood": null,
     "word_count": 54,
-    "timestamp": "2026-09-29T22:35:00",
+    "timestamp": "2026-09-30T22:35:00",
     "embedding": [
       0.0112823695,
       0.0023735948,
@@ -5559,12 +5559,12 @@
     "intensity": 8,
     "tags": [
       "work",
-      "meeting",
-      "criticism"
+      "launch",
+      "meeting"
     ],
     "themes": [
       "work pressure",
-      "self worth"
+      "boundaries"
     ],
     "people": [
       "Alex Johnson"
@@ -5572,7 +5572,7 @@
     "summary": "Stand-up went badly.",
     "user_mood": null,
     "word_count": 65,
-    "timestamp": "2026-09-30T22:35:00",
+    "timestamp": "2026-10-01T22:35:00",
     "embedding": [
       -0.018461363,
       -0.025776234,
@@ -6353,8 +6353,8 @@
     "intensity": 6,
     "tags": [
       "therapy",
-      "beliefs",
-      "work"
+      "self worth",
+      "beliefs"
     ],
     "themes": [
       "self worth",
@@ -6366,7 +6366,7 @@
     "summary": "Therapy with Maria Garcia today.",
     "user_mood": null,
     "word_count": 67,
-    "timestamp": "2026-10-01T22:35:00",
+    "timestamp": "2026-10-02T22:35:00",
     "embedding": [
       0.010599175,
       -0.0045748022,
@@ -7152,7 +7152,7 @@
     ],
     "themes": [
       "movement",
-      "small wins"
+      "friendship"
     ],
     "people": [
       "Sam Lee"
@@ -7160,7 +7160,7 @@
     "summary": "Ran three kilometres without stopping today with Sam Lee.",
     "user_mood": null,
     "word_count": 60,
-    "timestamp": "2026-10-02T08:15:00",
+    "timestamp": "2026-10-03T08:15:00",
     "embedding": [
       0.012491229,
       0.014620893,
@@ -7941,12 +7941,12 @@
     "intensity": 5,
     "tags": [
       "friends",
-      "phone",
-      "guilt"
+      "catching up",
+      "phone"
     ],
     "themes": [
       "friendship",
-      "neglect"
+      "slowing down"
     ],
     "people": [
       "John Doe"
@@ -7954,7 +7954,7 @@
     "summary": "Missed a call from John Doe while I was in a meeting.",
     "user_mood": null,
     "word_count": 69,
-    "timestamp": "2026-10-03T08:15:00",
+    "timestamp": "2026-10-04T08:15:00",
     "embedding": [
       -0.0029605476,
       0.009283908,
@@ -8735,18 +8735,18 @@
     "intensity": 6,
     "tags": [
       "work",
-      "late night",
-      "food"
+      "launch",
+      "late night"
     ],
     "themes": [
       "work pressure",
-      "self care"
+      "boundaries"
     ],
     "people": [],
     "summary": "Worked until 10pm and realised I'd skipped dinner.",
     "user_mood": null,
     "word_count": 56,
-    "timestamp": "2026-10-04T12:30:00",
+    "timestamp": "2026-10-05T12:30:00",
     "embedding": [
       0.0087668365,
       0.02392742,
@@ -9527,12 +9527,12 @@
     "intensity": 7,
     "tags": [
       "friends",
-      "coffee",
-      "laughter"
+      "catching up",
+      "coffee"
     ],
     "themes": [
       "friendship",
-      "identity"
+      "slowing down"
     ],
     "people": [
       "John Doe"
@@ -9540,7 +9540,7 @@
     "summary": "Coffee with John Doe.",
     "user_mood": null,
     "word_count": 64,
-    "timestamp": "2026-10-05T12:30:00",
+    "timestamp": "2026-10-06T12:30:00",
     "embedding": [
       -0.0035745143,
       0.021665609,
@@ -10321,12 +10321,12 @@
     "intensity": 7,
     "tags": [
       "work",
-      "boundaries",
-      "decision"
+      "launch",
+      "boundaries"
     ],
     "themes": [
-      "boundaries",
-      "self worth"
+      "work pressure",
+      "boundaries"
     ],
     "people": [
       "Alex Johnson"
@@ -10334,7 +10334,7 @@
     "summary": "Alex Johnson offered me an extra project, a nice one, the kind I'd normally jump at.",
     "user_mood": null,
     "word_count": 57,
-    "timestamp": "2026-10-06T22:35:00",
+    "timestamp": "2026-10-07T22:35:00",
     "embedding": [
       -0.0006149893,
       -0.018795738,
@@ -11114,9 +11114,9 @@
     "emotion": "content",
     "intensity": 3,
     "tags": [
-      "reading",
-      "rain",
-      "rest"
+      "rest",
+      "weekend",
+      "reading"
     ],
     "themes": [
       "rest",
@@ -11126,7 +11126,7 @@
     "summary": "Rained all day.",
     "user_mood": null,
     "word_count": 46,
-    "timestamp": "2026-10-07T18:50:00",
+    "timestamp": "2026-10-08T18:50:00",
     "embedding": [
       0.00719101,
       -0.010101087,
@@ -11907,12 +11907,12 @@
     "intensity": 6,
     "tags": [
       "family",
-      "speech",
-      "engagement"
+      "sister",
+      "speech"
     ],
     "themes": [
       "family",
-      "self doubt"
+      "courage"
     ],
     "people": [
       "Jane Smith"
@@ -11920,7 +11920,7 @@
     "summary": "Jane Smith asked me to give a speech at her engagement party.",
     "user_mood": null,
     "word_count": 57,
-    "timestamp": "2026-10-08T07:40:00",
+    "timestamp": "2026-10-09T07:40:00",
     "embedding": [
       -0.013863438,
       -0.015581271,
@@ -12701,12 +12701,12 @@
     "intensity": 6,
     "tags": [
       "work",
-      "demo",
-      "praise"
+      "launch",
+      "demo"
     ],
     "themes": [
       "work pressure",
-      "self worth"
+      "boundaries"
     ],
     "people": [
       "Alex Johnson"
@@ -12714,7 +12714,7 @@
     "summary": "Demoed the prototype today.",
     "user_mood": null,
     "word_count": 57,
-    "timestamp": "2026-10-09T21:10:00",
+    "timestamp": "2026-10-10T21:10:00",
     "embedding": [
       -0.0056962105,
       -0.014628916,
@@ -13495,18 +13495,18 @@
     "intensity": 7,
     "tags": [
       "sleep",
-      "phone",
-      "launch"
+      "routine",
+      "phone"
     ],
     "themes": [
       "sleep",
-      "work pressure"
+      "self care"
     ],
     "people": [],
     "summary": "Couldn't sleep.",
     "user_mood": null,
     "word_count": 58,
-    "timestamp": "2026-10-10T22:35:00",
+    "timestamp": "2026-10-11T22:35:00",
     "embedding": [
       -0.0034519585,
       -0.00091309374,
@@ -14286,9 +14286,9 @@
     "emotion": "hopeful",
     "intensity": 5,
     "tags": [
-      "therapy",
       "sleep",
-      "routine"
+      "routine",
+      "therapy"
     ],
     "themes": [
       "sleep",
@@ -14300,7 +14300,7 @@
     "summary": "Told Maria Garcia about the late-night scrolling.",
     "user_mood": null,
     "word_count": 54,
-    "timestamp": "2026-10-11T08:15:00",
+    "timestamp": "2026-10-12T08:15:00",
     "embedding": [
       -0.002757792,
       0.002253991,
@@ -15092,7 +15092,7 @@
     "summary": "Tried the wind-down routine.",
     "user_mood": null,
     "word_count": 60,
-    "timestamp": "2026-10-12T07:40:00",
+    "timestamp": "2026-10-13T07:40:00",
     "embedding": [
       -0.003311672,
       -0.0015218045,
@@ -15873,8 +15873,8 @@
     "intensity": 6,
     "tags": [
       "family",
-      "birthday",
-      "dinner"
+      "mom",
+      "birthday"
     ],
     "themes": [
       "family",
@@ -15886,7 +15886,7 @@
     "summary": "Mom's birthday dinner.",
     "user_mood": null,
     "word_count": 55,
-    "timestamp": "2026-10-13T22:35:00",
+    "timestamp": "2026-10-14T22:35:00",
     "embedding": [
       -0.020315975,
       -0.013736306,
@@ -16672,7 +16672,7 @@
     ],
     "themes": [
       "movement",
-      "small wins"
+      "friendship"
     ],
     "people": [
       "Sam Lee"
@@ -16680,7 +16680,7 @@
     "summary": "5k with Sam Lee in the cold this morning.",
     "user_mood": null,
     "word_count": 61,
-    "timestamp": "2026-10-14T08:15:00",
+    "timestamp": "2026-10-15T08:15:00",
     "embedding": [
       -0.00052597397,
       0.0013183699,
@@ -17461,12 +17461,12 @@
     "intensity": 9,
     "tags": [
       "work",
-      "bug",
-      "manager"
+      "launch",
+      "bug"
     ],
     "themes": [
       "work pressure",
-      "catastrophizing"
+      "boundaries"
     ],
     "people": [
       "Alex Johnson"
@@ -17474,7 +17474,7 @@
     "summary": "A bug went out to production this morning.",
     "user_mood": null,
     "word_count": 59,
-    "timestamp": "2026-10-15T21:10:00",
+    "timestamp": "2026-10-16T21:10:00",
     "embedding": [
       0.005084432,
       0.004318021,
@@ -18255,12 +18255,12 @@
     "intensity": 6,
     "tags": [
       "work",
-      "promotion",
-      "manager"
+      "launch",
+      "promotion"
     ],
     "themes": [
-      "catastrophizing",
-      "self awareness"
+      "work pressure",
+      "boundaries"
     ],
     "people": [
       "Alex Johnson"
@@ -18268,7 +18268,7 @@
     "summary": "The talk with Alex Johnson was about putting me on the promotion track.",
     "user_mood": null,
     "word_count": 63,
-    "timestamp": "2026-10-16T22:35:00",
+    "timestamp": "2026-10-17T22:35:00",
     "embedding": [
       0.004739005,
       0.009814672,
@@ -19048,13 +19048,13 @@
     "emotion": "frustrated",
     "intensity": 5,
     "tags": [
-      "speech",
-      "procrastination",
-      "cleaning"
+      "family",
+      "sister",
+      "speech"
     ],
     "themes": [
-      "avoidance",
-      "self doubt"
+      "family",
+      "courage"
     ],
     "people": [
       "Jane Smith"
@@ -19062,7 +19062,7 @@
     "summary": "Said I'd write Jane Smith's speech this weekend.",
     "user_mood": null,
     "word_count": 48,
-    "timestamp": "2026-10-17T18:50:00",
+    "timestamp": "2026-10-18T18:50:00",
     "embedding": [
       1.1659046e-05,
       0.015339132,
@@ -19842,13 +19842,13 @@
     "emotion": "overwhelmed",
     "intensity": 7,
     "tags": [
-      "social",
-      "calendar",
-      "friends"
+      "friends",
+      "catching up",
+      "social"
     ],
     "themes": [
-      "boundaries",
-      "friendship"
+      "friendship",
+      "slowing down"
     ],
     "people": [
       "John Doe"
@@ -19856,7 +19856,7 @@
     "summary": "John Doe's birthday drinks on Friday, plus three other invitations this week, plus launch prep.",
     "user_mood": null,
     "word_count": 62,
-    "timestamp": "2026-10-18T07:40:00",
+    "timestamp": "2026-10-19T07:40:00",
     "embedding": [
       -0.008288598,
       0.00058804447,
@@ -20636,13 +20636,13 @@
     "emotion": "reflective",
     "intensity": 7,
     "tags": [
-      "speech",
-      "memories",
-      "sister"
+      "family",
+      "sister",
+      "speech"
     ],
     "themes": [
       "family",
-      "nostalgia"
+      "courage"
     ],
     "people": [
       "Jane Smith"
@@ -20650,7 +20650,7 @@
     "summary": "Finally wrote the first draft of Jane Smith's speech.",
     "user_mood": null,
     "word_count": 62,
-    "timestamp": "2026-10-19T08:15:00",
+    "timestamp": "2026-10-20T08:15:00",
     "embedding": [
       -0.008977584,
       0.010832988,
@@ -21431,12 +21431,12 @@
     "intensity": 6,
     "tags": [
       "work",
-      "running",
-      "late night"
+      "launch",
+      "running"
     ],
     "themes": [
-      "boundaries",
-      "work pressure"
+      "work pressure",
+      "boundaries"
     ],
     "people": [
       "Sam Lee"
@@ -21444,7 +21444,7 @@
     "summary": "Skipped the run with Sam Lee to fix a launch blocker.",
     "user_mood": null,
     "word_count": 56,
-    "timestamp": "2026-10-20T21:10:00",
+    "timestamp": "2026-10-21T21:10:00",
     "embedding": [
       0.007390585,
       0.00026482574,
@@ -22225,12 +22225,12 @@
     "intensity": 5,
     "tags": [
       "therapy",
-      "habits",
-      "self compassion"
+      "self worth",
+      "habits"
     ],
     "themes": [
-      "self awareness",
-      "self worth"
+      "self worth",
+      "self awareness"
     ],
     "people": [
       "Maria Garcia"
@@ -22238,7 +22238,7 @@
     "summary": "Told Maria Garcia the evenings are slipping.",
     "user_mood": null,
     "word_count": 58,
-    "timestamp": "2026-10-21T12:30:00",
+    "timestamp": "2026-10-22T12:30:00",
     "embedding": [
       0.017067395,
       -0.019306593,
@@ -23019,8 +23019,8 @@
     "intensity": 4,
     "tags": [
       "friends",
-      "market",
-      "weekend"
+      "catching up",
+      "market"
     ],
     "themes": [
       "friendship",
@@ -23032,7 +23032,7 @@
     "summary": "Saturday market with John Doe.",
     "user_mood": null,
     "word_count": 49,
-    "timestamp": "2026-10-22T07:40:00",
+    "timestamp": "2026-10-23T07:40:00",
     "embedding": [
       -0.006667386,
       0.006386768,
@@ -23817,7 +23817,8 @@
       "meetings"
     ],
     "themes": [
-      "work pressure"
+      "work pressure",
+      "boundaries"
     ],
     "people": [
       "Alex Johnson"
@@ -23825,7 +23826,7 @@
     "summary": "Launch week.",
     "user_mood": null,
     "word_count": 50,
-    "timestamp": "2026-10-23T12:30:00",
+    "timestamp": "2026-10-24T12:30:00",
     "embedding": [
       -0.0033586912,
       0.00073872885,
@@ -24605,13 +24606,13 @@
     "emotion": "frustrated",
     "intensity": 6,
     "tags": [
+      "family",
       "sister",
-      "stress",
-      "apology"
+      "stress"
     ],
     "themes": [
       "family",
-      "stress spillover"
+      "courage"
     ],
     "people": [
       "Jane Smith"
@@ -24619,7 +24620,7 @@
     "summary": "Jane Smith called about the seating plan for the party and I snapped at her over something tiny.",
     "user_mood": null,
     "word_count": 58,
-    "timestamp": "2026-10-24T12:30:00",
+    "timestamp": "2026-10-25T12:30:00",
     "embedding": [
       0.008088812,
       0.02822082,
@@ -25404,8 +25405,8 @@
       "celebration"
     ],
     "themes": [
-      "achievement",
-      "work pressure"
+      "work pressure",
+      "boundaries"
     ],
     "people": [
       "Alex Johnson"
@@ -25413,7 +25414,7 @@
     "summary": "We launched! It went smoothly, no fires, and the first user feedback is good.",
     "user_mood": null,
     "word_count": 52,
-    "timestamp": "2026-10-25T08:15:00",
+    "timestamp": "2026-10-26T08:15:00",
     "embedding": [
       -0.006628458,
       -0.011247934,
@@ -26194,18 +26195,18 @@
     "intensity": 6,
     "tags": [
       "work",
-      "burnout",
-      "emptiness"
+      "launch",
+      "burnout"
     ],
     "themes": [
-      "burnout",
-      "self worth"
+      "work pressure",
+      "boundaries"
     ],
     "people": [],
     "summary": "The day after the launch I expected to feel relieved.",
     "user_mood": null,
     "word_count": 56,
-    "timestamp": "2026-10-26T21:10:00",
+    "timestamp": "2026-10-27T21:10:00",
     "embedding": [
       0.0043530064,
       -0.007344487,
@@ -26986,12 +26987,12 @@
     "intensity": 6,
     "tags": [
       "running",
-      "friends",
-      "burnout"
+      "exercise",
+      "friends"
     ],
     "themes": [
-      "friendship",
-      "burnout"
+      "movement",
+      "friendship"
     ],
     "people": [
       "Sam Lee"
@@ -26999,7 +27000,7 @@
     "summary": "Long slow run with Sam Lee.",
     "user_mood": null,
     "word_count": 56,
-    "timestamp": "2026-10-27T22:35:00",
+    "timestamp": "2026-10-28T22:35:00",
     "embedding": [
       0.012766194,
       0.019084053,
@@ -27779,13 +27780,13 @@
     "emotion": "grateful",
     "intensity": 7,
     "tags": [
-      "speech",
       "family",
-      "video call"
+      "mom",
+      "speech"
     ],
     "themes": [
       "family",
-      "courage"
+      "belonging"
     ],
     "people": [
       "Mom"
@@ -27793,7 +27794,7 @@
     "summary": "Practised Jane's speech for Mom over video.",
     "user_mood": null,
     "word_count": 52,
-    "timestamp": "2026-10-28T21:10:00",
+    "timestamp": "2026-10-29T21:10:00",
     "embedding": [
       -0.015137116,
       0.011737861,
@@ -28573,19 +28574,19 @@
     "emotion": "hopeful",
     "intensity": 5,
     "tags": [
-      "travel",
       "rest",
-      "planning"
+      "weekend",
+      "travel"
     ],
     "themes": [
       "rest",
-      "self care"
+      "slowing down"
     ],
     "people": [],
     "summary": "Booked a quiet weekend away next month, a small cabin by a lake, no plans.",
     "user_mood": null,
     "word_count": 47,
-    "timestamp": "2026-10-29T07:40:00",
+    "timestamp": "2026-10-30T07:40:00",
     "embedding": [
       -0.007323867,
       -0.009026106,
@@ -29366,18 +29367,18 @@
     "intensity": 5,
     "tags": [
       "email",
-      "boundaries",
-      "habits"
+      "evenings",
+      "boundaries"
     ],
     "themes": [
       "boundaries",
-      "small wins"
+      "self care"
     ],
     "people": [],
     "summary": "Counted: this week I checked work email after 9pm exactly once.",
     "user_mood": null,
     "word_count": 56,
-    "timestamp": "2026-10-30T18:50:00",
+    "timestamp": "2026-10-31T18:50:00",
     "embedding": [
       0.0007063912,
       -0.0026456951,
@@ -30157,9 +30158,9 @@
     "emotion": "happy",
     "intensity": 9,
     "tags": [
-      "engagement party",
-      "speech",
-      "family"
+      "family",
+      "sister",
+      "engagement party"
     ],
     "themes": [
       "family",
@@ -30171,7 +30172,7 @@
     "summary": "Jane Smith's engagement party.",
     "user_mood": null,
     "word_count": 59,
-    "timestamp": "2026-10-31T07:40:00",
+    "timestamp": "2026-11-01T07:40:00",
     "embedding": [
       -0.008882615,
       -0.006562858,
@@ -30951,19 +30952,19 @@
     "emotion": "calm",
     "intensity": 4,
     "tags": [
-      "journaling",
-      "reflection",
-      "morning"
+      "therapy",
+      "self worth",
+      "journaling"
     ],
     "themes": [
-      "self awareness",
-      "fresh start"
+      "self worth",
+      "self awareness"
     ],
     "people": [],
     "summary": "Morning coffee, reading back through forty days of writing.",
     "user_mood": null,
     "word_count": 70,
-    "timestamp": "2026-11-01T12:30:00",
+    "timestamp": "2026-11-02T12:30:00",
     "embedding": [
       -0.0002544961,
       -0.008736462,

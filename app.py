@@ -39,8 +39,30 @@ import random
 import threading
 import uuid
 import time
-from datetime import datetime, timedelta, date
+from datetime import datetime as _datetime, timedelta, date as _date
+from zoneinfo import ZoneInfo
 from collections import Counter, defaultdict
+
+# A hosted server's clock is not the visitor's. When a request carries the
+# browser's time zone (X-Timezone), "now" and "today" follow it, so entries,
+# streaks and the sample journal's last day match the visitor's calendar.
+# Without the header (the local app) these behave exactly like datetime/date.
+_CLIENT_TZ = contextvars.ContextVar("innerbloom_client_tz", default=None)
+
+
+class datetime(_datetime):
+    @classmethod
+    def now(cls, tz=None):
+        zone = _CLIENT_TZ.get()
+        if tz is None and zone is not None:
+            return _datetime.now(zone).replace(tzinfo=None)
+        return _datetime.now(tz)
+
+
+class date(_date):
+    @classmethod
+    def today(cls):
+        return datetime.now().date()
 
 # ---------------------------------------------------------------------------
 # Config
@@ -299,6 +321,17 @@ class SandboxMiddleware:
         if scope["type"] != "http" or not SANDBOX_MODE:
             return await self.inner(scope, receive, send)
         headers = {k.decode("latin-1"): v.decode("latin-1") for k, v in scope["headers"]}
+        try:
+            zone = ZoneInfo(headers["x-timezone"][:64]) if headers.get("x-timezone") else None
+        except Exception:
+            zone = None
+        tz_token = _CLIENT_TZ.set(zone)  # before the sandbox, so its sample ends on the visitor's today
+        try:
+            await self._handle(scope, receive, send, headers)
+        finally:
+            _CLIENT_TZ.reset(tz_token)
+
+    async def _handle(self, scope, receive, send, headers):
         cookies = dict(part.strip().split("=", 1) for part in headers.get("cookie", "").split(";") if "=" in part)
         sandbox_id = cookies.get(SANDBOX_COOKIE, "")
         root = os.path.join(DATA_DIR, "sandboxes")

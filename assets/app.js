@@ -57,8 +57,13 @@ function greeting() {
 }
 function mdToHtml(s) { return escapeHtml(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/\n/g, "<br>"); }
 
+// The visitor's time zone, so a hosted server stamps entries with their clock.
+const CLIENT_HEADERS = (() => {
+  try { return { "X-Timezone": Intl.DateTimeFormat().resolvedOptions().timeZone || "" }; } catch { return {}; }
+})();
+
 async function api(path, opts = {}) {
-  const r = await fetch(API + path, { ...opts, headers: { "Content-Type": "application/json", ...(opts.headers || {}) } });
+  const r = await fetch(API + path, { ...opts, headers: { "Content-Type": "application/json", ...CLIENT_HEADERS, ...(opts.headers || {}) } });
   if (!r.ok) {
     const txt = await r.text().catch(() => "");
     throw new Error(`${r.status}: ${txt.slice(0, 120)}`);
@@ -952,7 +957,7 @@ async function sendChatStream(text) {
   try {
     const resp = await fetch(API + "/chat/stream", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...CLIENT_HEADERS },
       body: JSON.stringify({ message: text, mode: "general", personality: chatPersona }),
     });
     if (!resp.body) throw new Error("no stream");
@@ -1067,7 +1072,7 @@ async function sendChatAgent(text) {
   try {
     const resp = await fetch(API + "/chat/agent", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...CLIENT_HEADERS },
       body: JSON.stringify({ message: text, mode: "journal", personality: chatPersona }),
     });
     if (!resp.body) throw new Error("no stream");
@@ -2461,7 +2466,7 @@ async function renderSettings() {
 // =========================================================================
 async function exportMarkdown() {
   try {
-    const r = await fetch(API + "/export");
+    const r = await fetch(API + "/export", { headers: CLIENT_HEADERS });
     if (!r.ok) throw new Error("Export unavailable");
     const md = await r.text();
     const blob = new Blob([md], { type: "text/markdown" });
