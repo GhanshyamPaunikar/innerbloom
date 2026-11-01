@@ -292,8 +292,8 @@ def _ai_call_allowed(kind: str = "generate") -> Optional[str]:
 class SandboxMiddleware:
     """Pure ASGI so the sandbox context reaches streaming responses too."""
 
-    def __init__(self, inner):
-        self.inner = inner
+    def __init__(self, app):
+        self.inner = app
 
     async def __call__(self, scope, receive, send):
         if scope["type"] != "http" or not SANDBOX_MODE:
