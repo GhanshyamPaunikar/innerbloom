@@ -4,5 +4,26 @@
 .dotmap-svg{min-height:500px}.dotmap-detail h2{font-weight:400}.dotmap-cluster-title{font-size:15px;font-weight:500;text-transform:capitalize}.atlas-group{cursor:pointer;outline:none}.atlas-group:focus path{stroke-width:3;stroke-opacity:.6}.dotmap-controls select{border:1px solid #e7ddd0;border-radius:24px;background:#fcf8f1;padding:9px 12px;color:#756955;font:inherit;font-size:12px}
 .persona-picker{border-radius:999px;background:#faf6ef;border:1px solid #e7ddd0;box-shadow:none;padding:4px}.persona-pill{border-radius:999px;padding:7px 18px}.persona-pill:hover{background:#f1e9dc}.persona-pill .p-name{font-weight:500}.persona-pill.active{background:#252422;box-shadow:none}.persona-pill.active .p-desc{color:rgba(255,250,242,.72)}
 .anniv-pill{border-radius:999px;background:#faf6ef;border:1px solid #e7ddd0;box-shadow:none}.anniv-pill:hover{background:#f4ece0;border-color:#dccfbc}.anniv-pill-label{color:#252422;font-weight:500}.anniv-modal{border-radius:28px;background:#fffcf7;border:1px solid #ebe2d5}
-.people-header{color:#887b69;padding:0 4px 4px}.person-card{border-radius:24px;background:rgba(255,252,247,.94);border:1px solid #ebe2d5;box-shadow:none}.person-name{font-weight:400}
 body.public-demo .spotify-settings{display:none}.demo-off{padding:36px;max-width:640px}.demo-off h3{font-size:28px;font-weight:400;margin:12px 0}.demo-off p{color:#887b69;line-height:1.6}
+/* Write: fill the same width as the page header (the old 880px cap centred it) */
+.write-wrap{max-width:none;margin:0}
+/* People, in the house style: labels, hairlines and rows rather than pills */
+.people-lede{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;padding:2px 4px 18px}.people-lede p{margin:0;color:#887b69;font-size:13px}
+.people-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.person-panel{display:flex;flex-direction:column;gap:18px;padding:26px 28px;border:1px solid #ffffffe0;background:rgba(255,253,250,.94);border-radius:28px;box-shadow:var(--shadow-sm);cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}
+.person-panel:hover{transform:translateY(-2px);box-shadow:var(--shadow)}.person-panel:focus-visible{outline:2px solid #252422;outline-offset:3px}
+.person-top{display:flex;gap:16px;align-items:flex-start}.person-top h3{font-size:26px;font-weight:400;letter-spacing:-.02em;margin:4px 0 2px;color:#252422}.person-top p{margin:0;color:#887b69;font-size:12.5px}
+.person-mark{position:relative;flex:0 0 52px;height:52px;border-radius:50%;border:1px solid #d9cdbb;display:grid;place-items:center;font-size:22px;font-weight:300;color:#3f3831;background:#faf6ef}
+.person-mark i{position:absolute;right:1px;bottom:3px;width:11px;height:11px;border-radius:50%;border:2px solid #fffdfa}
+.person-status{margin:-6px 0 0;font-size:12px;color:#b95116}
+.person-panel section{display:flex;flex-direction:column;gap:9px;border-top:1px solid var(--border);padding-top:14px}
+.person-feelings{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
+.person-feelings li{display:grid;grid-template-columns:110px 1fr 36px;align-items:center;gap:12px;font-size:12.5px;color:#3f3831;text-transform:capitalize}
+.person-feelings li span{display:flex;align-items:center;gap:8px}.person-feelings li i{width:6px;height:6px;border-radius:50%}
+.person-feelings b{height:1px;background:#e4dacb;position:relative}.person-feelings b::after{content:"";position:absolute;left:0;top:-.5px;height:2px;width:var(--w);background:#3f3831;border-radius:2px}
+.person-feelings small{text-align:right;color:#9e8d77;font-variant-numeric:tabular-nums}
+.person-topics{margin:0;color:#5f564b;font-size:13px;line-height:1.6}
+.person-pages{display:flex;flex-direction:column}
+.person-page{display:flex;justify-content:space-between;gap:14px;border:0;border-top:1px solid #efe7db;background:none;padding:10px 0;font:inherit;font-size:13px;color:#3f3831;text-align:left;cursor:pointer}
+.person-page:first-child{border-top:0;padding-top:2px}.person-page span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.person-page time{color:#9e8d77;font-size:11.5px;white-space:nowrap}.person-page:hover span{text-decoration:underline;text-underline-offset:3px}
+.person-open{margin-top:auto;align-self:flex-start;font-size:12px}

@@ -133,12 +133,13 @@ async function updateHealth() {
     if (r.ollama === "up") {
       // Pull the model name from the root endpoint when we know it; this
       // keeps the badge honest after a user switches INNERBLOOM_MODEL.
-      let modelName = "Ollama";
-      try {
-        const root = await api("/");
-        if (r.provider === "gemini") modelName = "Gemini";
-        else if (root.model) modelName = String(root.model).split(":")[0];
-      } catch {}
+      let modelName = r.provider === "gemini" ? "Gemini" : "Ollama";
+      if (r.provider !== "gemini") {
+        try {
+          const root = await api("/");
+          if (root.model) modelName = String(root.model).split(":")[0];
+        } catch {}
+      }
       $("health-badge").innerHTML = `<span style="color:var(--success)">●</span> ${escapeHtml(modelName)} ready`;
       $("health-badge").className = "badge green";
     } else {
@@ -1710,72 +1711,50 @@ async function loadPeople() {
       return;
     }
 
-    const maxMentions = Math.max(1, ...people.map(p => p.mentions));
     const cards = people.map(p => {
-      const emoColor = `var(--e-${p.top_emotion || "neutral"})`;
-      const tags = (p.top_tags || []).slice(0, 4)
-        .map(t => `<span class="anniv-tag">#${escapeHtml(t)}</span>`).join("");
-      const themes = (p.top_themes || []).slice(0, 3)
-        .map(t => `<span class="anniv-tag" style="background:var(--accent-soft);color:var(--accent-deep);">${escapeHtml(t)}</span>`).join("");
-      // Emotion mini-bars
-      const totalEmos = p.emotion_breakdown.reduce((s, [, c]) => s + c, 0) || 1;
-      const emoBars = p.emotion_breakdown.slice(0, 4).map(([e, c]) => {
-        const pct = Math.round((c / totalEmos) * 100);
-        return `
-          <div class="person-emo-row" title="${c} entries">
-            <span class="dot" style="background:var(--e-${e});"></span>
-            <span class="person-emo-name">${escapeHtml(e)}</span>
-            <div class="person-emo-bar"><div class="person-emo-fill" style="width:${pct}%;background:var(--e-${e});"></div></div>
-            <span class="person-emo-pct">${pct}%</span>
-          </div>`;
+      const feelings = p.emotion_breakdown || [];
+      const total = feelings.reduce((s, [, c]) => s + c, 0) || 1;
+      const feelRows = feelings.slice(0, 3).map(([emo, c]) => {
+        const pct = Math.round((c / total) * 100);
+        return `<li><span><i style="background:var(--e-${emo})"></i>${escapeHtml(emo)}</span><b style="--w:${pct}%"></b><small>${pct}%</small></li>`;
       }).join("");
-      // Entry pills (clickable)
-      const entryPills = (p.entries || []).slice(0, 6).map(e => `
-        <span class="cite-pill" data-id="${e.id}" title="${escapeHtml(e.title || "")}">
-          <span class="dot" style="background:var(--e-${e.emotion || "neutral"});"></span>
-          ${escapeHtml(e.date)}
-        </span>`).join("");
-
-      const sizeRatio = p.mentions / maxMentions;
-      const avatarScale = 0.7 + sizeRatio * 0.5;
-      const chips = peopleChips(p);
-      const metaBits = [];
-      if (p.mentions) metaBits.push(`<b>${p.mentions}</b> ${p.mentions === 1 ? "mention" : "mentions"}`);
-      if (p.avg_intensity != null) metaBits.push(`avg ${p.avg_intensity}/10`);
-      if (p.first_seen && p.last_seen) metaBits.push(`${p.first_seen} → ${p.last_seen}`);
-      if (!metaBits.length) metaBits.push("no mentions yet");
+      const topics = [...(p.top_themes || []).slice(0, 3), ...(p.top_tags || []).slice(0, 2)];
+      const pages = (p.entries || []).slice(0, 3).map(e => `
+        <button class="person-page" data-id="${escapeHtml(e.id)}"><span>${escapeHtml(e.title || "Untitled moment")}</span><time>${escapeHtml(fmtDateShort(e.date))}</time></button>`).join("");
+      const label = [p.relationship, `${p.mentions} ${p.mentions === 1 ? "mention" : "mentions"}`].filter(Boolean).join(" · ");
+      const status = [];
+      if (p.overdue) status.push(`Time to check in${p.days_since_last_seen != null ? ` · ${p.days_since_last_seen} days` : ""}`);
+      if (p.birthday_in_days != null && p.birthday_in_days <= 30) status.push(p.birthday_in_days === 0 ? "Birthday today" : `Birthday in ${p.birthday_in_days} days`);
+      if (p.pinned) status.push("Pinned");
       return `
-        <div class="person-card" data-key="${escapeHtml(p.key)}">
-          <div class="person-head">
-            <div class="person-avatar" style="transform:scale(${avatarScale.toFixed(2)});background:linear-gradient(135deg, ${emoColor}, ${emoColor});">
-              ${escapeHtml((p.name || "?").charAt(0).toUpperCase())}
+        <article class="paper-surface person-panel" data-key="${escapeHtml(p.key)}" tabindex="0" role="button" aria-label="Open ${escapeHtml(p.name)}">
+          <header class="person-top">
+            <div class="person-mark"><span>${escapeHtml((p.name || "?").charAt(0).toUpperCase())}</span><i style="background:var(--e-${p.top_emotion || "neutral"})"></i></div>
+            <div>
+              <span class="eyebrow">${escapeHtml(label.toUpperCase())}</span>
+              <h3>${escapeHtml(p.name)}</h3>
+              <p>${p.top_emotion ? `Mostly ${escapeHtml(p.top_emotion)}` : "No feelings recorded yet"}${p.last_seen ? ` · last written ${escapeHtml(fmtDateShort(p.last_seen))}` : ""}</p>
             </div>
-            <div class="person-info">
-              <div class="person-name">${escapeHtml(p.name)}</div>
-              <div class="person-meta">${metaBits.join(" · ")}</div>
-            </div>
-          </div>
-          ${chips ? `<div class="person-chips">${chips}</div>` : ""}
-          ${emoBars ? `<div class="person-emo-list">${emoBars}</div>` : ""}
-          ${(tags + themes) ? `<div class="person-tags">${themes}${tags}</div>` : ""}
-          ${entryPills ? `<div class="person-entries">${entryPills}</div>` : ""}
-        </div>`;
+          </header>
+          ${status.length ? `<p class="person-status">${status.map(escapeHtml).join(" · ")}</p>` : ""}
+          ${feelRows ? `<section><span class="eyebrow">HOW IT FEELS</span><ul class="person-feelings">${feelRows}</ul></section>` : ""}
+          ${topics.length ? `<section><span class="eyebrow">OFTEN ALONGSIDE</span><p class="person-topics">${topics.map(escapeHtml).join(" · ")}</p></section>` : ""}
+          ${pages ? `<section><span class="eyebrow">RECENT PAGES</span><div class="person-pages">${pages}</div></section>` : ""}
+          <span class="text-action person-open">Relationship, birthday &amp; notes ↗</span>
+        </article>`;
     }).join("");
 
     host.innerHTML = `
-      <div class="people-header">
-        ${people.length} ${people.length === 1 ? "person" : "people"} in your circle.
-        Click anyone to add a relationship, birthday, check-in cadence, and notes.
-        Faces are coloured by their dominant emotion in your writing.
-      </div>
+      <div class="people-lede"><span class="eyebrow">${people.length} ${people.length === 1 ? "PERSON" : "PEOPLE"} IN YOUR CIRCLE</span><p>Open anyone to note a relationship, birthday, how often to check in, and anything you want to remember.</p></div>
       <div class="people-grid">${cards}</div>`;
 
     // Click a card → open the CRM detail drawer.
-    host.querySelectorAll(".person-card[data-key]").forEach(card => {
+    host.querySelectorAll(".person-panel[data-key]").forEach(card => {
       card.addEventListener("click", () => openPersonModal(card.getAttribute("data-key")));
+      card.addEventListener("keydown", ev => { if (ev.key === "Enter" && ev.target === card) openPersonModal(card.getAttribute("data-key")); });
     });
-    // Entry pills open the entry (and shouldn't also open the person drawer).
-    host.querySelectorAll(".cite-pill[data-id]").forEach(el => {
+    // Entry rows open the entry (and shouldn't also open the person drawer).
+    host.querySelectorAll(".person-page[data-id]").forEach(el => {
       el.addEventListener("click", async (ev) => {
         ev.stopPropagation();
         const id = el.getAttribute("data-id");
