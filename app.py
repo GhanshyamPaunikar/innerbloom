@@ -274,7 +274,14 @@ def _create_sandbox(box: str) -> None:
         if name.endswith(".json") and name != "meta.json":
             data = load_file(os.path.join(SANDBOX_SEED_DIR, name), default=None)
             if data is not None:
-                save_file(os.path.join(box, name), _shift_dates(data, days))
+                data = _shift_dates(data, days)
+                if name == "journal.json":
+                    # The last sample day is today; keep its entries in the visitor's past.
+                    latest = (datetime.now() - timedelta(minutes=20)).isoformat(timespec="seconds")
+                    for e in data:
+                        if e.get("timestamp", "") > latest:
+                            e["timestamp"] = latest
+                save_file(os.path.join(box, name), data)
 
 
 def _sweep_sandboxes(root: str) -> None:

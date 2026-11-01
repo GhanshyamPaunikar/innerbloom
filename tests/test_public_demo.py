@@ -35,7 +35,8 @@ out["spotify_status"] = b.get("/spotify/status").json()
 out["spotify_config"] = b.post("/spotify/config", json={}).status_code
 out["docs"] = a.get("/docs").status_code
 far = TestClient(app.app, headers={"X-Timezone": "Pacific/Kiritimati"})  # UTC+14
-out["far_seed_day"] = far.get("/journal").json()["entries"][0]["timestamp"][:10]
+far_entry = far.get("/journal").json()["entries"][0]
+out["far_seed_day"], out["far_seed_time"] = far_entry["timestamp"][:10], far_entry["timestamp"]
 with patch.object(app, "analyze_entry", return_value=fake), patch.object(app, "embed", return_value=None):
     out["far_saved_day"] = far.post("/save", json={"text": "Written far ahead."}).json()["entry"]["timestamp"][:10]
 
@@ -84,6 +85,7 @@ class PublicDemoTests(unittest.TestCase):
         far_today = datetime.now(ZoneInfo("Pacific/Kiritimati")).date().isoformat()
         self.assertEqual(out["far_seed_day"], far_today)  # the sample ends on the visitor's today
         self.assertEqual(out["far_saved_day"], far_today)  # and new entries carry their date
+        self.assertLessEqual(out["far_seed_time"], datetime.now(ZoneInfo("Pacific/Kiritimati")).replace(tzinfo=None).isoformat())
         self.assertEqual(out["replies"][:2], ["ok", "ok"])
         self.assertIn("AI limit", out["replies"][2])
         self.assertEqual(out["sent"], 2)  # the limited call never reaches Gemini
