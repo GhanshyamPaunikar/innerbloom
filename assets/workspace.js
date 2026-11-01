@@ -9,7 +9,7 @@
   applyPrefs();
   const demo = !!document.querySelector('meta[name="innerbloom-demo"]');
   const publicDemo = !!document.querySelector('meta[name="innerbloom-public-demo"]');
-  if (demo || publicDemo) { const label=document.createElement('div');label.className='demo-banner';label.textContent=publicDemo?'Public demo · a fictional 40-day journal · AI by Google Gemini · please don’t write anything private · your changes reset after a few hours':'Design preview · fictional journal · AI responses are simulated · changes are temporary';document.querySelector('.main').prepend(label); }
+  if (demo || publicDemo) { const label=document.createElement('div');label.className='demo-banner';if(publicDemo){label.innerHTML='<strong>Innerbloom is made to run on your own computer, with your own local AI model and no internet.</strong> This public demo uses Google Gemini instead · a fictional 40-day journal · please don’t write anything private · changes reset after a few hours · <a href="https://github.com/GhanshyamPaunikar/innerbloom" target="_blank" rel="noopener">Run it locally ↗</a>';}else{label.textContent='Design preview · fictional journal · AI responses are simulated · changes are temporary';}document.querySelector('.main').prepend(label); }
   document.body.classList.toggle('public-demo', publicDemo);
   const headings={write:'YOUR JOURNAL',entries:'YOUR COLLECTION',chat:'YOUR INNER CONVERSATION',insights:'A LITTLE PERSPECTIVE',graph:'THE THREADS BETWEEN',music:'LISTEN A LITTLE CLOSER',people:'YOUR CONNECTIONS',settings:'YOUR SPACE'};
   const now=new Date();
