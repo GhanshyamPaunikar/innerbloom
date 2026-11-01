@@ -16,6 +16,7 @@ import shutil
 import sys
 import tempfile
 import time
+import uuid
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
@@ -25,6 +26,8 @@ WORK = Path(tempfile.mkdtemp(prefix="innerbloom-seed-"))
 os.environ.update(INNERBLOOM_PROVIDER="gemini", INNERBLOOM_DATA_DIR=str(WORK))
 sys.path.insert(0, str(ROOT))
 import app  # noqa: E402
+
+DEMO_IDS = uuid.UUID("5f2b8c1e-6a0d-4d3e-9b7a-1c2e3f4a5b6c")  # stable, hex like real entry ids
 
 CRM = {  # what a visitor might have filled in on the People page
     "johndoe": {"relationship": "friend", "cadence_days": 14, "birthday": "06-14",
@@ -58,7 +61,7 @@ def main():
         day = anchor - timedelta(days=len(written) - 1 - i)
         hour, minute = random.choice([(7, 40), (8, 15), (12, 30), (18, 50), (21, 10), (22, 35)])
         entry = {
-            "id": f"demo{i + 1:02d}",
+            "id": str(uuid.uuid5(DEMO_IDS, f"innerbloom-demo-{i + 1}")),
             **{k: item[k] for k in ("title", "text", "emotion", "intensity", "tags", "themes", "people")},
             "summary": item["text"].split(". ")[0].rstrip(".") + ".",
             "user_mood": None,

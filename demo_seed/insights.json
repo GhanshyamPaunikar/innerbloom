@@ -6,13 +6,13 @@
         "behavior": "this week I checked work email after 9pm exactly once",
         "evidence": [
           {
-            "id": "demo03",
+            "id": "cfd2f0ca-4115-5a93-86cd-c377dd911976",
             "title": "A promise to Mom",
             "date": "2026-09-25",
             "emotion": "hopeful"
           },
           {
-            "id": "demo38",
+            "id": "979ebad7-91fc-5040-8bb4-e1d1aef8854c",
             "title": "Once after nine",
             "date": "2026-10-30",
             "emotion": "proud"
@@ -37,7 +37,7 @@
         "direction": "positive",
         "evidence": [
           {
-            "id": "demo38",
+            "id": "979ebad7-91fc-5040-8bb4-e1d1aef8854c",
             "title": "Once after nine",
             "date": "2026-10-30",
             "emotion": "proud"
@@ -57,7 +57,7 @@
         "direction": "positive",
         "evidence": [
           {
-            "id": "demo36",
+            "id": "22acd58f-77df-5ef3-9605-f50d720b1f5d",
             "title": "Practising for Mom",
             "date": "2026-10-28",
             "emotion": "grateful"
@@ -77,7 +77,7 @@
         "direction": "negative",
         "evidence": [
           {
-            "id": "demo31",
+            "id": "09bdefa4-4029-5901-a04b-9e0822644f49",
             "title": "Launch week begins",
             "date": "2026-10-23",
             "emotion": "tired"
@@ -97,7 +97,7 @@
         "direction": "positive",
         "evidence": [
           {
-            "id": "demo27",
+            "id": "82cfae97-5c10-51a6-822d-8830ae750e6f",
             "title": "First draft, a few tears",
             "date": "2026-10-19",
             "emotion": "reflective"
@@ -117,7 +117,7 @@
         "direction": "positive",
         "evidence": [
           {
-            "id": "demo22",
+            "id": "8073c662-6f46-5c3b-a04f-33735f219cff",
             "title": "Cold morning 5k",
             "date": "2026-10-14",
             "emotion": "proud"
@@ -137,7 +137,7 @@
         "direction": "negative",
         "evidence": [
           {
-            "id": "demo11",
+            "id": "e6b15a64-6440-565e-9a9f-7499da818891",
             "title": "Two months since John",
             "date": "2026-10-03",
             "emotion": "lonely"
@@ -167,37 +167,37 @@
       "summary": "No signs of burnout in the last two weeks.",
       "evidence": [
         {
-          "id": "demo35",
+          "id": "327724d6-5eea-5ae9-b866-2937fa8d8119",
           "title": "Honest miles",
           "date": "2026-10-27",
           "emotion": "grateful"
         },
         {
-          "id": "demo36",
+          "id": "22acd58f-77df-5ef3-9605-f50d720b1f5d",
           "title": "Practising for Mom",
           "date": "2026-10-28",
           "emotion": "grateful"
         },
         {
-          "id": "demo37",
+          "id": "b70c9b9c-a06c-5b66-b133-e870eb879bec",
           "title": "A weekend away",
           "date": "2026-10-29",
           "emotion": "hopeful"
         },
         {
-          "id": "demo38",
+          "id": "979ebad7-91fc-5040-8bb4-e1d1aef8854c",
           "title": "Once after nine",
           "date": "2026-10-30",
           "emotion": "proud"
         },
         {
-          "id": "demo39",
+          "id": "0c8b8963-b7ae-514e-8eb0-b67e17d699bb",
           "title": "The speech landed",
           "date": "2026-10-31",
           "emotion": "happy"
         },
         {
-          "id": "demo40",
+          "id": "c26c9276-98a5-5e0a-bd62-014ec7312dd6",
           "title": "Forty days later",
           "date": "2026-11-01",
           "emotion": "calm"
@@ -213,13 +213,13 @@
       "summary": "No spiral pattern in your recent days.",
       "evidence": [
         {
-          "id": "demo39",
+          "id": "0c8b8963-b7ae-514e-8eb0-b67e17d699bb",
           "title": "The speech landed",
           "date": "2026-10-31",
           "emotion": "happy"
         },
         {
-          "id": "demo40",
+          "id": "c26c9276-98a5-5e0a-bd62-014ec7312dd6",
           "title": "Forty days later",
           "date": "2026-11-01",
           "emotion": "calm"
@@ -241,25 +241,25 @@
         "description": "Managing compressed timelines, production bugs, and promotion tracks at work.",
         "evidence": [
           {
-            "id": "demo02",
+            "id": "b377ae28-f7b9-50b2-bd6c-b4348ce8bd8c",
             "title": "The deadline moved closer",
             "date": "2026-09-24",
             "emotion": "anxious"
           },
           {
-            "id": "demo23",
+            "id": "94a40387-4501-55e4-9936-d5a672939692",
             "title": "We need to talk",
             "date": "2026-10-15",
             "emotion": "anxious"
           },
           {
-            "id": "demo24",
+            "id": "f1c9ff63-6e5f-5d82-ae05-6cba9ee1e8f3",
             "title": "It was a promotion talk",
             "date": "2026-10-16",
             "emotion": "reflective"
           },
           {
-            "id": "demo33",
+            "id": "c520e1da-ab51-5659-bb00-38707d623f80",
             "title": "Launch day",
             "date": "2026-10-25",
             "emotion": "excited"
@@ -271,25 +271,25 @@
         "description": "Juggling social obligations, writing a speech for Jane's engagement party, and maintaining close ties with family and friends.",
         "evidence": [
           {
-            "id": "demo16",
+            "id": "7f67f6fa-f36f-5374-ad9f-a017b9e3d55f",
             "title": "Asked to give the speech",
             "date": "2026-10-08",
             "emotion": "excited"
           },
           {
-            "id": "demo26",
+            "id": "ef0d3e9b-87c8-5fca-891b-851ac2b7f1e6",
             "title": "Too many plans",
             "date": "2026-10-18",
             "emotion": "overwhelmed"
           },
           {
-            "id": "demo32",
+            "id": "79c480dd-f865-5bbe-8ae7-3d6acc4695f2",
             "title": "Snapped at Jane",
             "date": "2026-10-24",
             "emotion": "frustrated"
           },
           {
-            "id": "demo39",
+            "id": "0c8b8963-b7ae-514e-8eb0-b67e17d699bb",
             "title": "The speech landed",
             "date": "2026-10-31",
             "emotion": "happy"
@@ -303,25 +303,25 @@
         "evidence_note": "Making time for coffee, birthday drinks, runs with Sam, and calls with Mom.",
         "evidence": [
           {
-            "id": "demo03",
+            "id": "cfd2f0ca-4115-5a93-86cd-c377dd911976",
             "title": "A promise to Mom",
             "date": "2026-09-25",
             "emotion": "hopeful"
           },
           {
-            "id": "demo05",
+            "id": "d28fbbd2-cbc6-59bf-b0e8-09e99faf2cb3",
             "title": "Lungs on fire, head clear",
             "date": "2026-09-27",
             "emotion": "calm"
           },
           {
-            "id": "demo13",
+            "id": "79cea9d2-bf53-5aa9-a7ed-530fa0b636e5",
             "title": "Laughing with John",
             "date": "2026-10-05",
             "emotion": "happy"
           },
           {
-            "id": "demo21",
+            "id": "3350e92b-36c2-5a01-83e4-6b022624758f",
             "title": "Mom's birthday",
             "date": "2026-10-13",
             "emotion": "grateful"
@@ -333,13 +333,13 @@
         "evidence_note": "Pushing through physical milestones like running three and five kilometres.",
         "evidence": [
           {
-            "id": "demo10",
+            "id": "adede033-d33b-5de8-8dd4-8d00183bebbd",
             "title": "Three kilometres",
             "date": "2026-10-02",
             "emotion": "proud"
           },
           {
-            "id": "demo22",
+            "id": "8073c662-6f46-5c3b-a04f-33735f219cff",
             "title": "Cold morning 5k",
             "date": "2026-10-14",
             "emotion": "proud"
@@ -351,13 +351,13 @@
         "evidence_note": "Unpacking late-night scrolling and slipping evenings in therapy sessions.",
         "evidence": [
           {
-            "id": "demo19",
+            "id": "eec800aa-0c4b-56b0-8025-429a1809f36c",
             "title": "A wind-down plan",
             "date": "2026-10-11",
             "emotion": "hopeful"
           },
           {
-            "id": "demo29",
+            "id": "bdde9e17-cddb-574e-99d9-2f619910f852",
             "title": "Compassion versus discipline",
             "date": "2026-10-21",
             "emotion": "reflective"
@@ -371,13 +371,13 @@
         "b": "First run in months with Sam Lee",
         "evidence": [
           {
-            "id": "demo05",
+            "id": "d28fbbd2-cbc6-59bf-b0e8-09e99faf2cb3",
             "title": "Lungs on fire, head clear",
             "date": "2026-09-27",
             "emotion": "calm"
           },
           {
-            "id": "demo28",
+            "id": "7b2178c9-4aab-510c-92d7-f525a98d8c8a",
             "title": "The evenings slipping",
             "date": "2026-10-20",
             "emotion": "tired"

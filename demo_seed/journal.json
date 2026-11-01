@@ -1,6 +1,6 @@
 [
   {
-    "id": "demo01",
+    "id": "2baf8f9d-b3ef-58a7-857e-80c94592ca95",
     "title": "A new notebook, again",
     "text": "Starting a journal again. I always begin these with big intentions and quit by week two, so this time the only rule is to write something every day, even if it's three lines. The product launch at work is six weeks out and I'm already tired in a way sleep doesn't fix. I want to notice what's actually going on with me instead of just pushing through it. Forty days. Let's see what shows up.",
     "emotion": "tired",
@@ -792,7 +792,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo02",
+    "id": "b377ae28-f7b9-50b2-bd6c-b4348ce8bd8c",
     "title": "The deadline moved closer",
     "text": "Alex Johnson pulled the launch a whole week earlier in this morning's meeting. Said it like it was good news. Everyone nodded. I spent the afternoon rewriting the plan in my head and answered emails until almost midnight. My chest has felt tight since lunch. I know a week is not the end of the world, but it feels like the floor got shorter.",
     "emotion": "anxious",
@@ -1586,7 +1586,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo03",
+    "id": "cfd2f0ca-4115-5a93-86cd-c377dd911976",
     "title": "A promise to Mom",
     "text": "Called Mom on the walk home. She asked how I'm sleeping, which is her way of asking how I'm really doing. I told her the truth: not great. So I made a promise, to her and to myself, that I won't check work email after 9pm anymore. Saying it out loud made it feel real. She sounded relieved. I felt a bit lighter too.",
     "emotion": "hopeful",
@@ -2380,7 +2380,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo04",
+    "id": "84737a00-68d1-5da1-b6e4-fa07a77f642a",
     "title": "Broke it in a day",
     "text": "11pm. A notification lit up my phone and I opened it before I even thought about it. Then I replied. Then I read three more threads. One day. I kept the promise for exactly one day. I'm annoyed at myself, and also a bit curious about how automatic it was. My hand got there before my brain did. Maybe the phone just shouldn't be in the bedroom.",
     "emotion": "frustrated",
@@ -3172,7 +3172,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo05",
+    "id": "d28fbbd2-cbc6-59bf-b0e8-09e99faf2cb3",
     "title": "Lungs on fire, head clear",
     "text": "First run in months with Sam Lee. I lasted about eight minutes before needing to walk, and my lungs were burning the whole time. Sam didn't care, just kept chatting about a podcast. The strange part is how quiet my head was afterwards. No replaying meetings, no lists. Just tired legs and cold air. We said we'd go again on Thursday.",
     "emotion": "calm",
@@ -3966,7 +3966,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo06",
+    "id": "c2654b91-baa4-5f22-ba45-179c79a03b65",
     "title": "Jane is engaged",
     "text": "Jane Smith called screaming. She's engaged! I'm so happy for her, she sounded like a kid on her birthday. After we hung up I sat on the couch for a while with a feeling I didn't want to name. A small pang. Not jealousy exactly, more like noticing that my life has been on pause while I work. That's not her news to carry, though. Today is hers.",
     "emotion": "happy",
@@ -4760,7 +4760,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo07",
+    "id": "0e9b3f86-4c6f-5b05-843c-adf4bdd7f1cc",
     "title": "Pancakes and nothing else",
     "text": "Slow Sunday. Made pancakes, left the laptop closed, watered the one plant I haven't killed. I kept waiting for the guilt to show up and it mostly didn't. It's surprising how good doing nothing feels when I actually let it be nothing instead of secretly planning Monday. I want more days with this texture.",
     "emotion": "content",
@@ -5552,7 +5552,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo08",
+    "id": "bb83e82e-e0d6-56d3-b803-b1af65a198e7",
     "title": "Replaying the stand-up",
     "text": "Stand-up went badly. Alex Johnson asked why the search feature was behind and I fumbled the answer in front of everyone. It probably lasted thirty seconds, but I've replayed it all evening. I keep rewriting what I should have said. My stomach is in a knot. Logically I know nobody else is thinking about it. Emotionally it feels like everyone saw something I've been hiding.",
     "emotion": "anxious",
@@ -6346,7 +6346,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo09",
+    "id": "93a06392-6165-5528-91fd-842fd734a259",
     "title": "Only good when productive",
     "text": "Therapy with Maria Garcia today. I told her about the stand-up and she asked what I believed would happen if I wasn't productive for a week. I said, without thinking, that I'd be worthless. It came out so fast. She let it sit there. I've always known I work hard, but I didn't realise how much of my worth I've tied to output. Something to keep watching.",
     "emotion": "reflective",
@@ -7140,7 +7140,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo10",
+    "id": "adede033-d33b-5de8-8dd4-8d00183bebbd",
     "title": "Three kilometres",
     "text": "Ran three kilometres without stopping today with Sam Lee. Three! A week ago I couldn't do ten minutes. Sam high-fived me at the end like I'd won something. It's small, but it's the first thing in a while that's improved just because I kept showing up, not because I worked late or tried harder. I like this kind of progress.",
     "emotion": "proud",
@@ -7934,7 +7934,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo11",
+    "id": "e6b15a64-6440-565e-9a9f-7499da818891",
     "title": "Two months since John",
     "text": "Missed a call from John Doe while I was in a meeting. When I went to call back I scrolled up and realised the last time we actually saw each other was two months ago. Two months. He's my oldest friend. I've been telling myself I'm just busy, but busy has quietly become the reason for everything. I texted him to get coffee this week. Felt guilty pressing send.",
     "emotion": "lonely",
@@ -8728,7 +8728,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo12",
+    "id": "e7830953-97c7-5abf-8275-9918dec11682",
     "title": "Skipped dinner again",
     "text": "Worked until 10pm and realised I'd skipped dinner. Ate crackers standing over the sink. I keep saying the launch is temporary, and it is, but I'm also building habits that won't just disappear when it's over. Frustrated with the workload and with myself for not stopping. Tomorrow I'm putting a real lunch break in the calendar.",
     "emotion": "frustrated",
@@ -9520,7 +9520,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo13",
+    "id": "79cea9d2-bf53-5aa9-a7ed-530fa0b636e5",
     "title": "Laughing with John",
     "text": "Coffee with John Doe. We laughed so much the barista looked over twice. He told the story about our disastrous camping trip again and it was still funny. For two hours I wasn't thinking about the launch at all. He reminded me of who I am outside of work, someone who's goofy and curious and not always in a hurry. I'd forgotten that person.",
     "emotion": "happy",
@@ -10314,7 +10314,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo14",
+    "id": "56405c2d-924a-5a3c-ae9b-849e6422a890",
     "title": "Saying no",
     "text": "Alex Johnson offered me an extra project, a nice one, the kind I'd normally jump at. I said no. I said I wanted to do the launch well rather than do two things badly. My voice shook a little. Alex just said okay, that makes sense. All that fear for a thirty-second conversation. Proud of this one.",
     "emotion": "proud",
@@ -11108,7 +11108,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo15",
+    "id": "4bd97749-9c29-5ce3-9d7c-5dd476ae9405",
     "title": "Rain and a novel",
     "text": "Rained all day. I read a novel on the couch with my phone in another room, which felt almost rebellious. Got through a hundred pages. My attention felt long and soft instead of chopped into pieces. I didn't accomplish anything and the day still felt full.",
     "emotion": "content",
@@ -11900,7 +11900,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo16",
+    "id": "7f67f6fa-f36f-5374-ad9f-a017b9e3d55f",
     "title": "Asked to give the speech",
     "text": "Jane Smith asked me to give a speech at her engagement party. I said yes immediately and then panicked a little. I'm nervous about public speaking, but I'm also really touched she asked me. She said nobody knows her like I do. I want to get it right. Started a note on my phone with old memories.",
     "emotion": "excited",
@@ -12694,7 +12694,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo17",
+    "id": "48d7e26f-f0e5-5698-be8e-91d7d3a0d425",
     "title": "Praise in front of everyone",
     "text": "Demoed the prototype today. Alex Johnson praised it in front of the whole team and said it was exactly what the launch needed. What I felt was mostly relief, not pride. Like I'd gotten away with something. That's worth noticing. It's the same thing Maria pointed out. Good feedback lands as an escape instead of a fact.",
     "emotion": "grateful",
@@ -13488,7 +13488,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo18",
+    "id": "77dc28b4-88a2-541c-be32-2013c2fc2b5d",
     "title": "2am scrolling",
     "text": "Couldn't sleep. Scrolled until 2am, half reading, half worrying about the launch checklist. Every time I put the phone down my brain started listing things, so I picked it back up. The phone is still in the bedroom, by the way. Same thing I noticed two weeks ago. I know what I need to change. I just haven't.",
     "emotion": "anxious",
@@ -14280,7 +14280,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo19",
+    "id": "eec800aa-0c4b-56b0-8025-429a1809f36c",
     "title": "A wind-down plan",
     "text": "Told Maria Garcia about the late-night scrolling. She suggested tracking my sleep for two weeks and building a wind-down routine: same time each night, no screens for thirty minutes, something boring and warm. It sounds almost too simple. But I like that it's a plan instead of a promise to try harder. Starting tomorrow.",
     "emotion": "hopeful",
@@ -15074,7 +15074,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo20",
+    "id": "e3f101d6-deca-50f8-ad89-36234cf13d78",
     "title": "Seven hours",
     "text": "Tried the wind-down routine. Chamomile tea, phone charging in the kitchen, a few pages of a book. I was restless for the first ten minutes and then I just got sleepy. Slept seven hours. Seven! I woke up before the alarm and didn't feel like I'd been run over. One night isn't a habit, but it's a good first night.",
     "emotion": "calm",
@@ -15866,7 +15866,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo21",
+    "id": "3350e92b-36c2-5a01-83e4-6b022624758f",
     "title": "Mom's birthday",
     "text": "Mom's birthday dinner. Loud table, too much food, my uncle telling the same jokes. Jane Smith showed everyone her ring three times. Mom kept squeezing my hand. I noticed I wasn't checking my phone at all. These people have known me through every version of myself. Grateful in a way that's hard to write down.",
     "emotion": "grateful",
@@ -16660,7 +16660,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo22",
+    "id": "8073c662-6f46-5c3b-a04f-33735f219cff",
     "title": "Cold morning 5k",
     "text": "5k with Sam Lee in the cold this morning. My breath was visible and my hands were numb for the first kilometre. We finished, slowly, but we finished. Sam said I'm a different runner than a month ago. I think I'm a slightly different person than a month ago too. Running is the one appointment I keep without negotiating with myself.",
     "emotion": "proud",
@@ -17454,7 +17454,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo23",
+    "id": "94a40387-4501-55e4-9936-d5a672939692",
     "title": "We need to talk",
     "text": "A bug went out to production this morning. Then, an hour later, Alex Johnson messaged: we need to talk, tomorrow at 10. I spiralled for the rest of the afternoon. I imagined being taken off the launch, being let go, explaining it to Mom. Couldn't eat much. Did the wind-down routine anyway and it barely helped. Tomorrow at 10.",
     "emotion": "anxious",
@@ -18248,7 +18248,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo24",
+    "id": "f1c9ff63-6e5f-5d82-ae05-6cba9ee1e8f3",
     "title": "It was a promotion talk",
     "text": "The talk with Alex Johnson was about putting me on the promotion track. The bug wasn't even mentioned. I sat there stunned. I had spent an entire evening grieving a disaster that only existed in my head. That's the pattern, isn't it? Any ambiguity from Alex and I fill it with the worst possible story. Writing it down so I remember next time.",
     "emotion": "reflective",
@@ -19042,7 +19042,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo25",
+    "id": "6a91abdc-251e-5812-9929-d70b889de79c",
     "title": "Cleaned instead of writing",
     "text": "Said I'd write Jane Smith's speech this weekend. Instead I cleaned the entire apartment, including the inside of the oven. I know exactly what I was doing. The speech matters too much, so I'm avoiding it. A spotless oven and a blank page. Tomorrow, at least one paragraph.",
     "emotion": "frustrated",
@@ -19836,7 +19836,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo26",
+    "id": "ef0d3e9b-87c8-5fca-891b-851ac2b7f1e6",
     "title": "Too many plans",
     "text": "John Doe's birthday drinks on Friday, plus three other invitations this week, plus launch prep. I want to see people, I really do, but looking at the calendar made my shoulders creep up to my ears. I'm going to John's for sure. The others I'll be honest about. It's strange that saying no to friends feels harder than saying no to work.",
     "emotion": "overwhelmed",
@@ -20630,7 +20630,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo27",
+    "id": "82cfae97-5c10-51a6-822d-8830ae750e6f",
     "title": "First draft, a few tears",
     "text": "Finally wrote the first draft of Jane Smith's speech. Started with the summer we built a raft that sank in about four seconds. Then I remembered her sitting with me the night I didn't get into my first-choice university, and I cried a little at the kitchen table. The speech is too long and too sentimental. But it's honest, and it exists.",
     "emotion": "reflective",
@@ -21424,7 +21424,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo28",
+    "id": "7b2178c9-4aab-510c-92d7-f525a98d8c8a",
     "title": "The evenings slipping",
     "text": "Skipped the run with Sam Lee to fix a launch blocker. Worked until 11. Checked email in bed afterwards. All the things I said I'd protect, gone in one evening. I'm not even upset, just tired. The evenings are slipping back to how they were on day one, and I can feel it in my body.",
     "emotion": "tired",
@@ -22218,7 +22218,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo29",
+    "id": "bdde9e17-cddb-574e-99d9-2f619910f852",
     "title": "Compassion versus discipline",
     "text": "Told Maria Garcia the evenings are slipping. I expected a lecture, or expected to give myself one. She asked whether being harsh with myself had ever actually made me stick to anything. It hasn't. We talked about self-compassion not as going easy, but as being on my own side. I left lighter. One slip is not a collapse.",
     "emotion": "reflective",
@@ -23012,7 +23012,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo30",
+    "id": "667f96e9-dc3e-58f4-a7da-f9fd121eca8c",
     "title": "Market and two plants",
     "text": "Saturday market with John Doe. We wandered for two hours, ate dumplings on the steps, and I bought two plants I absolutely don't need. John talked about his new job; I mostly listened. Quiet and easy. This is the friendship I almost let go stale. I'm glad I didn't.",
     "emotion": "content",
@@ -23806,7 +23806,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo31",
+    "id": "09bdefa4-4029-5901-a04b-9e0822644f49",
     "title": "Launch week begins",
     "text": "Launch week. Back-to-back meetings with Alex Johnson and the team, a dozen small fixes, and a long list of things that could go wrong. I'm running on coffee and adrenaline. Did manage to eat a real lunch. Doing the wind-down routine tonight even if I feel wired. Four more days.",
     "emotion": "tired",
@@ -24599,7 +24599,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo32",
+    "id": "79c480dd-f865-5bbe-8ae7-3d6acc4695f2",
     "title": "Snapped at Jane",
     "text": "Jane Smith called about the seating plan for the party and I snapped at her over something tiny. I heard my own tone and hated it. Called her back ten minutes later to apologise. She was kind about it, which almost made it worse. The work stress is leaking into places it doesn't belong. She's not the deadline.",
     "emotion": "frustrated",
@@ -25393,7 +25393,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo33",
+    "id": "c520e1da-ab51-5659-bb00-38707d623f80",
     "title": "Launch day",
     "text": "We launched! It went smoothly, no fires, and the first user feedback is good. Alex Johnson thanked me by name in the team channel and we had cake and terrible champagne in the kitchen. I let myself enjoy it. Six weeks of pressure and it actually worked. Excited and a bit dazed.",
     "emotion": "excited",
@@ -26187,7 +26187,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo34",
+    "id": "8fd08930-30b6-50b2-a509-37cdfd1db357",
     "title": "The crash after",
     "text": "The day after the launch I expected to feel relieved. Instead I feel empty, tired and oddly lonely. Without a deadline to organise my days, I don't quite know what to do with myself. That's probably the real thing Maria and I have been circling: when work goes quiet, who am I? Going to bed early.",
     "emotion": "lonely",
@@ -26979,7 +26979,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo35",
+    "id": "327724d6-5eea-5ae9-b866-2937fa8d8119",
     "title": "Honest miles",
     "text": "Long slow run with Sam Lee. Somewhere around the fourth kilometre I told him about the post-launch crash, and he said he'd burned out badly two years ago and never told anyone. We talked the whole way back. I've known Sam as a running partner, but today he felt like a real friend. Grateful for that.",
     "emotion": "grateful",
@@ -27773,7 +27773,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo36",
+    "id": "22acd58f-77df-5ef3-9605-f50d720b1f5d",
     "title": "Practising for Mom",
     "text": "Practised Jane's speech for Mom over video. I was shaky at first, then found my rhythm. When I got to the part about the raft she laughed, and at the end she cried. So did I. She said Jane will love it. It felt good to be seen being brave by her.",
     "emotion": "grateful",
@@ -28567,7 +28567,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo37",
+    "id": "b70c9b9c-a06c-5b66-b133-e870eb879bec",
     "title": "A weekend away",
     "text": "Booked a quiet weekend away next month, a small cabin by a lake, no plans. I've never really taken a trip just to rest; there was always some reason to make it productive. This one has no purpose except to be there. Looking forward to it already.",
     "emotion": "hopeful",
@@ -29359,7 +29359,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo38",
+    "id": "979ebad7-91fc-5040-8bb4-e1d1aef8854c",
     "title": "Once after nine",
     "text": "Counted: this week I checked work email after 9pm exactly once. A month ago it was every single night. The phone now charges in the kitchen and the routine mostly holds. It's not perfect and I'm not pretending it is. But it's a real change, and I want to write it down so I believe it.",
     "emotion": "proud",
@@ -30151,7 +30151,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo39",
+    "id": "0c8b8963-b7ae-514e-8eb0-b67e17d699bb",
     "title": "The speech landed",
     "text": "Jane Smith's engagement party. I gave the speech. My hands shook for the first line and then I was fine. People laughed at the raft story in the right places, and Jane hugged me for a long time afterwards. Danced with Mom. Walked home feeling completely full. This is the stuff I want my life to be made of.",
     "emotion": "happy",
@@ -30945,7 +30945,7 @@
     "embedding_version": "gemini-embedding-001"
   },
   {
-    "id": "demo40",
+    "id": "c26c9276-98a5-5e0a-bd62-014ec7312dd6",
     "title": "Forty days later",
     "text": "Morning coffee, reading back through forty days of writing. The launch is done, the speech is done, and I'm sleeping better than I have in a year. What stands out isn't the big moments, it's the small shifts: running with Sam, saying no to Alex, seeing John again, the phone in the kitchen. I still fill silence with worst-case stories. But now I notice it. Calm, and a little proud.",
     "emotion": "calm",
