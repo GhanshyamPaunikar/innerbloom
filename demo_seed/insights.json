@@ -1,0 +1,393 @@
+{
+  "contradictions": {
+    "items": [
+      {
+        "stated": "I won't check work email after 9pm anymore",
+        "behavior": "this week I checked work email after 9pm exactly once",
+        "evidence": [
+          {
+            "id": "demo03",
+            "title": "A promise to Mom",
+            "date": "2026-09-25",
+            "emotion": "hopeful"
+          },
+          {
+            "id": "demo38",
+            "title": "Once after nine",
+            "date": "2026-10-30",
+            "emotion": "proud"
+          }
+        ],
+        "pattern": "boundary slip",
+        "severity": "medium",
+        "honest_note": "You promised not to check work email late, but you still let it happen during busy weeks."
+      }
+    ],
+    "generated_at": "2026-11-01T23:24:31.852291",
+    "window_days": 60,
+    "entry_count": 40,
+    "candidate_count": 12
+  },
+  "triggers": {
+    "items": [
+      {
+        "label": "Small daily boundary wins",
+        "outcome": "mood lift and pride",
+        "category": "self",
+        "direction": "positive",
+        "evidence": [
+          {
+            "id": "demo38",
+            "title": "Once after nine",
+            "date": "2026-10-30",
+            "emotion": "proud"
+          }
+        ],
+        "pattern_note": "Limiting late-night work habits consistently coincides with higher pride and mood scores.",
+        "stats": {
+          "frequency": 3,
+          "avg_mood": 5.1,
+          "delta": 5.1
+        }
+      },
+      {
+        "label": "Family events and preparation",
+        "outcome": "mood lift and connection",
+        "category": "family",
+        "direction": "positive",
+        "evidence": [
+          {
+            "id": "demo36",
+            "title": "Practising for Mom",
+            "date": "2026-10-28",
+            "emotion": "grateful"
+          }
+        ],
+        "pattern_note": "Engagement parties and family coordination reliably precede positive emotional states.",
+        "stats": {
+          "frequency": 8,
+          "avg_mood": 4.39,
+          "delta": 4.39
+        }
+      },
+      {
+        "label": "Launch week pressure",
+        "outcome": "fatigue and mood dip",
+        "category": "work",
+        "direction": "negative",
+        "evidence": [
+          {
+            "id": "demo31",
+            "title": "Launch week begins",
+            "date": "2026-10-23",
+            "emotion": "tired"
+          }
+        ],
+        "pattern_note": "Intense work sprints and skipping exercise for blockers bring down overall mood averages.",
+        "stats": {
+          "frequency": 10,
+          "avg_mood": -3.2,
+          "delta": -3.2
+        }
+      },
+      {
+        "label": "Speech preparation and writing",
+        "outcome": "mood lift and gratitude",
+        "category": "creative",
+        "direction": "positive",
+        "evidence": [
+          {
+            "id": "demo27",
+            "title": "First draft, a few tears",
+            "date": "2026-10-19",
+            "emotion": "reflective"
+          }
+        ],
+        "pattern_note": "Working on milestones like wedding speeches correlates with elevated positive emotions.",
+        "stats": {
+          "frequency": 8,
+          "avg_mood": 4.39,
+          "delta": 4.39
+        }
+      },
+      {
+        "label": "Running with Sam Lee",
+        "outcome": "mood lift and calmness",
+        "category": "health",
+        "direction": "positive",
+        "evidence": [
+          {
+            "id": "demo22",
+            "title": "Cold morning 5k",
+            "date": "2026-10-14",
+            "emotion": "proud"
+          }
+        ],
+        "pattern_note": "Cardio sessions consistently track alongside higher self-reported mood.",
+        "stats": {
+          "frequency": 3,
+          "avg_mood": 5.1,
+          "delta": 5.1
+        }
+      },
+      {
+        "label": "Missed calls and phone connectivity",
+        "outcome": "anxiety and frustration spike",
+        "category": "family",
+        "direction": "negative",
+        "evidence": [
+          {
+            "id": "demo11",
+            "title": "Two months since John",
+            "date": "2026-10-03",
+            "emotion": "lonely"
+          }
+        ],
+        "pattern_note": "Data flags missed calls and phone-related friction with a negative mood impact.",
+        "stats": {
+          "frequency": 3,
+          "avg_mood": -5.7,
+          "delta": -5.7
+        }
+      }
+    ],
+    "generated_at": "2026-11-01T23:23:13.575369",
+    "window_days": 90,
+    "entry_count": 40,
+    "baseline_mood": 0.84
+  },
+  "wellbeing": {
+    "burnout": {
+      "level": "ok",
+      "entry_count": 14,
+      "avg_mood": 1.91,
+      "exhaustion_count": 2,
+      "negative_count": 4,
+      "drift": 4.62,
+      "summary": "No signs of burnout in the last two weeks.",
+      "evidence": [
+        {
+          "id": "demo35",
+          "title": "Honest miles",
+          "date": "2026-10-27",
+          "emotion": "grateful"
+        },
+        {
+          "id": "demo36",
+          "title": "Practising for Mom",
+          "date": "2026-10-28",
+          "emotion": "grateful"
+        },
+        {
+          "id": "demo37",
+          "title": "A weekend away",
+          "date": "2026-10-29",
+          "emotion": "hopeful"
+        },
+        {
+          "id": "demo38",
+          "title": "Once after nine",
+          "date": "2026-10-30",
+          "emotion": "proud"
+        },
+        {
+          "id": "demo39",
+          "title": "The speech landed",
+          "date": "2026-10-31",
+          "emotion": "happy"
+        },
+        {
+          "id": "demo40",
+          "title": "Forty days later",
+          "date": "2026-11-01",
+          "emotion": "calm"
+        }
+      ]
+    },
+    "spiral": {
+      "level": "ok",
+      "entry_count": 7,
+      "consecutive_decline": 2,
+      "tail_avg_mood": 5.3,
+      "all_negative_tail": false,
+      "summary": "No spiral pattern in your recent days.",
+      "evidence": [
+        {
+          "id": "demo39",
+          "title": "The speech landed",
+          "date": "2026-10-31",
+          "emotion": "happy"
+        },
+        {
+          "id": "demo40",
+          "title": "Forty days later",
+          "date": "2026-11-01",
+          "emotion": "calm"
+        }
+      ]
+    },
+    "generated_at": "2026-11-01T23:23:13.596314",
+    "window_days": 14
+  },
+  "narrative": {
+    "identity_lines": [
+      "I'm someone who can run five kilometres in the cold, but I also find myself working until 10pm and skipping dinner.",
+      "I show up for the people who matter\u2014like calling Mom on the walk home or practicing Jane's speech over video\u2014even when things get overwhelming.",
+      "I'm learning to notice when the evenings are slipping and trying to build routines like wind-downs or a quiet weekend away."
+    ],
+    "current_arcs": [
+      {
+        "label": "Navigating Launch Pressure",
+        "description": "Managing compressed timelines, production bugs, and promotion tracks at work.",
+        "evidence": [
+          {
+            "id": "demo02",
+            "title": "The deadline moved closer",
+            "date": "2026-09-24",
+            "emotion": "anxious"
+          },
+          {
+            "id": "demo23",
+            "title": "We need to talk",
+            "date": "2026-10-15",
+            "emotion": "anxious"
+          },
+          {
+            "id": "demo24",
+            "title": "It was a promotion talk",
+            "date": "2026-10-16",
+            "emotion": "reflective"
+          },
+          {
+            "id": "demo33",
+            "title": "Launch day",
+            "date": "2026-10-25",
+            "emotion": "excited"
+          }
+        ]
+      },
+      {
+        "label": "Balancing Relational Demands",
+        "description": "Juggling social obligations, writing a speech for Jane's engagement party, and maintaining close ties with family and friends.",
+        "evidence": [
+          {
+            "id": "demo16",
+            "title": "Asked to give the speech",
+            "date": "2026-10-08",
+            "emotion": "excited"
+          },
+          {
+            "id": "demo26",
+            "title": "Too many plans",
+            "date": "2026-10-18",
+            "emotion": "overwhelmed"
+          },
+          {
+            "id": "demo32",
+            "title": "Snapped at Jane",
+            "date": "2026-10-24",
+            "emotion": "frustrated"
+          },
+          {
+            "id": "demo39",
+            "title": "The speech landed",
+            "date": "2026-10-31",
+            "emotion": "happy"
+          }
+        ]
+      }
+    ],
+    "values_in_action": [
+      {
+        "value": "connection",
+        "evidence_note": "Making time for coffee, birthday drinks, runs with Sam, and calls with Mom.",
+        "evidence": [
+          {
+            "id": "demo03",
+            "title": "A promise to Mom",
+            "date": "2026-09-25",
+            "emotion": "hopeful"
+          },
+          {
+            "id": "demo05",
+            "title": "Lungs on fire, head clear",
+            "date": "2026-09-27",
+            "emotion": "calm"
+          },
+          {
+            "id": "demo13",
+            "title": "Laughing with John",
+            "date": "2026-10-05",
+            "emotion": "happy"
+          },
+          {
+            "id": "demo21",
+            "title": "Mom's birthday",
+            "date": "2026-10-13",
+            "emotion": "grateful"
+          }
+        ]
+      },
+      {
+        "value": "discipline",
+        "evidence_note": "Pushing through physical milestones like running three and five kilometres.",
+        "evidence": [
+          {
+            "id": "demo10",
+            "title": "Three kilometres",
+            "date": "2026-10-02",
+            "emotion": "proud"
+          },
+          {
+            "id": "demo22",
+            "title": "Cold morning 5k",
+            "date": "2026-10-14",
+            "emotion": "proud"
+          }
+        ]
+      },
+      {
+        "value": "honesty",
+        "evidence_note": "Unpacking late-night scrolling and slipping evenings in therapy sessions.",
+        "evidence": [
+          {
+            "id": "demo19",
+            "title": "A wind-down plan",
+            "date": "2026-10-11",
+            "emotion": "hopeful"
+          },
+          {
+            "id": "demo29",
+            "title": "Compassion versus discipline",
+            "date": "2026-10-21",
+            "emotion": "reflective"
+          }
+        ]
+      }
+    ],
+    "tensions": [
+      {
+        "a": "Skipped the run with Sam Lee to fix a launch blocker",
+        "b": "First run in months with Sam Lee",
+        "evidence": [
+          {
+            "id": "demo05",
+            "title": "Lungs on fire, head clear",
+            "date": "2026-09-27",
+            "emotion": "calm"
+          },
+          {
+            "id": "demo28",
+            "title": "The evenings slipping",
+            "date": "2026-10-20",
+            "emotion": "tired"
+          }
+        ]
+      }
+    ],
+    "becoming": "I am moving toward a life where I can hold ambition without letting work consume my evenings, learning to protect my time and find quiet moments after the storm.",
+    "generated_at": "2026-11-01T23:23:20.909643",
+    "window_days": 120,
+    "entry_count": 40
+  }
+}

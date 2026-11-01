@@ -28,8 +28,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
 
+import contextvars
 import requests
 import json
+import shutil
 import math
 import os
 import re
@@ -44,8 +46,16 @@ from collections import Counter, defaultdict
 # Config
 # ---------------------------------------------------------------------------
 
-MODEL = os.environ.get("INNERBLOOM_MODEL", "qwen2.5:7b")
-EMBED_MODEL = os.environ.get("INNERBLOOM_EMBED_MODEL", "mxbai-embed-large")
+# "ollama" (default, fully local) or "gemini" (Google AI Studio, used by the
+# public website demo). Gemini needs GEMINI_API_KEY in the environment.
+PROVIDER = os.environ.get("INNERBLOOM_PROVIDER", "ollama").strip().lower()
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models"
+
+MODEL = os.environ.get("INNERBLOOM_MODEL",
+                       "gemini-flash-lite-latest" if PROVIDER == "gemini" else "qwen2.5:7b")
+EMBED_MODEL = os.environ.get("INNERBLOOM_EMBED_MODEL",
+                             "gemini-embedding-001" if PROVIDER == "gemini" else "mxbai-embed-large")
 
 # Stamped on every embedding so we can auto-detect when the user has
 # switched models and trigger a re-embed pass on next access.
@@ -80,11 +90,16 @@ wanted tell told said say says like liked way ways thing things time today
 yesterday tomorrow day days week weeks month months year years
 """.split())
 
-app = FastAPI(title="Innerbloom — AI Journal")
+_PUBLIC = os.environ.get("INNERBLOOM_SANDBOX") == "1"
+app = FastAPI(title="Innerbloom — AI Journal",
+              docs_url=None if _PUBLIC else "/docs",
+              redoc_url=None if _PUBLIC else "/redoc",
+              openapi_url=None if _PUBLIC else "/openapi.json")
 
 # Serve only the UI assets, never the journal data or the repository itself.
 _UI_ROOT = os.path.dirname(os.path.abspath(__file__))
-app.mount("/assets", StaticFiles(directory=os.path.join(_UI_ROOT, "assets")), name="assets")
+if os.path.isdir(os.path.join(_UI_ROOT, "assets")):
+    app.mount("/assets", StaticFiles(directory=os.path.join(_UI_ROOT, "assets")), name="assets")
 
 
 @app.get("/index.html", response_class=HTMLResponse, include_in_schema=False)
@@ -157,6 +172,7 @@ class PersonNoteInput(BaseModel):
 def load_file(path, default=None):
     if default is None:
         default = []
+    path = _data_path(path)
     if os.path.exists(path):
         try:
             with open(path) as f:
@@ -166,10 +182,167 @@ def load_file(path, default=None):
     return default
 
 def save_file(path, data):
+    path = _data_path(path)
     tmp = path + ".tmp"
     with open(tmp, "w") as f:
         json.dump(data, f, indent=2)
     os.replace(tmp, path)
+
+
+# ---------------------------------------------------------------------------
+# Public demo sandboxes
+#
+# With INNERBLOOM_SANDBOX=1 (the website demo) every visitor gets a private
+# copy of the sample journal in DATA_DIR/sandboxes/<id>, chosen by a cookie.
+# The sample's dates are moved forward so its last day is always today.
+# Idle sandboxes are deleted after SANDBOX_TTL. Spotify is switched off and
+# AI calls are capped per visitor, per IP and per day to protect a free quota.
+# ---------------------------------------------------------------------------
+
+SANDBOX_MODE = os.environ.get("INNERBLOOM_SANDBOX") == "1"
+SANDBOX_SEED_DIR = os.environ.get(
+    "INNERBLOOM_SEED_DIR",
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "demo_seed"),
+)
+SANDBOX_TTL = 6 * 3600
+SANDBOX_COOKIE = "innerbloom_sandbox"
+AI_LIMITS = {  # calls per rolling hour, and per day across everyone
+    "visitor": int(os.environ.get("INNERBLOOM_AI_PER_VISITOR", "40")),
+    "ip": int(os.environ.get("INNERBLOOM_AI_PER_IP", "80")),
+    "day": int(os.environ.get("INNERBLOOM_AI_PER_DAY", "900")),
+}
+_SANDBOX_DIR = contextvars.ContextVar("innerbloom_sandbox_dir", default=None)
+_CLIENT = contextvars.ContextVar("innerbloom_client", default=None)  # (sandbox id, ip)
+_AI_CALLS: Dict[str, List[float]] = defaultdict(list)
+_AI_CALLS_LOCK = threading.Lock()
+_DATE_RE = re.compile(r"\b(\d{4}-\d{2}-\d{2})")
+
+
+def _data_path(path: str) -> str:
+    """Route a file under DATA_DIR into the current visitor's sandbox."""
+    box = _SANDBOX_DIR.get()
+    if box and path.startswith(DATA_DIR + os.sep):
+        return os.path.join(box, path[len(DATA_DIR) + 1:])
+    return path
+
+
+def _shift_dates(value, days: int):
+    """Move every YYYY-MM-DD inside a JSON value forward by `days`."""
+    if isinstance(value, str):
+        def move(m):
+            try:
+                return (date.fromisoformat(m.group(1)) + timedelta(days=days)).isoformat()
+            except ValueError:
+                return m.group(1)
+        return _DATE_RE.sub(move, value)
+    if isinstance(value, list):
+        return [_shift_dates(v, days) for v in value]
+    if isinstance(value, dict):
+        return {k: _shift_dates(v, days) for k, v in value.items()}
+    return value
+
+
+def _create_sandbox(box: str) -> None:
+    """Copy the sample journal into a new sandbox, ending on today."""
+    os.makedirs(box, exist_ok=True)
+    meta = load_file(os.path.join(SANDBOX_SEED_DIR, "meta.json"), default={})
+    anchor = meta.get("anchor")
+    days = (date.today() - date.fromisoformat(anchor)).days if anchor else 0
+    for name in os.listdir(SANDBOX_SEED_DIR) if os.path.isdir(SANDBOX_SEED_DIR) else []:
+        if name.endswith(".json") and name != "meta.json":
+            data = load_file(os.path.join(SANDBOX_SEED_DIR, name), default=None)
+            if data is not None:
+                save_file(os.path.join(box, name), _shift_dates(data, days))
+
+
+def _sweep_sandboxes(root: str) -> None:
+    cutoff = time.time() - SANDBOX_TTL
+    for name in os.listdir(root):
+        path = os.path.join(root, name)
+        try:
+            if os.path.getmtime(path) < cutoff:
+                shutil.rmtree(path, ignore_errors=True)
+        except OSError:
+            pass
+
+
+def _ai_call_allowed(kind: str = "generate") -> Optional[str]:
+    """None when the call may go ahead; otherwise a message explaining the
+    demo limit. Only enforced for sandboxed (public demo) requests."""
+    client = _CLIENT.get()
+    if not client:
+        return None
+    sandbox_id, ip = client
+    now = time.time()
+    keys = {f"{kind}:visitor:{sandbox_id}": (AI_LIMITS["visitor"], 3600),
+            f"{kind}:ip:{ip}": (AI_LIMITS["ip"], 3600),
+            f"{kind}:day": (AI_LIMITS["day"], 86400)}
+    with _AI_CALLS_LOCK:
+        for key, (limit, window) in keys.items():
+            calls = [c for c in _AI_CALLS[key] if c > now - window]
+            _AI_CALLS[key] = calls
+            if len(calls) >= limit:
+                return ("[LLM error: this public demo has reached its AI limit for now. "
+                        "Browse the sample journal, or try again in a while.]")
+        for key in keys:
+            _AI_CALLS[key].append(now)
+    return None
+
+
+class SandboxMiddleware:
+    """Pure ASGI so the sandbox context reaches streaming responses too."""
+
+    def __init__(self, inner):
+        self.inner = inner
+
+    async def __call__(self, scope, receive, send):
+        if scope["type"] != "http" or not SANDBOX_MODE:
+            return await self.inner(scope, receive, send)
+        headers = {k.decode("latin-1"): v.decode("latin-1") for k, v in scope["headers"]}
+        cookies = dict(part.strip().split("=", 1) for part in headers.get("cookie", "").split(";") if "=" in part)
+        sandbox_id = cookies.get(SANDBOX_COOKIE, "")
+        root = os.path.join(DATA_DIR, "sandboxes")
+        os.makedirs(root, exist_ok=True)
+        if not re.fullmatch(r"[0-9a-f]{32}", sandbox_id):
+            sandbox_id = uuid.uuid4().hex
+        box = os.path.join(root, sandbox_id)
+        if not os.path.isdir(box):
+            _sweep_sandboxes(root)
+            _create_sandbox(box)
+        else:
+            os.utime(box)
+        ip = (headers.get("x-forwarded-for", "").split(",")[0].strip()
+              or (scope.get("client") or ("unknown",))[0])
+
+        path = scope.get("path", "")
+        if "/spotify/" in path:
+            ok = path.endswith("/spotify/status")
+            body = json.dumps({"connected": False, "has_client_id": False, "demo": True} if ok
+                              else {"detail": "Spotify is off in the public demo."}).encode()
+            await send({"type": "http.response.start", "status": 200 if ok else 403,
+                        "headers": [(b"content-type", b"application/json")]})
+            await send({"type": "http.response.body", "body": body})
+            return
+
+        secure = headers.get("x-forwarded-proto", scope.get("scheme", "http")) == "https"
+        cookie = (f"{SANDBOX_COOKIE}={sandbox_id}; Path=/; Max-Age={SANDBOX_TTL}; HttpOnly; SameSite=Lax"
+                  + ("; Secure" if secure else ""))
+
+        async def send_with_cookie(message):
+            if message["type"] == "http.response.start":
+                message.setdefault("headers", []).append((b"set-cookie", cookie.encode()))
+            await send(message)
+
+        box_token = _SANDBOX_DIR.set(box)
+        client_token = _CLIENT.set((sandbox_id, ip))
+        try:
+            await self.inner(scope, receive, send_with_cookie)
+        finally:
+            _SANDBOX_DIR.reset(box_token)
+            _CLIENT.reset(client_token)
+
+
+app.add_middleware(SandboxMiddleware)
 
 
 def _safe_dt(s):
@@ -255,6 +428,11 @@ def _run_insight_in_background(kind: str, fn, *args, **kwargs) -> None:
         finally:
             _set_insight_status(kind, "idle")
 
+    if SANDBOX_MODE:
+        # Serverless functions may freeze threads after responding, and the
+        # visitor's sandbox must stay attached, so the demo runs it inline.
+        worker()
+        return
     t = threading.Thread(target=worker, name=f"insight-{kind}", daemon=True)
     t.start()
 
@@ -271,6 +449,8 @@ def _maybe_trigger_insight_refresh(entries_count: int) -> None:
     """Called from /save. If we've crossed an AUTO_REFRESH_EVERY boundary
     since the last auto-refresh, kick off a background refresh of all
     four insight engines. No-op otherwise."""
+    if SANDBOX_MODE:
+        return  # the demo refreshes insights only when a visitor asks
     try:
         state = _load_autorefresh_state()
         last = int(state.get("last_count", 0) or 0)
@@ -287,7 +467,45 @@ def _maybe_trigger_insight_refresh(entries_count: int) -> None:
 # LLM
 # ---------------------------------------------------------------------------
 
+def _gemini_body(prompt: str, system: str, temperature: float) -> dict:
+    body = {
+        "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+        "generationConfig": {"temperature": temperature},
+    }
+    if system:
+        body["systemInstruction"] = {"parts": [{"text": system}]}
+    return body
+
+
+def _gemini_text(obj: dict) -> str:
+    parts = ((obj.get("candidates") or [{}])[0].get("content") or {}).get("parts") or []
+    return "".join(p.get("text", "") for p in parts)
+
+
+def _gemini_error(r) -> str:
+    if r.status_code == 429:
+        return "[LLM error: the demo's free AI quota is used up for now. Please try again later.]"
+    try:
+        msg = r.json().get("error", {}).get("message", "")
+    except Exception:
+        msg = ""
+    return f"[LLM error: Gemini {r.status_code} {msg}]".strip()
+
+
 def call_llama(prompt: str, system: str = "", temperature: float = 0.7, timeout: int = 180) -> str:
+    limited = _ai_call_allowed()
+    if limited:
+        return limited
+    if PROVIDER == "gemini":
+        try:
+            r = requests.post(f"{GEMINI_URL}/{MODEL}:generateContent",
+                              headers={"x-goog-api-key": GEMINI_API_KEY},
+                              json=_gemini_body(prompt, system, temperature), timeout=timeout)
+            if r.status_code != 200:
+                return _gemini_error(r)
+            return _gemini_text(r.json()).strip()
+        except Exception as e:
+            return f"[LLM error: {e}]"
     try:
         payload = {
             "model": MODEL,
@@ -304,6 +522,31 @@ def call_llama(prompt: str, system: str = "", temperature: float = 0.7, timeout:
 
 
 def call_llama_stream(prompt: str, system: str = "", temperature: float = 0.7):
+    limited = _ai_call_allowed()
+    if limited:
+        yield limited
+        return
+    if PROVIDER == "gemini":
+        try:
+            with requests.post(f"{GEMINI_URL}/{MODEL}:streamGenerateContent?alt=sse",
+                               headers={"x-goog-api-key": GEMINI_API_KEY},
+                               json=_gemini_body(prompt, system, temperature),
+                               stream=True, timeout=300) as r:
+                if r.status_code != 200:
+                    yield _gemini_error(r)
+                    return
+                for line in r.iter_lines():
+                    if not line or not line.startswith(b"data:"):
+                        continue
+                    try:
+                        chunk = _gemini_text(json.loads(line[5:].decode("utf-8")))
+                    except Exception:
+                        continue
+                    if chunk:
+                        yield chunk
+        except Exception as e:
+            yield f"[LLM error: {e}]"
+        return
     try:
         payload = {
             "model": MODEL,
@@ -336,6 +579,21 @@ def embed(text: str) -> Optional[List[float]]:
     signal to fall back to keyword retrieval."""
     text = (text or "").strip()
     if not text:
+        return None
+    if PROVIDER == "gemini":
+        if _ai_call_allowed(kind="embed"):
+            return None
+        try:
+            r = requests.post(f"{GEMINI_URL}/{EMBED_MODEL}:embedContent",
+                              headers={"x-goog-api-key": GEMINI_API_KEY},
+                              json={"content": {"parts": [{"text": text[:8000]}]},
+                                    "outputDimensionality": 768},
+                              timeout=60)
+            vec = (r.json().get("embedding") or {}).get("values")
+            if isinstance(vec, list) and vec:
+                return vec
+        except Exception:
+            pass
         return None
     try:
         r = requests.post(
@@ -5730,6 +5988,8 @@ def root():
 
 @app.get("/health")
 def health():
+    if PROVIDER == "gemini":
+        return {"ollama": "up" if GEMINI_API_KEY else "down", "provider": "gemini"}
     try:
         r = requests.get(OLLAMA_TAGS_URL, timeout=3)
         return {"ollama": "up", "models": r.json()}

@@ -179,6 +179,24 @@ INNERBLOOM_OLLAMA_TAGS_URL=http://localhost:11434/api/tags       # model list / 
 INNERBLOOM_DATA_DIR=./data                                       # storage
 ```
 
+### Using Google Gemini instead of Ollama
+
+```bash
+INNERBLOOM_PROVIDER=gemini           # default: ollama
+GEMINI_API_KEY=...                   # from aistudio.google.com
+INNERBLOOM_MODEL=gemini-flash-lite-latest      # default with Gemini
+INNERBLOOM_EMBED_MODEL=gemini-embedding-001    # default with Gemini
+```
+
+Entries and questions are then sent to Google for analysis. Keep Ollama for a fully private journal.
+
+### Public demo
+
+The live demo at [ghanshyampaunikar.com/innerbloom](https://ghanshyampaunikar.com/innerbloom) runs this backend with Gemini and `INNERBLOOM_SANDBOX=1`. Each visitor gets a private copy of a fictional 40-day journal (`demo_seed/`), dated so it always ends today and deleted after six idle hours. Spotify is off, and AI calls are capped per visitor, per IP and per day (`INNERBLOOM_AI_PER_VISITOR`, `INNERBLOOM_AI_PER_IP`, `INNERBLOOM_AI_PER_DAY`).
+
+- `scripts/build_demo_seed.py` regenerates the sample journal with Gemini.
+- `scripts/export_website_demo.py <website folder>` copies the page, backend and sample into the website project.
+
 ### Picking a model
 
 The default is **`qwen2.5:7b`** — the best quality that fits inside 8 GB of RAM. Swapping the model only changes *quality*; every endpoint and engine works at any size.

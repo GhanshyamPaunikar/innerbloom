@@ -1,0 +1,98 @@
+{
+  "alexjohnson": {
+    "key": "alexjohnson",
+    "name": "Alex Johnson",
+    "relationship": "colleague",
+    "birthday": null,
+    "cadence_days": null,
+    "last_contact": null,
+    "notes": [],
+    "aliases": [],
+    "pinned": false,
+    "hidden": false,
+    "created_at": "2026-11-01T23:21:32.900839",
+    "updated_at": "2026-11-01T23:21:32.900839"
+  },
+  "mom": {
+    "key": "mom",
+    "name": "Mom",
+    "relationship": "family",
+    "birthday": null,
+    "cadence_days": 7,
+    "last_contact": null,
+    "notes": [],
+    "aliases": [],
+    "pinned": false,
+    "hidden": false,
+    "created_at": "2026-11-01T23:21:35.258078",
+    "updated_at": "2026-11-01T23:21:35.258078"
+  },
+  "samlee": {
+    "key": "samlee",
+    "name": "Sam Lee",
+    "relationship": "friend",
+    "birthday": "09-21",
+    "cadence_days": 7,
+    "last_contact": null,
+    "notes": [],
+    "aliases": [],
+    "pinned": false,
+    "hidden": false,
+    "created_at": "2026-11-01T23:21:40.322682",
+    "updated_at": "2026-11-01T23:21:40.322682"
+  },
+  "janesmith": {
+    "key": "janesmith",
+    "name": "Jane Smith",
+    "relationship": "family",
+    "birthday": "03-02",
+    "cadence_days": 7,
+    "last_contact": null,
+    "notes": [
+      {
+        "id": "note-janesmith-0",
+        "text": "Engagement party went beautifully. Help with wedding playlist.",
+        "created_at": "2026-10-29T23:22:58.941042"
+      }
+    ],
+    "aliases": [],
+    "pinned": false,
+    "hidden": false,
+    "created_at": "2026-11-01T23:21:42.282637",
+    "updated_at": "2026-11-01T23:21:42.282637"
+  },
+  "mariagarcia": {
+    "key": "mariagarcia",
+    "name": "Maria Garcia",
+    "relationship": "mentor",
+    "birthday": null,
+    "cadence_days": 14,
+    "last_contact": null,
+    "notes": [],
+    "aliases": [],
+    "pinned": false,
+    "hidden": false,
+    "created_at": "2026-11-01T23:21:48.913458",
+    "updated_at": "2026-11-01T23:21:48.913458"
+  },
+  "johndoe": {
+    "key": "johndoe",
+    "name": "John Doe",
+    "relationship": "friend",
+    "birthday": "06-14",
+    "cadence_days": 14,
+    "last_contact": null,
+    "notes": [
+      {
+        "id": "note-johndoe-0",
+        "text": "Loves the Saturday market. Ask about his new job.",
+        "created_at": "2026-10-29T23:22:58.940996"
+      }
+    ],
+    "aliases": [],
+    "pinned": false,
+    "hidden": false,
+    "created_at": "2026-11-01T23:21:53.622174",
+    "updated_at": "2026-11-01T23:21:53.622174"
+  }
+}

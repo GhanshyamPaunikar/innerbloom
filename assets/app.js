@@ -4,7 +4,7 @@
 // =========================================================================
 // Backend base URL. Matches the uvicorn default in the README (port 5000).
 // Override at runtime via `window.INNERBLOOM_API` before this script loads.
-const API = (window.INNERBLOOM_API || window.REFLECT_API || (["/app", "/index.html"].includes(location.pathname) ? location.origin : "http://127.0.0.1:5000")).replace(/\/$/, "");
+const API = (window.INNERBLOOM_API || window.REFLECT_API || document.querySelector('meta[name="innerbloom-api"]')?.content || (["/app", "/index.html"].includes(location.pathname) ? location.origin : "http://127.0.0.1:5000")).replace(/\/$/, "");
 const DRAFT_KEY = "innerbloom.draft";
 const SPOTIFY_VERIFIER_KEY = "innerbloom.spotify.verifier";
 const SPOTIFY_REDIRECT_KEY = "innerbloom.spotify.redirect";
@@ -136,7 +136,8 @@ async function updateHealth() {
       let modelName = "Ollama";
       try {
         const root = await api("/");
-        if (root.model) modelName = String(root.model).split(":")[0];
+        if (r.provider === "gemini") modelName = "Gemini";
+        else if (root.model) modelName = String(root.model).split(":")[0];
       } catch {}
       $("health-badge").innerHTML = `<span style="color:var(--success)">●</span> ${escapeHtml(modelName)} ready`;
       $("health-badge").className = "badge green";
@@ -1998,6 +1999,11 @@ async function loadMusic() {
   host.innerHTML = `<div class="empty"><h3>Loading…</h3></div>`;
   try {
     const s = await api("/spotify/status");
+    if (s.demo) {
+      host.innerHTML = `<section class="paper-surface demo-off"><span class="eyebrow">MUSIC &amp; MOOD</span><h3>This one needs your own Spotify.</h3><p>Music &amp; mood reads your personal listening history, so it is switched off in this public demo. Run Innerbloom on your own computer to connect your account.</p></section>`;
+      $("spotify-nav-dot").style.display = "none";
+      return;
+    }
     if (!s.connected) {
       host.innerHTML = `
         <section class="spotify-intro">
