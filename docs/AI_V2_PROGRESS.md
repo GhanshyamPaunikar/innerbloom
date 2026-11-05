@@ -166,13 +166,12 @@ Full write-up: `reports/baseline-retrieval-evidence-validation.md`.
 
 - `ml/datasets/retrieval/`: three fictional journals (108 entries) and 54 questions with marked answers; journal c locked.
 - `ml/datasets/evidence/claims.jsonl`: 120 claims with dated evidence, labelled supported, contradicted or insufficient; half locked.
-- Keyword search: the answer is in the top 5 for 80.6% of questions, but only 32% of entries are found for questions that need several, and 27% of results fall in the asked time window.
+- Keyword search: the answer is in the top 5 for 80.6% of questions; meaning search (what the chat agent uses): 91.7%, recall 82.3%. Both ignore time (27-28% of results inside the asked window), and meaning search finds about 62% of entries for questions needing several.
 - `qwen2.5:7b` as a plain evidence judge: accepts 39% of claims the entries do not support (mostly overreach from thin evidence), rejects no valid claims.
 
 ### Still to do in Phase 2
 
 - A second reader checks about 100 validation labels against the guidelines.
-- Meaning-search baseline: needs `ollama pull mxbai-embed-large` (about 670 MB).
 - The blind safety set.
 
 ### Next human action

@@ -28,9 +28,27 @@ Run with `python -m ml.retrieval_eval`. Entries carry their text only, without t
 
 Keyword search finds direct lookups well but misses most entries for questions that need several, and it ignores time beyond a small boost for the last month.
 
-### Meaning search (`retrieve_similar`) and the agent's search tool
+### Meaning search (`retrieve_similar`, `mxbai-embed-large`)
 
-Not measured yet: they need the embedding model `mxbai-embed-large` (about 670 MB), which is not installed in Ollama on this Mac. Innerbloom's chat memory uses it too, so it is needed to run the app as designed.
+What the chat agent's search tool uses; it fell back to keywords for no question, so its scores are identical.
+
+| Metric | Keyword | Meaning |
+|---|---|---|
+| An answering entry in the top 5 | 80.6% | 91.7% |
+| Recall@5 | 65.5% | 82.3% |
+| Mean reciprocal rank | 0.578 | 0.850 |
+| nDCG@5 | 0.532 | 0.751 |
+| Top-5 results inside the asked time window | 27% | 28% |
+
+| Question type | Answer in top 5 | Recall@5 |
+|---|---|---|
+| Direct lookups (7) | 100% | 90.5% |
+| Different wording from the entry (13) | 100% | 85.9% |
+| About a person (17) | 94.1% | 84.1% |
+| About a time period (7) | 71.4% | 78.6% |
+| Needing several entries (11) | 90.9% | 61.8% |
+
+Meaning search is clearly better and handles different wording well. Two gaps remain: it barely uses dates (28% of results inside the asked window), and it finds only about 62% of the entries for questions that need several.
 
 ## Evidence checking
 
@@ -55,7 +73,7 @@ The judge leans towards agreeing. Its main failure is accepting claims built on 
 
 ## What this means
 
-- **Phase 4 (memory):** the clearest gaps are questions that need several entries, and time. Meaning search must be measured before deciding whether a reranker is worth training.
+- **Phase 4 (memory):** meaning search is already strong on wording. The gaps are time and questions needing several entries. Reading the dates in a question ("last two weeks") and filtering before ranking may close the first without any training; a pretrained reranker should be tried on the second before training one.
 - **Phase 5 (verifier):** the target is clear. A verifier must cut the 39% of unsupported claims accepted, especially overreach from thin evidence, without starting to reject valid ones.
 
 ## Caveats
