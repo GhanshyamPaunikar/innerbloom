@@ -158,7 +158,7 @@ Full write-up: `reports/baseline-qwen2.5-7b-validation.md`. On 183 validation en
 - 15 seconds per entry on this Mac
 - Weak spots: proud, lonely, overwhelmed, content; sarcasm; implied feelings
 - The safety classifier with the model on: 39 of 40 crisis statements get full help, 2 of 40 harmless ones alert (seen set)
-- Bug found: the parser strips accented letters from names ("Tomás" becomes "Toms")
+- Bug found and fixed: the parser stripped accented letters from names ("Tomás" became "Toms") and dropped names in other scripts. Rescored: people precision 0.964, recall 0.885, no invented names
 
 ### Still to do in Phase 2
 

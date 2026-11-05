@@ -5729,8 +5729,8 @@ RELATIONSHIP_TYPES = {"friend", "family", "partner", "mentor", "colleague", "oth
 
 
 def _person_key(name: str) -> str:
-    """Normalise so 'Mom', 'mom', 'MOM' collapse to one node."""
-    return re.sub(r"[^a-z]", "", (name or "").lower())
+    """Normalise so 'Mom', 'mom', 'MOM' (and 'José', 'Jose') collapse to one node."""
+    return entry_analysis.person_key(name)
 
 
 def _load_people_store() -> Dict[str, dict]:

@@ -6,6 +6,7 @@ as a placeholder reading marked analysis_status "failed".
 """
 import json
 import re
+import unicodedata
 from typing import Any, Dict, List, Optional
 
 EMOTIONS = [
@@ -37,6 +38,32 @@ def extract_json(text: str) -> Optional[dict]:
             return json.loads(cleaned)
         except Exception:
             return None
+
+
+def _tag(value) -> str:
+    """Lowercase letters (any script), digits and '-'; 'Café' stays 'café'."""
+    text = unicodedata.normalize("NFC", str(value)).lower()
+    return "".join(ch for ch in text if ch.isalnum() or ch == "-"
+                   or unicodedata.category(ch) in ("Mn", "Mc"))[:24]
+
+
+def _name(value) -> str:
+    """Letters in any script plus space, '-', apostrophes and '.'; 'Tomás' stays 'Tomás'."""
+    text = unicodedata.normalize("NFC", str(value))
+    return "".join(ch for ch in text if ch.isalpha() or ch in " -'’."
+                   or unicodedata.category(ch) in ("Mn", "Mc")).strip()
+
+
+def person_key(name: str) -> str:
+    """One key per person: case and Latin accents folded ('José' ~ 'Jose'),
+    other scripts kept whole, everything else dropped."""
+    out = []
+    for ch in unicodedata.normalize("NFD", (name or "").lower()):
+        if unicodedata.category(ch) == "Mn" and out and out[-1].isascii():
+            continue  # an accent on a Latin letter
+        if ch.isalpha() or unicodedata.category(ch) in ("Mn", "Mc"):
+            out.append(ch)
+    return unicodedata.normalize("NFC", "".join(out))
 
 
 def build_prompt(text: str) -> str:
@@ -97,7 +124,7 @@ def parse(raw: str) -> Dict[str, Any]:
         themes = [t.strip() for t in themes.split(",")]
     if isinstance(people, str):
         people = [p.strip() for p in people.split(",")]
-    tags = [re.sub(r"[^a-z0-9\-]", "", str(t).lower())[:24] for t in tags if t][:5]
+    tags = [_tag(t) for t in tags if t][:5]
     tags = [t for t in tags if t]
     themes = [str(t).strip()[:40] for t in themes if t][:3]
     # People are case-preserved (Title Case), de-duplicated, max 6
@@ -105,7 +132,7 @@ def parse(raw: str) -> Dict[str, Any]:
     cleaned_people: List[str] = []
     for p in people:
         if not p: continue
-        name = re.sub(r"[^A-Za-z\- '’.]", "", str(p)).strip()
+        name = _name(p)
         if not name or len(name) > 40:
             continue
         # Title case but keep all-caps initials etc.

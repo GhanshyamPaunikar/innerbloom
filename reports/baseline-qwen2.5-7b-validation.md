@@ -46,7 +46,9 @@ The model rarely answers `proud` (2 times for 11 proud entries) or `lonely` (5 f
 
 ## A bug found along the way
 
-The parser in `innerbloom_core/analysis.py` removes accented letters from names, so "Tomás" is stored as "Toms". This is not the model inventing a name; it affects every accented name in the People view.
+The parser in `innerbloom_core/analysis.py` removed accented letters from names, so "Tomás" was stored as "Toms". This was not the model inventing a name; it affected every accented name in the People view, and names in other scripts (Hindi, Japanese) were dropped entirely.
+
+Fixed the same day: names, tags and People keys now keep letters in any script. The same replies, rescored (`reports/runs/baseline-qwen2.5-7b-validation-namefix/`): people precision 0.964, recall 0.885, no invented names. Emotion and intensity are unchanged. Names already saved in a journal keep their old spelling until the entry is edited.
 
 ## Caveats
 
