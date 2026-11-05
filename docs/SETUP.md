@@ -114,11 +114,13 @@ Innerbloom uses PKCE with a checked `state` value, so no client secret is needed
 ## Tests
 
 ```bash
-python tests/test_app.py
-python -m unittest tests.test_workspace tests.test_public_demo
+pip install pytest
+python -m pytest -q
 ```
 
-The backend suite runs end to end against FastAPI's `TestClient`, with Ollama and Spotify mocked: entries, chat, the agent loop, insight engines, search, crisis detection, stats, Spotify and People. The workspace tests check that only the page and its assets are ever served. The demo tests cover private sandboxes, time zones and AI limits.
+`python tests/test_app.py` also runs the backend suite on its own and prints each check.
+
+The backend suite runs end to end against FastAPI's `TestClient`, with Ollama and Spotify mocked: entries, chat, the agent loop, insight engines, search, crisis detection, stats, Spotify and People, plus concurrent saves, failed analyses, wellbeing levels, deleted-entry cleanup and the local-only request rules. `tests/test_safety.py` holds fictional crisis-detection cases: clear statements that must be caught, harmless ones that must not alarm, and an unreachable model. The workspace tests check that only the page and its assets are ever served. The demo tests cover private sandboxes, time zones and AI limits.
 
 ## API reference
 
@@ -131,8 +133,10 @@ The backend suite runs end to end against FastAPI's `TestClient`, with Ollama an
 | `GET` | `/journal/{id}` | One entry |
 | `PUT` | `/journal/{id}` | Edit |
 | `DELETE` | `/journal/{id}` | Delete |
+| `POST` | `/journal/reanalyze` | Read again entries whose analysis failed |
 | `GET` | `/search?q=` | Keyword and meaning search |
 | `GET` | `/export` | Markdown export |
+| `POST` | `/safety/check` | Instant crisis-phrase check while writing (no model call) |
 
 ### Chat and agent
 

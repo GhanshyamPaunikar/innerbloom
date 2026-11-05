@@ -28,10 +28,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
 
+import contextlib
 import contextvars
 import requests
 import json
 import shutil
+import tempfile
 import math
 import os
 import re
@@ -42,6 +44,10 @@ import time
 from datetime import datetime as _datetime, timedelta, date as _date
 from zoneinfo import ZoneInfo
 from collections import Counter, defaultdict
+
+from innerbloom_core import analysis as entry_analysis
+from innerbloom_core.analysis import EMOTIONS, extract_json
+from innerbloom_core.safety import assess as assess_crisis
 
 # A hosted server's clock is not the visitor's. When a request carries the
 # browser's time zone (X-Timezone), "now" and "today" follow it, so entries,
@@ -133,12 +139,69 @@ def journal_workspace():
         html = html.replace('<head>', '<head><meta name="innerbloom-demo" content="true">', 1)
     return HTMLResponse(html, headers={"Cache-Control": "no-store"})
 
+# The journal API has no login: it is private because only this computer can
+# reach it. Browsers, though, let any open website send requests to
+# 127.0.0.1, so requests from another site's pages are refused here.
+_LOOPBACK_HOSTS = {"127.0.0.1", "localhost", "::1"}
+_LOOPBACK_ORIGIN_RX = r"https?://(127\.0\.0\.1|localhost|\[::1\])(:\d+)?"
+_EXTRA_HOSTS = {h.strip().lower() for h in
+                os.environ.get("INNERBLOOM_ALLOWED_HOSTS", "").split(",") if h.strip()}
+
+
+def _host_name(host: str) -> str:
+    host = host.strip().lower()
+    if host.startswith("["):
+        return host[1:host.find("]")] if "]" in host else host
+    return host.rsplit(":", 1)[0] if host.count(":") == 1 else host
+
+
+class LocalOnlyMiddleware:
+    """Refuse a request when its Host is not this computer (DNS rebinding) or
+    when it comes from a page on another site (cross-site reads and writes).
+    The public demo is served under its own domain, so it skips the Host rule
+    but keeps the same-site rule."""
+
+    def __init__(self, app):
+        self.inner = app
+
+    async def __call__(self, scope, receive, send):
+        if scope["type"] == "http":
+            reason = self._refusal(scope)
+            if reason:
+                body = json.dumps({"detail": reason}).encode()
+                await send({"type": "http.response.start", "status": 403,
+                            "headers": [(b"content-type", b"application/json")]})
+                await send({"type": "http.response.body", "body": body})
+                return
+        await self.inner(scope, receive, send)
+
+    @staticmethod
+    def _refusal(scope) -> Optional[str]:
+        headers = {k.decode("latin-1").lower(): v.decode("latin-1") for k, v in scope["headers"]}
+        host = headers.get("host", "")
+        if not SANDBOX_MODE and _host_name(host) not in _LOOPBACK_HOSTS | _EXTRA_HOSTS:
+            return "Innerbloom only answers requests addressed to this computer."
+        origin = headers.get("origin")
+        if origin is None:
+            return None
+        scheme = "https" if headers.get("x-forwarded-proto") == "https" else scope.get("scheme", "http")
+        own = {host}
+        if SANDBOX_MODE and headers.get("x-forwarded-host"):
+            own.add(headers["x-forwarded-host"].split(",")[0].strip())  # behind the website's rewrite
+        if origin.lower() in {f"{scheme}://{h}".lower() for h in own}:
+            return None
+        if re.fullmatch(_LOOPBACK_ORIGIN_RX, origin, re.IGNORECASE):
+            return None
+        if _host_name(origin.split("://", 1)[-1]) in _EXTRA_HOSTS:
+            return None
+        return "Innerbloom only answers its own page."
+
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    # Browsers ignore credentials when origin is "*". We never send cookies
-    # to this API anyway — tokens (Spotify) are stored server-side — so
-    # disabling credentials keeps the CORS contract correct.
+    # Pages served from this computer on another port may call the API;
+    # pages from any other site may not.
+    allow_origin_regex=_LOOPBACK_ORIGIN_RX,
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -148,6 +211,10 @@ app.add_middleware(
 # ---------------------------------------------------------------------------
 # Schemas
 # ---------------------------------------------------------------------------
+
+class SafetyInput(BaseModel):
+    text: str
+
 
 class EntryInput(BaseModel):
     text: str
@@ -203,12 +270,61 @@ def load_file(path, default=None):
             return default
     return default
 
-def save_file(path, data):
+_FILE_LOCKS: Dict[str, threading.RLock] = {}
+_FILE_LOCKS_GUARD = threading.Lock()
+
+
+def file_lock(path) -> threading.RLock:
+    """One lock per data file. Hold it around every load-change-save so two
+    requests (or a request and a background job) cannot overwrite each other.
+    Never hold it while waiting on the model."""
     path = _data_path(path)
-    tmp = path + ".tmp"
-    with open(tmp, "w") as f:
-        json.dump(data, f, indent=2)
-    os.replace(tmp, path)
+    with _FILE_LOCKS_GUARD:
+        return _FILE_LOCKS.setdefault(path, threading.RLock())
+
+
+def save_file(path, data):
+    with file_lock(path):
+        path = _data_path(path)
+        fd, tmp = tempfile.mkstemp(dir=os.path.dirname(path) or ".",
+                                   prefix=os.path.basename(path) + ".", suffix=".tmp")
+        try:
+            with os.fdopen(fd, "w") as f:
+                json.dump(data, f, indent=2)
+            os.replace(tmp, path)
+        except BaseException:
+            with contextlib.suppress(OSError):
+                os.remove(tmp)
+            raise
+
+
+_EMBEDDING_KEYS = ("embedding", "embedding_version", "chunks")
+
+
+def _save_embeddings(path, items: List[dict]) -> None:
+    """Write embeddings computed on an earlier copy of a file back onto its
+    current contents, matched by id, so entries or turns saved meanwhile are
+    kept. An item whose text changed meanwhile is left for the next pass."""
+    by_id = {i["id"]: i for i in items if isinstance(i, dict) and i.get("id")}
+    with file_lock(path):
+        current = load_file(path)
+        for item in current:
+            src = by_id.get(item.get("id"))
+            if not src or src.get("text") != item.get("text") or src.get("ai") != item.get("ai"):
+                continue
+            for k in _EMBEDDING_KEYS:
+                if k in src:
+                    item[k] = src[k]
+                else:
+                    item.pop(k, None)
+        save_file(path, current)
+
+
+def append_chat_turn(turn: dict) -> None:
+    with file_lock(CHAT_FILE):
+        history = load_file(CHAT_FILE)
+        history.append(turn)
+        save_file(CHAT_FILE, history)
 
 
 # ---------------------------------------------------------------------------
@@ -383,6 +499,7 @@ class SandboxMiddleware:
 
 
 app.add_middleware(SandboxMiddleware)
+app.add_middleware(LocalOnlyMiddleware)  # outermost: runs before sandboxes and CORS
 
 
 def _safe_dt(s):
@@ -402,7 +519,7 @@ def _safe_dt(s):
 # user's request blocks the UI and burns latency. Instead:
 #
 #   - /insights/*/refresh kicks off a background thread per engine
-#   - state is tracked in INSIGHT_STATUS (kind → "queued"|"running"|"idle")
+#   - state is tracked in INSIGHT_STATUS (kind → "queued"|"running"|"idle"|"failed")
 #   - /insights/status returns the current map (cheap, no LLM)
 #   - the frontend polls /insights/status while the user is on the Insights
 #     view and shows a small "catching up… 2/4 done" indicator
@@ -423,6 +540,7 @@ INSIGHT_STATUS_LOCK = threading.Lock()
 INSIGHT_LAST_RUN: Dict[str, Optional[str]] = {
     k: None for k in INSIGHT_STATUS
 }
+INSIGHT_LAST_ERROR: Dict[str, Optional[dict]] = {}  # kind → {"error", "at"} of the latest failed run
 
 # Auto-refresh trigger: re-run insights after every N new entries.
 AUTO_REFRESH_EVERY = 5
@@ -442,11 +560,15 @@ def _save_autorefresh_state(state: dict) -> None:
     save_file(_autorefresh_state_path(), state)
 
 
-def _set_insight_status(kind: str, status: str) -> None:
+def _set_insight_status(kind: str, status: str, error: Optional[str] = None) -> None:
     with INSIGHT_STATUS_LOCK:
         INSIGHT_STATUS[kind] = status
         if status == "idle":
             INSIGHT_LAST_RUN[kind] = datetime.now().isoformat()
+            INSIGHT_LAST_ERROR.pop(kind, None)
+        elif status == "failed":
+            INSIGHT_LAST_ERROR[kind] = {"error": (error or "")[:300],
+                                        "at": datetime.now().isoformat()}
 
 
 def _run_insight_in_background(kind: str, fn, *args, **kwargs) -> None:
@@ -460,12 +582,13 @@ def _run_insight_in_background(kind: str, fn, *args, **kwargs) -> None:
         INSIGHT_STATUS[kind] = "queued"
 
     def worker():
+        _set_insight_status(kind, "running")
         try:
-            _set_insight_status(kind, "running")
             fn(*args, **kwargs)
         except Exception as e:
             print(f"[insights/{kind}] background run failed: {e}")
-        finally:
+            _set_insight_status(kind, "failed", f"{type(e).__name__}: {e}")
+        else:
             _set_insight_status(kind, "idle")
 
     if SANDBOX_MODE:
@@ -649,109 +772,31 @@ def embed(text: str) -> Optional[List[float]]:
     return None
 
 
-def extract_json(text: str) -> Optional[dict]:
-    if not text:
-        return None
-    try:
-        return json.loads(text)
-    except Exception:
-        pass
-    match = re.search(r"\{.*\}", text, re.DOTALL)
-    if not match:
-        return None
-    blob = match.group(0)
-    try:
-        return json.loads(blob)
-    except Exception:
-        cleaned = re.sub(r",\s*([}\]])", r"\1", blob)
-        cleaned = cleaned.replace("'", '"')
-        try:
-            return json.loads(cleaned)
-        except Exception:
-            return None
-
-
 # ---------------------------------------------------------------------------
-# Entry analysis
+# Entry analysis (prompt, schema and parser live in innerbloom_core/analysis.py)
 # ---------------------------------------------------------------------------
-
-EMOTIONS = [
-    "happy", "sad", "anxious", "calm", "grateful", "frustrated",
-    "excited", "reflective", "hopeful", "tired", "angry", "content",
-    "lonely", "proud", "overwhelmed", "neutral",
-]
 
 def analyze_entry(text: str) -> Dict[str, Any]:
-    prompt = f"""You classify one journal entry. Return ONLY a compact JSON object. No prose. No fences.
+    return entry_analysis.parse(call_llama(entry_analysis.build_prompt(text),
+                                           temperature=entry_analysis.TEMPERATURE))
 
-Schema (every field required, even if empty):
-{{
-  "emotion":   "the dominant feeling — exactly one of: {', '.join(EMOTIONS)}",
-  "intensity": "integer 1-10. 1 = barely felt, 5 = clearly present, 10 = overwhelming",
-  "summary":   "one concrete sentence, <= 20 words. Say what HAPPENED or what the writer felt — never start with 'The writer' or 'They'",
-  "tags":      "2-4 lowercase single-word nouns naming what the entry is about (work, sleep, partner, anxiety, running). No verbs. No adjectives. No '#'",
-  "themes":    "1-3 short phrases (1-4 words each) for the deeper pattern (e.g. 'work boundaries', 'fear of being seen', 'rebuilding routine'). Not just rewordings of tags",
-  "people":    "names of OTHER people the writer mentioned, in the form they wrote (Mom, Sam, dad, Dr. Lee). Skip the writer themselves and skip generic words like 'people' / 'friends'. Omit if nobody named. Never invent."
-}}
 
-Rules:
-- Don't guess emotion if the entry is purely factual — use 'neutral'.
-- Tags must actually appear (literally or by clear paraphrase) in the entry.
-- Don't include 'journal', 'entry', 'writing' as tags — those describe the act, not the content.
+def _has_reading(entry: dict) -> bool:
+    """False for entries whose analysis failed; their emotion and intensity
+    are placeholders and must stay out of mood statistics."""
+    return entry.get("analysis_status") != "failed"
 
-Entry:
-\"\"\"{text}\"\"\"
 
-JSON:"""
-    raw = call_llama(prompt, temperature=0.3)
-    data = extract_json(raw) or {}
-
-    emotion = str(data.get("emotion", "neutral")).lower().strip()
-    if emotion not in EMOTIONS:
-        emotion = "neutral"
-    try:
-        intensity = int(data.get("intensity", 5))
-        intensity = max(1, min(10, intensity))
-    except Exception:
-        intensity = 5
-    summary = str(data.get("summary", "")).strip()[:280]
-    tags = data.get("tags") or []
-    themes = data.get("themes") or []
-    people = data.get("people") or []
-    if isinstance(tags, str):
-        tags = [t.strip() for t in tags.split(",")]
-    if isinstance(themes, str):
-        themes = [t.strip() for t in themes.split(",")]
-    if isinstance(people, str):
-        people = [p.strip() for p in people.split(",")]
-    tags = [re.sub(r"[^a-z0-9\-]", "", str(t).lower())[:24] for t in tags if t][:5]
-    tags = [t for t in tags if t]
-    themes = [str(t).strip()[:40] for t in themes if t][:3]
-    # People are case-preserved (Title Case), de-duplicated, max 6
-    seen_people = set()
-    cleaned_people: List[str] = []
-    for p in people:
-        if not p: continue
-        name = re.sub(r"[^A-Za-z\- '’.]", "", str(p)).strip()
-        if not name or len(name) > 40:
-            continue
-        # Title case but keep all-caps initials etc.
-        key = name.lower()
-        if key in seen_people:
-            continue
-        seen_people.add(key)
-        cleaned_people.append(name)
-        if len(cleaned_people) >= 6:
-            break
-
-    return {
-        "emotion": emotion,
-        "intensity": intensity,
-        "summary": summary,
-        "tags": tags,
-        "themes": themes,
-        "people": cleaned_people,
-    }
+def _apply_analysis(entry: dict, analysis: Dict[str, Any]) -> None:
+    entry.update({k: analysis[k] for k in
+                  ("summary", "emotion", "intensity", "tags", "themes")})
+    entry["people"] = analysis.get("people", entry.get("people", []))
+    if analysis.get("analysis_status") == "failed":
+        entry["analysis_status"] = "failed"
+        entry["analysis_error"] = analysis.get("analysis_error")
+    else:
+        entry.pop("analysis_status", None)
+        entry.pop("analysis_error", None)
 
 
 # ---------------------------------------------------------------------------
@@ -1132,11 +1177,11 @@ def _surfaced_insights(query: str) -> List[dict]:
             out.append({"kind": "trigger",
                         "text": f"Trigger ({it.get('direction','?')}): {label}{tail}"})
 
-    # Wellbeing — only mention if the level is above 'ok'.
+    # Wellbeing — only mention a flagged signal.
     wb = cache.get("wellbeing") or {}
     for key in ("burnout", "spiral"):
         sig = wb.get(key) or {}
-        if sig.get("level") and sig["level"] != "ok" and sig.get("summary"):
+        if sig.get("level") not in (None, "ok", "insufficient") and sig.get("summary"):
             out.append({"kind": f"wellbeing.{key}",
                         "text": f"Wellbeing/{key} ({sig['level']}): {sig['summary'][:240]}"})
 
@@ -1241,9 +1286,9 @@ def retrieve_memory(query: str) -> Dict[str, List[dict]]:
 
     # Lazy-backfill embeddings — capped per call (see backfill_*_embeddings).
     if backfill_entry_embeddings(entries):
-        save_file(JOURNAL_FILE, entries)
+        _save_embeddings(JOURNAL_FILE, entries)
     if backfill_chat_embeddings(history):
-        save_file(CHAT_FILE, history)
+        _save_embeddings(CHAT_FILE, history)
 
     # Continuity: 'tell me more' → use prior user turn as context.
     effective_query = _expand_followup_query(query, history)
@@ -1370,13 +1415,15 @@ def save_journal(data: EntryInput):
         "word_count": len(text.split()),
         "timestamp": datetime.now().isoformat(),
     }
+    _apply_analysis(entry, analysis)
     entry["embedding"] = embed(_entry_embed_text(entry))
     entry["embedding_version"] = EMBED_VERSION
     _embed_entry_chunks(entry)
 
-    entries = load_file(JOURNAL_FILE)
-    entries.append(entry)
-    save_file(JOURNAL_FILE, entries)
+    with file_lock(JOURNAL_FILE):
+        entries = load_file(JOURNAL_FILE)
+        entries.append(entry)
+        save_file(JOURNAL_FILE, entries)
 
     # Auto-create CRM records for anyone newly named in this entry.
     _upsert_people_from_entry(entry)
@@ -1384,7 +1431,7 @@ def save_journal(data: EntryInput):
     # Auto-refresh insights after every N new entries (in the background).
     _maybe_trigger_insight_refresh(entries_count=len(entries))
 
-    return {"status": "saved", "entry": _strip_embedding(entry)}
+    return {"status": "saved", "entry": _strip_embedding(entry), "safety": crisis_check(text)}
 
 
 @app.get("/journal")
@@ -1422,47 +1469,81 @@ def get_entry(entry_id: str):
 
 @app.put("/journal/{entry_id}")
 def update_entry(entry_id: str, data: EntryUpdate):
-    entries = load_file(JOURNAL_FILE)
-    for i, e in enumerate(entries):
-        if e["id"] == entry_id:
-            if data.text is not None:
-                e["text"] = data.text.strip()
-                e["word_count"] = len(e["text"].split())
-                analysis = analyze_entry(e["text"])
-                e.update({
-                    "summary": analysis["summary"],
-                    "emotion": analysis["emotion"],
-                    "intensity": analysis["intensity"],
-                    "tags": analysis["tags"],
-                    "themes": analysis["themes"],
-                    "people": analysis.get("people", e.get("people", [])),
-                })
-                # Text changed → embedding + chunks are stale; regenerate.
-                e["embedding"] = embed(_entry_embed_text(e))
-                e["embedding_version"] = EMBED_VERSION
-                e.pop("chunks", None)
-                _embed_entry_chunks(e)
-            if data.title is not None:
-                e["title"] = data.title.strip()
-            if data.tags is not None:
-                e["tags"] = [str(t).lower().strip() for t in data.tags if t]
-            e["updated_at"] = datetime.now().isoformat()
-            entries[i] = e
-            save_file(JOURNAL_FILE, entries)
-            # New names may have appeared after a re-analysis.
-            _upsert_people_from_entry(e)
-            return {"status": "updated", "entry": _strip_embedding(e)}
-    raise HTTPException(404, "Entry not found")
+    current = next((e for e in load_file(JOURNAL_FILE) if e["id"] == entry_id), None)
+    if current is None:
+        raise HTTPException(404, "Entry not found")
+
+    # Model work happens before taking the lock; only the write is locked.
+    reread = None
+    if data.text is not None:
+        reread = {"text": data.text.strip()}
+        _apply_analysis(reread, analyze_entry(reread["text"]))
+        reread["embedding"] = embed(_entry_embed_text(reread))
+        reread["embedding_version"] = EMBED_VERSION
+        _embed_entry_chunks(reread)
+
+    with file_lock(JOURNAL_FILE):
+        entries = load_file(JOURNAL_FILE)
+        e = next((x for x in entries if x["id"] == entry_id), None)
+        if e is None:
+            raise HTTPException(404, "Entry not found")
+        if reread is not None:
+            # Text changed → reading, embedding and chunks are all replaced.
+            for k in ("analysis_status", "analysis_error", "chunks"):
+                e.pop(k, None)
+            e.update(reread)
+            e["word_count"] = len(e["text"].split())
+        if data.title is not None:
+            e["title"] = data.title.strip()
+        if data.tags is not None:
+            e["tags"] = [str(t).lower().strip() for t in data.tags if t]
+        e["updated_at"] = datetime.now().isoformat()
+        save_file(JOURNAL_FILE, entries)
+    # New names may have appeared after a re-analysis.
+    _upsert_people_from_entry(e)
+    return {"status": "updated", "entry": _strip_embedding(e)}
 
 
 @app.delete("/journal/{entry_id}")
 def delete_entry(entry_id: str):
-    entries = load_file(JOURNAL_FILE)
-    new = [e for e in entries if e["id"] != entry_id]
-    if len(new) == len(entries):
-        raise HTTPException(404, "Entry not found")
-    save_file(JOURNAL_FILE, new)
+    with file_lock(JOURNAL_FILE):
+        entries = load_file(JOURNAL_FILE)
+        new = [e for e in entries if e["id"] != entry_id]
+        if len(new) == len(entries):
+            raise HTTPException(404, "Entry not found")
+        save_file(JOURNAL_FILE, new)
+    _forget_entry_in_insights(entry_id)
     return {"status": "deleted"}
+
+
+@app.post("/journal/reanalyze")
+def reanalyze_failed(limit: int = 20):
+    """Read again the entries whose analysis failed, newest first."""
+    pending = sorted((e for e in load_file(JOURNAL_FILE) if not _has_reading(e)),
+                     key=lambda e: e.get("timestamp", ""), reverse=True)
+    readings = {}
+    for e in pending[:max(1, min(limit, 100))]:
+        analysis = analyze_entry(e.get("text", ""))
+        if analysis["analysis_status"] == "ok":
+            readings[e["id"]] = (e.get("text"), analysis)
+        else:
+            break  # the model is still unreachable; try again later
+
+    fixed = []
+    with file_lock(JOURNAL_FILE):
+        entries = load_file(JOURNAL_FILE)
+        for e in entries:
+            text, analysis = readings.get(e["id"], (None, None))
+            if analysis and e.get("text") == text:
+                _apply_analysis(e, analysis)
+                fixed.append(e)
+        if fixed:
+            save_file(JOURNAL_FILE, entries)
+    for e in fixed:
+        _upsert_people_from_entry(e)
+    remaining = sum(1 for e in load_file(JOURNAL_FILE) if not _has_reading(e))
+    return {"reanalyzed": len(fixed), "remaining": remaining,
+            "entries": [_strip_embedding(e) for e in fixed]}
 
 
 # ---------------------------------------------------------------------------
@@ -1549,84 +1630,15 @@ def build_system_prompt(mode: str, personality: str) -> str:
 # user always gets an answer — we just attach a `safety` block so the UI can
 # surface resources alongside it.
 
-CRISIS_KEYWORDS = [
-    r"\bsuicide\b", r"\bsuicidal\b", r"\bkill (?:my)?self\b", r"\bkms\b",
-    r"\bend (?:it|my life|things)\b", r"\bdon'?t want to (?:be here|live|exist)\b",
-    r"\bwant to die\b", r"\bbetter off (?:dead|without me)\b",
-    r"\bself[- ]harm\b", r"\bcut(?:ting)? myself\b", r"\bhurt myself\b",
-    r"\bno reason to live\b", r"\bcan'?t go on\b", r"\bgive up on life\b",
-]
-CRISIS_RESOURCES = [
-    {"name": "iCall (India)", "detail": "+91 9152987821 · Mon–Sat 8am–10pm"},
-    {"name": "AASRA (India)", "detail": "+91 9820466726 · 24/7"},
-    {"name": "988 Suicide & Crisis Lifeline (US)", "detail": "Call or text 988 · 24/7"},
-    {"name": "Samaritans (UK & ROI)", "detail": "116 123 · 24/7"},
-    {"name": "Find a Helpline (worldwide)", "detail": "https://findahelpline.com"},
-]
-
-
 def crisis_check(text: str) -> Optional[dict]:
-    """Return a safety block if the message likely indicates suicidal ideation
-    or self-harm, otherwise None. Two-stage: regex first, then a tight LLM
-    classifier for ambiguous cases like 'I just want it all to stop'."""
-    if not text:
-        return None
-    low = text.lower()
+    """Help lines to attach to the reply, or None. See innerbloom_core/safety.py."""
+    return assess_crisis(text, lambda prompt: call_llama(prompt, temperature=0.0, timeout=20))
 
-    keyword_hit = any(re.search(p, low) for p in CRISIS_KEYWORDS)
 
-    # Fast path — clear keyword match → high severity, skip LLM.
-    if keyword_hit:
-        return {
-            "level": "high",
-            "reason": "explicit self-harm or suicidal language",
-            "resources": CRISIS_RESOURCES,
-            "message": (
-                "What you're carrying sounds heavy, and I'm glad you wrote it down. "
-                "You don't have to figure this out alone — please reach out to one of the lines below. "
-                "They're free, confidential, and trained for exactly this."
-            ),
-        }
-
-    # Slow path — only run the classifier for messages with strong negative
-    # affect words. Cheap heuristic: avoids LLM call on every "I feel sad".
-    soft_signals = ("hopeless", "pointless", "no point", "worthless",
-                    "can't do this", "cant do this", "exhausted", "numb",
-                    "nothing matters", "want it to stop", "tired of")
-    if not any(s in low for s in soft_signals):
-        return None
-
-    prompt = (
-        "Classify the following message for crisis risk. Reply with ONE of:\n"
-        "  NONE       — no concerning content\n"
-        "  DISTRESS   — significant distress but no self-harm/suicidal ideation\n"
-        "  CRISIS     — possible self-harm or suicidal ideation, even if implicit\n"
-        "Reply with only the single word.\n\n"
-        f"Message: \"\"\"{text[:500]}\"\"\""
-    )
-    verdict = call_llama(prompt, temperature=0.0, timeout=20).strip().upper()
-    if "CRISIS" in verdict:
-        return {
-            "level": "high",
-            "reason": "model flagged crisis-level distress",
-            "resources": CRISIS_RESOURCES,
-            "message": (
-                "I want to check in — what you wrote sounds really heavy. "
-                "If any part of you is thinking about not being here, please reach out to one of the lines below. "
-                "You don't have to be sure it's 'serious enough' to call."
-            ),
-        }
-    if "DISTRESS" in verdict:
-        return {
-            "level": "soft",
-            "reason": "elevated distress",
-            "resources": CRISIS_RESOURCES[:2],
-            "message": (
-                "Sounds like a hard moment. If it gets heavier, these lines are there — "
-                "no need to be in 'crisis' to use them."
-            ),
-        }
-    return None
+@app.post("/safety/check")
+def safety_check(data: SafetyInput):
+    """Clear phrases only, no model call: the writing page asks while you type."""
+    return {"safety": assess_crisis(data.text[:5000], None)}
 
 def extract_citations(reply: str, relevant: List[dict]) -> List[dict]:
     """Parse [cite:XXXX] short-ids and resolve back to full entries.
@@ -1901,7 +1913,7 @@ def _chat_memory_for_mode(msg: str, mode: str) -> Dict[str, List[dict]]:
     if mode == "general":
         history = load_file(CHAT_FILE)
         if backfill_chat_embeddings(history):
-            save_file(CHAT_FILE, history)
+            _save_embeddings(CHAT_FILE, history)
         return {
             "entries": [],
             "chat": retrieve_similar(msg, history, k=3),
@@ -1926,7 +1938,7 @@ def _chat_memory_for_mode(msg: str, mode: str) -> Dict[str, List[dict]]:
 def tool_search_entries(query: str, k: int = 5) -> List[dict]:
     entries = load_file(JOURNAL_FILE)
     if backfill_entry_embeddings(entries):
-        save_file(JOURNAL_FILE, entries)
+        _save_embeddings(JOURNAL_FILE, entries)
     hits = retrieve_similar(query, entries, k=k)
     if not hits:
         hits = retrieve_relevant(entries, query, k=k)
@@ -1967,7 +1979,7 @@ def tool_list_themes(period_days: int = 30) -> dict:
     tags, emotions, themes = Counter(), Counter(), Counter()
     for e in period:
         for t in e.get("tags", []): tags[t] += 1
-        emotions[e.get("emotion", "neutral")] += 1
+        if _has_reading(e): emotions[e.get("emotion", "neutral")] += 1
         for th in e.get("themes", []): themes[th] += 1
     return {
         "period_days": period_days,
@@ -1986,7 +1998,7 @@ def tool_period_summary(period: str = "week") -> dict:
                       if _safe_dt(e.get("timestamp")) and _safe_dt(e["timestamp"]) >= cutoff]
     total = len(period_entries)
     intensities = [e.get("intensity") for e in period_entries
-                   if isinstance(e.get("intensity"), (int, float))]
+                   if isinstance(e.get("intensity"), (int, float)) and _has_reading(e)]
     avg_intensity = round(sum(intensities) / len(intensities), 2) if intensities else None
     return {
         "period": period,
@@ -2015,7 +2027,7 @@ def tool_emotion_extremes(emotion: str = "positive", k: int = 5) -> List[dict]:
       - one of the specific emotion names (e.g. "anxious", "proud") —
         returns entries with that exact emotion, ranked by intensity
     """
-    entries = load_file(JOURNAL_FILE)
+    entries = [e for e in load_file(JOURNAL_FILE) if _has_reading(e)]
     if not entries:
         return []
     label = (emotion or "").strip().lower()
@@ -2325,7 +2337,7 @@ def chat_agent(data: ChatInput):
                 "timestamp": datetime.now().isoformat(),
             }
             turn["embedding"] = embed(_chat_embed_text(turn))
-            history = load_file(CHAT_FILE); history.append(turn); save_file(CHAT_FILE, history)
+            append_chat_turn(turn)
             yield event({"type": "done", "citations": []})
             return
 
@@ -2355,7 +2367,7 @@ def chat_agent(data: ChatInput):
                 "timestamp": datetime.now().isoformat(),
             }
             turn["embedding"] = embed(_chat_embed_text(turn))
-            history = load_file(CHAT_FILE); history.append(turn); save_file(CHAT_FILE, history)
+            append_chat_turn(turn)
             yield event({"type": "done", "citations": []})
             return
 
@@ -2455,7 +2467,7 @@ def chat_agent(data: ChatInput):
             "timestamp": datetime.now().isoformat(),
         }
         turn["embedding"] = embed(_chat_embed_text(turn))
-        history = load_file(CHAT_FILE); history.append(turn); save_file(CHAT_FILE, history)
+        append_chat_turn(turn)
 
         yield event({"type": "done", "citations": citations})
 
@@ -2492,7 +2504,7 @@ def chat(data: ChatInput):
             "smalltalk": True, "timestamp": datetime.now().isoformat(),
         }
         turn["embedding"] = embed(_chat_embed_text(turn))
-        history.append(turn); save_file(CHAT_FILE, history)
+        append_chat_turn(turn)
         return {"reply": reply, "citations": [], "safety": safety,
                 "turn": _strip_embedding(turn)}
 
@@ -2524,8 +2536,7 @@ def chat(data: ChatInput):
     }
     turn["embedding"] = embed(_chat_embed_text(turn))
 
-    history.append(turn)
-    save_file(CHAT_FILE, history)
+    append_chat_turn(turn)
     return {
         "reply": reply,
         "citations": citations,
@@ -2592,9 +2603,7 @@ def chat_stream(data: ChatInput):
             "timestamp": datetime.now().isoformat(),
         }
         turn["embedding"] = embed(_chat_embed_text(turn))
-        history = load_file(CHAT_FILE)
-        history.append(turn)
-        save_file(CHAT_FILE, history)
+        append_chat_turn(turn)
 
     return StreamingResponse(gen(), media_type="text/plain")
 
@@ -2606,7 +2615,8 @@ def get_chat():
 
 @app.delete("/chat")
 def clear_chat():
-    save_file(CHAT_FILE, [])
+    with file_lock(CHAT_FILE):
+        save_file(CHAT_FILE, [])
     return {"status": "cleared"}
 
 
@@ -2651,7 +2661,7 @@ def stats():
     total_entries = len(entries)
     total_words = sum(e.get("word_count", 0) for e in entries)
 
-    emotion_counts = Counter(e.get("emotion", "neutral") for e in entries)
+    emotion_counts = Counter(e.get("emotion", "neutral") for e in entries if _has_reading(e))
     tag_counts = Counter()
     for e in entries:
         for t in e.get("tags", []):
@@ -2667,7 +2677,7 @@ def stats():
         if 0 <= delta <= 29:
             by_day[d.isoformat()] += 1
             intensity = e.get("intensity")
-            if isinstance(intensity, (int, float)):
+            if isinstance(intensity, (int, float)) and _has_reading(e):
                 mood_by_day[d.isoformat()].append(intensity)
 
     daily = []
@@ -2828,12 +2838,13 @@ class ReflectAnswers(BaseModel):
 
 @app.post("/reflect/{entry_id}/answers")
 def save_reflect_answers(entry_id: str, body: ReflectAnswers):
-    entries = load_file(JOURNAL_FILE)
-    for e in entries:
-        if e["id"] == entry_id:
-            e["reflections"] = body.answers
-            save_file(JOURNAL_FILE, entries)
-            return {"status": "saved"}
+    with file_lock(JOURNAL_FILE):
+        entries = load_file(JOURNAL_FILE)
+        for e in entries:
+            if e["id"] == entry_id:
+                e["reflections"] = body.answers
+                save_file(JOURNAL_FILE, entries)
+                return {"status": "saved"}
     raise HTTPException(404, "Entry not found")
 
 
@@ -2949,12 +2960,13 @@ def _summarize_window(entries: List[dict]) -> dict:
     themes = Counter()
     intensities = []
     for e in entries:
-        emotions[(e.get("emotion") or "neutral").lower()] += 1
+        if _has_reading(e):
+            emotions[(e.get("emotion") or "neutral").lower()] += 1
         for t in e.get("tags", []) or []:
             tags[str(t).lower()] += 1
         for t in e.get("themes", []) or []:
             themes[str(t).lower()] += 1
-        if isinstance(e.get("intensity"), (int, float)):
+        if isinstance(e.get("intensity"), (int, float)) and _has_reading(e):
             intensities.append(float(e["intensity"]))
     avg_intensity = round(sum(intensities) / len(intensities), 2) if intensities else None
     excerpts = [{
@@ -3568,7 +3580,7 @@ def spotify_genre_mood():
         ts = _safe_dt(e.get("timestamp"))
         if not ts:
             continue
-        if e.get("intensity") is not None:
+        if e.get("intensity") is not None and _has_reading(e):
             j_by_day[ts.date().isoformat()].append(e["intensity"])
 
     day_buckets: Dict[str, List[tuple]] = defaultdict(list)
@@ -3650,7 +3662,7 @@ def spotify_genre_mood():
     _by_day_int: Dict[str, List[float]] = defaultdict(list)
     for e in _journal:
         ts = _safe_dt(e.get("timestamp"))
-        if not ts:
+        if not ts or not _has_reading(e):
             continue
         dd = ts.date().isoformat()
         _by_day_emo[dd][(e.get("emotion") or "neutral").lower()] += 1
@@ -3827,7 +3839,7 @@ def spotify_mood():
         if not ts:
             continue
         d = ts.date().isoformat()
-        if e.get("intensity") is not None:
+        if e.get("intensity") is not None and _has_reading(e):
             j_by_day[d].append(e["intensity"])
 
     points = []
@@ -3995,6 +4007,40 @@ def _update_insight(key: str, value: dict) -> None:
         cache = _load_insights()
         cache[key] = value
         _save_insights(cache)
+
+
+def _forget_entry_in_insights(entry_id: str) -> None:
+    """Drop a deleted entry from cached insights: any insight item citing it
+    (it may quote the entry's words) and any reference to it in evidence."""
+    short = entry_id[:8]
+
+    def refers(x) -> bool:
+        if isinstance(x, dict):
+            return x.get("id") == entry_id
+        return isinstance(x, str) and x in (entry_id, short)
+
+    def cites(item) -> bool:
+        return isinstance(item, dict) and any(
+            refers(x) for k, v in item.items()
+            if k.startswith("evidence") and isinstance(v, list) for x in v)
+
+    def scrub(node):
+        if isinstance(node, dict):
+            for k, v in node.items():
+                if isinstance(v, list):
+                    node[k] = ([x for x in v if not refers(x)] if k.startswith("evidence")
+                               else [x for x in v if not cites(x)])
+                scrub(node[k])
+        elif isinstance(node, list):
+            for x in node:
+                scrub(x)
+
+    with INSIGHTS_FILE_LOCK:
+        cache = _load_insights()
+        before = json.dumps(cache, sort_keys=True)
+        scrub(cache)
+        if json.dumps(cache, sort_keys=True) != before:
+            _save_insights(cache)
 
 
 def _entries_for_window(days: int) -> List[dict]:
@@ -4511,7 +4557,7 @@ TRIGGER_CATEGORIES = {"social", "work", "health", "sleep", "family",
 def compute_triggers(window_days: int = 90) -> dict:
     """Find emotional triggers in the last N days. Stats first, then LLM
     characterization with strict evidence requirements."""
-    entries = _entries_for_window(window_days)
+    entries = [e for e in _entries_for_window(window_days) if _has_reading(e)]
     if len(entries) < 6:
         return {"items": [], "generated_at": datetime.now().isoformat(),
                 "window_days": window_days, "entry_count": len(entries),
@@ -4688,7 +4734,7 @@ def refresh_triggers(window_days: int = 90, wait: bool = False):
 # crisis-safety layer in the chat path handles acute self-harm signals — this
 # layer is for chronic patterns the user wouldn't notice in any single entry.
 
-WELLBEING_LEVELS = ("ok", "watch", "elevated", "high")
+WELLBEING_LEVELS = ("insufficient", "ok", "watch", "elevated", "high")
 NEG_EMOTIONS = {"anxious", "sad", "frustrated", "angry", "lonely",
                 "overwhelmed", "tired"}
 EXHAUSTION_EMOTIONS = {"tired", "overwhelmed"}
@@ -4795,13 +4841,30 @@ def _spiral_stats(entries: List[dict], lookback_days: int = 7) -> dict:
     }
 
 
+WELLBEING_MIN_ENTRIES = 4  # fewer than this and a signal says "not enough to read"
+_WELLBEING_QUIET = {
+    "burnout": {"ok": "No signs of burnout in the last two weeks.",
+                "insufficient": "Not enough recent entries to read a burnout pattern.",
+                "flagged": "Some signals of burnout — see the entries below."},
+    "spiral": {"ok": "No spiral pattern in your recent days.",
+               "insufficient": "Not enough recent entries to spot a spiral.",
+               "flagged": "A short downward trend — worth a moment of attention."},
+}
+
+
+def _wellbeing_fallback(signal: str, level: str) -> str:
+    texts = _WELLBEING_QUIET[signal]
+    return texts.get(level, texts["flagged"])
+
+
 def _wellbeing_llm_pass(burnout: dict, spiral: dict, entries: List[dict]) -> dict:
     """One LLM call to write honest 1-2 sentence assessments for both
-    signals. Skipped entirely if both signals are 'ok' — saves the call."""
-    if burnout.get("level") == "ok" and spiral.get("level") == "ok":
+    signals. Skipped entirely if neither signal is flagged — saves the call."""
+    quiet = ("ok", "insufficient")
+    if burnout.get("level") in quiet and spiral.get("level") in quiet:
         return {
-            "burnout_summary": "No signs of burnout in the last two weeks.",
-            "spiral_summary": "No spiral pattern in your recent days.",
+            "burnout_summary": _wellbeing_fallback("burnout", burnout.get("level")),
+            "spiral_summary": _wellbeing_fallback("spiral", spiral.get("level")),
         }
 
     by_id = {e["id"]: e for e in entries}
@@ -4864,36 +4927,36 @@ Write the JSON exactly:
         out = re.sub(r"\s{2,}", " ", out)
         return scrub_banned_phrases(out).strip()[:400]
 
+    # Only a flagged signal takes the model's words; a quiet one keeps its
+    # plain statement, so a model reply (or none) can't invent a pattern.
+    def _summary(signal: str, level: str) -> str:
+        if level in quiet:
+            return _wellbeing_fallback(signal, level)
+        return _clean(str(obj.get(f"{signal}_summary", ""))) or _wellbeing_fallback(signal, level)
+
     return {
-        "burnout_summary": _clean(str(obj.get("burnout_summary", ""))) or
-                           "Some signals of burnout — see the entries below.",
-        "spiral_summary": _clean(str(obj.get("spiral_summary", ""))) or
-                          "A short downward trend — worth a moment of attention.",
+        "burnout_summary": _summary("burnout", burnout.get("level")),
+        "spiral_summary": _summary("spiral", spiral.get("level")),
     }
 
 
 def compute_wellbeing(window_days: int = 14) -> dict:
-    burnout_entries = _entries_for_window(window_days)
+    burnout_entries = [e for e in _entries_for_window(window_days) if _has_reading(e)]
     burnout = _burnout_stats(burnout_entries)
 
     # Spiral always uses last 7 days regardless of window selection
     all_entries = load_file(JOURNAL_FILE)
     cutoff = datetime.now() - timedelta(days=8)
-    recent_for_spiral = [e for e in all_entries
-                         if _safe_dt(e.get("timestamp")) and _safe_dt(e["timestamp"]) >= cutoff]
+    recent_for_spiral = [e for e in all_entries if _has_reading(e)
+                         and _safe_dt(e.get("timestamp")) and _safe_dt(e["timestamp"]) >= cutoff]
     recent_for_spiral.sort(key=lambda e: e.get("timestamp", ""))
     spiral = _spiral_stats(recent_for_spiral)
 
-    # If we don't have enough data, return early without an LLM call
-    if burnout.get("entry_count", 0) < 4 and spiral.get("entry_count", 0) < 4:
-        return {
-            "burnout": {**burnout, "level": "ok",
-                        "summary": "Not enough recent entries to read a burnout pattern."},
-            "spiral": {**spiral, "level": "ok",
-                       "summary": "Not enough recent entries to spot a spiral."},
-            "generated_at": datetime.now().isoformat(),
-            "window_days": window_days,
-        }
+    # Too few entries is "not enough to read", never "ok": each signal on its own.
+    for signal in (burnout, spiral):
+        if signal.get("entry_count", 0) < WELLBEING_MIN_ENTRIES:
+            signal["level"] = "insufficient"
+            signal["evidence_ids"] = []
 
     by_id = {e["id"]: e for e in all_entries}
     llm = _wellbeing_llm_pass(burnout, spiral, burnout_entries)
@@ -5077,13 +5140,15 @@ def get_insights_status():
     with INSIGHT_STATUS_LOCK:
         statuses = dict(INSIGHT_STATUS)
         last_runs = dict(INSIGHT_LAST_RUN)
+        errors = dict(INSIGHT_LAST_ERROR)
     # Only report the four user-facing engines — background jobs like cluster
     # naming share INSIGHT_STATUS but shouldn't show in the progress strip.
     kinds = [k for k in INSIGHT_ENGINE_KINDS if k in statuses]
     running = sum(1 for k in kinds if statuses[k] in ("queued", "running"))
     return {
         "engines": [
-            {"kind": k, "status": statuses[k], "last_run": last_runs.get(k)}
+            {"kind": k, "status": statuses[k], "last_run": last_runs.get(k),
+             "last_error": errors.get(k)}
             for k in kinds
         ],
         "running_count": running,
@@ -5370,7 +5435,7 @@ def get_graph(limit: int = 250, min_weight: float = 0.22):
         def _bg_graph_backfill():
             all_entries = load_file(JOURNAL_FILE)
             if backfill_entry_embeddings(all_entries):
-                save_file(JOURNAL_FILE, all_entries)
+                _save_embeddings(JOURNAL_FILE, all_entries)
         try:
             _run_insight_in_background("graph_embed_backfill", _bg_graph_backfill)
         except Exception:
@@ -5713,16 +5778,17 @@ def _upsert_people_from_entry(entry: dict) -> None:
     names = entry.get("people") or []
     if not names:
         return
-    store = _load_people_store()
-    changed = False
-    for raw in names:
-        key = _person_key(raw)
-        if not key or key in store:
-            continue
-        store[key] = _new_person_record(key, str(raw))
-        changed = True
-    if changed:
-        _save_people_store(store)
+    with file_lock(PEOPLE_FILE):
+        store = _load_people_store()
+        changed = False
+        for raw in names:
+            key = _person_key(raw)
+            if not key or key in store:
+                continue
+            store[key] = _new_person_record(key, str(raw))
+            changed = True
+        if changed:
+            _save_people_store(store)
 
 
 def _birthday_in_days(birthday: Optional[str]) -> Optional[int]:
@@ -5930,32 +5996,33 @@ def update_person(key: str, data: PersonUpdate):
     key = _person_key(key)
     if not key:
         raise HTTPException(400, "Invalid person key")
-    store = _load_people_store()
-    rec = _record_for(store, key)
+    with file_lock(PEOPLE_FILE):
+        store = _load_people_store()
+        rec = _record_for(store, key)
 
-    fields = data.model_dump(exclude_unset=True)
-    if "relationship" in fields:
-        rel = fields["relationship"]
-        if rel is not None and rel not in RELATIONSHIP_TYPES:
-            raise HTTPException(400, f"relationship must be one of {sorted(RELATIONSHIP_TYPES)}")
-        rec["relationship"] = rel
-    if "name" in fields:
-        rec["name"] = (fields["name"] or "").strip()[:40] or rec.get("name") or key
-    if "birthday" in fields:
-        bd = (fields["birthday"] or "").strip() or None
-        if bd is not None and _birthday_in_days(bd) is None:
-            raise HTTPException(400, "birthday must be 'YYYY-MM-DD' or 'MM-DD'")
-        rec["birthday"] = bd
-    if "cadence_days" in fields:
-        cd = fields["cadence_days"]
-        rec["cadence_days"] = int(cd) if isinstance(cd, int) and cd > 0 else None
-    if "pinned" in fields:
-        rec["pinned"] = bool(fields["pinned"])
-    if "hidden" in fields:
-        rec["hidden"] = bool(fields["hidden"])
-    rec["updated_at"] = datetime.now().isoformat()
-    store[key] = rec
-    _save_people_store(store)
+        fields = data.model_dump(exclude_unset=True)
+        if "relationship" in fields:
+            rel = fields["relationship"]
+            if rel is not None and rel not in RELATIONSHIP_TYPES:
+                raise HTTPException(400, f"relationship must be one of {sorted(RELATIONSHIP_TYPES)}")
+            rec["relationship"] = rel
+        if "name" in fields:
+            rec["name"] = (fields["name"] or "").strip()[:40] or rec.get("name") or key
+        if "birthday" in fields:
+            bd = (fields["birthday"] or "").strip() or None
+            if bd is not None and _birthday_in_days(bd) is None:
+                raise HTTPException(400, "birthday must be 'YYYY-MM-DD' or 'MM-DD'")
+            rec["birthday"] = bd
+        if "cadence_days" in fields:
+            cd = fields["cadence_days"]
+            rec["cadence_days"] = int(cd) if isinstance(cd, int) and cd > 0 else None
+        if "pinned" in fields:
+            rec["pinned"] = bool(fields["pinned"])
+        if "hidden" in fields:
+            rec["hidden"] = bool(fields["hidden"])
+        rec["updated_at"] = datetime.now().isoformat()
+        store[key] = rec
+        _save_people_store(store)
 
     derived = _derive_people_stats(load_file(JOURNAL_FILE))
     return _merge_person(key, derived.get(key), rec, entry_limit=50)
@@ -5970,32 +6037,34 @@ def add_person_note(key: str, data: PersonNoteInput):
         raise HTTPException(400, "Invalid person key")
     if not text:
         raise HTTPException(400, "Note is empty")
-    store = _load_people_store()
-    rec = _record_for(store, key)
-    note = {"id": str(uuid.uuid4()), "text": text[:2000],
-            "created_at": datetime.now().isoformat()}
-    rec.setdefault("notes", []).append(note)
-    rec["updated_at"] = note["created_at"]
-    store[key] = rec
-    _save_people_store(store)
+    with file_lock(PEOPLE_FILE):
+        store = _load_people_store()
+        rec = _record_for(store, key)
+        note = {"id": str(uuid.uuid4()), "text": text[:2000],
+                "created_at": datetime.now().isoformat()}
+        rec.setdefault("notes", []).append(note)
+        rec["updated_at"] = note["created_at"]
+        store[key] = rec
+        _save_people_store(store)
     return {"status": "added", "note": note}
 
 
 @app.delete("/people/{key}/notes/{note_id}")
 def delete_person_note(key: str, note_id: str):
     key = _person_key(key)
-    store = _load_people_store()
-    rec = store.get(key)
-    if not rec:
-        raise HTTPException(404, "Person not found")
-    notes = rec.get("notes", [])
-    kept = [n for n in notes if n.get("id") != note_id]
-    if len(kept) == len(notes):
-        raise HTTPException(404, "Note not found")
-    rec["notes"] = kept
-    rec["updated_at"] = datetime.now().isoformat()
-    store[key] = rec
-    _save_people_store(store)
+    with file_lock(PEOPLE_FILE):
+        store = _load_people_store()
+        rec = store.get(key)
+        if not rec:
+            raise HTTPException(404, "Person not found")
+        notes = rec.get("notes", [])
+        kept = [n for n in notes if n.get("id") != note_id]
+        if len(kept) == len(notes):
+            raise HTTPException(404, "Note not found")
+        rec["notes"] = kept
+        rec["updated_at"] = datetime.now().isoformat()
+        store[key] = rec
+        _save_people_store(store)
     return {"status": "deleted"}
 
 
@@ -6006,13 +6075,14 @@ def log_person_checkin(key: str):
     key = _person_key(key)
     if not key:
         raise HTTPException(400, "Invalid person key")
-    store = _load_people_store()
-    rec = _record_for(store, key)
-    now = datetime.now().isoformat()
-    rec["last_contact"] = now
-    rec["updated_at"] = now
-    store[key] = rec
-    _save_people_store(store)
+    with file_lock(PEOPLE_FILE):
+        store = _load_people_store()
+        rec = _record_for(store, key)
+        now = datetime.now().isoformat()
+        rec["last_contact"] = now
+        rec["updated_at"] = now
+        store[key] = rec
+        _save_people_store(store)
     derived = _derive_people_stats(load_file(JOURNAL_FILE))
     return _merge_person(key, derived.get(key), rec, entry_limit=50)
 

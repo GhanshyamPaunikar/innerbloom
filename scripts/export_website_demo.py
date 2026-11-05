@@ -4,7 +4,7 @@
 
 Writes, inside the website project:
   public/innerbloom/        the page and its assets, served at /innerbloom
-  api/_innerbloom/          the backend and the sample journal (demo_seed)
+  api/_innerbloom/          the backend, its innerbloom_core/ modules and the sample journal (demo_seed)
   api/innerbloom.py         the Vercel Python function behind /innerbloom/api
 
 The website's next.config.ts rewrites /innerbloom/api/* to that function, and
@@ -61,6 +61,8 @@ def main(site: Path):
     shutil.rmtree(backend, ignore_errors=True)
     backend.mkdir(parents=True)
     shutil.copy(ROOT / "app.py", backend / "innerbloom_app.py")
+    shutil.copytree(ROOT / "innerbloom_core", backend / "innerbloom_core",
+                    ignore=shutil.ignore_patterns("__pycache__"))
     shutil.copytree(ROOT / "demo_seed", backend / "demo_seed")
     (site / "api" / "innerbloom.py").write_text(ENTRY, encoding="utf-8")
     print("Exported the Innerbloom demo to", site)

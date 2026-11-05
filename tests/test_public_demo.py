@@ -34,6 +34,9 @@ out["b_count"] = len(b.get("/journal").json()["entries"])
 out["spotify_status"] = b.get("/spotify/status").json()
 out["spotify_config"] = b.post("/spotify/config", json={}).status_code
 out["docs"] = a.get("/docs").status_code
+site = {"Origin": "https://site.example", "X-Forwarded-Host": "site.example", "X-Forwarded-Proto": "https"}
+out["own_site"] = a.delete("/chat", headers=site).status_code
+out["other_site"] = a.delete("/chat", headers={**site, "Origin": "https://evil.example"}).status_code
 far = TestClient(app.app, headers={"X-Timezone": "Pacific/Kiritimati"})  # UTC+14
 far_entry = far.get("/journal").json()["entries"][0]
 out["far_seed_day"], out["far_seed_time"] = far_entry["timestamp"][:10], far_entry["timestamp"]
@@ -80,6 +83,7 @@ class PublicDemoTests(unittest.TestCase):
         self.assertTrue(out["spotify_status"]["demo"])
         self.assertEqual(out["spotify_config"], 403)
         self.assertEqual(out["docs"], 404)
+        self.assertEqual((out["own_site"], out["other_site"]), (200, 403))  # behind the website's rewrite
         from datetime import datetime
         from zoneinfo import ZoneInfo
         far_today = datetime.now(ZoneInfo("Pacific/Kiritimati")).date().isoformat()
