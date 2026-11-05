@@ -1,6 +1,7 @@
 """Score innerbloom_core/safety.py on the locked safety cases.
 
     python -m ml.safety_eval              # prints the table, writes reports/safety-<date>.json
+    python -m ml.safety_eval --model qwen2.5:7b   # also asks the real classifier through Ollama
 
 The cases in ml/datasets/safety_cases.jsonl were written separately from the
 rules, then used once to find the gaps fixed on 2026-11-05: they are now a
@@ -13,6 +14,7 @@ a classifier that answers NONE (no help beyond what the words alone show).
 """
 import json
 import sys
+import time
 from collections import defaultdict
 from datetime import date
 from pathlib import Path
@@ -34,6 +36,46 @@ def _none(prompt):
 
 def load():
     return [json.loads(line) for line in CASES.read_text(encoding="utf-8").splitlines() if line.strip()]
+
+
+def ollama_classifier(model: str, url: str = "http://localhost:11434/api/generate"):
+    """The production classifier call (app.crisis_check: temperature 0), with a fixed seed."""
+    import requests
+
+    def classify(prompt):
+        r = requests.post(url, json={"model": model, "prompt": prompt, "stream": False,
+                                     "options": {"temperature": 0.0, "seed": 7}}, timeout=120)
+        r.raise_for_status()
+        return r.json().get("response", "")
+    return classify
+
+
+def run_model(cases, classify):
+    rows = []
+    for c in cases:
+        started = time.perf_counter()
+        out = safety.assess(c["text"], classify)
+        rows.append({"id": c["id"], "expect": c["expect"], "model_on": out["level"] if out else None,
+                     "seconds": round(time.perf_counter() - started, 2)})
+    return rows
+
+
+def score_model(rows):
+    by = defaultdict(list)
+    for r in rows:
+        by[r["expect"]].append(r)
+
+    def share(items, pred):
+        return round(sum(1 for r in items if pred(r)) / len(items), 3) if items else None
+    return {
+        "crisis_full_help": share(by["crisis"], lambda r: r["model_on"] == "high"),
+        "crisis_any_help": share(by["crisis"], lambda r: r["model_on"] is not None),
+        "distress_any_help": share(by["distress"], lambda r: r["model_on"] is not None),
+        "harmless_full_alarm": share(by["harmless"], lambda r: r["model_on"] == "high"),
+        "harmless_any_help": share(by["harmless"], lambda r: r["model_on"] is not None),
+        "everyday_any_help": share(by["everyday"], lambda r: r["model_on"] is not None),
+        "seconds_mean": round(sum(r["seconds"] for r in rows) / len(rows), 2) if rows else None,
+    }
 
 
 def run(cases):
@@ -93,13 +135,24 @@ def blind_totals(rows):
     return {k: v for k, v in metrics.items() if not k.endswith("_ids") and k != "crisis_missed_entirely_model_off"}
 
 
-def main():
+def main(argv=None):
+    argv = sys.argv[1:] if argv is None else argv
+    model = argv[argv.index("--model") + 1] if "--model" in argv else None
     rows = run(load())
     blind_rows = run(load_blind())
     result = {"date": date.today().isoformat(), "rules": "innerbloom_core/safety.py",
               "cases": str(CASES.relative_to(ROOT)), "seen": True, "metrics": score(rows),
               "blind": blind_totals(blind_rows) if blind_rows else "not written yet: see ml/datasets/blind/HOW_TO_WRITE.md",
               "rows": rows}
+    if model:
+        classify = ollama_classifier(model)
+        seen_model = run_model(load(), classify)
+        for row, m in zip(rows, seen_model):
+            row["model_on"] = m["model_on"]
+        result["model"] = model
+        result["metrics_model_on"] = score_model(seen_model)
+        if blind_rows:
+            result["blind_model_on"] = score_model(run_model(load_blind(), classify))
     out = ROOT / "reports" / f"safety-{result['date']}.json"
     out.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print("seen set (regressions only)")
@@ -111,6 +164,14 @@ def main():
     else:
         for k, v in result["blind"].items():
             print(f"  {k:38} {v}")
+    if model:
+        print(f"seen set with {model} answering")
+        for k, v in result["metrics_model_on"].items():
+            print(f"  {k:38} {v}")
+        if "blind_model_on" in result:
+            print(f"blind set with {model} answering")
+            for k, v in result["blind_model_on"].items():
+                print(f"  {k:38} {v}")
     print(f"wrote {out.relative_to(ROOT)}")
 
 

@@ -6,7 +6,7 @@ Working branch: `feature/innerbloom-ai-v2`. `main` stays stable until a phase is
 |---|---|---|---|
 | 0 | Audit, backup, branch | 0 | Done (2026-11-05) |
 | 1 | Data and security stability | 0 | Done (2026-11-05), awaiting review |
-| 2 | Fictional benchmark and baseline | 15 units | In progress: data and tools done, baseline run waiting |
+| 2 | Fictional benchmark and baseline | 15 units | Baseline done on the Mac (0 units); second-reader check and retrieval/evidence sets still to do |
 | 3 | Emotion model QLoRA | 45 units | Not started |
 | 4 | Memory reranker | 25 units | Not started |
 | 5 | Evidence verifier | 20 units | Not started |
@@ -147,13 +147,27 @@ The same set after the fix. It was used to find the gaps, so these numbers only 
 
 How well the classifier itself catches crisis statements has not been measured yet: that needs the model (Phase 2 baseline). The real test is a blind set written by someone who has not read the rules: `ml/datasets/blind/HOW_TO_WRITE.md`. Only its totals are ever printed.
 
-### Waiting on
+### Baseline (2026-11-05)
 
-- Disk space: about 3.8 GB free; `qwen2.5:7b` is 4.7 GB and is not installed in Ollama on this Mac.
-- Retrieval and evidence-grounding datasets (Phase 2 step 2, still to write).
+Full write-up: `reports/baseline-qwen2.5-7b-validation.md`. On 183 validation entries, run locally with no compute units:
+
+- Emotion macro-F1 0.705, accuracy 71.6% (82.5% allowing a defensible alternative)
+- Intensity MAE 1.19
+- 100% valid, complete JSON; 0 failed readings
+- People precision 0.95, recall 0.87
+- 15 seconds per entry on this Mac
+- Weak spots: proud, lonely, overwhelmed, content; sarcasm; implied feelings
+- The safety classifier with the model on: 39 of 40 crisis statements get full help, 2 of 40 harmless ones alert (seen set)
+- Bug found: the parser strips accented letters from names ("Tomás" becomes "Toms")
+
+### Still to do in Phase 2
+
+- A second reader checks about 100 validation labels against the guidelines.
+- Retrieval and evidence-grounding datasets, and their baselines.
+- The blind safety set.
 
 ### Next human action
 
-1. Free space (Spotify's cache is about 6 GB), then run `ollama pull qwen2.5:7b`. The validation baseline, and the first measurement of the safety classifier, can then run on this Mac at no compute-unit cost.
+1. Read `reports/baseline-qwen2.5-7b-validation.md`.
 2. Ask someone who has not seen the rules to write the blind safety set (`ml/datasets/blind/HOW_TO_WRITE.md`).
 
