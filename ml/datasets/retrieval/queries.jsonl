@@ -1,0 +1,54 @@
+{"id":"qa01","journal":"a","query":"What did Dr. Lin ask me to track?","relevant":{"a07":2,"a10":1,"a25":1},"traits":["lookup","person"]}
+{"id":"qa02","journal":"a","query":"When did my boss make me feel small in front of other people?","relevant":{"a08":2,"a03":2},"traits":["paraphrase","person"]}
+{"id":"qa03","journal":"a","query":"Did I ever stand up to Gerald?","relevant":{"a23":2},"traits":["person"]}
+{"id":"qa04","journal":"a","query":"How did the half marathon go?","relevant":{"a30":2},"traits":["lookup"]}
+{"id":"qa05","journal":"a","query":"Times I got hurt while training","relevant":{"a26":2,"a09":1},"traits":["paraphrase","multi"]}
+{"id":"qa06","journal":"a","query":"What did Jonas and I decide about the rent increase?","relevant":{"a16":2,"a11":1,"a04":1},"traits":["person","multi"]}
+{"id":"qa07","journal":"a","query":"When was my niece born?","relevant":{"a32":2},"traits":["paraphrase"]}
+{"id":"qa08","journal":"a","query":"What helped me fall asleep faster?","relevant":{"a13":2,"a10":1,"a33":1},"traits":["paraphrase"]}
+{"id":"qa09","journal":"a","query":"Did Gerald ever praise my work?","relevant":{"a12":2,"a31":1,"a29":1},"traits":["person","multi"]}
+{"id":"qa10","journal":"a","query":"Where did I go on holiday with Femi?","relevant":{"a18":2},"traits":["person","lookup"]}
+{"id":"qa11","journal":"a","query":"Who is Rosa and how did I meet her?","relevant":{"a21":2,"a29":1},"traits":["person"]}
+{"id":"qa12","journal":"a","query":"What has been on my mind in the last couple of weeks?","relevant":{"a34":2,"a35":2,"a36":2},"window":[0,14],"traits":["temporal","multi"]}
+{"id":"qa13","journal":"a","query":"How was I feeling about running about two months ago?","relevant":{"a26":2,"a28":1},"window":[42,75],"traits":["temporal"]}
+{"id":"qa14","journal":"a","query":"What did therapy uncover about why I shrink around people?","relevant":{"a17":2},"traits":["paraphrase"]}
+{"id":"qa15","journal":"a","query":"Am I worried about living alone?","relevant":{"a35":2},"traits":["paraphrase"]}
+{"id":"qa16","journal":"a","query":"When did I feel proud of a run?","relevant":{"a20":2,"a05":2,"a30":1},"traits":["multi"]}
+{"id":"qa17","journal":"a","query":"Moments with Asha during her pregnancy","relevant":{"a06":2,"a14":2,"a24":1,"a30":1,"a32":1},"traits":["person","multi"]}
+{"id":"qa18","journal":"a","query":"What did I write right after coming back from the trip?","relevant":{"a19":2},"traits":["paraphrase","temporal"]}
+{"id":"qb01","journal":"b","query":"What was happening to Kofi at his new school?","relevant":{"b08":2,"b05":1,"b15":2,"b12":1},"traits":["person","multi"]}
+{"id":"qb02","journal":"b","query":"Did I keep my promise not to contact the school?","relevant":{"b12":2,"b08":1},"traits":["paraphrase"]}
+{"id":"qb03","journal":"b","query":"How is Ma's blood pressure now?","relevant":{"b26":2,"b03":1,"b11":1},"traits":["person","temporal"]}
+{"id":"qb04","journal":"b","query":"When did my mother end up in hospital?","relevant":{"b10":2},"traits":["paraphrase","person"]}
+{"id":"qb05","journal":"b","query":"How did the inspection turn out?","relevant":{"b19":2,"b18":1},"traits":["lookup"]}
+{"id":"qb06","journal":"b","query":"Money worries this year","relevant":{"b07":2,"b16":1,"b22":2,"b32":1},"traits":["paraphrase","multi"]}
+{"id":"qb07","journal":"b","query":"What happened with Desmond's wife?","relevant":{"b24":2,"b27":1},"traits":["person"]}
+{"id":"qb08","journal":"b","query":"What did I grow on the allotment and how did it go?","relevant":{"b13":2,"b21":2,"b31":2,"b06":1},"traits":["multi"]}
+{"id":"qb09","journal":"b","query":"When did the frost ruin my plants?","relevant":{"b21":2},"traits":["lookup"]}
+{"id":"qb10","journal":"b","query":"Did Abena and I fight about the holiday?","relevant":{"b22":2,"b23":2},"traits":["person"]}
+{"id":"qb11","journal":"b","query":"How did the spring concert go for the tenors?","relevant":{"b28":2,"b17":1,"b04":1},"traits":["lookup"]}
+{"id":"qb12","journal":"b","query":"What have I been worrying about lately?","relevant":{"b34":2,"b35":1},"window":[0,20],"traits":["temporal","paraphrase"]}
+{"id":"qb13","journal":"b","query":"Times I was completely worn out from school work","relevant":{"b09":2,"b29":2,"b19":1},"traits":["paraphrase","multi"]}
+{"id":"qb14","journal":"b","query":"When did Kofi say thank you?","relevant":{"b15":2},"traits":["person","lookup"]}
+{"id":"qb15","journal":"b","query":"Kofi performing","relevant":{"b30":2,"b25":1,"b20":1},"traits":["person","multi"]}
+{"id":"qb16","journal":"b","query":"When did we finally pay for the boiler?","relevant":{"b32":2,"b16":1},"traits":["paraphrase"]}
+{"id":"qb17","journal":"b","query":"What did Desmond give me recently?","relevant":{"b36":2},"window":[0,10],"traits":["person","temporal"]}
+{"id":"qb18","journal":"b","query":"What happened about five months ago with Kofi's schooling?","relevant":{"b01":2},"window":[140,175],"traits":["temporal","person"]}
+{"id":"qc01","journal":"c","query":"What did the X-ray show about my knee?","relevant":{"c05":2,"c03":1},"traits":["lookup"]}
+{"id":"qc02","journal":"c","query":"How did the knee operation and recovery go?","relevant":{"c21":2,"c22":2,"c25":2,"c29":2,"c24":1},"traits":["multi"]}
+{"id":"qc03","journal":"c","query":"Which painting went in the exhibition?","relevant":{"c16":2,"c06":1,"c18":1},"traits":["lookup"]}
+{"id":"qc04","journal":"c","query":"When did I go through my husband's clothes?","relevant":{"c20":2},"traits":["paraphrase"]}
+{"id":"qc05","journal":"c","query":"What does Carmen think I should do about the house?","relevant":{"c08":2,"c26":2,"c11":1,"c31":1},"traits":["person","multi"]}
+{"id":"qc06","journal":"c","query":"Times I felt alone in the house","relevant":{"c17":2,"c01":1,"c09":1},"traits":["paraphrase","multi"]}
+{"id":"qc07","journal":"c","query":"How did Mrs. Hale help me?","relevant":{"c07":2,"c15":2,"c20":1,"c24":2,"c33":1},"traits":["person","multi"]}
+{"id":"qc08","journal":"c","query":"When did my grandson visit on his own?","relevant":{"c28":2,"c13":1},"traits":["paraphrase","person"]}
+{"id":"qc09","journal":"c","query":"What did Sofia say at the exhibition?","relevant":{"c18":2},"traits":["person","lookup"]}
+{"id":"qc10","journal":"c","query":"Have I decided about moving?","relevant":{"c34":2,"c36":2,"c31":1,"c32":1},"window":[0,30],"traits":["temporal","multi"]}
+{"id":"qc11","journal":"c","query":"Who is Bernard?","relevant":{"c02":2,"c06":1,"c12":1,"c27":1},"traits":["person"]}
+{"id":"qc12","journal":"c","query":"What happened on Antonio's birthday?","relevant":{"c30":2},"traits":["person","lookup"]}
+{"id":"qc13","journal":"c","query":"When was I in a lot of pain at night?","relevant":{"c14":2,"c22":1},"traits":["paraphrase"]}
+{"id":"qc14","journal":"c","query":"What have I been doing this past week?","relevant":{"c35":2,"c36":2},"window":[0,7],"traits":["temporal","multi"]}
+{"id":"qc15","journal":"c","query":"When did I find something of Antonio's that made me cry or laugh?","relevant":{"c09":2,"c36":2},"traits":["paraphrase","multi"]}
+{"id":"qc16","journal":"c","query":"How was I doing about five months ago?","relevant":{"c01":2,"c02":1,"c03":1},"window":[155,180],"traits":["temporal"]}
+{"id":"qc17","journal":"c","query":"Did I argue with my daughter?","relevant":{"c08":2,"c11":2},"traits":["paraphrase","person"]}
+{"id":"qc18","journal":"c","query":"What is the new home like?","relevant":{"c31":2,"c35":1},"traits":["paraphrase"]}

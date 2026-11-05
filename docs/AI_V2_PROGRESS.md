@@ -160,10 +160,19 @@ Full write-up: `reports/baseline-qwen2.5-7b-validation.md`. On 183 validation en
 - The safety classifier with the model on: 39 of 40 crisis statements get full help, 2 of 40 harmless ones alert (seen set)
 - Bug found and fixed: the parser stripped accented letters from names ("Tomás" became "Toms") and dropped names in other scripts. Rescored: people precision 0.964, recall 0.885, no invented names
 
+### Memory search and evidence checking (2026-11-05)
+
+Full write-up: `reports/baseline-retrieval-evidence-validation.md`.
+
+- `ml/datasets/retrieval/`: three fictional journals (108 entries) and 54 questions with marked answers; journal c locked.
+- `ml/datasets/evidence/claims.jsonl`: 120 claims with dated evidence, labelled supported, contradicted or insufficient; half locked.
+- Keyword search: the answer is in the top 5 for 80.6% of questions, but only 32% of entries are found for questions that need several, and 27% of results fall in the asked time window.
+- `qwen2.5:7b` as a plain evidence judge: accepts 39% of claims the entries do not support (mostly overreach from thin evidence), rejects no valid claims.
+
 ### Still to do in Phase 2
 
 - A second reader checks about 100 validation labels against the guidelines.
-- Retrieval and evidence-grounding datasets, and their baselines.
+- Meaning-search baseline: needs `ollama pull mxbai-embed-large` (about 670 MB).
 - The blind safety set.
 
 ### Next human action

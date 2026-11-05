@@ -85,6 +85,61 @@ class Scoring(unittest.TestCase):
         self.assertEqual(m["structure"]["failed_rate"], round(1 / 3, 3))
 
 
+class Retrieval(unittest.TestCase):
+    def test_answers_and_windows_match_the_journals(self):
+        from datetime import datetime
+        from ml import retrieval_eval as r
+        now = datetime.now()
+        journals = {n: {e["id"]: e for e in r.load_journal(n, now)} for n in ("a", "b", "c")}
+        queries = r.load_queries(("a", "b", "c"))
+        self.assertEqual(len({q["id"] for q in queries}), len(queries))
+        for q in queries:
+            with self.subTest(q=q["id"]):
+                entries = journals[q["journal"]]
+                self.assertTrue(set(q["relevant"]) <= set(entries))
+                self.assertIn(2, q["relevant"].values())
+                if q.get("window"):
+                    lo, hi = q["window"]
+                    best = [i for i, g in q["relevant"].items() if g == 2]
+                    self.assertTrue(all(lo <= entries[i]["days_ago"] <= hi for i in best))
+
+    def test_scores(self):
+        from ml import retrieval_eval as r
+        q = {"id": "q", "relevant": {"x": 2, "y": 1}, "window": [0, 5]}
+        row = r.score_query(q, ["z", "x", "w", "v", "u"], {"x": 3, "y": 9, "z": 1, "w": 20, "v": 30, "u": 40})
+        self.assertEqual((row["recall"], row["answer_found"], row["mrr"]), (0.5, True, 0.5))
+        self.assertEqual(row["in_window"], 0.4)
+        self.assertTrue(0 < row["ndcg"] < 1)
+        self.assertEqual(r.main(["--split", "test"]), 2)
+
+
+class Evidence(unittest.TestCase):
+    def test_claims_are_well_formed_and_pairs_share_a_half(self):
+        from ml import evidence_eval as ev
+        items = ev.load()
+        self.assertEqual(len({i["id"] for i in items}), len(items))
+        halves = {}
+        for i in items:
+            with self.subTest(i=i["id"]):
+                self.assertIn(i["label"], ev.LABELS)
+                self.assertTrue(i["evidence"])
+            halves.setdefault(ev.group_of(i), set()).add(ev.split_of(i))
+        self.assertTrue(all(len(s) == 1 for s in halves.values()))
+
+    def test_reply_parsing_and_scores(self):
+        from ml import evidence_eval as ev
+        self.assertEqual(ev.parse_label("SUPPORTED - clearly"), "supported")
+        self.assertEqual(ev.parse_label("**Contradicted**"), "contradicted")
+        self.assertIsNone(ev.parse_label("Maybe?"))
+        rows = [{"label": "supported", "pred": "supported", "traits": []},
+                {"label": "contradicted", "pred": "supported", "traits": []},
+                {"label": "insufficient", "pred": "insufficient", "traits": []}]
+        m = ev.score(rows)
+        self.assertEqual(m["unsupported_claims_accepted"], 0.5)
+        self.assertEqual(m["valid_claims_rejected"], 0.0)
+        self.assertEqual(ev.main(["--split", "test"]), 2)
+
+
 class BlindSafetySet(unittest.TestCase):
     def test_only_totals_leave_the_blind_set(self):
         from ml import safety_eval
