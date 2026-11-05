@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import app as innerbloom_app  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
 
-client = TestClient(innerbloom_app.app)
+client = TestClient(innerbloom_app.app, base_url="http://127.0.0.1:5000")
 
 # ---------- tiny helpers ----------
 
@@ -558,6 +558,141 @@ def test_insight_write_concurrency():
           f"missing: {missing}")
 
 
+def test_journal_write_concurrency():
+    section("Journal write concurrency")
+    innerbloom_app.save_file(innerbloom_app.JOURNAL_FILE, [])
+
+    def slow_llama(prompt, **kw):
+        time.sleep(0.01)  # keep several saves in flight at once
+        return fake_llama(prompt, **kw)
+
+    with patch.object(innerbloom_app, "call_llama", side_effect=slow_llama), \
+         patch.object(innerbloom_app, "embed", return_value=None):
+        texts = [f"Concurrent entry number {i}." for i in range(12)]
+        threads = [threading.Thread(target=client.post, args=("/save",), kwargs={"json": {"text": t}})
+                   for t in texts]
+        for t in threads: t.start()
+        for t in threads: t.join()
+    saved = {e["text"] for e in innerbloom_app.load_file(innerbloom_app.JOURNAL_FILE)}
+    check("concurrent saves lose no entries", saved == set(texts),
+          f"missing: {set(texts) - saved}")
+
+    # A background embedding pass works on an old copy of the journal; writing
+    # it back must keep an entry saved meanwhile.
+    stale = innerbloom_app.load_file(innerbloom_app.JOURNAL_FILE)
+    for e in stale:
+        e["embedding"], e["embedding_version"] = [0.1, 0.2], innerbloom_app.EMBED_VERSION
+    with patch.object(innerbloom_app, "call_llama", side_effect=fake_llama), \
+         patch.object(innerbloom_app, "embed", return_value=None):
+        client.post("/save", json={"text": "Written while embeddings were running."})
+    innerbloom_app._save_embeddings(innerbloom_app.JOURNAL_FILE, stale)
+    after = innerbloom_app.load_file(innerbloom_app.JOURNAL_FILE)
+    check("embedding write-back keeps newer entries",
+          any(e["text"] == "Written while embeddings were running." for e in after))
+    check("embedding write-back stores vectors",
+          sum(1 for e in after if e.get("embedding")) == len(texts))
+    leftovers = [f for f in os.listdir(TMP) if f.endswith(".tmp")]
+    check("no temp files left behind", not leftovers, str(leftovers))
+
+
+def test_failed_analysis():
+    section("Failed analysis")
+    innerbloom_app.save_file(innerbloom_app.JOURNAL_FILE, [])
+    down = lambda *a, **kw: "[LLM error: connection refused]"
+
+    with patch.object(innerbloom_app, "call_llama", side_effect=down), \
+         patch.object(innerbloom_app, "embed", return_value=None):
+        r = client.post("/save", json={"text": "Wrote this while the model was off."})
+    entry = r.json()["entry"]
+    check("save still succeeds when the model is down", r.status_code == 200)
+    check("entry is marked as not read", entry.get("analysis_status") == "failed", str(entry))
+    check("error is kept for the entry", "connection refused" in (entry.get("analysis_error") or ""))
+
+    with patch.object(innerbloom_app, "call_llama", side_effect=fake_llama), \
+         patch.object(innerbloom_app, "embed", return_value=None):
+        client.post("/save", json={"text": "A good day at work."})
+        s = client.get("/stats").json()
+    check("stats leave unread entries out of feelings",
+          dict(s["emotions"]) == {"happy": 1}, str(s["emotions"]))
+    check("stats still count every entry", s["total_entries"] == 2, str(s.get("total_entries")))
+
+    with patch.object(innerbloom_app, "call_llama", side_effect=down):
+        r = client.post("/journal/reanalyze")
+    check("retry while still down changes nothing",
+          r.json()["reanalyzed"] == 0 and r.json()["remaining"] == 1, r.text[:120])
+
+    with patch.object(innerbloom_app, "call_llama", side_effect=fake_llama):
+        r = client.post("/journal/reanalyze")
+    check("retry reads the entry once the model is back",
+          r.json()["reanalyzed"] == 1 and r.json()["remaining"] == 0, r.text[:120])
+    fixed = client.get(f"/journal/{entry['id']}").json()
+    check("read entry loses its failed marker",
+          "analysis_status" not in fixed and fixed["emotion"] == "happy", str(fixed)[:160])
+
+
+def test_derived_data():
+    section("Derived data and background jobs")
+    with patch.object(innerbloom_app, "call_llama", side_effect=fake_llama), \
+         patch.object(innerbloom_app, "embed", return_value=None):
+        gone = client.post("/save", json={"text": "I said I would rest more."}).json()["entry"]["id"]
+        kept = client.post("/save", json={"text": "Worked late again."}).json()["entry"]["id"]
+    innerbloom_app.save_file(innerbloom_app.INSIGHTS_FILE, {
+        "contradictions": {"items": [
+            {"stated": "I would rest more", "evidence": [gone[:8], kept[:8]]},
+            {"stated": "Something else", "evidence": [kept[:8]]},
+        ]},
+        "wellbeing": {"burnout": {"level": "watch", "evidence": [{"id": gone}, {"id": kept}]}},
+    })
+    client.delete(f"/journal/{gone}")
+    cache = innerbloom_app._load_insights()
+    items = cache["contradictions"]["items"]
+    check("deleting an entry drops insights that quote it",
+          [i["stated"] for i in items] == ["Something else"], str(items))
+    check("deleting an entry removes it from evidence",
+          cache["wellbeing"]["burnout"]["evidence"] == [{"id": kept}], str(cache["wellbeing"]))
+
+    def broken():
+        raise RuntimeError("model went away")
+    with patch.object(innerbloom_app, "SANDBOX_MODE", True):  # runs the job inline
+        innerbloom_app._run_insight_in_background("triggers", broken)
+    eng = {e["kind"]: e for e in client.get("/insights/status").json()["engines"]}
+    check("failed background job reports failed",
+          eng["triggers"]["status"] == "failed", str(eng["triggers"]))
+    check("failed job keeps its error and time",
+          "model went away" in eng["triggers"]["last_error"]["error"]
+          and eng["triggers"]["last_error"]["at"], str(eng["triggers"]))
+    with patch.object(innerbloom_app, "SANDBOX_MODE", True):
+        innerbloom_app._run_insight_in_background("triggers", lambda: None)
+    eng = {e["kind"]: e for e in client.get("/insights/status").json()["engines"]}
+    check("a later success clears the error",
+          eng["triggers"]["status"] == "idle" and eng["triggers"]["last_error"] is None, str(eng["triggers"]))
+
+
+def test_local_only():
+    section("Local-only API")
+    r = client.get("/journal", headers={"Host": "evil.example"})
+    check("other Host refused (DNS rebinding)", r.status_code == 403, str(r.status_code))
+    r = client.get("/journal", headers={"Origin": "https://evil.example"})
+    check("page on another site refused", r.status_code == 403, str(r.status_code))
+    r = client.post("/save", json={"text": "x"}, headers={"Origin": "https://evil.example"})
+    check("cross-site write refused", r.status_code == 403, str(r.status_code))
+    r = client.get("/journal", headers={"Origin": "null"})
+    check("opaque 'null' origin refused", r.status_code == 403, str(r.status_code))
+    r = client.options("/journal", headers={"Origin": "https://evil.example",
+                                            "Access-Control-Request-Method": "GET"})
+    check("cross-site preflight refused", r.status_code == 403, str(r.status_code))
+    r = client.get("/journal", headers={"Origin": "http://127.0.0.1:5000"})
+    check("own page allowed", r.status_code == 200, str(r.status_code))
+    r = client.get("/journal", headers={"Origin": "http://localhost:5500"})
+    check("local page on another port allowed",
+          r.status_code == 200 and r.headers.get("access-control-allow-origin") == "http://localhost:5500",
+          str(dict(r.headers))[:160])
+    r = client.get("/journal", headers={"Host": "localhost:5000"})
+    check("localhost Host allowed", r.status_code == 200, str(r.status_code))
+    r = client.get("/journal")
+    check("request without Origin allowed", r.status_code == 200, str(r.status_code))
+
+
 # =========================================================================
 # Run
 # =========================================================================
@@ -572,6 +707,10 @@ if __name__ == "__main__":
         test_spotify()
         test_people()
         test_insight_write_concurrency()
+        test_journal_write_concurrency()
+        test_failed_analysis()
+        test_derived_data()
+        test_local_only()
         test_health()
     finally:
         shutil.rmtree(TMP, ignore_errors=True)

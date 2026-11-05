@@ -5,7 +5,7 @@ Working branch: `feature/innerbloom-ai-v2`. `main` stays stable until a phase is
 | Phase | Scope | GPU budget | Status |
 |---|---|---|---|
 | 0 | Audit, backup, branch | 0 | Done (2026-11-05) |
-| 1 | Data and security stability | 0 | Next |
+| 1 | Data and security stability | 0 | In progress: 5 of 7 areas done |
 | 2 | Fictional benchmark and baseline | 15 units | Not started |
 | 3 | Emotion model QLoRA | 45 units | Not started |
 | 4 | Memory reranker | 25 units | Not started |
@@ -58,6 +58,25 @@ Storage: JSON files in `data/` (`journal.json`, `chat.json`, `insights.json`, `p
 
 Still to review in Phase 1: derived-data refresh on edit/delete (embeddings, people, insights) and background job status (queued, running, failed, with errors and timestamps).
 
+## Phase 1: stabilise data and security (2026-11-05)
+
+Tests: `python -m pytest -q` passes 17 tests; `python tests/test_app.py` passes 115 checks (89 before, 26 new). Browser check against a throwaway data folder with Ollama stopped: saving shows "not read yet", Entries offers "Read again", no console errors.
+
+| Area | Change | Evidence |
+|---|---|---|
+| CI | `tests/conftest.py` fails a pytest test when any of its `check()` calls fail | A planted failing check made pytest fail; removed again |
+| Structured analysis | A failed reading is saved with `analysis_status: "failed"` and the error. It is excluded from stats, triggers, wellbeing, chat tools and listening comparisons. `POST /journal/reanalyze` reads it again; the UI labels it and offers a retry | Failed-analysis tests |
+| JSON writes | One lock per data file around every load-change-save, unique temp files, embedding write-back merged by id, chat turns appended under the lock | 12 parallel saves × 5 runs: old code lost 43 of 60 entries, new code lost none |
+| Derived data | Deleting an entry removes it from cached insights, dropping any insight that quoted it. Edits already re-embed; people stats are computed live from entries | Derived-data tests |
+| Background jobs | Jobs end as `idle` or `failed`; `/insights/status` returns the last error and its time | Job status tests |
+| Local API security | CORS limited to pages on this computer. A guard refuses other Hosts (DNS rebinding) and other sites' Origins, including `null`. The public demo keeps a same-site rule behind its rewrite | Local-only tests, demo test |
+| Wellbeing and safety | Not started: false-positive and false-negative cases for `crisis_check` and wellbeing levels | — |
+| Maintainability | Not started: extract modules from `app.py` behind the tests | — |
+
+Notes:
+- Spotify tokens stay in `data/spotify.json` on this computer, ignored by Git. With cross-site requests refused, no other site can read them through the API.
+- The old `docs/Spotify.png` in history still needs a look for a visible client ID.
+
 ### Next human action
 
-Review the issues above and approve Phase 1. No GPU is needed until Phase 2.
+Review the Phase 1 changes. Next on this branch: the wellbeing and safety test cases, then the first `app.py` extractions. No GPU is needed until Phase 2.

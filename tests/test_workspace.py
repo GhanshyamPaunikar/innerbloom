@@ -13,7 +13,7 @@ from fastapi.testclient import TestClient
 
 class WorkspaceServingTests(unittest.TestCase):
     def setUp(self):
-        self.client = TestClient(app.app)
+        self.client = TestClient(app.app, base_url="http://127.0.0.1:5000")
 
     def test_workspace_and_local_assets(self):
         with patch.dict(os.environ, {"INNERBLOOM_DEMO": "0"}):

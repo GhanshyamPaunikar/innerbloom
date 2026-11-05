@@ -267,6 +267,8 @@ async function saveEntry() {
         "Entry saved. Hard days pass. You're still here, and that counts.",
       ];
       toast(compassionMsgs[Math.floor(Math.random() * compassionMsgs.length)], "success", 4000);
+    } else if (saved?.entry?.analysis_status === "failed") {
+      toast("Entry saved. The model wasn’t reachable, so it hasn’t been read yet. You can read it again from Entries.", "error", 5000);
     } else {
       toast("Entry saved · analyzed", "success");
     }
@@ -558,6 +560,16 @@ function renderEntries() {
   list.sort((a,b) => $("entry-sort").value === "oldest" ? new Date(a.timestamp)-new Date(b.timestamp) : new Date(b.timestamp)-new Date(a.timestamp));
   $("entries-count").textContent = `${list.length} ${list.length === 1 ? "MOMENT" : "MOMENTS"} KEPT`;
   if (!list.length) { host.innerHTML = '<div class="empty"><h3>No moments on this day.</h3><p>Choose another date, or clear the date filter.</p></div>'; return; }
+  const unread = allEntries.filter(e => e.analysis_status === "failed").length;
+  if (unread) {
+    const one = unread === 1;
+    const note = document.createElement("div");
+    note.className = "unread-note";
+    note.setAttribute("role", "status");
+    note.innerHTML = `<span>${one ? "One moment hasn’t" : `${unread} moments haven’t`} been read yet. The model wasn’t reachable when ${one ? "it was" : "they were"} saved, so ${one ? "it’s" : "they’re"} left out of your patterns for now.</span><button type="button" class="btn">Read again</button>`;
+    note.querySelector("button").addEventListener("click", reanalyzeEntries);
+    host.appendChild(note);
+  }
   let lastMonth = "";
   list.forEach(e => {
     const m = fmtMonthYear(e.timestamp);
@@ -577,7 +589,7 @@ function renderEntries() {
       <div class="entry-day">${new Date(e.timestamp).getDate().toString().padStart(2,"0")}<small>${new Date(e.timestamp).toLocaleDateString([], {weekday:"short"})}</small></div>
       <div class="row">
         <span class="date">${fmtDate(e.timestamp)}</span>
-        <span class="emo-pill"><span class="dot" style="background:${color}"></span>${e.emotion || "neutral"} · ${e.intensity || 5}/10 estimated</span>
+        <span class="emo-pill"><span class="dot" style="background:${color}"></span>${feelingLabel(e)}</span>
         ${e.word_count ? `<span class="badge">${e.word_count} words</span>` : ""}
       </div>
       <div class="title">${escapeHtml(e.title || e.summary || "Untitled")}</div>
@@ -587,6 +599,19 @@ function renderEntries() {
     c.addEventListener("click", () => openEntry(e));
     host.appendChild(c);
   });
+}
+
+function feelingLabel(e) {
+  return e.analysis_status === "failed" ? "not read yet" : `${e.emotion || "neutral"} · ${e.intensity || 5}/10 estimated`;
+}
+
+async function reanalyzeEntries(ev) {
+  const btn = ev?.currentTarget; if (btn) { btn.disabled = true; btn.textContent = "Reading…"; }
+  try {
+    const r = await api("/journal/reanalyze", { method: "POST" });
+    toast(r.reanalyzed ? `Read ${r.reanalyzed} ${r.reanalyzed === 1 ? "moment" : "moments"}` : "The model still isn’t reachable. Is Ollama running?", r.reanalyzed ? "success" : "error");
+  } catch { toast("Couldn’t reach Innerbloom.", "error"); }
+  loadEntries();
 }
 
 $("search-input").addEventListener("input", () => renderEntries());
@@ -603,7 +628,7 @@ function openEntry(e) {
   const color = emotionColor(e.emotion);
   $("modal-meta").innerHTML = `
     <span>${fmtDate(e.timestamp)}</span>
-    <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:${color};display:inline-block;"></span>${e.emotion || "neutral"} · ${e.intensity || 5}/10 estimated</span>
+    <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:${color};display:inline-block;"></span>${feelingLabel(e)}</span>
     ${e.user_mood != null ? `<span>Your intensity rating: ${e.user_mood}/10</span>` : ""}
     ${e.word_count ? `<span>${e.word_count} words</span>` : ""}
     ${e.tags?.length ? `<span>${e.tags.map(t => `#${escapeHtml(t)}`).join(" ")}</span>` : ""}

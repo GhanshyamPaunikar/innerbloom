@@ -6,6 +6,8 @@ A plain HTML, CSS and JavaScript page (`index.html` and `assets/`) talks to one 
 
 Every saved entry is read once by the model and returned in a strict JSON shape: `emotion`, `intensity` (1 to 10), `summary`, `tags`, `themes` and `people`. Emotion comes from a fixed list of 16 (happy, sad, anxious, calm, grateful, frustrated, excited, reflective, hopeful, tired, angry, content, lonely, proud, overwhelmed, neutral) so stats stay consistent over months.
 
+If the model cannot be reached or its reply cannot be read, the entry is still saved but marked `analysis_status: "failed"` with the error. It shows as "not read yet", stays out of feelings, intensity charts and insights, and can be read again later from Entries (`POST /journal/reanalyze`).
+
 ## Memory that understands meaning
 
 - Entries are embedded with `mxbai-embed-large`.
@@ -49,6 +51,15 @@ Anyone you name is added when you save. Each person also gets simple signals (da
 ## Care
 
 If writing suggests self-harm or suicidal thoughts, a fast keyword check and a small classifier attach helplines (iCall, AASRA, 988, Samaritans, Find a Helpline) to the reply. The reply itself is never withheld.
+
+## Storage and privacy
+
+- Each data file has its own lock. Every load-change-save holds it, and model calls happen outside it, so a slow reading never blocks other saves.
+- Writes go to a uniquely named temporary file that then replaces the original, so a crash never leaves a half-written journal.
+- Background embedding passes write back only their vectors, matched by entry id, so entries saved meanwhile are kept.
+- Deleting an entry also removes it from cached insights, including any insight that quoted it.
+- The API has no login, so it answers only requests addressed to this computer (`127.0.0.1`, `localhost`, `::1`) and coming from its own page or another page on this computer. This blocks other websites and DNS rebinding. `INNERBLOOM_ALLOWED_HOSTS` adds names for a custom setup.
+- Background insight jobs report `queued`, `running`, `idle` or `failed`, with the last error and its time, at `/insights/status`.
 
 ## The page
 
