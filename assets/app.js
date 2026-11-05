@@ -187,25 +187,26 @@ updateWordCount();
 // =========================================================================
 // CRISIS DETECTION
 // =========================================================================
-const CRISIS_KEYWORDS = [
-  "want to die", "kill myself", "end my life", "suicidal", "suicide",
-  "no reason to live", "can't go on", "cannot go on", "give up on life",
-  "not worth living", "better off dead", "end it all", "want to disappear",
-  "don't want to exist", "no point in living", "life is not worth",
-  "hate being alive", "wish i was dead", "want to be dead", "tired of living",
-  "don't want to live", "ready to die", "planning to kill", "hurt myself",
-  "self harm", "cutting myself", "no will to live",
-];
-
+// The rules live in innerbloom/safety.py; the page asks while you type
+// (clear phrases only) and the full check runs again when the entry is saved.
 let crisisShown = false;
+let crisisTimer;
+
+function showCrisisSupport() {
+  if (crisisShown) return;
+  crisisShown = true;
+  $("crisis-modal").classList.add("active");
+}
 
 function checkCrisisKeywords(text) {
-  if (crisisShown) return;
-  const lower = text.toLowerCase();
-  if (CRISIS_KEYWORDS.some(k => lower.includes(k))) {
-    crisisShown = true;
-    $("crisis-modal").classList.add("active");
-  }
+  if (crisisShown || !text.trim()) return;
+  clearTimeout(crisisTimer);
+  crisisTimer = setTimeout(async () => {
+    try {
+      const r = await api("/safety/check", { method: "POST", body: JSON.stringify({ text }) });
+      if (r.safety?.level === "high") showCrisisSupport();
+    } catch {}
+  }, 600);
 }
 
 $("crisis-close").addEventListener("click", () => {
@@ -254,6 +255,7 @@ async function saveEntry() {
       body: JSON.stringify({ text, title: entryTitle.value.trim() || null, mood: $("entry-intensity").value ? Number($("entry-intensity").value) : null }),
     });
     entryText.value = ""; entryTitle.value = "";
+    if (saved?.safety?.level === "high") showCrisisSupport();
     crisisShown = false;
     clearSavedDraft(); updateWordCount();
     const hardEmotions = ["sad", "anxious", "angry", "overwhelmed", "lonely", "frustrated", "tired"];
@@ -1502,12 +1504,12 @@ $("btn-triggers-refresh").addEventListener("click", async () => {
 // --- Wellbeing radar (Phase 3 insight engine) ----------------------------
 function renderWellbeingCard(host, name, signal) {
   const level = (signal && signal.level) || "ok";
-  host.className = `wellbeing-card ${level}`;
+  host.className = `wellbeing-card ${level === "insufficient" ? "ok insufficient" : level}`;
   host.innerHTML = `<div class="level-strip"></div>`;
 
   const head = document.createElement("div");
   head.className = "head";
-  head.innerHTML = `<div class="name">${name}</div><div class="level">${level === "ok" ? "No pattern flagged" : escapeHtml(level)}</div>`;
+  head.innerHTML = `<div class="name">${name}</div><div class="level">${level === "ok" ? "No pattern flagged" : level === "insufficient" ? "Not enough to read yet" : escapeHtml(level)}</div>`;
   host.appendChild(head);
 
   // Stat row — different fields for burnout vs spiral

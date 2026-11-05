@@ -70,3 +70,7 @@
 /* Entries saved while the model was unreachable */
 .unread-note{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:0 0 16px;padding:14px 18px;border:1px solid var(--border);border-radius:18px;background:rgba(255,250,240,.8);font-size:13px;color:var(--text)}
 .unread-note span{flex:1 1 260px}
+
+/* Wellbeing with too few entries: neutral, not the green of "no pattern" */
+.wellbeing-card.insufficient .level-strip{background:var(--border)}
+.wellbeing-card.insufficient .level{background:transparent;color:var(--text-muted);border-color:var(--border)}

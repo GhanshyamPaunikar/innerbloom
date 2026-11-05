@@ -161,6 +161,11 @@ def test_unit_helpers():
     j = innerbloom_app.extract_json("totally not json at all")
     check("extract_json returns None on garbage", j is None)
 
+    # analyze_entry — a JSON list reply is a failed reading, not a crash
+    with patch.object(innerbloom_app, "call_llama", return_value="[1, 2]"):
+        a = innerbloom_app.analyze_entry("Anything.")
+    check("list reply marks analysis failed", a["analysis_status"] == "failed", str(a))
+
     # score_entry + retrieve_relevant
     entries = [
         {"id": "a", "text": "I love cooking pasta with garlic", "tags": ["food"], "themes": [],
@@ -630,6 +635,69 @@ def test_failed_analysis():
           "analysis_status" not in fixed and fixed["emotion"] == "happy", str(fixed)[:160])
 
 
+def test_safety_routes():
+    section("Safety on the writing page")
+    r = client.post("/safety/check", json={"text": "I've been thinking about ending my life."})
+    check("live check flags clear words", r.json()["safety"]["level"] == "high", r.text[:120])
+    with patch.object(innerbloom_app, "call_llama", side_effect=AssertionError("no model while typing")):
+        r = client.post("/safety/check", json={"text": "I cut myself chopping onions."})
+    check("live check never calls the model", r.status_code == 200 and r.json()["safety"] is None, r.text[:120])
+    with patch.object(innerbloom_app, "call_llama", side_effect=fake_llama), \
+         patch.object(innerbloom_app, "embed", return_value=None):
+        r = client.post("/save", json={"text": "Sometimes I wish I was dead."})
+    check("saving returns help lines for clear words",
+          (r.json().get("safety") or {}).get("level") == "high", r.text[:160])
+
+
+def test_wellbeing_levels():
+    section("Wellbeing levels")
+
+    def journal(days_emotions, failed=False):
+        """days_emotions: (days ago, emotion, intensity), all fictional."""
+        now = datetime.now()
+        rows = [{"id": f"wb{i:06d}-0000", "text": f"Day {d}", "summary": f"Day {d}",
+                 "emotion": emo, "intensity": inten, "tags": [], "themes": [], "people": [],
+                 "timestamp": (now - timedelta(days=d, hours=1)).isoformat()}
+                for i, (d, emo, inten) in enumerate(days_emotions)]
+        if failed:
+            for r in rows:
+                r["analysis_status"] = "failed"
+        innerbloom_app.save_file(innerbloom_app.JOURNAL_FILE, rows)
+
+    def levels(model_reply="[LLM error: connection refused]"):
+        with patch.object(innerbloom_app, "call_llama", return_value=model_reply):
+            wb = innerbloom_app.compute_wellbeing()
+        return wb["burnout"]["level"], wb["spiral"]["level"], wb
+
+    journal([(d, "calm", 5) for d in range(10, 0, -1)])
+    check("steady calm fortnight flags nothing", levels()[:2] == ("ok", "ok"), str(levels()[:2]))
+
+    journal([(d, "overwhelmed" if d % 2 else "tired", 7) for d in range(10, 0, -1)])
+    check("ten heavy, exhausted days read as high burnout", levels()[0] == "high", str(levels()[:2]))
+
+    journal([(d, "anxious", inten) for d, inten in zip(range(5, 0, -1), (3, 4, 5, 6, 8))])
+    check("five worsening anxious days read as a high spiral", levels()[1] == "high", str(levels()[:2]))
+
+    journal([(d, "happy", 6) for d in range(10, 1, -1)] + [(1, "sad", 10)])
+    burnout, spiral, wb = levels('{"burnout_summary": "You are burning out.", "spiral_summary": "One hard day."}')
+    check("one hard day after good ones is not burnout", burnout == "ok", burnout)
+    check("one hard day is at most a spiral to watch", spiral in ("ok", "watch"), spiral)
+    check("a quiet signal keeps its plain words, not the model's",
+          wb["burnout"]["summary"] == "No signs of burnout in the last two weeks.", wb["burnout"]["summary"])
+
+    journal([(3, "sad", 9), (2, "sad", 9), (1, "sad", 9)])
+    burnout, spiral, wb = levels()
+    check("three entries are not enough to read either signal",
+          (burnout, spiral) == ("insufficient", "insufficient"), str((burnout, spiral)))
+    check("too few entries says so", "Not enough" in wb["burnout"]["summary"], wb["burnout"]["summary"])
+    check("not-enough reading replaces the cached one",
+          innerbloom_app._load_insights()["wellbeing"]["burnout"]["level"] == "insufficient")
+
+    journal([(d, "overwhelmed", 9) for d in range(10, 0, -1)], failed=True)
+    check("unread entries never become a reading", levels()[:2] == ("insufficient", "insufficient"),
+          str(levels()[:2]))
+
+
 def test_derived_data():
     section("Derived data and background jobs")
     with patch.object(innerbloom_app, "call_llama", side_effect=fake_llama), \
@@ -709,6 +777,8 @@ if __name__ == "__main__":
         test_insight_write_concurrency()
         test_journal_write_concurrency()
         test_failed_analysis()
+        test_safety_routes()
+        test_wellbeing_levels()
         test_derived_data()
         test_local_only()
         test_health()

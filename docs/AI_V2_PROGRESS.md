@@ -5,8 +5,8 @@ Working branch: `feature/innerbloom-ai-v2`. `main` stays stable until a phase is
 | Phase | Scope | GPU budget | Status |
 |---|---|---|---|
 | 0 | Audit, backup, branch | 0 | Done (2026-11-05) |
-| 1 | Data and security stability | 0 | In progress: 5 of 7 areas done |
-| 2 | Fictional benchmark and baseline | 15 units | Not started |
+| 1 | Data and security stability | 0 | Done (2026-11-05), awaiting review |
+| 2 | Fictional benchmark and baseline | 15 units | Next |
 | 3 | Emotion model QLoRA | 45 units | Not started |
 | 4 | Memory reranker | 25 units | Not started |
 | 5 | Evidence verifier | 20 units | Not started |
@@ -60,7 +60,7 @@ Still to review in Phase 1: derived-data refresh on edit/delete (embeddings, peo
 
 ## Phase 1: stabilise data and security (2026-11-05)
 
-Tests: `python -m pytest -q` passes 17 tests; `python tests/test_app.py` passes 115 checks (89 before, 26 new). Browser check against a throwaway data folder with Ollama stopped: saving shows "not read yet", Entries offers "Read again", no console errors.
+Tests: `python -m pytest -q` passes 29 tests with 68 sub-cases; `python tests/test_app.py` passes 129 checks (89 before Phase 1). Browser check against a throwaway data folder with Ollama stopped: saving shows "not read yet", Entries offers "Read again", no console errors.
 
 | Area | Change | Evidence |
 |---|---|---|
@@ -70,8 +70,18 @@ Tests: `python -m pytest -q` passes 17 tests; `python tests/test_app.py` passes 
 | Derived data | Deleting an entry removes it from cached insights, dropping any insight that quoted it. Edits already re-embed; people stats are computed live from entries | Derived-data tests |
 | Background jobs | Jobs end as `idle` or `failed`; `/insights/status` returns the last error and its time | Job status tests |
 | Local API security | CORS limited to pages on this computer. A guard refuses other Hosts (DNS rebinding) and other sites' Origins, including `null`. The public demo keeps a same-site rule behind its rewrite | Local-only tests, demo test |
-| Wellbeing and safety | Not started: false-positive and false-negative cases for `crisis_check` and wellbeing levels | — |
-| Maintainability | Not started: extract modules from `app.py` behind the tests | — |
+| Wellbeing and safety | Crisis detection rewritten in two tiers (clear phrases; ambiguous or negated phrases checked by the classifier). An unreachable classifier shows gentle help lines instead of nothing. The classifier's verdict is read from its first word only. Writing, saving and chat now share one set of rules. Wellbeing reports "not enough to read yet" instead of "ok" with fewer than 4 entries, and a quiet signal can't take on the model's words | `tests/test_safety.py`, wellbeing level checks; see the table below |
+| Maintainability | `innerbloom_core/analysis.py` (entry prompt, schema, parser) and `innerbloom_core/safety.py` extracted. The prompt is byte-identical and the parser gives identical output on sample replies. A JSON-list reply no longer crashes a save. The demo export copies the package; the name avoids the website's `innerbloom.py` entry file | Comparison script; demo export imported in a scratch copy |
+
+Crisis detection on the same fictional cases (`tests/test_safety.py`):
+
+| | Before | After |
+|---|---|---|
+| Clear statements missed (model off) | 8 of 15 | 0 of 15 |
+| Harmless sentences raising a full alert | 9 of 14 | 0 of 14 |
+| Ambiguous or heavy sentences with no help lines when the model is off | 1 of 10 | 0 of 10 |
+
+These cases were written alongside the new rules, so they show the rules do what they intend, not how well they generalise. Phase 2 needs an independently written, locked set of safety cases.
 
 Notes:
 - Spotify tokens stay in `data/spotify.json` on this computer, ignored by Git. With cross-site requests refused, no other site can read them through the API.
@@ -79,4 +89,6 @@ Notes:
 
 ### Next human action
 
-Review the Phase 1 changes. Next on this branch: the wellbeing and safety test cases, then the first `app.py` extractions. No GPU is needed until Phase 2.
+Review Phase 1, then approve Phase 2 (benchmark and baseline, ceiling 15 compute units). Phase 2 starts on this computer: reading the production schema from `innerbloom_core/analysis.py` and writing fictional benchmark data, with no GPU. Colab is needed only for the baseline runs.
+
+Further `app.py` extraction (storage, retrieval, insights) continues alongside later phases.
