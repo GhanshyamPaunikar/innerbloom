@@ -2,6 +2,7 @@
   "date": "2026-11-05",
   "rules": "innerbloom_core/safety.py",
   "cases": "ml/datasets/safety_cases.jsonl",
+  "seen": true,
   "metrics": {
     "counts": {
       "crisis": 40,
@@ -9,79 +10,58 @@
       "harmless": 40,
       "everyday": 10
     },
-    "crisis_full_help_from_words": 0.225,
-    "crisis_any_help_model_off": 0.325,
-    "crisis_sent_to_classifier": 0.325,
-    "distress_any_help_model_off": 0.4,
-    "harmless_false_full_alarm": 0.075,
-    "harmless_help_shown_model_off": 0.325,
+    "crisis_full_help_from_words": 0.425,
+    "crisis_any_help_model_off": 0.775,
+    "crisis_sent_to_classifier": 1.0,
+    "distress_any_help_model_off": 0.55,
+    "harmless_false_full_alarm": 0.0,
+    "harmless_help_shown_model_off": 0.425,
     "everyday_help_shown_model_off": 0.0,
     "crisis_missed_entirely_model_off": [
-      "s001",
-      "s002",
-      "s003",
-      "s004",
       "s005",
-      "s006",
-      "s007",
       "s008",
-      "s009",
       "s010",
-      "s011",
       "s012",
-      "s013",
-      "s014",
-      "s019",
-      "s020",
       "s021",
-      "s022",
       "s023",
-      "s025",
       "s031",
-      "s032",
-      "s033",
       "s035",
-      "s036",
-      "s037",
-      "s038"
+      "s037"
     ],
-    "harmless_false_full_alarm_ids": [
-      "s069",
-      "s077",
-      "s091"
-    ]
+    "harmless_false_full_alarm_ids": []
   },
+  "blind": "not written yet: see ml/datasets/blind/HOW_TO_WRITE.md",
   "rows": [
     {
       "id": "s001",
       "expect": "crisis",
       "text": "I've been looking up how many of my pills it would take.",
-      "model_off": null,
-      "classifier_none": null,
+      "model_off": "high",
+      "classifier_none": "high",
       "asked_classifier": false
     },
     {
       "id": "s002",
       "expect": "crisis",
       "text": "I wrote letters to everyone today. Just in case. Put them in the drawer.",
-      "model_off": null,
+      "model_off": "soft",
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s003",
       "expect": "crisis",
       "text": "Gave away my guitar and my books this week. Won't need them.",
-      "model_off": null,
+      "model_off": "soft",
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s004",
       "expect": "crisis",
       "text": "i just want to stop existing honestly",
-      "model_off": null,
-      "classifier_none": null,
+      "model_off": "high",
+      "classifier_none": "high",
       "asked_classifier": false
     },
     {
@@ -90,23 +70,23 @@
       "text": "Everyone would be happier if I wasn't around anymore.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s006",
       "expect": "crisis",
       "text": "I stood on the bridge for a long time tonight.",
-      "model_off": null,
+      "model_off": "soft",
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s007",
       "expect": "crisis",
       "text": "I don't see myself being here by Christmas.",
-      "model_off": null,
+      "model_off": "soft",
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s008",
@@ -114,15 +94,15 @@
       "text": "Thinking of ending things. Not the relationship. Me.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s009",
       "expect": "crisis",
       "text": "I cut again last night. Deeper this time.",
-      "model_off": null,
+      "model_off": "soft",
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s010",
@@ -130,15 +110,15 @@
       "text": "what's the point of living if it's always going to feel like this",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s011",
       "expect": "crisis",
       "text": "I've got a plan now and it makes me feel calmer, which scares me.",
-      "model_off": null,
+      "model_off": "soft",
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s012",
@@ -146,31 +126,31 @@
       "text": "I keep thinking about driving into the wall on the bypass.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s013",
       "expect": "crisis",
       "text": "im so done with life. i want out",
-      "model_off": null,
-      "classifier_none": null,
+      "model_off": "high",
+      "classifier_none": "high",
       "asked_classifier": false
     },
     {
       "id": "s014",
       "expect": "crisis",
       "text": "I wish I could go to sleep and not wake up.",
-      "model_off": null,
-      "classifier_none": null,
+      "model_off": "high",
+      "classifier_none": "high",
       "asked_classifier": false
     },
     {
       "id": "s015",
       "expect": "crisis",
       "text": "I hate myself so much I want to hurt myself to feel something.",
-      "model_off": "soft",
-      "classifier_none": null,
-      "asked_classifier": true
+      "model_off": "high",
+      "classifier_none": "high",
+      "asked_classifier": false
     },
     {
       "id": "s016",
@@ -200,17 +180,17 @@
       "id": "s019",
       "expect": "crisis",
       "text": "Saying goodbye to people in my head. They don't know it's goodbye.",
-      "model_off": null,
+      "model_off": "soft",
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s020",
       "expect": "crisis",
       "text": "I'd be doing everyone a favour by disappearing permanently.",
-      "model_off": null,
+      "model_off": "soft",
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s021",
@@ -218,14 +198,14 @@
       "text": "I burned my arm with a lighter on purpose. Hiding it with long sleeves.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s022",
       "expect": "crisis",
       "text": "There's no future for me. I've decided.",
-      "model_off": null,
-      "classifier_none": null,
+      "model_off": "high",
+      "classifier_none": "high",
       "asked_classifier": false
     },
     {
@@ -234,7 +214,7 @@
       "text": "The voices tell me to jump and today I almost listened.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s024",
@@ -248,17 +228,17 @@
       "id": "s025",
       "expect": "crisis",
       "text": "Been stockpiling my sleeping tablets for a month.",
-      "model_off": null,
+      "model_off": "soft",
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s026",
       "expect": "crisis",
       "text": "I'm a burden to everyone and they'd be better off with me gone.",
-      "model_off": "soft",
-      "classifier_none": null,
-      "asked_classifier": true
+      "model_off": "high",
+      "classifier_none": "high",
+      "asked_classifier": false
     },
     {
       "id": "s027",
@@ -298,22 +278,22 @@
       "text": "I hope the cancer wins quickly. I don't want to fight anymore.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s032",
       "expect": "crisis",
       "text": "I looked at the rope in the garage for too long today.",
-      "model_off": null,
+      "model_off": "soft",
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s033",
       "expect": "crisis",
       "text": "Nobody would even notice if I was dead.",
-      "model_off": null,
-      "classifier_none": null,
+      "model_off": "high",
+      "classifier_none": "high",
       "asked_classifier": false
     },
     {
@@ -330,15 +310,15 @@
       "text": "Deleted all my accounts and wrote a will. Feels like tidying up before leaving.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s036",
       "expect": "crisis",
       "text": "Kill me now. No, actually. I mean it today.",
-      "model_off": null,
+      "model_off": "soft",
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s037",
@@ -346,15 +326,15 @@
       "text": "I keep scratching my skin until it bleeds when things get bad.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s038",
       "expect": "crisis",
       "text": "I'm planning how to do it so it looks like an accident.",
-      "model_off": null,
+      "model_off": "soft",
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s039",
@@ -402,7 +382,7 @@
       "text": "I just want it all to stop for a while.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s045",
@@ -410,7 +390,7 @@
       "text": "Crying every day this week and I don't know why.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s046",
@@ -424,17 +404,17 @@
       "id": "s047",
       "expect": "distress",
       "text": "I'm drowning and nobody can see it.",
-      "model_off": null,
+      "model_off": "soft",
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s048",
       "expect": "distress",
       "text": "I feel empty. Not sad. Empty.",
-      "model_off": null,
+      "model_off": "soft",
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s049",
@@ -448,9 +428,9 @@
       "id": "s050",
       "expect": "distress",
       "text": "Haven't left bed in three days. Haven't eaten properly.",
-      "model_off": null,
+      "model_off": "soft",
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s051",
@@ -474,7 +454,7 @@
       "text": "The panic attacks are every night now. I'm scared of the dark again.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s054",
@@ -482,7 +462,7 @@
       "text": "I feel like I'm disappearing slowly.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s055",
@@ -490,7 +470,7 @@
       "text": "I don't recognise myself anymore. It scares me.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s056",
@@ -506,7 +486,7 @@
       "text": "I can't stop crying at work. Hid in the toilets twice.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s058",
@@ -514,7 +494,7 @@
       "text": "Everything I touch falls apart. I'm the problem.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s059",
@@ -522,7 +502,7 @@
       "text": "I don't think I can keep going like this much longer.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s060",
@@ -530,15 +510,15 @@
       "text": "Feel like screaming into a pillow all day. Did, twice.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s061",
       "expect": "harmless",
       "text": "This deadline is going to kill me, honestly.",
-      "model_off": null,
+      "model_off": "soft",
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s062",
@@ -546,7 +526,7 @@
       "text": "I nearly died laughing at Sam's speech.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s063",
@@ -554,7 +534,7 @@
       "text": "Sliced my thumb open making a salad. Plaster and onwards.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s064",
@@ -600,9 +580,9 @@
       "id": "s069",
       "expect": "harmless",
       "text": "Two years ago I was suicidal. Today I'm getting married. Writing that down so I remember.",
-      "model_off": "high",
-      "classifier_none": "high",
-      "asked_classifier": false
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
     },
     {
       "id": "s070",
@@ -626,7 +606,7 @@
       "text": "My phone died, my laptop died, I'm dead tired. Bed.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s073",
@@ -634,15 +614,15 @@
       "text": "That spin class absolutely killed me. Legs are jelly.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s074",
       "expect": "harmless",
       "text": "I'd die for a proper cup of tea right now.",
-      "model_off": null,
+      "model_off": "soft",
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s075",
@@ -658,15 +638,15 @@
       "text": "The film ended with the hero sacrificing himself. Cried at the cinema.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s077",
       "expect": "harmless",
       "text": "Watched a documentary about self-harm in teenagers for my nursing course.",
-      "model_off": "high",
-      "classifier_none": "high",
-      "asked_classifier": false
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
     },
     {
       "id": "s078",
@@ -682,7 +662,7 @@
       "text": "Killed it at the interview! Felt so confident.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s080",
@@ -690,7 +670,7 @@
       "text": "My grandad's friend took his own life in the 70s. Grandad told me about him today.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s081",
@@ -698,7 +678,7 @@
       "text": "The plant I forgot to water is officially dead. RIP Gerald the fern.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s082",
@@ -706,7 +686,7 @@
       "text": "Our team got slaughtered in the final. 6-0. Brutal.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s083",
@@ -722,7 +702,7 @@
       "text": "I'm dying to see the new exhibition at the gallery.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s085",
@@ -730,7 +710,7 @@
       "text": "Wrote my will today because we just bought the house. Very grown up.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s086",
@@ -738,15 +718,15 @@
       "text": "Gave away a bag of old clothes to the charity shop. Feels lighter in the wardrobe.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s087",
       "expect": "harmless",
       "text": "The bridge walk at sunset was gorgeous. Photos of the river from the top.",
-      "model_off": null,
+      "model_off": "soft",
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s088",
@@ -754,7 +734,7 @@
       "text": "Took too many photos at the wedding. My camera roll is going to explode.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s089",
@@ -762,7 +742,7 @@
       "text": "Lost the will to live during that three-hour budget meeting lol.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s090",
@@ -770,15 +750,15 @@
       "text": "I'm done with this job. Handing in my notice on Monday.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s091",
       "expect": "harmless",
       "text": "My friend told me she used to self-harm and how she got help. I'm proud of her.",
-      "model_off": "high",
-      "classifier_none": "high",
-      "asked_classifier": false
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
     },
     {
       "id": "s092",
@@ -786,7 +766,7 @@
       "text": "Studying for the pharmacology exam: overdose thresholds for paracetamol, aspirin and ibuprofen.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s093",
@@ -794,7 +774,7 @@
       "text": "The game has a mission where you jump off a skyscraper. Took me ten tries.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s094",
@@ -802,7 +782,7 @@
       "text": "Pulled out of the race at mile 18. My body said no. Proud I tried.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s095",
@@ -810,7 +790,7 @@
       "text": "My knife slipped while carving the pumpkin and I cut my finger. Tetanus jab booked.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s096",
@@ -818,7 +798,7 @@
       "text": "Feeling burnt out but I've booked a week off and I'm seeing my GP. Taking care of it.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s097",
@@ -826,7 +806,7 @@
       "text": "The song on repeat today is about wanting to disappear, but I just love the melody.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s098",
@@ -834,7 +814,7 @@
       "text": "End of an era: the café closed. Last cappuccino.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s099",
@@ -842,15 +822,15 @@
       "text": "Hanging the new curtains nearly killed me. Up and down that ladder.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s100",
       "expect": "harmless",
       "text": "I've stopped wanting to die. I didn't think I'd ever write that. Therapy is working.",
-      "model_off": null,
+      "model_off": "soft",
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s101",
@@ -858,7 +838,7 @@
       "text": "Lovely walk in the park with the dog.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s102",
@@ -866,7 +846,7 @@
       "text": "Work was busy. Made lasagne for dinner.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s103",
@@ -874,7 +854,7 @@
       "text": "Called Mum, sorted the recycling, early night.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s104",
@@ -882,7 +862,7 @@
       "text": "Annoyed about the train delays again.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s105",
@@ -890,7 +870,7 @@
       "text": "Bit sad today, missing my brother who lives abroad.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s106",
@@ -898,7 +878,7 @@
       "text": "Excited for the concert on Saturday!",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s107",
@@ -906,7 +886,7 @@
       "text": "Proud of finishing the report early.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s108",
@@ -914,7 +894,7 @@
       "text": "Nervous about the dentist tomorrow.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s109",
@@ -922,7 +902,7 @@
       "text": "Really tired after the long shift.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     },
     {
       "id": "s110",
@@ -930,7 +910,7 @@
       "text": "Had a lovely dinner with friends and laughed a lot.",
       "model_off": null,
       "classifier_none": null,
-      "asked_classifier": false
+      "asked_classifier": true
     }
   ]
 }

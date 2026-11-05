@@ -125,7 +125,27 @@ All labels so far are one writer's. Before the baseline is trusted, a second rea
 | Harmless sentences raising a full alert (classifier says none) | 3 of 40 (past or educational mentions) |
 | Everyday sentences with any help | 0 of 10 |
 
-The Phase 1 table (0 of 15 missed) was measured on cases written alongside the rules. This set shows the rules do not generalise: indirect signs (giving things away, writing letters, stockpiling pills, "I want out") are not recognised, and the classifier is only asked when a listed phrase appears. Fixing this needs a decision (see the next human action) and a new, separately written locked set, because this one has now been seen.
+The Phase 1 table (0 of 15 missed) was measured on cases written alongside the rules. This set shows the rules did not generalise: indirect signs (giving things away, writing letters, stockpiling pills, "I want out") were not recognised, and the classifier was only asked when a listed phrase appeared.
+
+### Fix (2026-11-05)
+
+- The classifier now checks every chat message and saved entry when the model is available, with a prompt that names indirect signs and clear non-risks.
+- The backup phrase lists cover more indirect signs, and statements told at a distance (past, topic, a friend) go to the classifier instead of alerting.
+- Gentle help now shows on the writing page after saving, with lines open around the clock (AASRA, Find a Helpline).
+
+The same set after the fix. It was used to find the gaps, so these numbers only show the direction of change:
+
+| | Before | After |
+|---|---|---|
+| Crisis statements checked by the classifier | 13 of 40 | 40 of 40 |
+| Crisis statements with any help, model off | 13 of 40 | 31 of 40 |
+| Crisis statements with full help from the words alone | 9 of 40 | 17 of 40 |
+| Distress statements with any help, model off | 8 of 20 | 11 of 20 |
+| Harmless sentences raising a full alert | 3 of 40 | 0 of 40 |
+| Harmless sentences with gentle help, model off | 13 of 40 | 17 of 40 |
+| Everyday sentences with any help | 0 of 10 | 0 of 10 |
+
+How well the classifier itself catches crisis statements has not been measured yet: that needs the model (Phase 2 baseline). The real test is a blind set written by someone who has not read the rules: `ml/datasets/blind/HOW_TO_WRITE.md`. Only its totals are ever printed.
 
 ### Waiting on
 
@@ -134,5 +154,6 @@ The Phase 1 table (0 of 15 missed) was measured on cases written alongside the r
 
 ### Next human action
 
-Free space (Spotify's cache is about 6 GB), then run `ollama pull qwen2.5:7b`. The validation baseline can then run on this Mac at no compute-unit cost.
+1. Free space (Spotify's cache is about 6 GB), then run `ollama pull qwen2.5:7b`. The validation baseline, and the first measurement of the safety classifier, can then run on this Mac at no compute-unit cost.
+2. Ask someone who has not seen the rules to write the blind safety set (`ml/datasets/blind/HOW_TO_WRITE.md`).
 

@@ -3,9 +3,10 @@
     python -m ml.safety_eval              # prints the table, writes reports/safety-<date>.json
 
 The cases in ml/datasets/safety_cases.jsonl were written separately from the
-rules, in different wording, to measure how the rules generalise. Do not tune
-the rules against them: a case fixed by editing a pattern stops measuring
-anything. Use a separate set for rule development.
+rules, then used once to find the gaps fixed on 2026-11-05: they are now a
+seen set and only show regressions. ml/datasets/blind/*.txt, written by
+someone who has not read the rules, is the real test. Only its totals are
+ever printed or saved, so nobody can tune the rules to its sentences.
 
 Runs with the model off (the worst case the rules must still handle) and with
 a classifier that answers NONE (no help beyond what the words alone show).
@@ -71,14 +72,45 @@ def score(rows):
     }
 
 
+BLIND_DIR = ROOT / "ml" / "datasets" / "blind"
+BLIND_FILES = {"crisis": "crisis.txt", "distress": "distress.txt", "harmless": "harmless.txt"}
+
+
+def load_blind():
+    cases = []
+    for expect, name in BLIND_FILES.items():
+        path = BLIND_DIR / name
+        if path.exists():
+            for n, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+                if line.strip():
+                    cases.append({"id": f"{name}:{n}", "expect": expect, "text": line.strip()})
+    return cases
+
+
+def blind_totals(rows):
+    """Totals only: no sentence and no line number leaves this function."""
+    metrics = score(rows)
+    return {k: v for k, v in metrics.items() if not k.endswith("_ids") and k != "crisis_missed_entirely_model_off"}
+
+
 def main():
     rows = run(load())
+    blind_rows = run(load_blind())
     result = {"date": date.today().isoformat(), "rules": "innerbloom_core/safety.py",
-              "cases": str(CASES.relative_to(ROOT)), "metrics": score(rows), "rows": rows}
+              "cases": str(CASES.relative_to(ROOT)), "seen": True, "metrics": score(rows),
+              "blind": blind_totals(blind_rows) if blind_rows else "not written yet: see ml/datasets/blind/HOW_TO_WRITE.md",
+              "rows": rows}
     out = ROOT / "reports" / f"safety-{result['date']}.json"
     out.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print("seen set (regressions only)")
     for k, v in result["metrics"].items():
-        print(f"{k:38} {v}")
+        print(f"  {k:38} {v}")
+    print("blind set")
+    if isinstance(result["blind"], str):
+        print(f"  {result['blind']}")
+    else:
+        for k, v in result["blind"].items():
+            print(f"  {k:38} {v}")
     print(f"wrote {out.relative_to(ROOT)}")
 
 

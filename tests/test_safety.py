@@ -125,16 +125,37 @@ class WhileTyping(unittest.TestCase):
 
 
 class Everyday(unittest.TestCase):
-    def test_no_check_and_no_alarm(self):
+    def test_classifier_always_asked_when_available(self):
         calls = []
 
         def spy(prompt):
             calls.append(prompt)
-            return "CRISIS"
+            return "NONE"
         for text in EVERYDAY:
             with self.subTest(text=text):
                 self.assertIsNone(level(text, spy))
-        self.assertEqual(calls, [])
+        self.assertEqual(len(calls), len(EVERYDAY))
+
+    def test_no_help_when_model_off_and_no_warning_sign(self):
+        for text in EVERYDAY:
+            with self.subTest(text=text):
+                self.assertIsNone(level(text, down))
+
+    def test_classifier_can_flag_what_no_rule_lists(self):
+        self.assertEqual(level("Sorted out who gets the cat after.", reply("CRISIS")), "high")
+
+
+class AtADistance(unittest.TestCase):
+    """Clear words told about the past, a topic or a friend go to the classifier."""
+
+    def test_left_to_the_classifier(self):
+        for text in ("Years ago I was suicidal. Now I'm doing well.",
+                     "Read a novel about a woman who wanted to die.",
+                     "My friend used to self-harm and got help."):
+            with self.subTest(text=text):
+                self.assertIsNone(level(text, none))
+                self.assertEqual(level(text, down), "soft")
+                self.assertEqual(level(text, reply("CRISIS")), "high")
 
 
 if __name__ == "__main__":

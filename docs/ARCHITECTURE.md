@@ -52,10 +52,11 @@ Anyone you name is added when you save. Each person also gets simple signals (da
 
 Helplines (iCall, AASRA, 988, Samaritans, Find a Helpline) are attached when writing suggests self-harm or suicidal thoughts, in chat, while writing and on save. The reply itself is never withheld. It is a support prompt, not a diagnosis.
 
-- **Clear phrases** ("thinking about ending my life", "wish I was dead") show the full list straight away, without the model.
-- **Ambiguous or negated phrases** ("cut myself cooking", "end things with Sam", "I'm not suicidal") and heavy feelings ("hopeless", "numb") go to a small classifier first.
-- **If the classifier cannot answer**, the gentle version of the list is shown. An unreachable model is never read as "safe".
-- The writing page checks clear phrases as you pause (`POST /safety/check`, no model call); saving runs the full check.
+- **Every chat message and saved entry is checked by a small classifier** when the model is available. No list of phrases can cover the ways people say they want to die, so the model always looks. This is one extra model call per message.
+- **Clear phrases** ("thinking about ending my life", "i want to stop existing", stockpiling pills) show the full list straight away, without waiting for the model. Told at a distance (negated, in the past, about a book or a friend), they are left to the classifier.
+- **If the classifier cannot answer**, the gentle version (AASRA, 24/7, and Find a Helpline, worldwide) is shown whenever the message holds a warning sign. An unreachable model is never read as "safe".
+- The writing page checks clear phrases as you pause (`POST /safety/check`, no model call). Saving runs the full check and shows the full or gentle lines.
+- In the public demo these checks count towards each visitor's AI limit; clear phrases still work once the limit is reached.
 
 ## Storage and privacy
 

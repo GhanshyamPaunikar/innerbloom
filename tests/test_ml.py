@@ -85,6 +85,19 @@ class Scoring(unittest.TestCase):
         self.assertEqual(m["structure"]["failed_rate"], round(1 / 3, 3))
 
 
+class BlindSafetySet(unittest.TestCase):
+    def test_only_totals_leave_the_blind_set(self):
+        from ml import safety_eval
+        with tempfile.TemporaryDirectory() as tmp:
+            Path(tmp, "crisis.txt").write_text("a secret test sentence\nanother one\n")
+            with patch.object(safety_eval, "BLIND_DIR", Path(tmp)):
+                totals = safety_eval.blind_totals(safety_eval.run(safety_eval.load_blind()))
+        dumped = json.dumps(totals)
+        self.assertNotIn("secret", dumped)
+        self.assertNotIn("crisis.txt", dumped)
+        self.assertEqual(totals["counts"]["crisis"], 2)
+
+
 class Runs(unittest.TestCase):
     def test_smoke_run_resumes_and_refuses_locked_test(self):
         self.assertEqual(benchmark.main(["--split", "test"]), 2)
