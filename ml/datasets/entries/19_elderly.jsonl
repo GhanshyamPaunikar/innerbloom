@@ -1,0 +1,70 @@
+{"id":"e1291","text":"Eighty-one today. The grandchildren rang one after another. Margaret made a cake with far too many candles. A good day, all told.","emotion":"happy","also":["grateful","content"],"intensity":6,"people":["Margaret"]}
+{"id":"e1292","text":"The house is very quiet now that Bill is gone. I talk to the radio. It doesn't answer, but it helps.","emotion":"lonely","also":["sad"],"intensity":6,"people":["Bill"]}
+{"id":"e1293","text":"Managed the stairs to the library without stopping. Six months ago I couldn't. The physiotherapist would be pleased.","emotion":"proud","intensity":6}
+{"id":"e1294","text":"Pension came in. Paid the gas, the phone, and put a little by for Christmas presents.","emotion":"neutral","also":["content"],"intensity":2,"not_people":["Christmas"],"traits":["factual"]}
+{"id":"e1295","text":"The new doctor didn't look up from his screen once. I might as well not have been in the room.","emotion":"frustrated","also":["sad"],"intensity":5}
+{"id":"e1296","text":"Sat in the garden with my tea and watched the blue tits on the feeder for an hour. Lovely and still.","emotion":"calm","also":["content"],"intensity":5}
+{"id":"e1297","text":"Doris from church hasn't been for three Sundays. Rang her daughter. She's in hospital. I'll go Tuesday.","emotion":"anxious","also":["sad"],"intensity":5,"people":["Doris"],"people_optional":["her daughter"],"not_people":["Tuesday"]}
+{"id":"e1298","text":"Our sixtieth anniversary would have been today. I put on the brooch he gave me and went to the seaside like we always did.","emotion":"sad","also":["reflective"],"intensity":7,"traits":["indirect"]}
+{"id":"e1299","text":"The young man next door carried my shopping up again and wouldn't take a penny. Such a kind lad.","emotion":"grateful","intensity":6}
+{"id":"e1300","text":"Can't make head nor tail of the online banking. Three times I've been locked out. I want a person, not a password.","emotion":"frustrated","intensity":6}
+{"id":"e1301","text":"Gerald and I have started playing chess on Thursdays at the day centre. He cheats. I let him.","emotion":"content","also":["happy"],"intensity":4,"people":["Gerald"],"not_people":["Thursdays"]}
+{"id":"e1302","text":"Thinking about the war again. Funny how it comes back at this age. Sixty years and I can still smell the station.","emotion":"reflective","also":["sad"],"intensity":6}
+{"id":"e1303","text":"Great-grandson born this morning. Arthur, after my father. I wept into the telephone.","emotion":"happy","also":["grateful"],"intensity":9,"people":["Arthur"]}
+{"id":"e1304","text":"Very tired today. The new tablets make me sleepy. Dozed through the afternoon film.","emotion":"tired","intensity":5}
+{"id":"e1305","text":"My daughter wants me to move into the home near her. I know she means well. I'm not ready to leave my house.","emotion":"anxious","also":["sad"],"intensity":6,"people_optional":["My daughter"]}
+{"id":"e1306","text":"Finished the jumper for Lily. Took me all winter with these hands. She'll grow out of it in a month.","emotion":"proud","also":["content"],"intensity":5,"people":["Lily"]}
+{"id":"e1307","text":"Another funeral. Ted this time. There are so few of us left from the old street.","emotion":"sad","also":["lonely"],"intensity":7,"people":["Ted"]}
+{"id":"e1308","text":"Bus pass renewed. Went into town for the first time in weeks. Bought a new hat. Felt quite the thing.","emotion":"happy","intensity":4}
+{"id":"e1309","text":"I'm grateful for my eyesight still being good enough to read. A book a week, still.","emotion":"grateful","also":["content"],"intensity":4}
+{"id":"e1310","text":"The council have closed the day centre on Fridays. That was my only outing. What am I to do with Fridays now?","emotion":"frustrated","also":["lonely","sad"],"intensity":6,"not_people":["Fridays"]}
+{"id":"e1311","text":"Fell in the kitchen. Nothing broken, the paramedic said, just bruised pride. Pressed the button on my pendant like they told me to.","emotion":"anxious","also":["calm"],"intensity":5}
+{"id":"e1312","text":"Can't remember if I took my morning pills. Counted them twice. This happens more now and it frightens me.","emotion":"anxious","intensity":7}
+{"id":"e1313","text":"Looking forward to Sunday. The whole family is coming for lunch. I've already planned the roast.","emotion":"excited","also":["happy"],"intensity":6,"not_people":["Sunday"],"traits":["time"]}
+{"id":"e1314","text":"Spoke to nobody today. Not a soul. The phone didn't ring once.","emotion":"lonely","intensity":7}
+{"id":"e1315","text":"Planted the sweet peas along the fence like Mother used to. They'll be up by June if the slugs behave.","emotion":"hopeful","also":["content"],"intensity":4,"people":["Mother"],"not_people":["June"]}
+{"id":"e1316","text":"Angry with the gas company. They've doubled my bill and I can't get a human on the phone. I'm 84, not a website.","emotion":"angry","also":["frustrated"],"intensity":7}
+{"id":"e1317","text":"Granddaughter showed me how to video call. I saw Rajan's face in Australia for the first time in a year. Couldn't stop smiling.","emotion":"happy","also":["grateful"],"intensity":8,"people":["Rajan"],"people_optional":["Granddaughter"],"not_people":["Australia"]}
+{"id":"e1318","text":"Long, flat day. Rain, crosswords, soup. Not unhappy. Just long.","emotion":"neutral","also":["calm"],"intensity":2,"traits":["ambiguous"]}
+{"id":"e1319","text":"I've outlived three doctors, two dogs and a husband. Sometimes I wonder what I'm still here for. Then the grandchildren visit and I know.","emotion":"reflective","also":["sad","grateful"],"intensity":6,"traits":["mixed"]}
+{"id":"e1320","text":"Choir sang at the cathedral. My voice isn't what it was but I held the alto line. Very proud.","emotion":"proud","also":["happy"],"intensity":7}
+{"id":"e1321","text":"The nurse, Ama, sat with me for twenty minutes even though she was busy. Talked about her children. I felt like a person.","emotion":"grateful","intensity":6,"people":["Ama"]}
+{"id":"e1322","text":"Tired in my bones. Eighty-seven is a lot of years to carry around.","emotion":"tired","also":["reflective"],"intensity":6}
+{"id":"e1323","text":"Wrote letters to all the grandchildren for their birthdays this year. Twelve of them. A whole afternoon. Satisfied.","emotion":"content","also":["proud"],"intensity":4}
+{"id":"e1324","text":"Hospital appointment changed for the third time. They wrote to the wrong address. I'm not cross, I'm just tired of it.","emotion":"frustrated","also":["tired"],"intensity":5,"traits":["negation"]}
+{"id":"e1325","text":"Found Frank's letters from when he was at sea. 1958. 'My dearest girl.' Read them all twice.","emotion":"sad","also":["reflective","grateful"],"intensity":7,"people":["Frank"],"traits":["time"]}
+{"id":"e1326","text":"The young people at the bank were very patient today. Helped me set up the card on my phone. I'm quite modern now.","emotion":"proud","also":["grateful"],"intensity":4}
+{"id":"e1327","text":"Peaceful morning. Wireless on low, porridge, the sun on the kitchen table.","emotion":"calm","intensity":4}
+{"id":"e1328","text":"The boy across the road shouts at his mother and I can hear it through the wall. It makes me so angry and so sad.","emotion":"angry","also":["sad"],"intensity":6,"traits":["mixed"]}
+{"id":"e1329","text":"Everyone asks how I'm keeping. I say 'mustn't grumble'. I'd like to grumble just once.","emotion":"frustrated","also":["lonely"],"intensity":4,"traits":["indirect"]}
+{"id":"e1330","text":"Granddad's watch, which I've had in a drawer for forty years, is ticking again thanks to the man at the market. It felt like hearing his heart.","emotion":"grateful","also":["happy"],"intensity":7,"people_optional":["the man at the market"]}
+{"id":"e1331","text":"The family photo from the wedding is on the mantelpiece. Four generations. I'm in the middle, like a tree.","emotion":"content","also":["proud","happy"],"intensity":5}
+{"id":"e1332","text":"Hopeful the new hearing aids will help at the bridge club. I miss half the bidding.","emotion":"hopeful","intensity":4}
+{"id":"e1333","text":"Too many appointments this week. Eyes, feet, blood. My calendar is busier than when I worked.","emotion":"overwhelmed","also":["tired"],"intensity":5}
+{"id":"e1334","text":"Can't sleep. Lay awake thinking about whether I'll be a burden to the children.","emotion":"anxious","also":["sad"],"intensity":6}
+{"id":"e1335","text":"Bert down the road won the marrow competition again. Mine was bigger. The judges are blind.","emotion":"frustrated","also":["happy"],"intensity":3,"people":["Bert"]}
+{"id":"e1336","text":"Moved into the flat at Willow Court. Smaller, warmer, a lift. Unpacked my books first. It might do.","emotion":"hopeful","also":["calm","sad"],"intensity":4,"not_people":["Willow Court"],"traits":["names_tricky"]}
+{"id":"e1337","text":"Missing Kathleen. Fifty years of friendship and now just the space where her phone calls were.","emotion":"lonely","also":["sad"],"intensity":7,"people":["Kathleen"]}
+{"id":"e1338","text":"Excited for the coach trip to the Lakes next week. Packed already. Sandwiches will be made Wednesday.","emotion":"excited","intensity":6,"not_people":["Lakes","Wednesday"],"traits":["time"]}
+{"id":"e1339","text":"I am so grateful to still be in my own home at ninety. Not many get that.","emotion":"grateful","also":["content"],"intensity":6}
+{"id":"e1340","text":"Thinking about what I'll leave behind. Not money, there isn't much. Recipes, stories, the way I fold the sheets.","emotion":"reflective","intensity":5}
+{"id":"e1341","text":"Lunch club cancelled again. Sat with the cat and a tin of soup instead.","emotion":"lonely","also":["sad"],"intensity":5}
+{"id":"e1342","text":"Had a lovely chat with the girl at the pharmacy about her wedding. Brightened my week.","emotion":"happy","intensity":5}
+{"id":"e1343","text":"The children argued over my will in front of me. As if I'm already gone. Furious, and ashamed of them.","emotion":"angry","also":["sad"],"intensity":8,"people_optional":["The children"]}
+{"id":"e1344","text":"Took my first dance class at seventy-six. Ballroom. My partner, Clive, has two left feet. So do I.","emotion":"happy","also":["proud"],"intensity":6,"people":["Clive"]}
+{"id":"e1345","text":"Dozed in the chair after lunch, woke at four, didn't know what day it was. Getting old is odd.","emotion":"tired","also":["reflective"],"intensity":4}
+{"id":"e1346","text":"Ordinary Wednesday. Library, post office, chemist. Home by noon.","emotion":"neutral","intensity":1,"not_people":["Wednesday"],"traits":["factual"]}
+{"id":"e1347","text":"Mr. Achterberg next door is in hospice now. We've waved over the fence every morning for thirty years.","emotion":"sad","intensity":7,"people":["Mr. Achterberg"]}
+{"id":"e1348","text":"The new curate asked me to read at the Sunday service. Haven't done that since 1979. Practising in front of the mirror.","emotion":"excited","also":["anxious","proud"],"intensity":6,"not_people":["Sunday"]}
+{"id":"e1349","text":"Grateful for the warm-space scheme at the library. Free tea, company, and the heating on.","emotion":"grateful","intensity":5}
+{"id":"e1350","text":"Calm, steady week. Nothing hurt too much and nobody died. At my age that's a good week.","emotion":"calm","also":["content"],"intensity":4}
+{"id":"e1351","text":"My son only phones when he wants something. Today he wanted the car. I said yes. I always say yes.","emotion":"sad","also":["frustrated","lonely"],"intensity":5,"people_optional":["My son"]}
+{"id":"e1352","text":"Proud of Ellen for finishing her nursing degree at fifty-two. My girl. Never too late.","emotion":"proud","also":["happy"],"intensity":8,"people":["Ellen"]}
+{"id":"e1353","text":"The cataract operation went well. The colours! I'd forgotten the curtains were green.","emotion":"happy","also":["grateful"],"intensity":7}
+{"id":"e1354","text":"Can't keep up with the forms for Ivor's care. Every office wants a different one and they all want it yesterday.","emotion":"overwhelmed","also":["frustrated"],"intensity":7,"people":["Ivor"]}
+{"id":"e1355","text":"I think I've made my peace with not going back to Jamaica. The memories will have to do. And they do.","emotion":"calm","also":["reflective","sad"],"intensity":5,"not_people":["Jamaica"]}
+{"id":"e1356","text":"Took the bus to the coast on my own. Sat on a bench with chips. Brave old thing.","emotion":"proud","also":["content"],"intensity":5}
+{"id":"e1357","text":"Weekly shop delivered. Tins, bread, milk, biscuits for when Nora visits.","emotion":"neutral","intensity":1,"people":["Nora"],"traits":["factual"]}
+{"id":"e1358","text":"Not looking forward to winter. Dark by four, damp in the bones, and the long evenings alone.","emotion":"anxious","also":["lonely"],"intensity":5,"traits":["negation"]}
+{"id":"e1359","text":"The grandkids built a den in my living room and refused to leave it. Cushions everywhere. Glorious mess.","emotion":"happy","intensity":7,"people_optional":["The grandkids"]}
+{"id":"e1360","text":"Thinking of Mum today. She'd have been a hundred and five. I still use her rolling pin.","emotion":"reflective","also":["sad"],"intensity":4,"people":["Mum"]}

@@ -1,5 +1,7 @@
 # Baseline: qwen2.5:7b on the validation split
 
+> **Superseded.** Measured on the first split (1,220 entries, 183 for validation). The dataset grew to 2,001 entries and was re-split 60/20/20; see `reports/baseline-qwen2.5-7b-validation-v2.md`. Kept for the record; do not compare its numbers with later runs.
+
 The production model and prompt, measured before any training. Run on 2026-11-05 on an Apple M1 with 8 GB of RAM through local Ollama, at the production temperature (0.3) with a fixed seed (7).
 
 - Split: `ml/datasets/splits/validation.jsonl`, 183 fictional entries, fingerprint `b0dcab49af32`

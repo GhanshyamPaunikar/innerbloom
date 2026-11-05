@@ -169,6 +169,14 @@ Full write-up: `reports/baseline-retrieval-evidence-validation.md`.
 - Keyword search: the answer is in the top 5 for 80.6% of questions; meaning search (what the chat agent uses): 91.7%, recall 82.3%. Both ignore time (27-28% of results inside the asked window), and meaning search finds about 62% of entries for questions needing several.
 - `qwen2.5:7b` as a plain evidence judge: accepts 39% of claims the entries do not support (mostly overreach from thin evidence), rejects no valid claims.
 
+### Dataset v2 (2026-11-05)
+
+Grown from 1,220 to 2,001 entries, aimed at the baseline's weak spots and written in more voices: teenagers and students, elderly writers, second-language English, parents and carers, shift workers, one-line notes, long entries, chronic illness, LGBTQ+ writers, artists, rural life, faith, neurodivergent writers and Indian English.
+
+- 122-129 entries per emotion. Sarcasm 18 → 51, long entries 11 → 50, implied feelings 46 → 106, mixed 63 → 93, intensity 1-2 and 9-10 much better covered.
+- Re-split 60/20/20 (seed v2): 1,199 train, 402 validation, 400 locked test; 24-26 per emotion in validation and in test. The test split had never been scored, so re-splitting was safe.
+- Still one writer. A second reader's check, and entries from other people, matter more than further volume.
+
 ### Still to do in Phase 2
 
 - A second reader checks about 100 validation labels against the guidelines.

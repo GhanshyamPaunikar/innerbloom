@@ -286,7 +286,7 @@ def stage_evaluate(out: Path, base: str):
         del model
         import gc, torch  # noqa: E401
         gc.collect(); torch.cuda.empty_cache()
-    ollama = json.loads((ROOT / "reports" / "runs" / "baseline-qwen2.5-7b-validation-namefix" / "report.json").read_text())
+    ollama = json.loads((ROOT / "reports" / "runs" / "baseline-qwen2.5-7b-validation-v2" / "report.json").read_text())
     comparison = {"base_model": BASES[base][0], **compare(results["base"], results["tuned"], ollama["metrics"])}
     (out / "comparison.json").write_text(json.dumps({"results": results, "comparison": comparison}, indent=2) + "\n")
     log(out, "evaluate", **comparison)

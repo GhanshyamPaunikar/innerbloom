@@ -1,0 +1,70 @@
+{"id":"e1501","text":"Twelve-hour shift on the ward. Two admissions, one discharge, no lunch. Home, shower, bed.","emotion":"tired","intensity":7}
+{"id":"e1502","text":"Delivered 180 parcels today. App says I was 4 minutes over target. Docked again.","emotion":"frustrated","also":["tired"],"intensity":6}
+{"id":"e1503","text":"Customer called me useless in front of the whole queue because the card machine was down. I smiled. I wanted to scream.","emotion":"angry","intensity":7}
+{"id":"e1504","text":"Clocked in 7am, clocked out 3pm. Stocked aisles 4 to 9. Break at 11.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1505","text":"Manager Brenda put me on the till, the floor and the stockroom at the same time. I can't be in three places.","emotion":"overwhelmed","also":["frustrated"],"intensity":7,"people":["Manager Brenda"],"traits":["names_tricky"]}
+{"id":"e1506","text":"A patient's daughter came back to the ward with chocolates and a card that said 'you made his last days gentle'. I had to go and sit in the sluice room.","emotion":"grateful","also":["sad","proud"],"intensity":8}
+{"id":"e1507","text":"Taxi shift. Drunk passenger was sick in the back at 2am. Cleaning fee won't cover it. Done for the night.","emotion":"angry","also":["tired"],"intensity":6}
+{"id":"e1508","text":"Warehouse is quiet this week. Picked my orders, chatted to Darnell on break, home on time. Fine by me.","emotion":"content","also":["calm"],"intensity":3,"people":["Darnell"]}
+{"id":"e1509","text":"Passed my forklift licence. Small thing to some people. Big for me.","emotion":"proud","intensity":6}
+{"id":"e1510","text":"Night shift again. Driving home at dawn while everyone else drives to work. Strange lonely feeling.","emotion":"lonely","also":["tired"],"intensity":4}
+{"id":"e1511","text":"Agency rang: they've got me a permanent contract from next month. Proper sick pay. Proper holidays.","emotion":"excited","also":["happy","grateful"],"intensity":8,"traits":["time"]}
+{"id":"e1512","text":"Rota changed with a day's notice again. I had a dentist appointment and a kid to pick up. Nobody asks.","emotion":"angry","also":["frustrated"],"intensity":7}
+{"id":"e1513","text":"Stood on my feet for ten hours. My knees are forty years older than me.","emotion":"tired","intensity":6}
+{"id":"e1514","text":"Training the new girl, Priya. She picks things up fast. Reminds me of me at nineteen. Nice feeling, passing it on.","emotion":"content","also":["proud"],"intensity":4,"people":["Priya"]}
+{"id":"e1515","text":"Thinking about whether I want to stack shelves for another twenty years. The answer is probably no. Then what?","emotion":"reflective","also":["anxious"],"intensity":5}
+{"id":"e1516","text":"Black Friday. Opening at 6am. Queue already round the block at 5. Every till, every aisle, every second.","emotion":"overwhelmed","also":["tired"],"intensity":8,"not_people":["Black Friday"]}
+{"id":"e1517","text":"Cleaned the offices on floors 3 to 6. Emptied bins, hoovered, mopped the kitchen.","emotion":"neutral","intensity":1,"traits":["factual"]}
+{"id":"e1518","text":"Boss shouted at me for a mistake that was in the system before I touched it. I showed him the log. He walked off without a word.","emotion":"angry","also":["frustrated"],"intensity":7,"people_optional":["Boss"]}
+{"id":"e1519","text":"Hoping the promotion to shift lead comes through. Interviewed today. Think it went alright.","emotion":"hopeful","also":["anxious"],"intensity":5}
+{"id":"e1520","text":"Lunch break in the van, rain on the roof, a flask of soup. Ten minutes of peace in a mad day.","emotion":"calm","intensity":4}
+{"id":"e1521","text":"Coffee machine at the café broke at 7:30am rush. Forty people, no coffee. I've never been hated by so many strangers.","emotion":"overwhelmed","also":["frustrated"],"intensity":7}
+{"id":"e1522","text":"Pay rise. Twenty pence an hour. After four years. Thanks, I'll treasure it.","emotion":"angry","also":["frustrated"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e1523","text":"Brought in samosas for the whole shift for Eid. The night team cleared the lot by 3am. Lovely feeling.","emotion":"happy","also":["content"],"intensity":5,"not_people":["Eid"]}
+{"id":"e1524","text":"Back aching from lifting patients all week. Two of us for every job and they've cut us to one.","emotion":"tired","also":["angry"],"intensity":7}
+{"id":"e1525","text":"Bus driving shift: route 42, eight loops, one lost umbrella handed in, no incidents.","emotion":"neutral","intensity":1,"traits":["factual"]}
+{"id":"e1526","text":"So grateful for Marta covering my shift when my son was sick. I'll do her Saturday.","emotion":"grateful","intensity":6,"people":["Marta"],"people_optional":["my son"]}
+{"id":"e1527","text":"Lonely job, this. Driving all day, talking to satnav. The radio presenters feel like friends.","emotion":"lonely","intensity":5,"traits":["indirect"]}
+{"id":"e1528","text":"Trying to decide whether to do the nursing degree at 38. Scared I've left it too late. Writing it down to see how it looks.","emotion":"reflective","also":["anxious","hopeful"],"intensity":5}
+{"id":"e1529","text":"Short-staffed again. Three call bells at once, a fall in bay four, and the doctor wanting obs done now. I didn't know which way to turn.","emotion":"overwhelmed","also":["anxious"],"intensity":8}
+{"id":"e1530","text":"Got 'employee of the month'. A certificate and a £20 voucher. Rolled my eyes but secretly chuffed.","emotion":"proud","also":["happy"],"intensity":5}
+{"id":"e1531","text":"The security guard at the gate, Femi, always asks about my mum. Nobody else here knows I have one.","emotion":"grateful","also":["lonely"],"intensity":5,"people":["Femi"],"people_optional":["my mum"]}
+{"id":"e1532","text":"Head office announced store closures. Ours is on the list. Eleven years.","emotion":"anxious","also":["sad"],"intensity":8}
+{"id":"e1533","text":"Two days off in a row for once. Did absolutely nothing and it was brilliant.","emotion":"content","also":["calm"],"intensity":5}
+{"id":"e1534","text":"Thinking about how I used to love this job. Somewhere in the last two years it became just a job.","emotion":"reflective","also":["sad"],"intensity":5}
+{"id":"e1535","text":"Finished my first full week as a carer on my own rounds. Twelve clients, everyone fed and safe. Not bad.","emotion":"proud","also":["tired"],"intensity":6}
+{"id":"e1536","text":"Payslip says I've done 58 hours this week. My body says I've done about 200.","emotion":"tired","intensity":8}
+{"id":"e1537","text":"New manager actually listens. Asked our opinion on the rota. Hope it lasts.","emotion":"hopeful","also":["content"],"intensity":5,"people_optional":["New manager"]}
+{"id":"e1538","text":"Racist comment from a customer. Manager told me to 'let it go, he's a regular'. I won't let it go.","emotion":"angry","intensity":9}
+{"id":"e1539","text":"Booked the holiday! Ten days off in August. First proper break in two years.","emotion":"excited","also":["happy"],"intensity":7,"not_people":["August"],"traits":["time"]}
+{"id":"e1540","text":"Ironing pile, school uniforms, 6am alarm, double shift. I'm running on empty.","emotion":"tired","also":["overwhelmed"],"intensity":8}
+{"id":"e1541","text":"Filled in the timesheet. 39 hours. Sent it to payroll.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1542","text":"Night shift is peaceful at 4am. The ward breathes. Just me, the monitors and a cup of tea.","emotion":"calm","intensity":5}
+{"id":"e1543","text":"Three of us left in one month. Everyone else is applying elsewhere. I don't know whether to jump.","emotion":"anxious","also":["reflective"],"intensity":6}
+{"id":"e1544","text":"Kitchen was chaos tonight. Fifty covers, two chefs, one fryer working. Head chef threw a pan.","emotion":"overwhelmed","also":["angry"],"intensity":7}
+{"id":"e1545","text":"Reached my sales target for the first time. Ate cake in the stockroom. Small celebration.","emotion":"proud","also":["happy"],"intensity":6}
+{"id":"e1546","text":"Hoping the union gets us the back pay. Meeting next week. Fingers crossed.","emotion":"hopeful","intensity":5,"traits":["time"]}
+{"id":"e1547","text":"Retirement party for Harold, forty years on the line. He cried. We all cried. Proud to have worked with him.","emotion":"grateful","also":["sad","happy"],"intensity":7,"people":["Harold"]}
+{"id":"e1548","text":"The client complained about the haircut I did exactly as she asked. Showed her the photo she brought. She left without paying.","emotion":"angry","also":["frustrated"],"intensity":6}
+{"id":"e1549","text":"Took the long way home past the river after the shift. Just needed the quiet. Felt better after.","emotion":"calm","also":["tired"],"intensity":4}
+{"id":"e1550","text":"Everyone at work went to the pub without me. Guess I'm not part of that group.","emotion":"lonely","also":["sad"],"intensity":5}
+{"id":"e1551","text":"Got the job at the vet clinic! Start in two weeks. Can't stop telling people.","emotion":"excited","also":["happy"],"intensity":8,"traits":["time"]}
+{"id":"e1552","text":"Standard shift. Unloaded two lorries, scanned the pallets, signed off at four.","emotion":"neutral","intensity":1,"traits":["factual"]}
+{"id":"e1553","text":"I'm the only woman on this site. They're mostly fine, but some days I feel very alone in that portacabin.","emotion":"lonely","intensity":5}
+{"id":"e1554","text":"Finally learned all the cocktail recipes. Made a perfect espresso martini without looking it up.","emotion":"proud","also":["happy"],"intensity":5}
+{"id":"e1555","text":"Feeling settled at the new job. Good team, fair boss, decent canteen. That's all I wanted.","emotion":"content","intensity":5}
+{"id":"e1556","text":"Sick pay denied because I was off 'without enough notice'. I had a fever of 39.","emotion":"angry","intensity":7}
+{"id":"e1557","text":"So tired I fell asleep on the bus and woke up at the depot. Driver laughed. I didn't.","emotion":"tired","also":["frustrated"],"intensity":7}
+{"id":"e1558","text":"Lockers, mop buckets, the smell of bleach. Another night. Nothing to say really.","emotion":"neutral","also":["tired"],"intensity":2,"traits":["ambiguous"]}
+{"id":"e1559","text":"Excited for the conference in Manchester next week. First time the company has sent me anywhere.","emotion":"excited","intensity":6,"not_people":["Manchester"],"traits":["time"]}
+{"id":"e1560","text":"Hope I can move to days soon. Doctor says the nights are hurting my sleep long-term.","emotion":"hopeful","also":["tired"],"intensity":4}
+{"id":"e1561","text":"Overwhelmed by the new system. Every order screen moved, every code changed, and the queue doesn't wait.","emotion":"overwhelmed","also":["frustrated"],"intensity":6}
+{"id":"e1562","text":"Calm day on the farm. Fed the animals, mended the fence, ate lunch on a hay bale.","emotion":"calm","also":["content"],"intensity":4}
+{"id":"e1563","text":"Grateful for the regulars who tip in cash and ask after my kids. They make the job bearable.","emotion":"grateful","intensity":5}
+{"id":"e1564","text":"Angry at myself for not speaking up when Kev took credit for the fix. Again.","emotion":"angry","also":["frustrated"],"intensity":5,"people":["Kev"]}
+{"id":"e1565","text":"Thinking about Dad, who did this same job at this same factory for thirty years. I get him more now.","emotion":"reflective","intensity":5,"people":["Dad"]}
+{"id":"e1566","text":"Shift was sad. One of our long-term residents, Mr. Owusu, passed this afternoon. We all stood round his bed for a minute.","emotion":"sad","intensity":7,"people":["Mr. Owusu"]}
+{"id":"e1567","text":"Contract renewal meeting Friday. If they don't renew, I'm out of work by Christmas.","emotion":"anxious","intensity":7,"not_people":["Friday","Christmas"],"traits":["time"]}
+{"id":"e1568","text":"Did the inventory, did the banking, locked up. Long but steady.","emotion":"tired","also":["neutral"],"intensity":3,"traits":["short"]}
+{"id":"e1569","text":"Exhausted after doubling up for Shona. She owes me three shifts now and counting.","emotion":"tired","also":["frustrated"],"intensity":6,"people":["Shona"]}
+{"id":"e1570","text":"Tidy, simple shift. Worked, chatted, home. That's a good day in this job.","emotion":"content","intensity":3}

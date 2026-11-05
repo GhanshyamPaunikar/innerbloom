@@ -1,4 +1,4 @@
-"""Split the entries 70/15/15 into train, validation and a locked test set.
+"""Split the entries 60/20/20 into train, validation and a locked test set.
 
     python -m ml.split            # write ml/datasets/splits/*.jsonl and the manifest
     python -m ml.split --check    # confirm the splits match the entries and the manifest
@@ -25,12 +25,15 @@ sys.path.insert(0, str(ROOT))
 
 from ml import dataset  # noqa: E402
 
-SHARES = (("train", 0.70), ("validation", 0.15), ("test", 0.15))
+# 60/20/20 so validation and test each hold about 25 entries per emotion: enough
+# to tell a real improvement from noise. v2: re-split at 2,001 entries, before
+# the test split was ever scored.
+SHARES = (("train", 0.60), ("validation", 0.20), ("test", 0.20))
 NEAR_DUPLICATE = 0.6  # Jaccard similarity of word trigrams
 
 
 def _rank(group: str) -> str:
-    return hashlib.sha256(f"innerbloom-split-v1:{group}".encode()).hexdigest()
+    return hashlib.sha256(f"innerbloom-split-v2:{group}".encode()).hexdigest()
 
 
 def assign(entries: List[dict]) -> Dict[str, str]:
@@ -92,7 +95,7 @@ def build():
     files = {name: "\n".join(json.dumps(e, ensure_ascii=False) for e in rows) + "\n"
              for name, rows in splits.items()}
     manifest = {
-        "seed": "innerbloom-split-v1",
+        "seed": "innerbloom-split-v2",
         "shares": dict(SHARES),
         "entries": len(entries),
         "splits": {name: {"entries": len(splits[name]),
