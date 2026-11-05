@@ -1,0 +1,70 @@
+{"id":"e0071","text":"Mochi died this morning. Fourteen years. The house is so quiet I keep hearing her collar that isn't there.","emotion":"sad","intensity":9,"not_people":["Mochi"],"traits":["names_tricky"]}
+{"id":"e0072","text":"Didn't get the job. They said it was close. Somehow that makes it worse.","emotion":"sad","also":["frustrated"],"intensity":6,"traits":["short"]}
+{"id":"e0073","text":"Packed up Dad's study today. His reading glasses were still on the desk folded like he'd be right back.","emotion":"sad","intensity":9,"people":["Dad"]}
+{"id":"e0074","text":"Grey day, grey mood. Nothing is wrong exactly. I just feel low and heavy.","emotion":"sad","intensity":5,"traits":["ambiguous"]}
+{"id":"e0075","text":"Leila and I officially ended things. It was kind and mutual and I still cried on the bus home.","emotion":"sad","intensity":7,"people":["Leila"]}
+{"id":"e0076","text":"Third miscarriage. I don't have more words than that today.","emotion":"sad","intensity":10,"traits":["short"]}
+{"id":"e0077","text":"The café where I wrote my whole thesis is closing next month. Silly to feel this much about a café.","emotion":"sad","intensity":4,"traits":["time"]}
+{"id":"e0078","text":"Watched Ben's train pull out. Six months until I see him again. Walked home the long way so I wouldn't have to be in the flat yet.","emotion":"sad","also":["lonely"],"intensity":7,"people":["Ben"]}
+{"id":"e0079","text":"I found out Amara's mum passed away last week and nobody told me. I would have gone to the funeral.","emotion":"sad","also":["frustrated"],"intensity":7,"people":["Amara"],"people_optional":["Amara's mum"],"traits":["time"]}
+{"id":"e0080","text":"Woke up crying from a dream about Grandma's kitchen. Couldn't shake it all morning.","emotion":"sad","intensity":6,"people":["Grandma"]}
+{"id":"e0081","text":"My oldest friend didn't come to my birthday and didn't text. Maybe we've just drifted. That's what hurts.","emotion":"sad","also":["lonely"],"intensity":6,"people_optional":["My oldest friend"]}
+{"id":"e0082","text":"Got rejected from the residency again. I really thought this year.","emotion":"sad","intensity":6,"traits":["short"]}
+{"id":"e0083","text":"Clearing out the nursery we never used. Folded every tiny onesie and put them in a box for the charity shop.","emotion":"sad","intensity":9,"traits":["indirect"]}
+{"id":"e0084","text":"The vet says Bruno has a few weeks left. He's still wagging. I'm not ready.","emotion":"sad","intensity":8,"not_people":["Bruno"],"traits":["names_tricky"]}
+{"id":"e0085","text":"Saw an old photo of me and Nikhil at uni and realised I don't even have his number anymore.","emotion":"sad","intensity":4,"people":["Nikhil"]}
+{"id":"e0086","text":"Everyone at the party seemed to be having a great time and I just felt far away from all of it. Left early.","emotion":"sad","also":["lonely"],"intensity":5}
+{"id":"e0087","text":"Mama's memory is going faster now. She called me by my aunt's name twice today and I just said yes.","emotion":"sad","intensity":8,"people":["Mama"],"people_optional":["my aunt"]}
+{"id":"e0088","text":"Last day at the old school. Took one more photo of my classroom with the chairs up. Twelve years in that room.","emotion":"sad","also":["reflective"],"intensity":6}
+{"id":"e0089","text":"Rainy Sunday. Listened to the album Callum and I used to play on road trips. Should not have done that.","emotion":"sad","intensity":6,"people":["Callum"],"not_people":["Sunday"]}
+{"id":"e0090","text":"I keep thinking that if I'd called Rosa back that night maybe I'd have noticed something. I know it's not my fault. It still sits on me.","emotion":"sad","intensity":8,"people":["Rosa"]}
+{"id":"e0091","text":"Our street's big chestnut tree was cut down for the new road. Kids used to climb it. Now there's just a stump and orange tape.","emotion":"sad","intensity":4}
+{"id":"e0092","text":"Feeling blue. Couldn't tell you why. Ate toast for dinner.","emotion":"sad","intensity":4,"traits":["short","ambiguous"]}
+{"id":"e0093","text":"Isabel moved her things out today. The bookshelf looks like a mouth with missing teeth.","emotion":"sad","intensity":7,"people":["Isabel"]}
+{"id":"e0094","text":"First Christmas without Papa. We set his place at the table without saying anything. Nobody could eat much.","emotion":"sad","intensity":9,"people":["Papa"],"not_people":["Christmas"],"traits":["names_tricky"]}
+{"id":"e0095","text":"My manuscript came back with a form rejection. Forty-one now. Some days I can laugh about it. Not today.","emotion":"sad","also":["frustrated"],"intensity":6}
+{"id":"e0096","text":"Hospice called. Uncle Ike passed peacefully around 3am. I'm glad he wasn't in pain. I'm just very sad.","emotion":"sad","intensity":9,"people":["Uncle Ike"],"traits":["mixed"]}
+{"id":"e0097","text":"I miss who I was before all this. More confident, more fun. I don't know where she went.","emotion":"sad","also":["reflective"],"intensity":6,"traits":["indirect"]}
+{"id":"e0098","text":"Kenji's leaving the team. Best boss I've had. Smiled through his speech and then sat in the stairwell for a bit.","emotion":"sad","intensity":6,"people":["Kenji"]}
+{"id":"e0099","text":"Saw a dad and his little girl feeding ducks and had to look away. Some days the wanting is a lot.","emotion":"sad","intensity":6,"traits":["indirect"]}
+{"id":"e0100","text":"The doctor used the word 'chronic' today. I nodded and asked sensible questions and then cried in the car park.","emotion":"sad","also":["anxious"],"intensity":8}
+{"id":"e0101","text":"Cleaned out my email and found the last message from Theo before the accident. Didn't open it. Couldn't delete it either.","emotion":"sad","intensity":8,"people":["Theo"]}
+{"id":"e0102","text":"I'm a bit down because the trip got cancelled. It's fine, it's just a trip, but I'd been looking forward to it for months.","emotion":"sad","also":["frustrated"],"intensity":4,"traits":["mixed"]}
+{"id":"e0103","text":"Nadia doesn't want to be friends anymore. She said it nicely. I keep rereading the message hoping it says something different.","emotion":"sad","intensity":7,"people":["Nadia"]}
+{"id":"e0104","text":"The old dog next door, the one who always barked hello, wasn't at the gate today. Mrs. Bello told me he died on Friday.","emotion":"sad","intensity":5,"people":["Mrs. Bello"],"not_people":["Friday"],"traits":["names_tricky","time"]}
+{"id":"e0105","text":"Anniversary of the fire. Ten years. I drove past where the house was. There's a playground there now.","emotion":"sad","also":["reflective"],"intensity":7,"traits":["time"]}
+{"id":"e0106","text":"Sadness today, low and constant like background music. I did my work. I fed myself. That's all.","emotion":"sad","intensity":6}
+{"id":"e0107","text":"Lost the match and our season is over. Graduating so that was my last game ever with these guys.","emotion":"sad","intensity":7}
+{"id":"e0108","text":"Sorting Granny's recipe cards. Her handwriting gets shakier year by year through the box. That got me.","emotion":"sad","intensity":7,"people":["Granny"]}
+{"id":"e0109","text":"Mateus forgot my birthday. Small thing. Didn't feel small.","emotion":"sad","intensity":5,"people":["Mateus"],"traits":["short"]}
+{"id":"e0110","text":"Hearing about the floods back home and not being able to do anything from here. Called everyone. They're safe but the village is underwater.","emotion":"sad","also":["anxious"],"intensity":8}
+{"id":"e0111","text":"I gave away my piano today because there's no room in the new flat. Watched it go down the stairs on its side like a wounded animal.","emotion":"sad","intensity":6}
+{"id":"e0112","text":"Long call with Oyelaran. His divorce is final. He sounded so tired. I felt heavy for him all evening.","emotion":"sad","intensity":5,"people":["Oyelaran"]}
+{"id":"e0113","text":"I'm grieving a version of my career that's never going to happen. That's the honest sentence.","emotion":"sad","also":["reflective"],"intensity":6,"traits":["indirect"]}
+{"id":"e0114","text":"The hospital let us say goodbye to Aunt Mei. Her hand was so small. I sang her the song she taught me.","emotion":"sad","intensity":10,"people":["Aunt Mei"]}
+{"id":"e0115","text":"Tidy flat, finished work, nice weather, and I still feel sad. Weird and annoying.","emotion":"sad","also":["frustrated"],"intensity":4,"traits":["mixed"]}
+{"id":"e0116","text":"Dropped Chloe at college. Her room at home looks huge and empty. I made tea for two out of habit.","emotion":"sad","also":["lonely"],"intensity":7,"people":["Chloe"]}
+{"id":"e0117","text":"Heard that Mr. Petrov, my old maths teacher, passed. He's the reason I became an engineer.","emotion":"sad","also":["grateful"],"intensity":6,"people":["Mr. Petrov"]}
+{"id":"e0118","text":"I read the old diary from when I was 14 and just felt so sorry for her. She had no idea how hard things were going to get.","emotion":"sad","also":["reflective"],"intensity":6,"traits":["time"]}
+{"id":"e0119","text":"Sat in the garden and cried for a while about nothing in particular. Then I made soup.","emotion":"sad","intensity":5}
+{"id":"e0120","text":"Visiting hours over. Waved at Baba through the glass until the nurse closed the curtain.","emotion":"sad","intensity":8,"people":["Baba"]}
+{"id":"e0121","text":"The shop is closing for good. Three generations. I signed the last lease papers and Dimitri hugged me in the empty storeroom.","emotion":"sad","intensity":8,"people":["Dimitri"]}
+{"id":"e0122","text":"My sister is moving to Australia in two weeks. I'm happy for her, I am. Mostly I just keep wanting to hold on to her.","emotion":"sad","also":["happy"],"intensity":7,"people_optional":["My sister"],"not_people":["Australia"],"traits":["mixed","time"]}
+{"id":"e0123","text":"Sad, a bit. Rain on the windows, a film that ended badly, cold tea. Nothing to fix.","emotion":"sad","intensity":3}
+{"id":"e0124","text":"Found out Gabe has been unwell for months and didn't tell any of us. I wish he'd let us help.","emotion":"sad","also":["anxious"],"intensity":6,"people":["Gabe"]}
+{"id":"e0125","text":"Holding the urn felt wrong. It was so light. Dad was never light.","emotion":"sad","intensity":10,"people":["Dad"],"traits":["indirect"]}
+{"id":"e0126","text":"Put the 'For Sale' sign on the boat Pop and I restored together. Couldn't stand next to it while the buyers looked.","emotion":"sad","intensity":7,"people":["Pop"]}
+{"id":"e0127","text":"Watching the leaves fall and thinking about how fast this year went and how little of it I really lived.","emotion":"sad","also":["reflective"],"intensity":4,"traits":["ambiguous"]}
+{"id":"e0128","text":"Ifeoma's text: 'we lost the baby'. I don't know what to say to her. I've typed and deleted six messages.","emotion":"sad","intensity":8,"people":["Ifeoma"]}
+{"id":"e0129","text":"Disappointed in myself today. I snapped at the kids over nothing and saw their faces change.","emotion":"sad","also":["frustrated"],"intensity":6,"people_optional":["the kids"]}
+{"id":"e0130","text":"Mass at the old church for Señora Ruiz. Half the town came. Everyone has a story of her feeding them.","emotion":"sad","also":["grateful"],"intensity":7,"people":["Señora Ruiz"],"traits":["names_tricky"]}
+{"id":"e0131","text":"Some heartbreaks are quiet. Today I took his name off the emergency contact form.","emotion":"sad","intensity":7,"traits":["indirect"]}
+{"id":"e0132","text":"I said goodbye to the team at the shelter. Funding ran out. Twelve years of work.","emotion":"sad","intensity":7}
+{"id":"e0133","text":"I think Hamza and I are growing apart and neither of us wants to say it first.","emotion":"sad","intensity":5,"people":["Hamza"],"traits":["indirect"]}
+{"id":"e0134","text":"My grandmother's village is being flooded for a dam. Visited one last time. Picked up a stone from her garden wall.","emotion":"sad","intensity":7,"people_optional":["My grandmother"]}
+{"id":"e0135","text":"Just a melancholy evening. Old songs, rain, missing people.","emotion":"sad","intensity":4,"traits":["short"]}
+{"id":"e0136","text":"Wiktoria's last shift at the hospital before she retires. I've worked beside her for nine years. The ward will feel wrong without her.","emotion":"sad","intensity":6,"people":["Wiktoria"]}
+{"id":"e0137","text":"The adoption fell through at the last minute. The birth mother changed her mind. I understand. I'm devastated.","emotion":"sad","intensity":10,"people_optional":["The birth mother"]}
+{"id":"e0138","text":"Today my son said he's too old for bedtime stories. I said okay and put the book back on the shelf very carefully.","emotion":"sad","intensity":5,"people_optional":["my son"],"traits":["indirect"]}
+{"id":"e0139","text":"Got the call that Olu's surgery didn't work. They're moving to comfort care.","emotion":"sad","intensity":9,"people":["Olu"]}
+{"id":"e0140","text":"Missing the person I was in Lisbon. Free and brave and twenty-three.","emotion":"sad","also":["reflective"],"intensity":4,"not_people":["Lisbon"],"traits":["names_tricky"]}

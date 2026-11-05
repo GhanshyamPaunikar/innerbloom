@@ -1,0 +1,27 @@
+{
+  "seed": "innerbloom-split-v1",
+  "shares": {
+    "train": 0.7,
+    "validation": 0.15,
+    "test": 0.15
+  },
+  "entries": 1220,
+  "splits": {
+    "train": {
+      "entries": 855,
+      "groups": 851,
+      "sha256": "7cc410ddb1e169c1bdc4e980c8e3faa7984e6e11abf634d148b408137f11822b"
+    },
+    "validation": {
+      "entries": 183,
+      "groups": 182,
+      "sha256": "b0dcab49af32b4f01738419657e20681b730f694738ac7f75f092006402d6187"
+    },
+    "test": {
+      "entries": 182,
+      "groups": 182,
+      "sha256": "e622927f7b546baa7b3015574759a2ccf959f87138961af4a65fa23b32ea4610"
+    }
+  },
+  "locked": "test"
+}

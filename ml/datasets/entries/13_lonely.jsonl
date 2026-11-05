@@ -1,0 +1,70 @@
+{"id":"e0841","text":"Weekend again and nobody to call. Spoke to the cashier and that was it for two days.","emotion":"lonely","intensity":7}
+{"id":"e0842","text":"New city, new job, no friends yet. Ate dinner watching other people's stories on my phone.","emotion":"lonely","intensity":6}
+{"id":"e0843","text":"Everyone in the group chat is meeting up and nobody asked me. Maybe they forgot. Maybe not.","emotion":"lonely","also":["sad"],"intensity":6}
+{"id":"e0844","text":"Since Harold died the evenings are the hardest. His chair, the empty side of the bed.","emotion":"lonely","also":["sad"],"intensity":8,"people":["Harold"]}
+{"id":"e0845","text":"Surrounded by people at the party and still felt completely alone.","emotion":"lonely","intensity":6,"traits":["short"]}
+{"id":"e0846","text":"Working from home every day. Some days I realise I haven't spoken out loud since morning.","emotion":"lonely","intensity":5}
+{"id":"e0847","text":"Miss having someone to tell small things to. The funny thing the bus driver said. Who do I tell?","emotion":"lonely","intensity":6,"traits":["indirect"]}
+{"id":"e0848","text":"Kids have all moved away. Big house. Quiet phone.","emotion":"lonely","also":["sad"],"intensity":6,"people_optional":["Kids"],"traits":["short"]}
+{"id":"e0849","text":"Long-distance is hard tonight. Bongani's asleep, eight hours ahead. I just want to hear his voice.","emotion":"lonely","also":["sad"],"intensity":6,"people":["Bongani"]}
+{"id":"e0850","text":"Christmas alone this year. Told everyone I'm fine. Watching carols on the TV with a microwave meal.","emotion":"lonely","also":["sad"],"intensity":7,"not_people":["Christmas"]}
+{"id":"e0851","text":"I'm the only one in my year who doesn't speak the language well. Lunchtimes I sit in the library.","emotion":"lonely","intensity":6}
+{"id":"e0852","text":"Feeling invisible. Nobody noticed I'd been away for a week.","emotion":"lonely","also":["sad"],"intensity":6,"traits":["short"]}
+{"id":"e0853","text":"Messaged four friends to see if anyone wanted to get dinner. Two read it. None replied.","emotion":"lonely","intensity":6}
+{"id":"e0854","text":"Since the divorce I eat standing up. No point setting the table for one.","emotion":"lonely","also":["sad"],"intensity":6,"traits":["indirect"]}
+{"id":"e0855","text":"Missing my old flatmates. Mia, Juno and the endless 2am kitchen chats.","emotion":"lonely","also":["sad"],"intensity":5,"people":["Mia","Juno"]}
+{"id":"e0856","text":"My husband is right next to me on the sofa and I've never felt more alone.","emotion":"lonely","also":["sad"],"intensity":7,"people_optional":["My husband"]}
+{"id":"e0857","text":"Lonely Sunday. Walked around the market just to be around people.","emotion":"lonely","intensity":5,"not_people":["Sunday"]}
+{"id":"e0858","text":"Everyone has someone. Couples everywhere at the restaurant. I came by myself and pretended to read.","emotion":"lonely","intensity":6}
+{"id":"e0859","text":"Ten days in hospital and the only visitor was the chaplain. Kind man. Still.","emotion":"lonely","intensity":7}
+{"id":"e0860","text":"Abroad for the semester. The others go home at weekends. The halls echo.","emotion":"lonely","intensity":5}
+{"id":"e0861","text":"I want to be close to someone but every time I try it feels like I'm too much.","emotion":"lonely","also":["sad"],"intensity":6,"traits":["indirect"]}
+{"id":"e0862","text":"Birthday. Facebook messages from people I haven't seen in years. No one to have cake with.","emotion":"lonely","also":["sad"],"intensity":6,"not_people":["Facebook"]}
+{"id":"e0863","text":"Mamá is so far away. Video calls aren't the same as her hand on my head.","emotion":"lonely","also":["sad"],"intensity":6,"people":["Mamá"]}
+{"id":"e0864","text":"New mum. Everyone asks about the baby. Nobody asks about me.","emotion":"lonely","also":["sad"],"intensity":6}
+{"id":"e0865","text":"Called Daniel three times this week. He was always busy. I'm starting to feel like the only one trying.","emotion":"lonely","also":["sad"],"intensity":5,"people":["Daniel"]}
+{"id":"e0866","text":"First night in the empty house after Esi moved out. Even the fridge sounds loud.","emotion":"lonely","intensity":6,"people":["Esi"]}
+{"id":"e0867","text":"Wish I had a friend to go to the cinema with. Went alone. It was fine. Mostly.","emotion":"lonely","intensity":4}
+{"id":"e0868","text":"I don't fit in here. Not with the parents at the school gate, not at work, not anywhere really.","emotion":"lonely","also":["sad"],"intensity":6}
+{"id":"e0869","text":"Night shift on the ward, the patients asleep, the corridors humming. Very alone tonight.","emotion":"lonely","intensity":5}
+{"id":"e0870","text":"Dad's in the care home now. I visit, but the house feels hollow without him in it.","emotion":"lonely","also":["sad"],"intensity":6,"people":["Dad"]}
+{"id":"e0871","text":"I keep scrolling through photos of old friends' lives and wondering when I stopped being in them.","emotion":"lonely","also":["sad"],"intensity":5}
+{"id":"e0872","text":"Ordered takeaway just to talk to the delivery guy for a minute.","emotion":"lonely","intensity":6,"traits":["short","indirect"]}
+{"id":"e0873","text":"Isolated. The flu means a week indoors and nobody's come by.","emotion":"lonely","also":["sad"],"intensity":5}
+{"id":"e0874","text":"My best friend has a new best friend. I can see it in the photos.","emotion":"lonely","also":["sad"],"intensity":6,"people_optional":["My best friend"]}
+{"id":"e0875","text":"Retired last month. Miss the office banter more than I expected. Days are long.","emotion":"lonely","intensity":5,"traits":["time"]}
+{"id":"e0876","text":"Lonely in a crowded house. Five of us and nobody talks.","emotion":"lonely","intensity":6,"traits":["short"]}
+{"id":"e0877","text":"The only person who really got me was Nana and she's been gone a year today.","emotion":"lonely","also":["sad"],"intensity":7,"people":["Nana"],"traits":["time"]}
+{"id":"e0878","text":"Moved to the countryside for peace and quiet. Got it. Too much of it, maybe.","emotion":"lonely","intensity":4}
+{"id":"e0879","text":"Watched couples at the beach and felt a pang. Not jealous exactly. Just alone.","emotion":"lonely","intensity":5,"traits":["negation"]}
+{"id":"e0880","text":"Long weekend with no plans. Didn't speak to anyone from Friday night to Monday morning.","emotion":"lonely","intensity":6,"not_people":["Friday","Monday"]}
+{"id":"e0881","text":"I'm the friend people call when they need something. Who do I call?","emotion":"lonely","also":["frustrated"],"intensity":5,"traits":["indirect"]}
+{"id":"e0882","text":"Saw a group of girls laughing on the train and remembered when that was us. Haven't heard from any of them in ages.","emotion":"lonely","also":["sad"],"intensity":5}
+{"id":"e0883","text":"Home from uni for the summer and all my school friends have moved on. Sitting in my old bedroom like a ghost.","emotion":"lonely","intensity":5}
+{"id":"e0884","text":"Tobi's family is lovely but they speak their language at dinner and I sit there smiling, understanding nothing.","emotion":"lonely","intensity":4,"people":["Tobi"]}
+{"id":"e0885","text":"Missing connection. Real connection, not likes.","emotion":"lonely","intensity":5,"traits":["short"]}
+{"id":"e0886","text":"Walked past our old café and Liv wasn't there, of course. She moved two years ago. Still look every time.","emotion":"lonely","also":["sad"],"intensity":5,"people":["Liv"],"traits":["time"]}
+{"id":"e0887","text":"Feeling disconnected from everyone. Like I'm watching life through a window.","emotion":"lonely","intensity":6}
+{"id":"e0888","text":"Deployed abroad, six months to go. The calls home keep me going but the nights are long.","emotion":"lonely","intensity":6,"traits":["time"]}
+{"id":"e0889","text":"My son doesn't call much since he moved in with his girlfriend. I don't want to bother him.","emotion":"lonely","also":["sad"],"intensity":5,"people_optional":["My son","his girlfriend"]}
+{"id":"e0890","text":"No one to share the good news with. Got the promotion and told the cat.","emotion":"lonely","also":["happy"],"intensity":5,"traits":["mixed"]}
+{"id":"e0891","text":"Hard being the only queer person in my town. Hard not having anyone who just gets it.","emotion":"lonely","intensity":6}
+{"id":"e0892","text":"Ate lunch in my car again. Easier than sitting alone in the canteen.","emotion":"lonely","intensity":5,"traits":["indirect"]}
+{"id":"e0893","text":"I miss Callie. Not the relationship, just her. Her company.","emotion":"lonely","also":["sad"],"intensity":5,"people":["Callie"],"traits":["negation"]}
+{"id":"e0894","text":"Nobody to sit with at the wedding. Spent the reception talking to the bartender.","emotion":"lonely","intensity":5}
+{"id":"e0895","text":"Sometimes I think if I disappeared for a week no one would notice. Not dramatically. Just honestly.","emotion":"lonely","also":["sad"],"intensity":6,"traits":["ambiguous"]}
+{"id":"e0896","text":"The new neighbours are nice but they're always busy. Waved hello, that's about it.","emotion":"lonely","intensity":3}
+{"id":"e0897","text":"Felt lonely at book club tonight even though everyone was friendly. Couldn't find my way into the conversation.","emotion":"lonely","intensity":4}
+{"id":"e0898","text":"Six weeks since I moved. Still haven't made a single friend here.","emotion":"lonely","intensity":5,"traits":["time"]}
+{"id":"e0899","text":"Grandma says the worst part of being 90 is that all her friends are gone. I sat with her longer than usual.","emotion":"lonely","also":["sad"],"intensity":5,"people":["Grandma"],"traits":["ambiguous"]}
+{"id":"e0900","text":"Bit lonely. Rain, empty flat, nobody texting back.","emotion":"lonely","intensity":4,"traits":["short"]}
+{"id":"e0901","text":"Hong Kong was supposed to be an adventure. It's mostly been me, my laptop and the noodle place downstairs.","emotion":"lonely","intensity":5,"not_people":["Hong Kong"]}
+{"id":"e0902","text":"Eli has his friends, his band, his football. I have Eli. That's not enough and I know it.","emotion":"lonely","also":["sad"],"intensity":6,"people":["Eli"]}
+{"id":"e0903","text":"Parents' evening alone again. Everyone else came in pairs.","emotion":"lonely","intensity":4,"traits":["short"]}
+{"id":"e0904","text":"Missing my brother tonight. He used to live round the corner. Now he's an ocean away.","emotion":"lonely","also":["sad"],"intensity":5,"people_optional":["my brother"]}
+{"id":"e0905","text":"In a new team where everyone's known each other for years. Inside jokes I'm not part of.","emotion":"lonely","intensity":4}
+{"id":"e0906","text":"Bought two tickets out of habit. Went alone. Left the seat empty next to me.","emotion":"lonely","also":["sad"],"intensity":6,"traits":["indirect"]}
+{"id":"e0907","text":"I'm tired of being the one who reaches out. Stopped this week to see who notices. Nobody so far.","emotion":"lonely","also":["sad"],"intensity":6}
+{"id":"e0908","text":"Wandered the museum alone on a Sunday. Beautiful, but I kept turning to say 'look at this' to no one.","emotion":"lonely","intensity":5,"not_people":["Sunday"]}
+{"id":"e0909","text":"Even with Amira here this week I feel lonely. She's here but her mind is somewhere else.","emotion":"lonely","intensity":5,"people":["Amira"]}
+{"id":"e0910","text":"I don't think anyone really knows me. That's the loneliest thought I've had in a while.","emotion":"lonely","also":["sad"],"intensity":7}

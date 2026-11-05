@@ -1,0 +1,70 @@
+{"id":"e0351","text":"Third time this week the printer jammed right before a deadline. I wanted to throw it out the window.","emotion":"frustrated","intensity":6}
+{"id":"e0352","text":"Two hours on hold with the airline. Disconnected. Started again.","emotion":"frustrated","intensity":7,"traits":["short"]}
+{"id":"e0353","text":"Asked Calum to take the bins out four times. Bins still in. Calum still on the sofa.","emotion":"frustrated","intensity":5,"people":["Calum"]}
+{"id":"e0354","text":"Great, another 'quick' meeting that ran for ninety minutes and decided nothing.","emotion":"frustrated","intensity":5,"traits":["sarcasm"]}
+{"id":"e0355","text":"I've rewritten this paragraph eight times and it's still bad. I know what I want to say. Why won't it come out.","emotion":"frustrated","intensity":6}
+{"id":"e0356","text":"The physio said progress will be slow. I knew that. I just hate not being able to run.","emotion":"frustrated","also":["sad"],"intensity":6}
+{"id":"e0357","text":"Train cancelled, replacement bus took a scenic tour of every village in the county. Home at 10pm.","emotion":"frustrated","also":["tired"],"intensity":6}
+{"id":"e0358","text":"Javier keeps taking credit for my work in front of the director. I don't know how to call it out without looking petty.","emotion":"frustrated","also":["angry"],"intensity":7,"people":["Javier"],"people_optional":["the director"]}
+{"id":"e0359","text":"Why do I always freeze up when I'm speaking French with actual French people. I can do it perfectly in my head.","emotion":"frustrated","intensity":5,"traits":["names_tricky"]}
+{"id":"e0360","text":"The insurance company 'needs more documents'. They have had every document since March.","emotion":"frustrated","intensity":7,"not_people":["March"],"traits":["time"]}
+{"id":"e0361","text":"Couldn't get the baby to nap. Tried everything. She finally fell asleep at 5:30pm, perfect for ruining tonight.","emotion":"frustrated","also":["tired"],"intensity":6}
+{"id":"e0362","text":"Wifi keeps dropping during calls. I look like a frozen potato to my clients.","emotion":"frustrated","intensity":5}
+{"id":"e0363","text":"Same argument with Mum about the wedding guest list. Round five. Nobody wins.","emotion":"frustrated","intensity":6,"people":["Mum"]}
+{"id":"e0364","text":"I'm stuck. Six months at this job and I'm doing exactly what I did on day one. No growth, no plan, no feedback.","emotion":"frustrated","intensity":6}
+{"id":"e0365","text":"Burnt the risotto because I answered one email. One.","emotion":"frustrated","intensity":3,"traits":["short"]}
+{"id":"e0366","text":"Ugh. Planned a whole day of writing and got nothing done except reorganising my bookshelf.","emotion":"frustrated","intensity":4}
+{"id":"e0367","text":"The council approved the tower block on the park despite everyone objecting. What was the consultation even for?","emotion":"frustrated","also":["angry"],"intensity":7}
+{"id":"e0368","text":"Kids fought all the way to Grandma's. Four hours of 'he's touching me'. I have no patience left.","emotion":"frustrated","also":["tired"],"intensity":6,"people":["Grandma"],"people_optional":["Kids"]}
+{"id":"e0369","text":"My knee is still swollen. It's been three weeks. I've done everything the doctor said.","emotion":"frustrated","intensity":5,"traits":["time"]}
+{"id":"e0370","text":"Lost again at chess to Ivan. Same opening trap. Every. Single. Time.","emotion":"frustrated","intensity":4,"people":["Ivan"]}
+{"id":"e0371","text":"Spent the whole weekend on the furniture flatpack and there's one piece left over and the drawer won't close.","emotion":"frustrated","intensity":5}
+{"id":"e0372","text":"I'm not angry at Nkechi, I'm just frustrated that we keep having the same conversation about money and nothing changes.","emotion":"frustrated","intensity":6,"people":["Nkechi"],"traits":["negation"]}
+{"id":"e0373","text":"Website crashed on launch day. Hundreds of people trying to sign up and getting an error page.","emotion":"frustrated","also":["anxious"],"intensity":8}
+{"id":"e0374","text":"Spent an hour looking for my keys. They were in my hand. I'm losing it.","emotion":"frustrated","intensity":4}
+{"id":"e0375","text":"Applied to forty jobs. Two replies, both automatic rejections. I'm qualified, I'm just invisible.","emotion":"frustrated","also":["sad"],"intensity":7}
+{"id":"e0376","text":"Bureaucracy day: three offices, two forms, one stamp, zero progress.","emotion":"frustrated","intensity":5,"traits":["short"]}
+{"id":"e0377","text":"Kaito cancelled on me again, one hour before. Fourth time. I'm done planning things with him.","emotion":"frustrated","also":["sad"],"intensity":6,"people":["Kaito"]}
+{"id":"e0378","text":"My body won't let me sleep even though I'm exhausted. Lying here doing the maths on how many hours I'll get.","emotion":"frustrated","also":["tired"],"intensity":5}
+{"id":"e0379","text":"Every time I think the code works there's another bug hiding behind it. Like whack-a-mole.","emotion":"frustrated","intensity":5}
+{"id":"e0380","text":"Annoyed with myself. Promised I'd go to the gym. Watched three episodes instead.","emotion":"frustrated","intensity":3}
+{"id":"e0381","text":"The neighbour's dog barked from 5am. I've asked nicely twice. I'm out of nice.","emotion":"frustrated","also":["angry"],"intensity":6}
+{"id":"e0382","text":"Supervisor Grace moved the goalposts on the project for the third time. I've basically done it three times over.","emotion":"frustrated","intensity":7,"people":["Supervisor Grace"],"traits":["names_tricky"]}
+{"id":"e0383","text":"Couldn't figure out the tax form. Called the helpline. They couldn't figure it out either.","emotion":"frustrated","intensity":5}
+{"id":"e0384","text":"Wanted a peaceful Sunday. Got a leaking boiler, a toddler with a cold and a broken umbrella.","emotion":"frustrated","also":["tired"],"intensity":6,"not_people":["Sunday"]}
+{"id":"e0385","text":"Rejected by the gallery again with the same feedback: 'not quite right for us'. What does that mean?","emotion":"frustrated","also":["sad"],"intensity":6}
+{"id":"e0386","text":"Can't get the hang of this guitar chord. My fingers just won't. Two weeks of practice.","emotion":"frustrated","intensity":4}
+{"id":"e0387","text":"The groceries were delivered to the wrong flat and now I'm making dinner out of crackers and hope.","emotion":"frustrated","intensity":4}
+{"id":"e0388","text":"I keep explaining to my parents that I'm not 'just playing on the computer', it's literally my job.","emotion":"frustrated","intensity":5,"people_optional":["my parents"]}
+{"id":"e0389","text":"Exam was nothing like the practice papers. I knew the material and still messed it up.","emotion":"frustrated","also":["sad"],"intensity":6}
+{"id":"e0390","text":"Lovely, the car failed its MOT. On my birthday. Perfect timing as always.","emotion":"frustrated","intensity":5,"traits":["sarcasm"]}
+{"id":"e0391","text":"Three days into the new diet and I ate an entire pack of biscuits in the car. Back to day one.","emotion":"frustrated","intensity":4}
+{"id":"e0392","text":"Ferdinand interrupted me in every single meeting today. I tracked it. Seven times.","emotion":"frustrated","also":["angry"],"intensity":6,"people":["Ferdinand"]}
+{"id":"e0393","text":"Hours on hold with the GP surgery, then all the appointments were gone by the time I got through.","emotion":"frustrated","intensity":6}
+{"id":"e0394","text":"I just can't get through to Theo. He nods and then does exactly the opposite.","emotion":"frustrated","intensity":5,"people":["Theo"]}
+{"id":"e0395","text":"Stuck in traffic for two hours because of roadworks that nobody is actually working on.","emotion":"frustrated","intensity":5}
+{"id":"e0396","text":"I hate that I let it get to me. Nita made one little comment and I stewed on it all day.","emotion":"frustrated","intensity":5,"people":["Nita"]}
+{"id":"e0397","text":"Landlord still hasn't fixed the mould. Three emails, two calls, a letter. Kids are coughing.","emotion":"frustrated","also":["angry","anxious"],"intensity":7,"people_optional":["Kids"]}
+{"id":"e0398","text":"Wrote 2,000 words and the file didn't save. Rewriting from memory. Never as good the second time.","emotion":"frustrated","intensity":7}
+{"id":"e0399","text":"I'm frustrated with how slow this healing is. Physically and the other kind.","emotion":"frustrated","also":["sad"],"intensity":5,"traits":["indirect"]}
+{"id":"e0400","text":"Group chat planning a trip: 47 messages, zero decisions. Again.","emotion":"frustrated","intensity":3,"traits":["short"]}
+{"id":"e0401","text":"The software update moved every button I use. Spent half the morning hunting for 'export'.","emotion":"frustrated","intensity":4}
+{"id":"e0402","text":"Missed the penalty in the final. The whole team said it's fine. It isn't fine to me.","emotion":"frustrated","also":["sad"],"intensity":7}
+{"id":"e0403","text":"Ma keeps sending me articles about 'settling down'. I'm 29. I have a life. I'm settled.","emotion":"frustrated","intensity":5,"people":["Ma"]}
+{"id":"e0404","text":"Long day of nothing working. The oven, the heating, the bus, my brain.","emotion":"frustrated","also":["tired"],"intensity":5}
+{"id":"e0405","text":"Rejected the visa on a technicality. A missing stamp. Months of waiting for this.","emotion":"frustrated","also":["sad","angry"],"intensity":8}
+{"id":"e0406","text":"Why is it so hard to just ask for help? I needed it. I didn't ask. Then I stayed late again.","emotion":"frustrated","intensity":5}
+{"id":"e0407","text":"Deliveroo order arrived cold and missing the main thing I ordered. On the one night I didn't want to cook.","emotion":"frustrated","intensity":4,"not_people":["Deliveroo"],"traits":["names_tricky"]}
+{"id":"e0408","text":"Struggled with the recipe Babcia gave me. Mine tastes nothing like hers. Tried three times.","emotion":"frustrated","also":["sad"],"intensity":4,"people":["Babcia"]}
+{"id":"e0409","text":"My research participant cancelled for the fourth time and the ethics deadline is next week.","emotion":"frustrated","also":["anxious"],"intensity":6,"traits":["time"]}
+{"id":"e0410","text":"Can't concentrate. Kept starting things and dropping them. Whole day felt like wading through mud.","emotion":"frustrated","also":["tired"],"intensity":5}
+{"id":"e0411","text":"Apparently 'urgent' means 'Cormac forgot to tell you about it until today'.","emotion":"frustrated","intensity":5,"people":["Cormac"],"traits":["sarcasm"]}
+{"id":"e0412","text":"The new hire keeps asking me questions he could just google. I'm happy to help but I have my own work.","emotion":"frustrated","intensity":4,"people_optional":["The new hire"]}
+{"id":"e0413","text":"Spent my day off fixing someone else's mistake. Again.","emotion":"frustrated","intensity":5,"traits":["short"]}
+{"id":"e0414","text":"Trying to get my dad to see a doctor about his cough. He just changes the subject.","emotion":"frustrated","also":["anxious"],"intensity":6,"people_optional":["my dad"]}
+{"id":"e0415","text":"Not really upset, just irritated. Everything took twice as long as it should have.","emotion":"frustrated","intensity":3,"traits":["negation"]}
+{"id":"e0416","text":"Lost the bid by one vote. Three months of work. They picked the cheaper, worse plan.","emotion":"frustrated","also":["sad"],"intensity":7}
+{"id":"e0417","text":"I tried to talk to Pilar about how I've been feeling and she turned it into a story about herself.","emotion":"frustrated","also":["lonely"],"intensity":5,"people":["Pilar"]}
+{"id":"e0418","text":"Every form wants a utility bill and I don't have one in my name because I just moved. Catch-22.","emotion":"frustrated","intensity":5}
+{"id":"e0419","text":"The bread didn't rise. Again. I followed the recipe to the gram.","emotion":"frustrated","intensity":3}
+{"id":"e0420","text":"I want to move forward and every door I push on is locked. That's this whole month.","emotion":"frustrated","also":["sad"],"intensity":6,"traits":["indirect"]}

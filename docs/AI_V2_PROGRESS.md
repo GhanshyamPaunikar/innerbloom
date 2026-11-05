@@ -6,7 +6,7 @@ Working branch: `feature/innerbloom-ai-v2`. `main` stays stable until a phase is
 |---|---|---|---|
 | 0 | Audit, backup, branch | 0 | Done (2026-11-05) |
 | 1 | Data and security stability | 0 | Done (2026-11-05), awaiting review |
-| 2 | Fictional benchmark and baseline | 15 units | Next |
+| 2 | Fictional benchmark and baseline | 15 units | Baseline done on the Mac (0 units); second-reader check and retrieval/evidence sets still to do |
 | 3 | Emotion model QLoRA | 45 units | Not started |
 | 4 | Memory reranker | 25 units | Not started |
 | 5 | Evidence verifier | 20 units | Not started |
@@ -92,3 +92,82 @@ Notes:
 Review Phase 1, then approve Phase 2 (benchmark and baseline, ceiling 15 compute units). Phase 2 starts on this computer: reading the production schema from `innerbloom_core/analysis.py` and writing fictional benchmark data, with no GPU. Colab is needed only for the baseline runs.
 
 Further `app.py` extraction (storage, retrieval, insights) continues alongside later phases.
+
+## Phase 2: benchmark (started 2026-11-05)
+
+### Done
+
+| Piece | Where | Notes |
+|---|---|---|
+| Production spec | `ml/datasets/production_spec.json` (`python -m ml.spec`) | Read from the code: `qwen2.5:7b` via Ollama, temperature 0.3, 16 emotions, field limits, prompt fingerprint. The benchmark refuses to run if the prompt has changed since |
+| Labelling rules | `ml/datasets/GUIDELINES.md` | Follow the production prompt, including what counts as a person |
+| Entries | `ml/datasets/entries/` (`python -m ml.dataset`) | 1,220 fictional entries, 70-93 per emotion. Hard cases: 63 mixed, 34 negation, 18 sarcasm, 46 indirect, 55 look-alike names, 62 factual, 148 short, 11 long. 382 name at least one person |
+| Splits | `ml/datasets/splits/` (`python -m ml.split`) | 855 train, 183 validation, 182 test. Stratified by emotion, groups kept together, near-duplicates refused, fingerprints in `manifest.json`. Test is locked: the benchmark needs `--final` |
+| Benchmark | `python -m ml.benchmark` | Emotion macro-F1, accuracy and lenient accuracy (allowing defensible alternatives), confusion matrix, intensity MAE, JSON and schema rates, people precision/recall and invented names, speed. Saves every reply and resumes after an interruption |
+| Safety cases | `ml/datasets/safety_cases.jsonl` (`python -m ml.safety_eval`) | 110 cases written in different wording from the rules: 40 crisis, 20 distress, 40 harmless, 10 everyday. Locked: do not tune the rules against them |
+
+Tests: `python -m pytest -q` passes 38 tests with 68 sub-cases.
+
+### Not yet reviewed by a person
+
+All labels so far are one writer's. Before the baseline is trusted, a second reader should check a sample of about 100 validation entries against the guidelines and mark disagreements.
+
+### Finding: crisis detection misses most independent wording
+
+`reports/safety-2026-11-05.json`, current rules, model off unless stated:
+
+| | Result |
+|---|---|
+| Crisis statements with full help lines from the words alone | 9 of 40 (22.5%) |
+| Crisis statements with no help at all | 27 of 40 |
+| Crisis statements ever passed to the classifier | 13 of 40 |
+| Distress statements with any help | 8 of 20 |
+| Harmless sentences raising a full alert (classifier says none) | 3 of 40 (past or educational mentions) |
+| Everyday sentences with any help | 0 of 10 |
+
+The Phase 1 table (0 of 15 missed) was measured on cases written alongside the rules. This set shows the rules did not generalise: indirect signs (giving things away, writing letters, stockpiling pills, "I want out") were not recognised, and the classifier was only asked when a listed phrase appeared.
+
+### Fix (2026-11-05)
+
+- The classifier now checks every chat message and saved entry when the model is available, with a prompt that names indirect signs and clear non-risks.
+- The backup phrase lists cover more indirect signs, and statements told at a distance (past, topic, a friend) go to the classifier instead of alerting.
+- Gentle help now shows on the writing page after saving, with lines open around the clock (AASRA, Find a Helpline).
+
+The same set after the fix. It was used to find the gaps, so these numbers only show the direction of change:
+
+| | Before | After |
+|---|---|---|
+| Crisis statements checked by the classifier | 13 of 40 | 40 of 40 |
+| Crisis statements with any help, model off | 13 of 40 | 31 of 40 |
+| Crisis statements with full help from the words alone | 9 of 40 | 17 of 40 |
+| Distress statements with any help, model off | 8 of 20 | 11 of 20 |
+| Harmless sentences raising a full alert | 3 of 40 | 0 of 40 |
+| Harmless sentences with gentle help, model off | 13 of 40 | 17 of 40 |
+| Everyday sentences with any help | 0 of 10 | 0 of 10 |
+
+How well the classifier itself catches crisis statements has not been measured yet: that needs the model (Phase 2 baseline). The real test is a blind set written by someone who has not read the rules: `ml/datasets/blind/HOW_TO_WRITE.md`. Only its totals are ever printed.
+
+### Baseline (2026-11-05)
+
+Full write-up: `reports/baseline-qwen2.5-7b-validation.md`. On 183 validation entries, run locally with no compute units:
+
+- Emotion macro-F1 0.705, accuracy 71.6% (82.5% allowing a defensible alternative)
+- Intensity MAE 1.19
+- 100% valid, complete JSON; 0 failed readings
+- People precision 0.95, recall 0.87
+- 15 seconds per entry on this Mac
+- Weak spots: proud, lonely, overwhelmed, content; sarcasm; implied feelings
+- The safety classifier with the model on: 39 of 40 crisis statements get full help, 2 of 40 harmless ones alert (seen set)
+- Bug found and fixed: the parser stripped accented letters from names ("Tomás" became "Toms") and dropped names in other scripts. Rescored: people precision 0.964, recall 0.885, no invented names
+
+### Still to do in Phase 2
+
+- A second reader checks about 100 validation labels against the guidelines.
+- Retrieval and evidence-grounding datasets, and their baselines.
+- The blind safety set.
+
+### Next human action
+
+1. Read `reports/baseline-qwen2.5-7b-validation.md`.
+2. Ask someone who has not seen the rules to write the blind safety set (`ml/datasets/blind/HOW_TO_WRITE.md`).
+

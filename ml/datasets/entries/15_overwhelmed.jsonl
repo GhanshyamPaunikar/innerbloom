@@ -1,0 +1,70 @@
+{"id":"e0981","text":"Three deadlines this week, Mum in hospital, the boiler broke and the kids have half term. I don't know where to start.","emotion":"overwhelmed","also":["anxious"],"intensity":9,"people":["Mum"],"people_optional":["the kids"]}
+{"id":"e0982","text":"Too much. Everything at once. Sat on the bathroom floor for ten minutes just to breathe.","emotion":"overwhelmed","intensity":8}
+{"id":"e0983","text":"Wedding planning is eating my life. Florist, caterer, seating plan, Aunt Lola's demands.","emotion":"overwhelmed","also":["frustrated"],"intensity":7,"people":["Aunt Lola"]}
+{"id":"e0984","text":"Inbox has 412 unread. I closed it and stared at the wall.","emotion":"overwhelmed","intensity":6,"traits":["short"]}
+{"id":"e0985","text":"First week as a manager. Everyone needs something from me every minute. I've forgotten to eat lunch three days running.","emotion":"overwhelmed","also":["tired"],"intensity":7}
+{"id":"e0986","text":"Moving house, starting a new job and Pedro's family visiting. All this week.","emotion":"overwhelmed","intensity":7,"people":["Pedro"],"people_optional":["Pedro's family"]}
+{"id":"e0987","text":"I can't keep all the plates spinning. Something's going to drop and I don't know which one.","emotion":"overwhelmed","also":["anxious"],"intensity":7,"traits":["indirect"]}
+{"id":"e0988","text":"New baby, toddler with chickenpox, partner away for work. I'm drowning.","emotion":"overwhelmed","also":["tired"],"intensity":9}
+{"id":"e0989","text":"The to-do list is longer than the day. I just keep adding to it.","emotion":"overwhelmed","intensity":5}
+{"id":"e0990","text":"Exams, part-time job, and Kaveh needing me every night since his breakup. I'm stretched thin.","emotion":"overwhelmed","also":["tired"],"intensity":7,"people":["Kaveh"]}
+{"id":"e0991","text":"Sensory overload at the shopping centre. Lights, music, crowds. Had to leave the trolley and go sit in the car.","emotion":"overwhelmed","intensity":7}
+{"id":"e0992","text":"All the paperwork after Dad's death. Bank, pension, council, solicitor. Each one wants a different form.","emotion":"overwhelmed","also":["sad"],"intensity":8,"people":["Dad"]}
+{"id":"e0993","text":"Overwhelmed by kindness today, honestly. Fifty messages after the news. I can't answer them all.","emotion":"overwhelmed","also":["grateful"],"intensity":6,"traits":["ambiguous"]}
+{"id":"e0994","text":"Renovation chaos. Dust everywhere, no kitchen, the builder hasn't turned up and the budget's gone.","emotion":"overwhelmed","also":["frustrated"],"intensity":7}
+{"id":"e0995","text":"So many decisions about Mum's care. Every option has a cost. I keep making spreadsheets and crying.","emotion":"overwhelmed","also":["sad"],"intensity":8,"people":["Mum"]}
+{"id":"e0996","text":"Christmas prep: gifts for 23 people, hosting, a work party, the school play. And it's only the 2nd.","emotion":"overwhelmed","intensity":6,"not_people":["Christmas"],"traits":["time"]}
+{"id":"e0997","text":"Had a panic in the supermarket because there were too many types of bread. It's not about the bread.","emotion":"overwhelmed","also":["anxious"],"intensity":7,"traits":["indirect"]}
+{"id":"e0998","text":"New country, new language, new job. Everything takes ten times the effort. My brain is full.","emotion":"overwhelmed","also":["tired"],"intensity":7}
+{"id":"e0999","text":"Swamped at work. Three people quit and their work landed on me.","emotion":"overwhelmed","also":["frustrated"],"intensity":7}
+{"id":"e1000","text":"I'm juggling caring for Grandpa, the kids and a full-time job. Some days I just stand in the kitchen not knowing what to do first.","emotion":"overwhelmed","also":["tired"],"intensity":8,"people":["Grandpa"],"people_optional":["the kids"]}
+{"id":"e1001","text":"Thesis due in a month, data analysis not done, supervisor on leave. Spiralling.","emotion":"overwhelmed","also":["anxious"],"intensity":8,"people_optional":["supervisor"],"traits":["time"]}
+{"id":"e1002","text":"The news today was too much. Turned it off and sat in silence.","emotion":"overwhelmed","also":["sad"],"intensity":5,"traits":["short"]}
+{"id":"e1003","text":"Everything is urgent and nothing is getting done. Lingering dread about Monday.","emotion":"overwhelmed","also":["anxious"],"intensity":6,"not_people":["Monday"]}
+{"id":"e1004","text":"Twins plus a puppy was a mistake. A lovely mistake. But a mistake.","emotion":"overwhelmed","also":["tired"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e1005","text":"Too many people needing me this week. Selin, the team, the kids, my mother. I'm empty.","emotion":"overwhelmed","also":["tired"],"intensity":8,"people":["Selin"],"people_optional":["my mother","the kids"]}
+{"id":"e1006","text":"Starting uni is a lot. Lectures, timetables, finding rooms, meeting people. My head is spinning.","emotion":"overwhelmed","also":["anxious"],"intensity":6}
+{"id":"e1007","text":"Flooded basement, insurance calls, neighbours asking for help with theirs. Haven't slept.","emotion":"overwhelmed","also":["tired"],"intensity":8}
+{"id":"e1008","text":"Big launch day. Twenty bugs reported in the first hour. Slack is on fire.","emotion":"overwhelmed","also":["anxious"],"intensity":8,"not_people":["Slack"],"traits":["names_tricky"]}
+{"id":"e1009","text":"Grief and paperwork and work emails all at once. I can't hold it all.","emotion":"overwhelmed","also":["sad"],"intensity":8}
+{"id":"e1010","text":"Bit overwhelmed by the open-plan office. Noise everywhere. Headphones on all day.","emotion":"overwhelmed","intensity":4}
+{"id":"e1011","text":"Running the shop alone while Kenzo's in hospital. Deliveries, customers, accounts. I'm barely keeping my head above water.","emotion":"overwhelmed","also":["anxious"],"intensity":8,"people":["Kenzo"]}
+{"id":"e1012","text":"The doctor gave me so much information about the diagnosis I couldn't take any of it in.","emotion":"overwhelmed","also":["anxious"],"intensity":7}
+{"id":"e1013","text":"Hosting fourteen people for Eid. Kitchen is chaos. Nani is 'helping' by criticising.","emotion":"overwhelmed","also":["frustrated"],"intensity":6,"people":["Nani"],"not_people":["Eid"]}
+{"id":"e1014","text":"Can't think straight. Too many tabs open in my brain.","emotion":"overwhelmed","intensity":5,"traits":["short"]}
+{"id":"e1015","text":"Working two jobs, studying at night, sending money home. Something has to give.","emotion":"overwhelmed","also":["tired"],"intensity":8}
+{"id":"e1016","text":"So many emotions at the wedding. Joy, nerves, missing Dad. I was a mess all day in the best and worst ways.","emotion":"overwhelmed","also":["happy","sad"],"intensity":8,"people":["Dad"],"traits":["mixed"]}
+{"id":"e1017","text":"Got handed the whole project after Lucas left. Two weeks to deliver what he had three months for.","emotion":"overwhelmed","also":["anxious"],"intensity":8,"people":["Lucas"],"traits":["time"]}
+{"id":"e1018","text":"Kids screaming, phone ringing, dinner burning, doorbell. All at once. I just stood there.","emotion":"overwhelmed","intensity":7,"people_optional":["Kids"]}
+{"id":"e1019","text":"The divorce paperwork is endless. Every page is a decision about the rest of my life.","emotion":"overwhelmed","also":["sad"],"intensity":7}
+{"id":"e1020","text":"I said yes to too many things this month. Calendar is solid colour. No white space anywhere.","emotion":"overwhelmed","intensity":6}
+{"id":"e1021","text":"Nursing shift from hell. Two emergencies, one death, a new admission and no breaks.","emotion":"overwhelmed","also":["tired","sad"],"intensity":9}
+{"id":"e1022","text":"Too much input today. Need dark, quiet, nothing.","emotion":"overwhelmed","intensity":6,"traits":["short"]}
+{"id":"e1023","text":"Packing up the house to sell. Thirty years of stuff. Every drawer is a memory and a decision.","emotion":"overwhelmed","also":["sad"],"intensity":7}
+{"id":"e1024","text":"Group project, solo project, part-time job, Mira's birthday. I keep writing lists and losing them.","emotion":"overwhelmed","intensity":6,"people":["Mira"]}
+{"id":"e1025","text":"Everything feels like too much lately. Even small things like replying to messages.","emotion":"overwhelmed","also":["tired"],"intensity":6}
+{"id":"e1026","text":"Third funeral this year. Can't process one before the next.","emotion":"overwhelmed","also":["sad"],"intensity":8,"traits":["short"]}
+{"id":"e1027","text":"Audit at work, sick kid at home, car in the garage. My brain feels like static.","emotion":"overwhelmed","also":["tired"],"intensity":7}
+{"id":"e1028","text":"The new software, the new process, the new manager. Too much change in one month.","emotion":"overwhelmed","also":["frustrated"],"intensity":6}
+{"id":"e1029","text":"Volunteering, coaching, the PTA, work. I'm the person who can't say no and it's catching up with me.","emotion":"overwhelmed","also":["tired"],"intensity":6}
+{"id":"e1030","text":"Opened the letter from the hospital and read three paragraphs of words I didn't understand. Had to put it down.","emotion":"overwhelmed","also":["anxious"],"intensity":7}
+{"id":"e1031","text":"House full of relatives for the week. Lovely but I haven't had a minute to myself.","emotion":"overwhelmed","also":["tired"],"intensity":5}
+{"id":"e1032","text":"I'm behind on everything. Bills, emails, laundry, life admin. It's a mountain.","emotion":"overwhelmed","intensity":6}
+{"id":"e1033","text":"Teaching five classes, marking, parents' evening, inspection next week. Running on adrenaline and coffee.","emotion":"overwhelmed","also":["anxious"],"intensity":8,"traits":["time"]}
+{"id":"e1034","text":"Feeling buried. Work, family, the move, Ilya's surgery. One more thing and I'll crack.","emotion":"overwhelmed","also":["anxious"],"intensity":8,"people":["Ilya"]}
+{"id":"e1035","text":"The festival was amazing but so loud and crowded. I needed to leave halfway.","emotion":"overwhelmed","intensity":5}
+{"id":"e1036","text":"Starting my own business means I'm the accountant, the designer, the salesperson and the cleaner. Exhausting and too much.","emotion":"overwhelmed","also":["tired"],"intensity":7}
+{"id":"e1037","text":"Overwhelmed. Just that word today.","emotion":"overwhelmed","intensity":6,"traits":["short"]}
+{"id":"e1038","text":"Mum's dementia diagnosis, my sister abroad, Dad not coping. It's all on me now.","emotion":"overwhelmed","also":["sad","anxious"],"intensity":9,"people":["Mum","Dad"],"people_optional":["my sister"]}
+{"id":"e1039","text":"Election, war, climate. My feed is too much. Deleted the app for a week.","emotion":"overwhelmed","also":["anxious"],"intensity":6}
+{"id":"e1040","text":"Picking up three shifts plus the course plus helping Delia with the baby. My head is full of noise.","emotion":"overwhelmed","also":["tired"],"intensity":7,"people":["Delia"]}
+{"id":"e1041","text":"Tax return, visa renewal and lease renewal all due the same week. Who designed this.","emotion":"overwhelmed","also":["frustrated"],"intensity":6}
+{"id":"e1042","text":"I tried to plan the week and gave up halfway through. Too many moving parts.","emotion":"overwhelmed","intensity":5}
+{"id":"e1043","text":"First week back after maternity leave. Pumping in the cupboard, 200 emails, sobbing in the car park at lunch.","emotion":"overwhelmed","also":["sad","tired"],"intensity":8}
+{"id":"e1044","text":"Everything hit at once today and I cried at my desk. Lukas brought me a tea and didn't say anything.","emotion":"overwhelmed","also":["sad"],"intensity":7,"people":["Lukas"]}
+{"id":"e1045","text":"Too many choices for the new flat. Every listing looks the same now. I can't decide anything.","emotion":"overwhelmed","also":["frustrated"],"intensity":5}
+{"id":"e1046","text":"I keep forgetting things. Appointments, birthdays, why I walked into the room. Too much in my head.","emotion":"overwhelmed","intensity":5}
+{"id":"e1047","text":"Big family gathering, everyone talking at once, kids running everywhere. Loved it, needed a lie-down after.","emotion":"overwhelmed","also":["happy"],"intensity":5,"traits":["mixed"]}
+{"id":"e1048","text":"The week from hell: car crash (minor, everyone's fine), work crisis, Babajide's hospital visit.","emotion":"overwhelmed","also":["anxious"],"intensity":7,"people":["Babajide"]}
+{"id":"e1049","text":"Not a bad day, just too full. Back-to-back from 7am to 10pm.","emotion":"overwhelmed","also":["tired"],"intensity":5,"traits":["negation"]}
+{"id":"e1050","text":"Wanted to help everyone and ended up helping no one well. Spread too thin.","emotion":"overwhelmed","also":["frustrated"],"intensity":6}

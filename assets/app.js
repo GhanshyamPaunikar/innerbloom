@@ -256,6 +256,10 @@ async function saveEntry() {
     });
     entryText.value = ""; entryTitle.value = "";
     if (saved?.safety?.level === "high") showCrisisSupport();
+    else if (saved?.safety?.level === "soft") {
+      const lines = (saved.safety.resources || []).map(r => `${r.name}: ${r.detail}`).join(" · ");
+      toast(`${saved.safety.message} ${lines}`, "success", 12000);
+    }
     crisisShown = false;
     clearSavedDraft(); updateWordCount();
     const hardEmotions = ["sad", "anxious", "angry", "overwhelmed", "lonely", "frustrated", "tired"];

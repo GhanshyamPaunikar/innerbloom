@@ -1,0 +1,273 @@
+{
+  "run": "baseline-qwen2.5-7b-validation",
+  "model": "qwen2.5:7b",
+  "provider": "ollama",
+  "split": "validation",
+  "limit": null,
+  "seed": 7,
+  "temperature": 0.3,
+  "prompt_sha256": "5e4346e7c6d8ce6c074fe03cff82a471d4cfd1adc7bb5e2beeb06e4e684834d3",
+  "spec_prompt_sha256": "5e4346e7c6d8ce6c074fe03cff82a471d4cfd1adc7bb5e2beeb06e4e684834d3",
+  "split_sha256": "b0dcab49af32b4f01738419657e20681b730f694738ac7f75f092006402d6187",
+  "machine": "Darwin arm64 arm",
+  "started": "2026-11-05T19:38:13",
+  "scored_at": "2026-11-05T20:26:54",
+  "metrics": {
+    "scored": 183,
+    "emotion": {
+      "accuracy": 0.716,
+      "macro_f1": 0.705,
+      "lenient_accuracy": 0.825,
+      "per_class": {
+        "happy": {
+          "precision": 0.538,
+          "recall": 0.538,
+          "f1": 0.538,
+          "support": 13
+        },
+        "sad": {
+          "precision": 0.556,
+          "recall": 0.833,
+          "f1": 0.667,
+          "support": 12
+        },
+        "anxious": {
+          "precision": 0.667,
+          "recall": 1.0,
+          "f1": 0.8,
+          "support": 12
+        },
+        "calm": {
+          "precision": 0.818,
+          "recall": 0.75,
+          "f1": 0.783,
+          "support": 12
+        },
+        "grateful": {
+          "precision": 0.692,
+          "recall": 0.818,
+          "f1": 0.75,
+          "support": 11
+        },
+        "frustrated": {
+          "precision": 0.818,
+          "recall": 0.692,
+          "f1": 0.75,
+          "support": 13
+        },
+        "excited": {
+          "precision": 0.55,
+          "recall": 1.0,
+          "f1": 0.71,
+          "support": 11
+        },
+        "reflective": {
+          "precision": 0.917,
+          "recall": 1.0,
+          "f1": 0.957,
+          "support": 11
+        },
+        "hopeful": {
+          "precision": 1.0,
+          "recall": 0.545,
+          "f1": 0.706,
+          "support": 11
+        },
+        "tired": {
+          "precision": 0.9,
+          "recall": 0.818,
+          "f1": 0.857,
+          "support": 11
+        },
+        "angry": {
+          "precision": 1.0,
+          "recall": 0.818,
+          "f1": 0.9,
+          "support": 11
+        },
+        "content": {
+          "precision": 0.45,
+          "recall": 0.818,
+          "f1": 0.581,
+          "support": 11
+        },
+        "lonely": {
+          "precision": 1.0,
+          "recall": 0.455,
+          "f1": 0.625,
+          "support": 11
+        },
+        "proud": {
+          "precision": 1.0,
+          "recall": 0.182,
+          "f1": 0.308,
+          "support": 11
+        },
+        "overwhelmed": {
+          "precision": 1.0,
+          "recall": 0.364,
+          "f1": 0.533,
+          "support": 11
+        },
+        "neutral": {
+          "precision": 0.818,
+          "recall": 0.818,
+          "f1": 0.818,
+          "support": 11
+        }
+      },
+      "confusion": {
+        "angry": {
+          "angry": 9,
+          "frustrated": 2
+        },
+        "anxious": {
+          "anxious": 12
+        },
+        "calm": {
+          "calm": 9,
+          "content": 3
+        },
+        "content": {
+          "content": 9,
+          "calm": 1,
+          "happy": 1
+        },
+        "excited": {
+          "excited": 11
+        },
+        "frustrated": {
+          "frustrated": 9,
+          "tired": 1,
+          "content": 1,
+          "neutral": 1,
+          "excited": 1
+        },
+        "grateful": {
+          "grateful": 9,
+          "content": 2
+        },
+        "happy": {
+          "happy": 7,
+          "content": 2,
+          "excited": 2,
+          "grateful": 2
+        },
+        "hopeful": {
+          "hopeful": 6,
+          "happy": 1,
+          "grateful": 1,
+          "sad": 1,
+          "excited": 1,
+          "anxious": 1
+        },
+        "lonely": {
+          "lonely": 5,
+          "sad": 6
+        },
+        "neutral": {
+          "neutral": 9,
+          "content": 1,
+          "calm": 1
+        },
+        "overwhelmed": {
+          "anxious": 4,
+          "overwhelmed": 4,
+          "reflective": 1,
+          "excited": 1,
+          "happy": 1
+        },
+        "proud": {
+          "excited": 4,
+          "proud": 2,
+          "grateful": 1,
+          "anxious": 1,
+          "happy": 2,
+          "content": 1
+        },
+        "reflective": {
+          "reflective": 11
+        },
+        "sad": {
+          "sad": 10,
+          "content": 1,
+          "neutral": 1
+        },
+        "tired": {
+          "tired": 9,
+          "happy": 1,
+          "sad": 1
+        }
+      }
+    },
+    "intensity": {
+      "mae": 1.191,
+      "within_1": 0.656
+    },
+    "structure": {
+      "failed_rate": 0.0,
+      "direct_json_rate": 1.0,
+      "schema_complete_rate": 1.0,
+      "emotion_in_list_rate": 0.989
+    },
+    "people": {
+      "precision": 0.946,
+      "recall": 0.869,
+      "f1": 0.906,
+      "invented": 1,
+      "not_people_extracted": 0,
+      "predicted": 60
+    },
+    "by_trait": {
+      "ambiguous": {
+        "lenient_accuracy": 0.75,
+        "n": 8
+      },
+      "factual": {
+        "lenient_accuracy": 0.8,
+        "n": 10
+      },
+      "indirect": {
+        "lenient_accuracy": 0.5,
+        "n": 6
+      },
+      "long": {
+        "lenient_accuracy": 0.0,
+        "n": 1
+      },
+      "mixed": {
+        "lenient_accuracy": 0.818,
+        "n": 11
+      },
+      "names_tricky": {
+        "lenient_accuracy": 1.0,
+        "n": 3
+      },
+      "negation": {
+        "lenient_accuracy": 1.0,
+        "n": 4
+      },
+      "plain": {
+        "lenient_accuracy": 0.852,
+        "n": 122
+      },
+      "sarcasm": {
+        "lenient_accuracy": 0.333,
+        "n": 3
+      },
+      "short": {
+        "lenient_accuracy": 0.65,
+        "n": 20
+      },
+      "time": {
+        "lenient_accuracy": 0.938,
+        "n": 16
+      }
+    },
+    "seconds": {
+      "mean": 15.96,
+      "p50": 15.29,
+      "p95": 23.75
+    }
+  }
+}

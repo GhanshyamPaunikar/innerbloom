@@ -1,0 +1,70 @@
+{"id":"e0211","text":"Quiet morning. Tea by the window, rain on the glass, nowhere to be until noon.","emotion":"calm","intensity":4}
+{"id":"e0212","text":"After yoga I felt properly settled for the first time this week. My shoulders came down from my ears.","emotion":"calm","intensity":5}
+{"id":"e0213","text":"Walked the dog along the beach at dusk. Just waves and sand and his silly ears flapping. Head clear.","emotion":"calm","intensity":5}
+{"id":"e0214","text":"Spent the afternoon repotting plants. Hands in the soil. Very peaceful.","emotion":"calm","intensity":4}
+{"id":"e0215","text":"The storm passed and everything outside is still and dripping. Same inside me.","emotion":"calm","intensity":4,"traits":["indirect"]}
+{"id":"e0216","text":"Meditation app said 'notice the breath'. For once I actually did. Ten minutes of nothing in the best way.","emotion":"calm","intensity":5}
+{"id":"e0217","text":"Fished with Grandpa Jun at the reservoir. We caught nothing and barely spoke. Perfect.","emotion":"calm","also":["content"],"intensity":5,"people":["Grandpa Jun"]}
+{"id":"e0218","text":"Long bath, candles, an audiobook. Phone in the other room.","emotion":"calm","intensity":4,"traits":["short"]}
+{"id":"e0219","text":"The big meeting was moved and suddenly my whole day opened up. Felt the tension just drain out.","emotion":"calm","intensity":5}
+{"id":"e0220","text":"I thought the conversation with Esther would be hard but we listened to each other and I left feeling steady.","emotion":"calm","also":["hopeful"],"intensity":5,"people":["Esther"],"traits":["mixed"]}
+{"id":"e0221","text":"Library on a weekday afternoon: old men reading newspapers, a radiator ticking, me and my notebook. Bliss.","emotion":"calm","also":["content"],"intensity":5}
+{"id":"e0222","text":"Sat in the car outside the house for five minutes before going in. Not avoiding anything, just enjoying the quiet.","emotion":"calm","intensity":3}
+{"id":"e0223","text":"Steady day. Did my work, ate well, went to bed early. Nothing to report and that's a nice feeling.","emotion":"calm","also":["content"],"intensity":3,"traits":["ambiguous"]}
+{"id":"e0224","text":"Watched the snow fall from the café window for an hour. Everything muffled and soft.","emotion":"calm","intensity":5}
+{"id":"e0225","text":"Rowing at 6am, the lake like glass. Moana and I didn't say a word the whole way out.","emotion":"calm","intensity":6,"people":["Moana"]}
+{"id":"e0226","text":"Knitting while the radio murmured. Lost track of time completely.","emotion":"calm","intensity":4}
+{"id":"e0227","text":"After weeks of noise in my head it's finally quiet. I'm not happy exactly. I'm just at ease.","emotion":"calm","intensity":6}
+{"id":"e0228","text":"Camping. Fire crackling, stars, Rafael asleep in his chair with his mouth open. I feel very still.","emotion":"calm","intensity":5,"people":["Rafael"]}
+{"id":"e0229","text":"Was expecting to be nervous before the operation but I felt surprisingly calm. The nurse, Bridget, held my hand and talked about her garden.","emotion":"calm","intensity":5,"people":["Bridget"],"traits":["mixed"]}
+{"id":"e0230","text":"Ironed shirts and listened to the rain. Simple tasks are soothing.","emotion":"calm","intensity":3}
+{"id":"e0231","text":"Sunday at the allotment. Weeding, the robin following me, mug of coffee on the shed step.","emotion":"calm","also":["content"],"intensity":4,"not_people":["Sunday"]}
+{"id":"e0232","text":"Ended the day sitting with Deepa on the balcony, not talking, watching the city lights come on.","emotion":"calm","intensity":5,"people":["Deepa"]}
+{"id":"e0233","text":"Not stressed for once. Work's under control, flat's tidy, nothing urgent.","emotion":"calm","intensity":4,"traits":["negation"]}
+{"id":"e0234","text":"Swam forty lengths slowly. Counted strokes. Thoughts went smooth like the water.","emotion":"calm","intensity":5}
+{"id":"e0235","text":"Evening walk through the woods with Pablo. The light through the pines was gold. We talked softly about nothing.","emotion":"calm","intensity":5,"people":["Pablo"]}
+{"id":"e0236","text":"The kids are asleep, the dishes are done, the house is warm. I'm just sitting here listening to the fridge hum.","emotion":"calm","also":["content"],"intensity":4,"people_optional":["The kids"]}
+{"id":"e0237","text":"Cancelled everything and stayed home reading. Didn't feel guilty about it, which is new.","emotion":"calm","intensity":4}
+{"id":"e0238","text":"Prayer at the temple this morning. Incense, bells, the old priest chanting. I left feeling settled for the whole day.","emotion":"calm","intensity":6}
+{"id":"e0239","text":"Even-keeled today. Things went wrong at work and I just handled them one at a time.","emotion":"calm","intensity":4}
+{"id":"e0240","text":"Lay in the hammock and watched clouds. I'm 38 years old. Highly recommend.","emotion":"calm","intensity":4}
+{"id":"e0241","text":"Talked to Dr. Hughes about the panic attacks. Having a plan makes everything feel quieter.","emotion":"calm","also":["hopeful"],"intensity":5,"people":["Dr. Hughes"],"traits":["names_tricky"]}
+{"id":"e0242","text":"The train was delayed and instead of getting cross I just read my book. Growth?","emotion":"calm","intensity":3}
+{"id":"e0243","text":"Painted watercolours on the porch while the cicadas went. Couldn't tell you what time it was.","emotion":"calm","intensity":4}
+{"id":"e0244","text":"Night shift was slow. Mopped, restocked, chatted with Ahmed about his allotment. Strangely peaceful at 4am.","emotion":"calm","intensity":4,"people":["Ahmed"]}
+{"id":"e0245","text":"I let the phone ring out and finished my tea. It can wait. Everything can wait for ten minutes.","emotion":"calm","intensity":4}
+{"id":"e0246","text":"Hot springs with Keiko. Steam, snow on the rocks, my whole body went soft.","emotion":"calm","intensity":7,"people":["Keiko"]}
+{"id":"e0247","text":"I feel balanced lately. Sleep, walks, fewer screens. Noticing it.","emotion":"calm","intensity":4,"traits":["short"]}
+{"id":"e0248","text":"Sat on the hill behind the house and watched the sheep for half an hour. Mind as empty as the sky.","emotion":"calm","intensity":5}
+{"id":"e0249","text":"After the funeral everyone left and the house went quiet. I made tea and sat with it. Sad, but calm. Ready to rest.","emotion":"calm","also":["sad"],"intensity":5,"traits":["mixed","ambiguous"]}
+{"id":"e0250","text":"Gentle day. Baked bread, called Auntie Grace, folded laundry in the sun.","emotion":"calm","also":["content"],"intensity":3,"people":["Auntie Grace"]}
+{"id":"e0251","text":"Breathing exercise before the exam actually worked. Walked in steady and stayed steady.","emotion":"calm","intensity":5}
+{"id":"e0252","text":"Weekend at the cabin with no signal. By day two my brain stopped buzzing.","emotion":"calm","intensity":6}
+{"id":"e0253","text":"Watching Hugo sleep on my chest. His tiny breaths. Everything else fades.","emotion":"calm","intensity":6,"people":["Hugo"]}
+{"id":"e0254","text":"Rain cancelled the match so I spent the afternoon doing a jigsaw. Very relaxing actually.","emotion":"calm","intensity":3}
+{"id":"e0255","text":"I was furious this morning but by lunch, after a walk, I felt calm and could see Jorge's side of it.","emotion":"calm","also":["reflective"],"intensity":4,"people":["Jorge"],"traits":["mixed","time"]}
+{"id":"e0256","text":"Silent retreat day three. The urge to talk is gone. Just footsteps and birds.","emotion":"calm","intensity":7}
+{"id":"e0257","text":"Slow coffee with Martina on her stoop, watching the street wake up.","emotion":"calm","intensity":4,"people":["Martina"],"traits":["short"]}
+{"id":"e0258","text":"Doctor's appointment went fine. I didn't spiral beforehand like usual. Just went, sat, listened.","emotion":"calm","intensity":4}
+{"id":"e0259","text":"Tidied the desk, lit a candle, wrote three pages by hand. The world is far away tonight.","emotion":"calm","intensity":5}
+{"id":"e0260","text":"Flat sea, flat sky, me on the paddleboard in the middle. I could've stayed out there forever.","emotion":"calm","intensity":6}
+{"id":"e0261","text":"Watched the tide come in at the estuary with Niamh. She brought a flask. We said maybe ten words.","emotion":"calm","intensity":5,"people":["Niamh"]}
+{"id":"e0262","text":"Unbothered today. Usually the group chat drama gets to me. Didn't even open it.","emotion":"calm","intensity":4}
+{"id":"e0263","text":"Bedtime routine with the twins went smoothly for once. Stories, songs, lights out. I lay on the floor between their beds until they were asleep.","emotion":"calm","also":["content"],"intensity":5,"people_optional":["the twins"]}
+{"id":"e0264","text":"A quiet, settled feeling all day. The decision's made and I'm at peace with it.","emotion":"calm","intensity":6}
+{"id":"e0265","text":"Lantern festival by the river. Thousands of little lights drifting. Everyone hushed.","emotion":"calm","also":["happy"],"intensity":6}
+{"id":"e0266","text":"Long drive home on empty roads at night, old radio station, window cracked. Very peaceful.","emotion":"calm","intensity":5}
+{"id":"e0267","text":"I'm surprisingly relaxed about the move. Boxes everywhere and I'm just taking it one box at a time.","emotion":"calm","intensity":4}
+{"id":"e0268","text":"Played chess with Omari at the park. Slow game. Pigeons everywhere. My mind finally slowed down to match.","emotion":"calm","intensity":4,"people":["Omari"]}
+{"id":"e0269","text":"Mild, settled day. No highs, no lows.","emotion":"calm","also":["neutral"],"intensity":2,"traits":["short","ambiguous"]}
+{"id":"e0270","text":"Wrote a letter to Mum by hand, sealed it, walked it to the post box at sunset. Felt grounded.","emotion":"calm","intensity":4,"people":["Mum"]}
+{"id":"e0271","text":"Soft rain, the cat curled on my feet, a big pot of soup on the stove. Couldn't ask for more.","emotion":"calm","also":["content"],"intensity":5}
+{"id":"e0272","text":"Breathed through the urge to reply angrily to Graham's email. Waited an hour. Wrote a polite one. Felt calm and in control.","emotion":"calm","also":["proud"],"intensity":5,"people":["Graham"]}
+{"id":"e0273","text":"The waiting is over, the scan was clear, and now I just feel this deep exhale.","emotion":"calm","also":["happy","grateful"],"intensity":6,"traits":["ambiguous"]}
+{"id":"e0274","text":"Picked blackberries along the lane with Ellie. Purple fingers, wasps, sunshine. Unhurried.","emotion":"calm","also":["happy"],"intensity":4,"people":["Ellie"]}
+{"id":"e0275","text":"Stillness. Morning light on the floorboards. Didn't reach for my phone.","emotion":"calm","intensity":4,"traits":["short"]}
+{"id":"e0276","text":"Today was easy. Kind people, simple tasks, home by six.","emotion":"calm","also":["content"],"intensity":3,"traits":["short"]}
+{"id":"e0277","text":"Floated in the sea and let the waves rock me. For a while I couldn't remember what I'd been worrying about.","emotion":"calm","intensity":6}
+{"id":"e0278","text":"Took the slow train instead of the fast one. Watched the fields go by. Arrived late and relaxed.","emotion":"calm","intensity":4}
+{"id":"e0279","text":"After the argument we both took a breather. Now we're sitting together on the sofa, quiet, okay again.","emotion":"calm","intensity":4,"traits":["mixed"]}
+{"id":"e0280","text":"Cleared my inbox to zero, then shut the laptop and sat in the garden. Mind tidy as the inbox.","emotion":"calm","intensity":4}

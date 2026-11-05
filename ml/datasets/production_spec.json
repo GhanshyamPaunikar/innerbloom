@@ -1,0 +1,36 @@
+{
+  "source": "innerbloom_core/analysis.py and app.py defaults",
+  "model": "qwen2.5:7b",
+  "provider": "ollama",
+  "embed_model": "mxbai-embed-large",
+  "temperature": 0.3,
+  "emotions": [
+    "happy",
+    "sad",
+    "anxious",
+    "calm",
+    "grateful",
+    "frustrated",
+    "excited",
+    "reflective",
+    "hopeful",
+    "tired",
+    "angry",
+    "content",
+    "lonely",
+    "proud",
+    "overwhelmed",
+    "neutral"
+  ],
+  "fields": {
+    "emotion": "one of emotions; anything else becomes 'neutral'",
+    "intensity": "integer clamped to 1-10; unreadable becomes 5",
+    "summary": "string, cut to 280 characters",
+    "tags": "up to 5 lowercase [a-z0-9-] words, each cut to 24 characters",
+    "themes": "up to 3 strings, each cut to 40 characters",
+    "people": "up to 6 names, letters/space/-/'/. only, 40 characters max, case-insensitive de-duplication"
+  },
+  "failure": "no JSON object or no 'emotion' key: placeholders plus analysis_status 'failed'",
+  "prompt_sha256": "5e4346e7c6d8ce6c074fe03cff82a471d4cfd1adc7bb5e2beeb06e4e684834d3",
+  "prompt_template": "You classify one journal entry. Return ONLY a compact JSON object. No prose. No fences.\n\nSchema (every field required, even if empty):\n{\n  \"emotion\":   \"the dominant feeling — exactly one of: happy, sad, anxious, calm, grateful, frustrated, excited, reflective, hopeful, tired, angry, content, lonely, proud, overwhelmed, neutral\",\n  \"intensity\": \"integer 1-10. 1 = barely felt, 5 = clearly present, 10 = overwhelming\",\n  \"summary\":   \"one concrete sentence, <= 20 words. Say what HAPPENED or what the writer felt — never start with 'The writer' or 'They'\",\n  \"tags\":      \"2-4 lowercase single-word nouns naming what the entry is about (work, sleep, partner, anxiety, running). No verbs. No adjectives. No '#'\",\n  \"themes\":    \"1-3 short phrases (1-4 words each) for the deeper pattern (e.g. 'work boundaries', 'fear of being seen', 'rebuilding routine'). Not just rewordings of tags\",\n  \"people\":    \"names of OTHER people the writer mentioned, in the form they wrote (Mom, Sam, dad, Dr. Lee). Skip the writer themselves and skip generic words like 'people' / 'friends'. Omit if nobody named. Never invent.\"\n}\n\nRules:\n- Don't guess emotion if the entry is purely factual — use 'neutral'.\n- Tags must actually appear (literally or by clear paraphrase) in the entry.\n- Don't include 'journal', 'entry', 'writing' as tags — those describe the act, not the content.\n\nEntry:\n\"\"\"<<ENTRY>>\"\"\"\n\nJSON:"
+}

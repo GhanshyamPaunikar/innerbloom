@@ -1,0 +1,70 @@
+{"id":"e0701","text":"Someone keyed my car in the supermarket car park. Whole side. I'm shaking with rage.","emotion":"angry","intensity":8}
+{"id":"e0702","text":"Duncan called me 'sweetheart' in front of the client and then talked over me for the rest of the meeting. I am livid.","emotion":"angry","intensity":8,"people":["Duncan"]}
+{"id":"e0703","text":"The school knew about the bullying for weeks and did nothing. My son came home with a bruise today.","emotion":"angry","also":["anxious"],"intensity":9,"people_optional":["My son"]}
+{"id":"e0704","text":"Furious at the landlord. He let himself into the flat without notice. Again.","emotion":"angry","intensity":7}
+{"id":"e0705","text":"Found out Ray has been lying about where the money went. Two years of lying.","emotion":"angry","also":["sad"],"intensity":9,"people":["Ray"]}
+{"id":"e0706","text":"So angry I had to go for a walk before I said something I'd regret. Still angry after the walk.","emotion":"angry","intensity":7}
+{"id":"e0707","text":"The airline lost my bag, then lied about it, then hung up on me.","emotion":"angry","also":["frustrated"],"intensity":7}
+{"id":"e0708","text":"Watched the news about the factory dumping waste in the river and I'm genuinely enraged.","emotion":"angry","intensity":7}
+{"id":"e0709","text":"Quinn read my private messages. I can't even look at her right now.","emotion":"angry","also":["sad"],"intensity":8,"people":["Quinn"]}
+{"id":"e0710","text":"Manager blamed me in front of everyone for a mistake that was his. I said nothing. I'm boiling.","emotion":"angry","intensity":8,"people_optional":["Manager"]}
+{"id":"e0711","text":"Cyclist nearly took me out on the crossing and then swore at ME.","emotion":"angry","intensity":6}
+{"id":"e0712","text":"Brother borrowed the car, returned it on empty with a dent and said 'it was like that'.","emotion":"angry","also":["frustrated"],"intensity":7,"people_optional":["Brother"]}
+{"id":"e0713","text":"The doctor dismissed my pain AGAIN. 'Probably stress.' I've had this for a year.","emotion":"angry","also":["frustrated"],"intensity":8}
+{"id":"e0714","text":"Uncle Desmond said something horrible about my wife at dinner and everyone laughed. I walked out.","emotion":"angry","intensity":9,"people":["Uncle Desmond"],"people_optional":["my wife"]}
+{"id":"e0715","text":"Fuming. They gave the promotion to the guy who's been here six months and does half the work.","emotion":"angry","also":["frustrated"],"intensity":7}
+{"id":"e0716","text":"Someone stole the bike from right outside the station. Cut the lock. In daylight.","emotion":"angry","intensity":6}
+{"id":"e0717","text":"I'm so mad at myself for trusting Victor after everything. Signed the contract without reading it properly.","emotion":"angry","also":["frustrated"],"intensity":7,"people":["Victor"]}
+{"id":"e0718","text":"The company cancelled our pensions with a two-line email. Thirty years.","emotion":"angry","intensity":9}
+{"id":"e0719","text":"Saw a man kick his dog in the park. Shouted at him. Hands still trembling.","emotion":"angry","intensity":8}
+{"id":"e0720","text":"Angry that the train company keeps raising prices while the trains get worse.","emotion":"angry","also":["frustrated"],"intensity":5}
+{"id":"e0721","text":"Tasha told everyone my secret. The one thing I asked her not to.","emotion":"angry","also":["sad"],"intensity":8,"people":["Tasha"]}
+{"id":"e0722","text":"Got overcharged by the mechanic, then he refused to show me the old part. I'm reporting him.","emotion":"angry","intensity":6}
+{"id":"e0723","text":"Hate how they talk about people like my mum on that show. She worked two jobs her whole life.","emotion":"angry","intensity":6,"people_optional":["my mum"]}
+{"id":"e0724","text":"Nobody on the team stood up for me in the review. Not one person. I'm seething.","emotion":"angry","also":["sad"],"intensity":7}
+{"id":"e0725","text":"Kerry-Ann's ex showed up at her work and made a scene. I wanted to throw him into the road.","emotion":"angry","intensity":8,"people":["Kerry-Ann"],"traits":["names_tricky"]}
+{"id":"e0726","text":"The neighbours had a party until 4am on a Tuesday. Kids had school. I banged on the door and they laughed.","emotion":"angry","intensity":7,"not_people":["Tuesday"]}
+{"id":"e0727","text":"Absolutely raging. The council towed my car from my own street because of a sign they put up yesterday.","emotion":"angry","intensity":8,"traits":["time"]}
+{"id":"e0728","text":"My mother-in-law rearranged my kitchen while I was out. Every cupboard. 'Helping'.","emotion":"angry","also":["frustrated"],"intensity":6,"people_optional":["My mother-in-law"],"traits":["sarcasm"]}
+{"id":"e0729","text":"The school cancelled the trip because two parents complained. Thirty kids devastated. I'm so angry for them.","emotion":"angry","intensity":6}
+{"id":"e0730","text":"Patrice made a racist joke at work and HR says it's 'a matter of interpretation'.","emotion":"angry","intensity":9,"people":["Patrice"]}
+{"id":"e0731","text":"I asked for one thing for my birthday: no drama. Dad brought drama.","emotion":"angry","also":["sad"],"intensity":6,"people":["Dad"]}
+{"id":"e0732","text":"The scammers got Grandma's savings. Police say there's little they can do. I want to scream.","emotion":"angry","also":["sad"],"intensity":9,"people":["Grandma"]}
+{"id":"e0733","text":"Furious about the hospital wait. Dad was on a trolley in the corridor for fourteen hours.","emotion":"angry","intensity":8,"people":["Dad"]}
+{"id":"e0734","text":"He said I was 'too emotional' for the role. I wrote a calm email back. I am not calm.","emotion":"angry","intensity":7,"traits":["negation"]}
+{"id":"e0735","text":"Livid that Marco cancelled my shift without asking and gave it to his friend.","emotion":"angry","intensity":6,"people":["Marco"]}
+{"id":"e0736","text":"The building management turned off the heating in the middle of winter 'to save costs'. There are babies here.","emotion":"angry","intensity":7}
+{"id":"e0737","text":"Rage. My essay was plagiarised by someone in my class and he got the higher mark.","emotion":"angry","intensity":8}
+{"id":"e0738","text":"Still angry about what Jasmine said. Can't stop rehearsing all the things I should have said back.","emotion":"angry","intensity":6,"people":["Jasmine"]}
+{"id":"e0739","text":"They built the fence two metres onto our land and the surveyor says it's 'within tolerance'.","emotion":"angry","also":["frustrated"],"intensity":6}
+{"id":"e0740","text":"Someone left their dog in a hot car outside the shops. Called the police. Waited with the dog. Seething.","emotion":"angry","intensity":8}
+{"id":"e0741","text":"My boss read my private email over my shoulder and commented on it in the meeting.","emotion":"angry","intensity":7,"people_optional":["My boss"]}
+{"id":"e0742","text":"Absolutely incensed that the hospital lost Mum's test results. Again. She has to redo the whole thing.","emotion":"angry","also":["frustrated"],"intensity":8,"people":["Mum"]}
+{"id":"e0743","text":"Lennart made fun of my accent in front of the new hires. Pretended it was a joke. It wasn't.","emotion":"angry","intensity":7,"people":["Lennart"]}
+{"id":"e0744","text":"I'm angry, and I'm allowed to be angry. They broke the promise they made to the kids.","emotion":"angry","intensity":7,"people_optional":["the kids"]}
+{"id":"e0745","text":"Car dealer sold me a lemon and now won't return calls. I'm going down there tomorrow.","emotion":"angry","intensity":7,"traits":["time"]}
+{"id":"e0746","text":"Hate that I cried when I was angry in the meeting. It makes them think I'm upset instead of furious.","emotion":"angry","also":["frustrated"],"intensity":7}
+{"id":"e0747","text":"The guy at the bar wouldn't leave Inès alone. Bouncer did nothing. We left. Still fuming.","emotion":"angry","intensity":7,"people":["Inès"]}
+{"id":"e0748","text":"They demolished the old cinema without telling anyone. Woke up to rubble.","emotion":"angry","also":["sad"],"intensity":6}
+{"id":"e0749","text":"Mad at my sister for missing Mum's birthday dinner with no excuse.","emotion":"angry","intensity":5,"people":["Mum"],"people_optional":["my sister"]}
+{"id":"e0750","text":"Ruined my whole evening thinking about Gordon's email. Condescending, passive-aggressive, cc'd everyone.","emotion":"angry","also":["frustrated"],"intensity":6,"people":["Gordon"]}
+{"id":"e0751","text":"Fury is the only word. Someone poisoned the stray cats behind the shop.","emotion":"angry","also":["sad"],"intensity":9}
+{"id":"e0752","text":"Irritated going on angry. Customer screamed at me over a coupon that expired in 2019.","emotion":"angry","also":["frustrated"],"intensity":6,"traits":["time"]}
+{"id":"e0753","text":"I trusted Darius with the keys and he threw a party in my flat. Broken glass everywhere.","emotion":"angry","intensity":8,"people":["Darius"]}
+{"id":"e0754","text":"The insurance company denied the claim after the flood. The flood they insured us for.","emotion":"angry","intensity":8}
+{"id":"e0755","text":"Not upset. Angry. There's a difference and today it's anger.","emotion":"angry","intensity":6,"traits":["negation","short"]}
+{"id":"e0756","text":"Bea's father grabbed her arm in the restaurant and I saw red. Told him to let go. He did.","emotion":"angry","intensity":8,"people":["Bea"],"people_optional":["Bea's father"]}
+{"id":"e0757","text":"Fumed the whole commute. The new policy means we lose our flexible hours with one week's notice.","emotion":"angry","also":["frustrated"],"intensity":6}
+{"id":"e0758","text":"Hit-and-run on our street. Mrs. Ansah's cat. The driver didn't even slow down.","emotion":"angry","also":["sad"],"intensity":7,"people":["Mrs. Ansah"]}
+{"id":"e0759","text":"I am so angry at the system that let my brother fall through every crack.","emotion":"angry","also":["sad"],"intensity":8,"people_optional":["my brother"]}
+{"id":"e0760","text":"Gareth posted the photo I asked him not to post. Then said I was overreacting.","emotion":"angry","intensity":7,"people":["Gareth"]}
+{"id":"e0761","text":"Seething at the referee. Clear foul, no call, we lost the cup.","emotion":"angry","also":["frustrated"],"intensity":6}
+{"id":"e0762","text":"My ex is telling people lies about why we split. I'm trying to rise above it. I'm not rising.","emotion":"angry","intensity":7,"people_optional":["My ex"]}
+{"id":"e0763","text":"Tradesman took the deposit and disappeared. £800.","emotion":"angry","intensity":7,"traits":["short"]}
+{"id":"e0764","text":"Sophie's teacher shouted at her in front of the class for asking to go to the toilet. She came home crying.","emotion":"angry","intensity":8,"people":["Sophie"],"people_optional":["Sophie's teacher"]}
+{"id":"e0765","text":"Raging at the bank. They closed my account with no warning and my salary bounced.","emotion":"angry","also":["anxious"],"intensity":8}
+{"id":"e0766","text":"Mild anger. Someone took my lunch from the office fridge. Labelled and everything.","emotion":"angry","also":["frustrated"],"intensity":3}
+{"id":"e0767","text":"After everything I did for Yasmin, she didn't even invite me to the wedding.","emotion":"angry","also":["sad"],"intensity":7,"people":["Yasmin"]}
+{"id":"e0768","text":"The court let him off with a warning. A warning.","emotion":"angry","intensity":9,"traits":["short"]}
+{"id":"e0769","text":"Angry at the whole situation. At the illness, at the waiting lists, at how unfair it all is.","emotion":"angry","also":["sad"],"intensity":7}
+{"id":"e0770","text":"Teammate deleted my branch 'by accident' the night before the demo. Lost a day of work. Hard to believe it was an accident.","emotion":"angry","intensity":7}
