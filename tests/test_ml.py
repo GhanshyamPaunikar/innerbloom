@@ -140,6 +140,75 @@ class Evidence(unittest.TestCase):
         self.assertEqual(ev.main(["--split", "test"]), 2)
 
 
+class TrainingTargets(unittest.TestCase):
+    def test_labels_replace_fields_and_base_keeps_the_rest(self):
+        from ml import targets
+        e = dataset._normalise(entry(text="Lunch with Sam and my sister.", emotion="calm", intensity=3,
+                                     people=["Sam"], people_optional=["my sister"]))
+        base = reply("happy", 8, ["Sam", "my sister", "Priya"])
+        t = json.loads(targets.target_reply(e, base))
+        self.assertEqual(list(t), ["emotion", "intensity", "summary", "tags", "themes", "people"])
+        self.assertEqual((t["emotion"], t["intensity"]), ("calm", 3))
+        self.assertEqual((t["summary"], t["tags"], t["themes"]), ("x", ["a"], ["b"]))
+        self.assertEqual(t["people"], ["Sam", "my sister"])  # invented Priya dropped, optional kept
+        self.assertEqual(analysis.parse(json.dumps(t))["analysis_status"], "ok")
+
+    def test_failed_base_reply_still_gives_labelled_target(self):
+        from ml import targets
+        e = dataset._normalise(entry(people=["Sam"]))
+        t = json.loads(targets.target_reply(e, "[LLM error: down]"))
+        self.assertEqual((t["emotion"], t["summary"], t["people"]), ("happy", "", ["Sam"]))
+
+    def test_every_train_entry_needs_a_reply(self):
+        from ml import targets
+        with self.assertRaises(ValueError):
+            targets.build([dataset._normalise(entry())], {})
+
+    def test_prompt_is_the_production_prompt(self):
+        from ml import targets
+        rec = targets.chat_record(dataset._normalise(entry()), reply())
+        self.assertEqual(rec["messages"][0]["content"], analysis.build_prompt("Lunch with Sam on Monday."))
+
+
+class Training(unittest.TestCase):
+    def test_only_the_reply_is_learned(self):
+        from ml import train_emotion as te
+
+        class FakeTok:
+            def apply_chat_template(self, messages, tokenize, add_generation_prompt):
+                return "<user>" + messages[0]["content"] + "<assistant>"
+
+            def __call__(self, text, add_special_tokens):
+                return {"input_ids": [ord(c) for c in text]}
+
+        rec = {"messages": [{"role": "user", "content": "hi"}, {"role": "assistant", "content": "ok"}]}
+        enc = te.encode(FakeTok(), rec, 1024)
+        prompt_len = len("<user>hi<assistant>")
+        self.assertEqual(enc["labels"][:prompt_len], [-100] * prompt_len)
+        self.assertEqual(enc["labels"][prompt_len:], [ord(c) for c in "ok<|im_end|>"])
+        self.assertEqual(len(enc["input_ids"]), len(enc["labels"]))
+
+    def test_keep_only_when_better_without_regressions(self):
+        from ml import train_emotion as te
+
+        def m(f1, mae, failed=0.0, people=0.9, invented=0):
+            return {"emotion": {"macro_f1": f1, "lenient_accuracy": f1}, "intensity": {"mae": mae},
+                    "structure": {"failed_rate": failed}, "people": {"f1": people, "invented": invented}}
+        base = m(0.70, 1.2)
+        self.assertTrue(te.compare(base, m(0.75, 1.0), base)["keep"])
+        self.assertFalse(te.compare(base, m(0.75, 1.3), base)["keep"])
+        self.assertFalse(te.compare(base, m(0.75, 1.0, people=0.8), base)["keep"])
+        self.assertFalse(te.compare(base, m(0.75, 1.0, invented=2), base)["keep"])
+
+    def test_notebook_runs_every_stage_in_order(self):
+        nb = json.loads((ROOT / "notebooks" / "02_emotion_training.ipynb").read_text())
+        code = "\n".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
+        positions = [code.find(f"--stage {s}") for s in ("check", "replies", "smoke", "train", "evaluate")]
+        self.assertTrue(all(p >= 0 for p in positions))
+        self.assertEqual(positions, sorted(positions))
+        self.assertNotIn("--split test", code)
+
+
 class BlindSafetySet(unittest.TestCase):
     def test_only_totals_leave_the_blind_set(self):
         from ml import safety_eval

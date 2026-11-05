@@ -7,7 +7,7 @@ Working branch: `feature/innerbloom-ai-v2`. `main` stays stable until a phase is
 | 0 | Audit, backup, branch | 0 | Done (2026-11-05) |
 | 1 | Data and security stability | 0 | Done (2026-11-05), awaiting review |
 | 2 | Fictional benchmark and baseline | 15 units | Baseline done on the Mac (0 units); second-reader check and retrieval/evidence sets still to do |
-| 3 | Emotion model QLoRA | 45 units | Not started |
+| 3 | Light emotion model (QLoRA) | 45 units | Notebook ready, not run |
 | 4 | Memory reranker | 25 units | Not started |
 | 5 | Evidence verifier | 20 units | Not started |
 | 6 | Ollama export and integration | 0 | Not started |
@@ -178,4 +178,15 @@ Full write-up: `reports/baseline-retrieval-evidence-validation.md`.
 
 1. Read `reports/baseline-qwen2.5-7b-validation.md`.
 2. Ask someone who has not seen the rules to write the blind safety set (`ml/datasets/blind/HOW_TO_WRITE.md`).
+
+## Phase 3: light entry-reading model (prepared 2026-11-05)
+
+Goal, from the user: a light model that runs on ordinary laptops without slowing them, for Innerbloom's fixed entry-reading job. The 7B takes about 15 seconds per entry on an 8 GB M1.
+
+- `ml/train_emotion.py`, run stage by stage from `notebooks/02_emotion_training.ipynb` on a Colab A100. Each stage saves to Google Drive and resumes after a disconnect.
+- The base size is a setting: Qwen2.5 **1.5B** (Apache 2.0) is the main candidate; 0.5B and 3B for comparison. The 3B is under Qwen's research licence, so check it before shipping it in a public app.
+- Targets (`ml/targets.py`): the 7B writes the summary, tags and themes for each training entry; the labels replace emotion, intensity and names. A dry run on the validation replies gave 183 of 183 valid targets.
+- Decision rules (`compare` in `ml/train_emotion.py`): **keep** if the trained model beats its untrained self on emotion and intensity with no loss on structure or names; **can replace the 7B for reading** if it is also within 0.02 macro-F1 and 0.05 intensity error of the 7B in production.
+- Rough cost for the first size: about 1 hour, 6-12 units. The smoke test comes first and costs under 1 unit.
+- Chat and insights keep using the larger model: only entry reading moves to the light one (Phase 6 adds the setting).
 
