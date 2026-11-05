@@ -176,6 +176,7 @@ Grown from 1,220 to 2,001 entries, aimed at the baseline's weak spots and writte
 - 122-129 entries per emotion. Sarcasm 18 → 51, long entries 11 → 50, implied feelings 46 → 106, mixed 63 → 93, intensity 1-2 and 9-10 much better covered.
 - Re-split 60/20/20 (seed v2): 1,199 train, 402 validation, 400 locked test; 24-26 per emotion in validation and in test. The test split had never been scored, so re-splitting was safe.
 - Still one writer. A second reader's check, and entries from other people, matter more than further volume.
+- New baseline on the 402 validation entries (`reports/baseline-qwen2.5-7b-validation-v2.md`): macro-F1 0.636, accuracy 64.2% (78.9% lenient), intensity MAE 1.23, people 0.96 / 0.83, 8.6 s per entry. Weakest: overwhelmed (read as anxious 12 of 25), lonely (as sad 10 of 25), proud (as excited 8 of 25), sarcasm 5 of 10. This replaces 0.705 as the number to beat.
 
 ### Still to do in Phase 2
 
