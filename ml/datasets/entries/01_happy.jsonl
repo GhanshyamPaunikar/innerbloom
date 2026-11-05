@@ -1,0 +1,70 @@
+{"id":"e0001","text":"Got the offer letter this morning. I read it three times in the parking lot and then called Ma before I'd even started the car.","emotion":"happy","also":["excited"],"intensity":8,"people":["Ma"]}
+{"id":"e0002","text":"Sunny walk to the bakery, warm bread, the cat followed me halfway down the street. Small day, good day.","emotion":"happy","intensity":5}
+{"id":"e0003","text":"Ravi and I finally fixed the leaking tap ourselves. Took two hours and one YouTube video but we did it and we were ridiculous about how proud we were.","emotion":"happy","also":["proud"],"intensity":6,"people":["Ravi"],"not_people":["YouTube"]}
+{"id":"e0004","text":"Laughed so hard at dinner with Ines and Tomás that the waiter came over to check on us.","emotion":"happy","intensity":7,"people":["Ines","Tomás"]}
+{"id":"e0005","text":"First swim of the summer. Cold, bright, perfect.","emotion":"happy","intensity":6,"traits":["short"]}
+{"id":"e0006","text":"Grandpa remembered my name today without me telling him. He held my hand the whole visit. I'm still smiling.","emotion":"happy","also":["grateful"],"intensity":8,"people":["Grandpa"]}
+{"id":"e0007","text":"The tomatoes on the balcony are actually turning red. I genuinely did not believe this would happen.","emotion":"happy","intensity":4}
+{"id":"e0008","text":"Saturday market with Aiko. We bought too many peaches and ate them on the steps of the library like kids.","emotion":"happy","intensity":6,"people":["Aiko"],"not_people":["Saturday"],"traits":["names_tricky"]}
+{"id":"e0009","text":"My code passed review on the first try. Femi left a comment that just said 'clean'. Best word.","emotion":"happy","also":["proud"],"intensity":6,"people":["Femi"]}
+{"id":"e0010","text":"Woke up before the alarm feeling rested for the first time in weeks. Made pancakes. Danced badly in the kitchen.","emotion":"happy","intensity":7}
+{"id":"e0011","text":"Lena's baby was born at 4am. Both healthy. I cried at the photo and then ate cereal at my desk grinning like an idiot.","emotion":"happy","intensity":9,"people":["Lena"]}
+{"id":"e0012","text":"Quiz night: we came second out of twelve teams, which for us is basically winning the World Cup.","emotion":"happy","intensity":6,"not_people":["World Cup"],"traits":["names_tricky"]}
+{"id":"e0013","text":"Mum sent a voice note singing happy birthday off-key. Played it four times.","emotion":"happy","intensity":7,"people":["Mum"]}
+{"id":"e0014","text":"Nothing special happened, honestly. I just felt light all day, like someone opened a window in my chest.","emotion":"happy","intensity":6,"traits":["indirect"]}
+{"id":"e0015","text":"Joon-ho taught me the right way to fold dumplings and mine finally looked like dumplings instead of tiny crime scenes.","emotion":"happy","intensity":5,"people":["Joon-ho"],"traits":["names_tricky"]}
+{"id":"e0016","text":"Got the bike back from the repair shop. Rode the long way home along the canal just because I could.","emotion":"happy","intensity":6}
+{"id":"e0017","text":"Snow day! Office closed. Hot chocolate, blanket, old movies with Mateo.","emotion":"happy","intensity":7,"people":["Mateo"]}
+{"id":"e0018","text":"I'd been dreading the dentist all week and it was fine, no cavities. The relief turned into a really good mood that lasted all afternoon.","emotion":"happy","also":["calm"],"intensity":5,"traits":["mixed"]}
+{"id":"e0019","text":"Our team won the five-a-side final. Kwame scored in the last minute and we piled on him like puppies.","emotion":"happy","also":["excited"],"intensity":8,"people":["Kwame"]}
+{"id":"e0020","text":"Found twenty euros in last winter's coat. Bought flowers for the flat.","emotion":"happy","intensity":4,"traits":["short"]}
+{"id":"e0021","text":"Dinner at Noor's. Her mother kept piling food onto my plate and calling me 'beta'. I felt like family.","emotion":"happy","also":["grateful"],"intensity":7,"people":["Noor"],"people_optional":["Her mother"]}
+{"id":"e0022","text":"The new album from my favourite band came out at midnight and it's even better than I hoped. Listened twice through on the walk to work.","emotion":"happy","intensity":6}
+{"id":"e0023","text":"Hana texted out of nowhere: 'thinking of you, remember the pier?' We haven't talked in two years. Made my whole week.","emotion":"happy","intensity":7,"people":["Hana"]}
+{"id":"e0024","text":"Little things today: green lights all the way, a stranger complimented my scarf, the soup turned out great.","emotion":"happy","intensity":5}
+{"id":"e0025","text":"Passed my driving test!!! Third time lucky. Dad honked the horn all the way down our street.","emotion":"happy","also":["proud"],"intensity":9,"people":["Dad"]}
+{"id":"e0026","text":"Beach with the kids. Zara built a 'castle' that was mostly one wall and named it after the dog. Perfect afternoon.","emotion":"happy","intensity":7,"people":["Zara"],"people_optional":["the kids"]}
+{"id":"e0027","text":"Not a huge feeling, just pleasant. Coffee was good, inbox was quiet, I left on time.","emotion":"happy","also":["content"],"intensity":3,"traits":["ambiguous"]}
+{"id":"e0028","text":"The landlord agreed to fix the heating AND knocked a bit off the rent for the trouble. I did a little victory lap around the living room.","emotion":"happy","intensity":7}
+{"id":"e0029","text":"Played piano for an hour without checking my phone once. Forgot how much I love this.","emotion":"happy","intensity":6}
+{"id":"e0030","text":"Wedding rehearsal for Priya and Sean. Everything went wrong in the funniest ways and nobody cared. I love these people.","emotion":"happy","intensity":8,"people":["Priya","Sean"]}
+{"id":"e0031","text":"My sister and I spent the whole evening going through old photos and laughing at our haircuts from the 2000s.","emotion":"happy","intensity":6,"people_optional":["My sister"],"traits":["time"]}
+{"id":"e0032","text":"First day of the holidays. Slept in, read in the garden, ate strawberries. That's the whole report.","emotion":"happy","also":["content"],"intensity":6}
+{"id":"e0033","text":"Coach Ndlovu said I can play in Saturday's match. I've been on the bench all season!","emotion":"happy","also":["excited"],"intensity":8,"people":["Coach Ndlovu"],"not_people":["Saturday"],"traits":["names_tricky"]}
+{"id":"e0034","text":"The garden centre had the exact lemon tree I wanted. Carried it home on the bus, got some funny looks, worth it.","emotion":"happy","intensity":5}
+{"id":"e0035","text":"Video call with Abuela. She showed me her new glasses and her terrible jokes have gotten worse, which I love.","emotion":"happy","intensity":6,"people":["Abuela"]}
+{"id":"e0036","text":"Sometimes the day just clicks. Got through my list, went for a run, cooked properly. I feel really good.","emotion":"happy","intensity":6}
+{"id":"e0037","text":"Elif surprised me with tickets to the jazz club. We stayed until they turned the lights on.","emotion":"happy","intensity":8,"people":["Elif"]}
+{"id":"e0038","text":"Rain all day but the house smelled like cinnamon rolls and Marcus played records. Cosy and happy.","emotion":"happy","also":["content"],"intensity":6,"people":["Marcus"]}
+{"id":"e0039","text":"Yesterday I was a mess about the presentation. Today it went great and three people asked for my slides. What a difference a day makes.","emotion":"happy","also":["proud"],"intensity":7,"traits":["time","mixed"]}
+{"id":"e0040","text":"Puppy class graduation. Biscuit did NOT sit on command but he did steal the trainer's hat and everyone clapped anyway.","emotion":"happy","intensity":7,"not_people":["Biscuit"],"traits":["names_tricky"]}
+{"id":"e0041","text":"Tried the climbing gym with Sofia. Fell off a lot. Laughed more than I've laughed in months.","emotion":"happy","intensity":7,"people":["Sofia"]}
+{"id":"e0042","text":"We finally painted the bedroom. Sage green. It feels like a new home.","emotion":"happy","intensity":5}
+{"id":"e0043","text":"Results came back: Dr. Okafor says the scan is clear. I sat in the car for ten minutes just breathing and smiling.","emotion":"happy","also":["grateful","calm"],"intensity":9,"people":["Dr. Okafor"],"traits":["names_tricky"]}
+{"id":"e0044","text":"Kids' drawing on the fridge says 'best mum in the univers'. Leaving the spelling exactly as it is forever.","emotion":"happy","intensity":7}
+{"id":"e0045","text":"Good news from Tariq: he's moving back to the city in June. My best friend, ten minutes away again.","emotion":"happy","also":["excited"],"intensity":8,"people":["Tariq"],"not_people":["June"],"traits":["time"]}
+{"id":"e0046","text":"Sat by the river after work and watched the herons. Didn't think about anything. It was lovely.","emotion":"happy","also":["calm"],"intensity":4,"traits":["ambiguous"]}
+{"id":"e0047","text":"My first sourdough loaf rose! It's lopsided and dense in the middle and I am beside myself with joy.","emotion":"happy","intensity":7}
+{"id":"e0048","text":"Office birthday cake for me, organised by Gemma. I didn't think anyone knew. Felt really seen.","emotion":"happy","also":["grateful"],"intensity":6,"people":["Gemma"]}
+{"id":"e0049","text":"I keep replaying the moment Ana said yes. We're getting married. WE'RE GETTING MARRIED.","emotion":"happy","also":["excited"],"intensity":10,"people":["Ana"]}
+{"id":"e0050","text":"Morning run in the fog, then a long shower, then the crossword with Pete. A soft, happy Sunday.","emotion":"happy","also":["content"],"intensity":5,"people":["Pete"],"not_people":["Sunday"]}
+{"id":"e0051","text":"Got a handwritten thank-you card from a student I tutored last year. She got into her first-choice university.","emotion":"happy","also":["proud"],"intensity":7,"traits":["time"]}
+{"id":"e0052","text":"I was worried the reunion would be awkward. It wasn't at all. Like no time had passed. Came home buzzing.","emotion":"happy","intensity":7,"traits":["mixed"]}
+{"id":"e0053","text":"Lunch in the sun with Daniela and Chiara, gelato after. Didn't check email for an hour and the world survived.","emotion":"happy","intensity":5,"people":["Daniela","Chiara"]}
+{"id":"e0054","text":"Fixed the wobbly table with a folded receipt. Victory.","emotion":"happy","intensity":2,"traits":["short"]}
+{"id":"e0055","text":"Dad finally tried the curry I've been perfecting and asked for seconds. He never asks for seconds.","emotion":"happy","also":["proud"],"intensity":7,"people":["Dad"]}
+{"id":"e0056","text":"New glasses. I can see individual leaves on the trees again. I didn't know how blurry everything had become.","emotion":"happy","intensity":6}
+{"id":"e0057","text":"Kofi got the scholarship. I've been helping him with applications for months and when he called he could barely talk.","emotion":"happy","also":["proud"],"intensity":9,"people":["Kofi"]}
+{"id":"e0058","text":"Long weekend in the hills. Woodsmoke, terrible card games, Lucía's awful singing. I want to bottle this.","emotion":"happy","intensity":8,"people":["Lucía"]}
+{"id":"e0059","text":"Today was the first day since the breakup that I felt genuinely happy, not just fine. Noticed it on the tram and nearly laughed out loud.","emotion":"happy","also":["hopeful"],"intensity":6,"traits":["mixed"]}
+{"id":"e0060","text":"Book club picked my suggestion and everyone loved it, even Harold who hates everything.","emotion":"happy","intensity":6,"people":["Harold"]}
+{"id":"e0061","text":"Spent the evening on the roof with Yusuf watching the meteor shower. We counted 23. He made a wish every single time.","emotion":"happy","intensity":7,"people":["Yusuf"]}
+{"id":"e0062","text":"A totally ordinary Tuesday and I feel great. No reason. I'll take it.","emotion":"happy","intensity":5,"not_people":["Tuesday"],"traits":["short"]}
+{"id":"e0063","text":"Took Nana to the seaside like she's been asking. She ate chips on the wall and told stories about being nineteen. Golden.","emotion":"happy","also":["grateful"],"intensity":8,"people":["Nana"]}
+{"id":"e0064","text":"Our little choir sang at the care home. One woman sang along to every word with her eyes closed.","emotion":"happy","intensity":7}
+{"id":"e0065","text":"The plant I thought I'd killed has a new leaf. Hello, little guy.","emotion":"happy","intensity":4,"traits":["short"]}
+{"id":"e0066","text":"Finished the 10k. Not fast. Didn't walk once. Jess was waiting at the end with a sign that said 'you absolute legend'.","emotion":"happy","also":["proud"],"intensity":8,"people":["Jess"]}
+{"id":"e0067","text":"We cooked together for once instead of eating on the sofa. Talked about everything. This is what I want more of.","emotion":"happy","intensity":6}
+{"id":"e0068","text":"Results day: 2:1. Not the first I dreamed of but I'm honestly thrilled, and Mum's been crying happy tears all afternoon.","emotion":"happy","also":["proud"],"intensity":8,"people":["Mum"],"traits":["mixed"]}
+{"id":"e0069","text":"Bumped into Old Mr. Haddad from the corner shop who used to give us free sweets. He recognised me instantly.","emotion":"happy","intensity":5,"people":["Mr. Haddad"],"traits":["names_tricky"]}
+{"id":"e0070","text":"Picnic in the park with the whole cousin crowd. Uncle Raj brought his ancient guitar. Best afternoon of the year so far.","emotion":"happy","intensity":8,"people":["Uncle Raj"]}

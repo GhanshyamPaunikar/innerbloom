@@ -1,0 +1,70 @@
+{"id":"e1051","text":"Dentist at 10. Groceries after. Picked up the dry cleaning.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1052","text":"Worked from home. Two meetings, wrote the quarterly report, went for a run at 6.","emotion":"neutral","intensity":2,"traits":["factual"]}
+{"id":"e1053","text":"Called the plumber about the radiator. He's coming on Thursday between 8 and 12.","emotion":"neutral","intensity":1,"not_people":["Thursday"],"traits":["factual"]}
+{"id":"e1054","text":"Took the 7:42 train. Read the news. Lunch was a sandwich from the place by the station.","emotion":"neutral","intensity":1,"traits":["factual"]}
+{"id":"e1055","text":"Meeting with Ellis about the budget. We agreed to revisit it next quarter.","emotion":"neutral","intensity":2,"people":["Ellis"],"traits":["factual","time"]}
+{"id":"e1056","text":"Weather: cloudy, 14 degrees. Walked to work. Nothing much else.","emotion":"neutral","intensity":1,"traits":["factual"]}
+{"id":"e1057","text":"Laundry, vacuuming, paid the electricity bill.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1058","text":"Booked the car in for a service on the 14th. Renewed the parking permit.","emotion":"neutral","intensity":1,"traits":["factual","time"]}
+{"id":"e1059","text":"Had lunch with Moritz. He's switching teams in June. We talked about the new office layout.","emotion":"neutral","intensity":2,"people":["Moritz"],"not_people":["June"],"traits":["factual","time"]}
+{"id":"e1060","text":"Ordinary day. Work, dinner, TV, bed.","emotion":"neutral","intensity":2,"traits":["short"]}
+{"id":"e1061","text":"Updated the spreadsheet for the inventory. 342 items counted.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1062","text":"Went to the post office. Queue was 15 minutes. Sent the parcel to Aunt Ruth.","emotion":"neutral","intensity":1,"people":["Aunt Ruth"],"traits":["factual"]}
+{"id":"e1063","text":"Read two chapters of the history book. Notes on the Ottoman trade routes.","emotion":"neutral","intensity":1,"not_people":["Ottoman"],"traits":["factual","names_tricky"]}
+{"id":"e1064","text":"Not much to say today. Fine, I suppose.","emotion":"neutral","intensity":2,"traits":["short","ambiguous"]}
+{"id":"e1065","text":"Training session on the new CRM system from 2 to 4pm. Learned how to export reports.","emotion":"neutral","intensity":1,"traits":["factual"]}
+{"id":"e1066","text":"Doctor's appointment for the annual check-up. Blood pressure normal. Next check in a year.","emotion":"neutral","intensity":1,"traits":["factual","time"]}
+{"id":"e1067","text":"Grocery list for the week: rice, lentils, spinach, eggs, coffee.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1068","text":"Drove Sunil to the airport at 5am. Back home by 7. Went to work.","emotion":"neutral","intensity":2,"people":["Sunil"],"traits":["factual"]}
+{"id":"e1069","text":"Watched a documentary about deep-sea fish. Then bed.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1070","text":"Neither good nor bad today. Just a day.","emotion":"neutral","intensity":2,"traits":["short","negation"]}
+{"id":"e1071","text":"Changed the bedsheets, cleaned the bathroom, sorted the recycling.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1072","text":"Picked up the kids from school, helped with homework, made pasta.","emotion":"neutral","intensity":2,"people_optional":["the kids"],"traits":["factual"]}
+{"id":"e1073","text":"Conference call with the Singapore office about the Q3 numbers.","emotion":"neutral","intensity":1,"not_people":["Singapore"],"traits":["factual","short"]}
+{"id":"e1074","text":"Bought new running shoes. Size 42. Same brand as before.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1075","text":"Met with Ms. Varga for the parent-teacher conference. Grades are steady. Need to practise spelling.","emotion":"neutral","intensity":2,"people":["Ms. Varga"],"traits":["factual"]}
+{"id":"e1076","text":"Spent the morning filing receipts. Afternoon was emails.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1077","text":"Renewed passport online. Should arrive in three weeks.","emotion":"neutral","intensity":1,"traits":["factual","short","time"]}
+{"id":"e1078","text":"Walked 8,000 steps. Ate a salad for lunch. Slept at 11.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1079","text":"Team stand-up at 9:30. Pairing with Rohan on the API migration in the afternoon.","emotion":"neutral","intensity":1,"people":["Rohan"],"not_people":["API"],"traits":["factual"]}
+{"id":"e1080","text":"Fed the neighbour's cat while they're away. Watered their plants.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1081","text":"Things are okay. Nothing new.","emotion":"neutral","intensity":2,"traits":["short","ambiguous"]}
+{"id":"e1082","text":"Library: returned three books, borrowed two. One on gardening, one on Roman history.","emotion":"neutral","intensity":1,"not_people":["Roman"],"traits":["factual"]}
+{"id":"e1083","text":"Car's MOT passed. Needs new wipers. Ordered online.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1084","text":"Moved the desk to the other side of the room for better light.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1085","text":"Cooked a big batch of chilli for the week. Froze four portions.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1086","text":"Interviewed two candidates for the analyst role. Will discuss with Hannah tomorrow.","emotion":"neutral","intensity":2,"people":["Hannah"],"traits":["factual","time"]}
+{"id":"e1087","text":"Today I mostly sat at my desk and worked through tickets. Closed nine.","emotion":"neutral","intensity":1,"traits":["factual"]}
+{"id":"e1088","text":"Took the bus to the market on Saturday. Bought apples and a new kettle.","emotion":"neutral","intensity":1,"not_people":["Saturday"],"traits":["factual"]}
+{"id":"e1089","text":"Not happy, not sad. Just getting on with things.","emotion":"neutral","intensity":2,"traits":["short","negation"]}
+{"id":"e1090","text":"Assembled the new chair. Took forty minutes.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1091","text":"Swapped shifts with Olivia so I can do the Tuesday early. Confirmed with the rota manager.","emotion":"neutral","intensity":1,"people":["Olivia"],"people_optional":["the rota manager"],"not_people":["Tuesday"],"traits":["factual"]}
+{"id":"e1092","text":"Rained most of the day. Stayed in and tidied the spare room.","emotion":"neutral","intensity":1,"traits":["factual"]}
+{"id":"e1093","text":"Practised piano for 30 minutes. Scales and the second movement.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1094","text":"Picked up Grandma's prescription. Dropped it at her flat. She was napping.","emotion":"neutral","intensity":1,"people":["Grandma"],"traits":["factual"]}
+{"id":"e1095","text":"Wrote the minutes for the residents' association meeting. Next meeting is the 3rd of March.","emotion":"neutral","intensity":1,"not_people":["March"],"traits":["factual","time"]}
+{"id":"e1096","text":"Read the instruction manual for the new oven. It has eleven settings.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1097","text":"Spent the evening backing up photos to the external drive.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1098","text":"Regular Monday. Emails, two calls, lunch at desk.","emotion":"neutral","intensity":1,"not_people":["Monday"],"traits":["factual","short"]}
+{"id":"e1099","text":"Hung the new curtains in the living room. Swept the balcony.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1100","text":"Met Ji-ah at the bank to sign the joint account forms. Took an hour.","emotion":"neutral","intensity":2,"people":["Ji-ah"],"traits":["factual","names_tricky"]}
+{"id":"e1101","text":"Day was fine. Uneventful.","emotion":"neutral","intensity":2,"traits":["short"]}
+{"id":"e1102","text":"Replaced the bike chain. Oiled the gears. Tested it around the block.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1103","text":"Attended the webinar on pension options. Took notes on the three schemes.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1104","text":"Jogged around the park. 5k in 31 minutes. Same route as usual.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1105","text":"Sorted out the bookshelf by colour. Took about an hour.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1106","text":"Visited the new Ikea with Kostas. Bought a lamp and some storage boxes.","emotion":"neutral","intensity":2,"people":["Kostas"],"not_people":["Ikea"],"traits":["factual","names_tricky"]}
+{"id":"e1107","text":"Mum phoned. Talked about the weather and her neighbour's new fence.","emotion":"neutral","intensity":2,"people":["Mum"],"traits":["factual"]}
+{"id":"e1108","text":"Nothing special. Ate, worked, slept.","emotion":"neutral","intensity":1,"traits":["short"]}
+{"id":"e1109","text":"Printed and signed the tenancy renewal. Scanned it back to the agent.","emotion":"neutral","intensity":1,"people_optional":["the agent"],"traits":["factual","short"]}
+{"id":"e1110","text":"Taught two lessons on fractions. Marked homework. Staff meeting at 4.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1111","text":"Went to see the new exhibition at the Tate with Clara. Lots of sculpture. Had coffee afterwards.","emotion":"neutral","intensity":2,"people":["Clara"],"not_people":["Tate"],"traits":["factual","names_tricky"]}
+{"id":"e1112","text":"Spent the day cataloguing the archive boxes. Boxes 14 to 22 done.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1113","text":"Mixed day, nothing stood out.","emotion":"neutral","intensity":2,"traits":["short","ambiguous"]}
+{"id":"e1114","text":"Got a haircut. Same style. Paid £18.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1115","text":"Planned the route for next week's site visits: Leeds, Bradford, York.","emotion":"neutral","intensity":1,"not_people":["Leeds","Bradford","York"],"traits":["factual","names_tricky","time"]}
+{"id":"e1116","text":"Fixed the squeaky door hinge with some oil.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1117","text":"Had a check-in with Jordan. Updated the project timeline. Deadline moved to the 20th.","emotion":"neutral","intensity":2,"people":["Jordan"],"traits":["factual","time"]}
+{"id":"e1118","text":"Walked the dog twice, cooked rice and beans, read before bed.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1119","text":"Took inventory of the pantry. Need flour, oil and tinned tomatoes.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1120","text":"Bank holiday. Stayed home. Did some reading and a bit of gardening.","emotion":"neutral","intensity":2,"traits":["factual"]}

@@ -6,7 +6,7 @@ Working branch: `feature/innerbloom-ai-v2`. `main` stays stable until a phase is
 |---|---|---|---|
 | 0 | Audit, backup, branch | 0 | Done (2026-11-05) |
 | 1 | Data and security stability | 0 | Done (2026-11-05), awaiting review |
-| 2 | Fictional benchmark and baseline | 15 units | Next |
+| 2 | Fictional benchmark and baseline | 15 units | In progress: data and tools done, baseline run waiting |
 | 3 | Emotion model QLoRA | 45 units | Not started |
 | 4 | Memory reranker | 25 units | Not started |
 | 5 | Evidence verifier | 20 units | Not started |
@@ -92,3 +92,47 @@ Notes:
 Review Phase 1, then approve Phase 2 (benchmark and baseline, ceiling 15 compute units). Phase 2 starts on this computer: reading the production schema from `innerbloom_core/analysis.py` and writing fictional benchmark data, with no GPU. Colab is needed only for the baseline runs.
 
 Further `app.py` extraction (storage, retrieval, insights) continues alongside later phases.
+
+## Phase 2: benchmark (started 2026-11-05)
+
+### Done
+
+| Piece | Where | Notes |
+|---|---|---|
+| Production spec | `ml/datasets/production_spec.json` (`python -m ml.spec`) | Read from the code: `qwen2.5:7b` via Ollama, temperature 0.3, 16 emotions, field limits, prompt fingerprint. The benchmark refuses to run if the prompt has changed since |
+| Labelling rules | `ml/datasets/GUIDELINES.md` | Follow the production prompt, including what counts as a person |
+| Entries | `ml/datasets/entries/` (`python -m ml.dataset`) | 1,220 fictional entries, 70-93 per emotion. Hard cases: 63 mixed, 34 negation, 18 sarcasm, 46 indirect, 55 look-alike names, 62 factual, 148 short, 11 long. 382 name at least one person |
+| Splits | `ml/datasets/splits/` (`python -m ml.split`) | 855 train, 183 validation, 182 test. Stratified by emotion, groups kept together, near-duplicates refused, fingerprints in `manifest.json`. Test is locked: the benchmark needs `--final` |
+| Benchmark | `python -m ml.benchmark` | Emotion macro-F1, accuracy and lenient accuracy (allowing defensible alternatives), confusion matrix, intensity MAE, JSON and schema rates, people precision/recall and invented names, speed. Saves every reply and resumes after an interruption |
+| Safety cases | `ml/datasets/safety_cases.jsonl` (`python -m ml.safety_eval`) | 110 cases written in different wording from the rules: 40 crisis, 20 distress, 40 harmless, 10 everyday. Locked: do not tune the rules against them |
+
+Tests: `python -m pytest -q` passes 38 tests with 68 sub-cases.
+
+### Not yet reviewed by a person
+
+All labels so far are one writer's. Before the baseline is trusted, a second reader should check a sample of about 100 validation entries against the guidelines and mark disagreements.
+
+### Finding: crisis detection misses most independent wording
+
+`reports/safety-2026-11-05.json`, current rules, model off unless stated:
+
+| | Result |
+|---|---|
+| Crisis statements with full help lines from the words alone | 9 of 40 (22.5%) |
+| Crisis statements with no help at all | 27 of 40 |
+| Crisis statements ever passed to the classifier | 13 of 40 |
+| Distress statements with any help | 8 of 20 |
+| Harmless sentences raising a full alert (classifier says none) | 3 of 40 (past or educational mentions) |
+| Everyday sentences with any help | 0 of 10 |
+
+The Phase 1 table (0 of 15 missed) was measured on cases written alongside the rules. This set shows the rules do not generalise: indirect signs (giving things away, writing letters, stockpiling pills, "I want out") are not recognised, and the classifier is only asked when a listed phrase appears. Fixing this needs a decision (see the next human action) and a new, separately written locked set, because this one has now been seen.
+
+### Waiting on
+
+- Disk space: about 3.8 GB free; `qwen2.5:7b` is 4.7 GB and is not installed in Ollama on this Mac.
+- Retrieval and evidence-grounding datasets (Phase 2 step 2, still to write).
+
+### Next human action
+
+Free space (Spotify's cache is about 6 GB), then run `ollama pull qwen2.5:7b`. The validation baseline can then run on this Mac at no compute-unit cost.
+

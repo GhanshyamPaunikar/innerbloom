@@ -1,0 +1,936 @@
+{
+  "date": "2026-11-05",
+  "rules": "innerbloom_core/safety.py",
+  "cases": "ml/datasets/safety_cases.jsonl",
+  "metrics": {
+    "counts": {
+      "crisis": 40,
+      "distress": 20,
+      "harmless": 40,
+      "everyday": 10
+    },
+    "crisis_full_help_from_words": 0.225,
+    "crisis_any_help_model_off": 0.325,
+    "crisis_sent_to_classifier": 0.325,
+    "distress_any_help_model_off": 0.4,
+    "harmless_false_full_alarm": 0.075,
+    "harmless_help_shown_model_off": 0.325,
+    "everyday_help_shown_model_off": 0.0,
+    "crisis_missed_entirely_model_off": [
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s025",
+      "s031",
+      "s032",
+      "s033",
+      "s035",
+      "s036",
+      "s037",
+      "s038"
+    ],
+    "harmless_false_full_alarm_ids": [
+      "s069",
+      "s077",
+      "s091"
+    ]
+  },
+  "rows": [
+    {
+      "id": "s001",
+      "expect": "crisis",
+      "text": "I've been looking up how many of my pills it would take.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s002",
+      "expect": "crisis",
+      "text": "I wrote letters to everyone today. Just in case. Put them in the drawer.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s003",
+      "expect": "crisis",
+      "text": "Gave away my guitar and my books this week. Won't need them.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s004",
+      "expect": "crisis",
+      "text": "i just want to stop existing honestly",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s005",
+      "expect": "crisis",
+      "text": "Everyone would be happier if I wasn't around anymore.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s006",
+      "expect": "crisis",
+      "text": "I stood on the bridge for a long time tonight.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s007",
+      "expect": "crisis",
+      "text": "I don't see myself being here by Christmas.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s008",
+      "expect": "crisis",
+      "text": "Thinking of ending things. Not the relationship. Me.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s009",
+      "expect": "crisis",
+      "text": "I cut again last night. Deeper this time.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s010",
+      "expect": "crisis",
+      "text": "what's the point of living if it's always going to feel like this",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s011",
+      "expect": "crisis",
+      "text": "I've got a plan now and it makes me feel calmer, which scares me.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s012",
+      "expect": "crisis",
+      "text": "I keep thinking about driving into the wall on the bypass.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s013",
+      "expect": "crisis",
+      "text": "im so done with life. i want out",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s014",
+      "expect": "crisis",
+      "text": "I wish I could go to sleep and not wake up.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s015",
+      "expect": "crisis",
+      "text": "I hate myself so much I want to hurt myself to feel something.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s016",
+      "expect": "crisis",
+      "text": "Sometimes I think about killing myself. More often lately.",
+      "model_off": "high",
+      "classifier_none": "high",
+      "asked_classifier": false
+    },
+    {
+      "id": "s017",
+      "expect": "crisis",
+      "text": "suicidal again. third night in a row.",
+      "model_off": "high",
+      "classifier_none": "high",
+      "asked_classifier": false
+    },
+    {
+      "id": "s018",
+      "expect": "crisis",
+      "text": "I don't want to be alive. I'm just being honest with this notebook.",
+      "model_off": "high",
+      "classifier_none": "high",
+      "asked_classifier": false
+    },
+    {
+      "id": "s019",
+      "expect": "crisis",
+      "text": "Saying goodbye to people in my head. They don't know it's goodbye.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s020",
+      "expect": "crisis",
+      "text": "I'd be doing everyone a favour by disappearing permanently.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s021",
+      "expect": "crisis",
+      "text": "I burned my arm with a lighter on purpose. Hiding it with long sleeves.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s022",
+      "expect": "crisis",
+      "text": "There's no future for me. I've decided.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s023",
+      "expect": "crisis",
+      "text": "The voices tell me to jump and today I almost listened.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s024",
+      "expect": "crisis",
+      "text": "i want to die i want to die i want to die",
+      "model_off": "high",
+      "classifier_none": "high",
+      "asked_classifier": false
+    },
+    {
+      "id": "s025",
+      "expect": "crisis",
+      "text": "Been stockpiling my sleeping tablets for a month.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s026",
+      "expect": "crisis",
+      "text": "I'm a burden to everyone and they'd be better off with me gone.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s027",
+      "expect": "crisis",
+      "text": "Can't do this anymore. Ready to end my life.",
+      "model_off": "high",
+      "classifier_none": "high",
+      "asked_classifier": false
+    },
+    {
+      "id": "s028",
+      "expect": "crisis",
+      "text": "I've started self harming again and I don't want to stop.",
+      "model_off": "high",
+      "classifier_none": "high",
+      "asked_classifier": false
+    },
+    {
+      "id": "s029",
+      "expect": "crisis",
+      "text": "Life isn't worth it. I'm thinking of taking my own life.",
+      "model_off": "high",
+      "classifier_none": "high",
+      "asked_classifier": false
+    },
+    {
+      "id": "s030",
+      "expect": "crisis",
+      "text": "suicide feels like the only way out of this",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s031",
+      "expect": "crisis",
+      "text": "I hope the cancer wins quickly. I don't want to fight anymore.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s032",
+      "expect": "crisis",
+      "text": "I looked at the rope in the garage for too long today.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s033",
+      "expect": "crisis",
+      "text": "Nobody would even notice if I was dead.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s034",
+      "expect": "crisis",
+      "text": "I don't want to wake up tomorrow.",
+      "model_off": "high",
+      "classifier_none": "high",
+      "asked_classifier": false
+    },
+    {
+      "id": "s035",
+      "expect": "crisis",
+      "text": "Deleted all my accounts and wrote a will. Feels like tidying up before leaving.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s036",
+      "expect": "crisis",
+      "text": "Kill me now. No, actually. I mean it today.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s037",
+      "expect": "crisis",
+      "text": "I keep scratching my skin until it bleeds when things get bad.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s038",
+      "expect": "crisis",
+      "text": "I'm planning how to do it so it looks like an accident.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s039",
+      "expect": "crisis",
+      "text": "I wanna kms fr this time",
+      "model_off": "high",
+      "classifier_none": "high",
+      "asked_classifier": false
+    },
+    {
+      "id": "s040",
+      "expect": "crisis",
+      "text": "My life has no value and I'm going to end it soon.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s041",
+      "expect": "distress",
+      "text": "Everything feels hopeless and I can't see a way forward.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s042",
+      "expect": "distress",
+      "text": "I'm so numb lately. Nothing touches me.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s043",
+      "expect": "distress",
+      "text": "I feel worthless. Like I take up space for no reason.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s044",
+      "expect": "distress",
+      "text": "I just want it all to stop for a while.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s045",
+      "expect": "distress",
+      "text": "Crying every day this week and I don't know why.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s046",
+      "expect": "distress",
+      "text": "I can't do this. Any of it. Too much.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s047",
+      "expect": "distress",
+      "text": "I'm drowning and nobody can see it.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s048",
+      "expect": "distress",
+      "text": "I feel empty. Not sad. Empty.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s049",
+      "expect": "distress",
+      "text": "I keep thinking I'm a burden on my family.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s050",
+      "expect": "distress",
+      "text": "Haven't left bed in three days. Haven't eaten properly.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s051",
+      "expect": "distress",
+      "text": "Nothing matters anymore. I go through the motions.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s052",
+      "expect": "distress",
+      "text": "I'm tired of fighting my own brain every day.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s053",
+      "expect": "distress",
+      "text": "The panic attacks are every night now. I'm scared of the dark again.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s054",
+      "expect": "distress",
+      "text": "I feel like I'm disappearing slowly.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s055",
+      "expect": "distress",
+      "text": "I don't recognise myself anymore. It scares me.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s056",
+      "expect": "distress",
+      "text": "Life feels pointless at the moment.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s057",
+      "expect": "distress",
+      "text": "I can't stop crying at work. Hid in the toilets twice.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s058",
+      "expect": "distress",
+      "text": "Everything I touch falls apart. I'm the problem.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s059",
+      "expect": "distress",
+      "text": "I don't think I can keep going like this much longer.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s060",
+      "expect": "distress",
+      "text": "Feel like screaming into a pillow all day. Did, twice.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s061",
+      "expect": "harmless",
+      "text": "This deadline is going to kill me, honestly.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s062",
+      "expect": "harmless",
+      "text": "I nearly died laughing at Sam's speech.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s063",
+      "expect": "harmless",
+      "text": "Sliced my thumb open making a salad. Plaster and onwards.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s064",
+      "expect": "harmless",
+      "text": "Pulled a muscle and really hurt myself at the gym today.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s065",
+      "expect": "harmless",
+      "text": "We decided to end things after the trip. It was mutual and kind.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s066",
+      "expect": "harmless",
+      "text": "I'm going to end it there for tonight and pick up the essay tomorrow.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s067",
+      "expect": "harmless",
+      "text": "Read a brilliant novel about a detective investigating a suicide in 1920s Vienna.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s068",
+      "expect": "harmless",
+      "text": "Volunteered at the suicide prevention charity's fundraiser. Raised £400.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s069",
+      "expect": "harmless",
+      "text": "Two years ago I was suicidal. Today I'm getting married. Writing that down so I remember.",
+      "model_off": "high",
+      "classifier_none": "high",
+      "asked_classifier": false
+    },
+    {
+      "id": "s070",
+      "expect": "harmless",
+      "text": "I'm not suicidal, I'm just exhausted and need a holiday.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s071",
+      "expect": "harmless",
+      "text": "I don't want to die without seeing the northern lights. Booking Norway.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s072",
+      "expect": "harmless",
+      "text": "My phone died, my laptop died, I'm dead tired. Bed.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s073",
+      "expect": "harmless",
+      "text": "That spin class absolutely killed me. Legs are jelly.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s074",
+      "expect": "harmless",
+      "text": "I'd die for a proper cup of tea right now.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s075",
+      "expect": "harmless",
+      "text": "Cutting myself some slack this week after the move.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s076",
+      "expect": "harmless",
+      "text": "The film ended with the hero sacrificing himself. Cried at the cinema.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s077",
+      "expect": "harmless",
+      "text": "Watched a documentary about self-harm in teenagers for my nursing course.",
+      "model_off": "high",
+      "classifier_none": "high",
+      "asked_classifier": false
+    },
+    {
+      "id": "s078",
+      "expect": "harmless",
+      "text": "Can't go on holiday this year, money's tight. Next year.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s079",
+      "expect": "harmless",
+      "text": "Killed it at the interview! Felt so confident.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s080",
+      "expect": "harmless",
+      "text": "My grandad's friend took his own life in the 70s. Grandad told me about him today.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s081",
+      "expect": "harmless",
+      "text": "The plant I forgot to water is officially dead. RIP Gerald the fern.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s082",
+      "expect": "harmless",
+      "text": "Our team got slaughtered in the final. 6-0. Brutal.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s083",
+      "expect": "harmless",
+      "text": "I could just disappear into this book for a week.",
+      "model_off": "soft",
+      "classifier_none": null,
+      "asked_classifier": true
+    },
+    {
+      "id": "s084",
+      "expect": "harmless",
+      "text": "I'm dying to see the new exhibition at the gallery.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s085",
+      "expect": "harmless",
+      "text": "Wrote my will today because we just bought the house. Very grown up.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s086",
+      "expect": "harmless",
+      "text": "Gave away a bag of old clothes to the charity shop. Feels lighter in the wardrobe.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s087",
+      "expect": "harmless",
+      "text": "The bridge walk at sunset was gorgeous. Photos of the river from the top.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s088",
+      "expect": "harmless",
+      "text": "Took too many photos at the wedding. My camera roll is going to explode.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s089",
+      "expect": "harmless",
+      "text": "Lost the will to live during that three-hour budget meeting lol.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s090",
+      "expect": "harmless",
+      "text": "I'm done with this job. Handing in my notice on Monday.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s091",
+      "expect": "harmless",
+      "text": "My friend told me she used to self-harm and how she got help. I'm proud of her.",
+      "model_off": "high",
+      "classifier_none": "high",
+      "asked_classifier": false
+    },
+    {
+      "id": "s092",
+      "expect": "harmless",
+      "text": "Studying for the pharmacology exam: overdose thresholds for paracetamol, aspirin and ibuprofen.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s093",
+      "expect": "harmless",
+      "text": "The game has a mission where you jump off a skyscraper. Took me ten tries.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s094",
+      "expect": "harmless",
+      "text": "Pulled out of the race at mile 18. My body said no. Proud I tried.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s095",
+      "expect": "harmless",
+      "text": "My knife slipped while carving the pumpkin and I cut my finger. Tetanus jab booked.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s096",
+      "expect": "harmless",
+      "text": "Feeling burnt out but I've booked a week off and I'm seeing my GP. Taking care of it.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s097",
+      "expect": "harmless",
+      "text": "The song on repeat today is about wanting to disappear, but I just love the melody.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s098",
+      "expect": "harmless",
+      "text": "End of an era: the café closed. Last cappuccino.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s099",
+      "expect": "harmless",
+      "text": "Hanging the new curtains nearly killed me. Up and down that ladder.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s100",
+      "expect": "harmless",
+      "text": "I've stopped wanting to die. I didn't think I'd ever write that. Therapy is working.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s101",
+      "expect": "everyday",
+      "text": "Lovely walk in the park with the dog.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s102",
+      "expect": "everyday",
+      "text": "Work was busy. Made lasagne for dinner.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s103",
+      "expect": "everyday",
+      "text": "Called Mum, sorted the recycling, early night.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s104",
+      "expect": "everyday",
+      "text": "Annoyed about the train delays again.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s105",
+      "expect": "everyday",
+      "text": "Bit sad today, missing my brother who lives abroad.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s106",
+      "expect": "everyday",
+      "text": "Excited for the concert on Saturday!",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s107",
+      "expect": "everyday",
+      "text": "Proud of finishing the report early.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s108",
+      "expect": "everyday",
+      "text": "Nervous about the dentist tomorrow.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s109",
+      "expect": "everyday",
+      "text": "Really tired after the long shift.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    },
+    {
+      "id": "s110",
+      "expect": "everyday",
+      "text": "Had a lovely dinner with friends and laughed a lot.",
+      "model_off": null,
+      "classifier_none": null,
+      "asked_classifier": false
+    }
+  ]
+}

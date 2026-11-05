@@ -1,0 +1,70 @@
+{"id":"e0141","text":"Biopsy results come back Thursday. I've checked the portal eleven times today even though I know they won't be there yet.","emotion":"anxious","intensity":8,"not_people":["Thursday"],"traits":["time"]}
+{"id":"e0142","text":"Presentation to the board tomorrow. Stomach in knots. Rehearsed it four times and still feel like I'll forget everything.","emotion":"anxious","intensity":7,"traits":["time"]}
+{"id":"e0143","text":"Felipe hasn't answered since last night and he always answers. Probably his phone died. Probably.","emotion":"anxious","intensity":6,"people":["Felipe"]}
+{"id":"e0144","text":"Rent went up again and my hours got cut. Did the maths three times. It doesn't work.","emotion":"anxious","also":["overwhelmed"],"intensity":8}
+{"id":"e0145","text":"Heart racing on the tube for no reason. Got off two stops early and walked. Felt silly but better.","emotion":"anxious","intensity":6}
+{"id":"e0146","text":"First day at the new job on Monday and I keep imagining every way it could go wrong. What if they realise I'm not as good as my interview?","emotion":"anxious","intensity":7,"not_people":["Monday"],"traits":["time"]}
+{"id":"e0147","text":"Manager put a 'quick chat' in my calendar for Friday with no details. Now I can't think about anything else.","emotion":"anxious","intensity":7,"people_optional":["Manager"],"not_people":["Friday"]}
+{"id":"e0148","text":"Ayesha is driving through the storm tonight. Told her to text when she lands. Watching the weather map like it'll help.","emotion":"anxious","intensity":6,"people":["Ayesha"]}
+{"id":"e0149","text":"Couldn't sleep. Lay there replaying the thing I said at dinner and whether Liam thought it was rude.","emotion":"anxious","intensity":5,"people":["Liam"]}
+{"id":"e0150","text":"Exam results open at 9. It's 6:40. I've been awake since 4.","emotion":"anxious","intensity":8,"traits":["short","time"]}
+{"id":"e0151","text":"The lump is probably nothing, the GP said, but she wants a scan to be sure. 'To be sure' is doing a lot of work in that sentence.","emotion":"anxious","intensity":7,"people_optional":["The GP"]}
+{"id":"e0152","text":"Bit jittery today. Too much coffee or too much going on, hard to say.","emotion":"anxious","intensity":3,"traits":["ambiguous"]}
+{"id":"e0153","text":"Mum's surgery is at eight. They said four hours. I've cleaned the whole kitchen twice.","emotion":"anxious","intensity":8,"people":["Mum"],"traits":["indirect"]}
+{"id":"e0154","text":"I have to tell Joaquín about the money I lost on that investment. I've rehearsed it in the shower all week.","emotion":"anxious","intensity":7,"people":["Joaquín"]}
+{"id":"e0155","text":"Visa interview in two days. I've printed every document twice and I'm still sure something is missing.","emotion":"anxious","intensity":8,"traits":["time"]}
+{"id":"e0156","text":"The baby has a fever and it's 2am. Called the nurse line. Waiting for them to call back. Every minute feels like ten.","emotion":"anxious","intensity":9,"people_optional":["The baby"]}
+{"id":"e0157","text":"Lots of layoff rumours at work. Everyone is whispering in the kitchen. I updated my CV just in case.","emotion":"anxious","intensity":6}
+{"id":"e0158","text":"Big party at Hyun's tonight. I want to go. I also want to cancel and stay home where nobody looks at me.","emotion":"anxious","intensity":5,"people":["Hyun"],"traits":["mixed"]}
+{"id":"e0159","text":"Hands shaking before my first open mic. Ruth squeezed my arm and said 'you've got this'. I don't feel like I've got this.","emotion":"anxious","intensity":8,"people":["Ruth"]}
+{"id":"e0160","text":"I keep checking that I locked the door. I know I locked the door. Went back twice anyway.","emotion":"anxious","intensity":5}
+{"id":"e0161","text":"My son starts school tomorrow and won't stop crying about it, and honestly neither will I. What if he's lonely? What if they're mean?","emotion":"anxious","also":["sad"],"intensity":7,"people_optional":["My son"],"traits":["time"]}
+{"id":"e0162","text":"The car is making the noise again. Can't afford a repair this month. Turning the radio up so I can't hear it.","emotion":"anxious","intensity":6}
+{"id":"e0163","text":"Awake at 3am thinking about climate stuff, the future, whether it's fair to have kids. Big spiral.","emotion":"anxious","intensity":7}
+{"id":"e0164","text":"Tax deadline is Friday and the shoebox of receipts is still a shoebox.","emotion":"anxious","also":["overwhelmed"],"intensity":5,"not_people":["Friday"]}
+{"id":"e0165","text":"Ines said 'we need to talk' and then 'it's nothing bad, tell you tonight'. It's 2pm. This is going to be a long afternoon.","emotion":"anxious","intensity":6,"people":["Ines"]}
+{"id":"e0166","text":"Flying on Saturday. I'm the person gripping the armrest at every bump. Already dreading it.","emotion":"anxious","intensity":6,"not_people":["Saturday"],"traits":["time"]}
+{"id":"e0167","text":"Got a letter from the council about 'planning concerns'. Haven't opened it yet. It's sitting on the table like a bomb.","emotion":"anxious","intensity":6}
+{"id":"e0168","text":"Defence is in nine days. Professor Adeyemi's comments were brutal. I don't know if I can fix it all in time.","emotion":"anxious","also":["overwhelmed"],"intensity":8,"people":["Professor Adeyemi"],"traits":["time","names_tricky"]}
+{"id":"e0169","text":"Chest tight all day. Kept telling myself it's anxiety not my heart. Then worrying it IS my heart. Fun loop.","emotion":"anxious","intensity":7,"traits":["sarcasm"]}
+{"id":"e0170","text":"Meeting Sam's parents this weekend. What do I wear. What do I bring. What if they hate me.","emotion":"anxious","intensity":6,"people":["Sam"],"people_optional":["Sam's parents"]}
+{"id":"e0171","text":"Hearing that sound again in the walls at night. Probably pipes. I've got the light on anyway.","emotion":"anxious","intensity":4}
+{"id":"e0172","text":"Asked for a raise. Henrik said he'd 'take it upstairs'. Now I'm worried I've made things weird.","emotion":"anxious","intensity":5,"people":["Henrik"]}
+{"id":"e0173","text":"Uneasy all evening. Nothing specific. Like before a storm.","emotion":"anxious","intensity":4,"traits":["short","ambiguous"]}
+{"id":"e0174","text":"Grandad fell again. He says he's fine. He said that last time too. I'm going over tomorrow to look properly.","emotion":"anxious","intensity":7,"people":["Grandad"],"traits":["time"]}
+{"id":"e0175","text":"Auditions at ten. Voice feels scratchy. Drinking honey water like a Victorian opera singer.","emotion":"anxious","intensity":6}
+{"id":"e0176","text":"Bank flagged a weird transaction. Spent an hour on hold. Card's frozen. Still not sure what else they got.","emotion":"anxious","also":["frustrated"],"intensity":6}
+{"id":"e0177","text":"Our daughter came home from her party an hour late and wouldn't say where she'd been. I'm trying not to imagine things.","emotion":"anxious","intensity":7,"people_optional":["Our daughter"]}
+{"id":"e0178","text":"Results from the genetic test arrive in six weeks. Six weeks of not knowing.","emotion":"anxious","intensity":7,"traits":["time"]}
+{"id":"e0179","text":"Leading my first workshop on Wednesday. Thirty people. Practising in front of the mirror and hating my voice.","emotion":"anxious","intensity":6,"not_people":["Wednesday"]}
+{"id":"e0180","text":"Kemi's flight from Lagos is delayed with no update. The board just says 'see agent'. There is no agent.","emotion":"anxious","also":["frustrated"],"intensity":6,"people":["Kemi"],"not_people":["Lagos"]}
+{"id":"e0181","text":"Started the new meds today. Doctor said the first week can be rough. Every little twinge I'm wondering if it's a side effect.","emotion":"anxious","intensity":5}
+{"id":"e0182","text":"Phone rang from an unknown number three times. I don't pick up unknown numbers. Now I'm convinced something's happened.","emotion":"anxious","intensity":5}
+{"id":"e0183","text":"Deadline at midnight, server down, client emailing every twenty minutes. Fingers are cold and I keep forgetting to breathe.","emotion":"anxious","also":["overwhelmed"],"intensity":8}
+{"id":"e0184","text":"I think I upset Mira in the group chat. She went quiet after my joke. Typed an apology, deleted it, typed it again.","emotion":"anxious","intensity":5,"people":["Mira"]}
+{"id":"e0185","text":"Court date for the custody hearing is next month. I'm trying to keep things normal for the kids but I'm shaking inside.","emotion":"anxious","intensity":9,"people_optional":["the kids"],"traits":["time"]}
+{"id":"e0186","text":"Slight dread about the family dinner. Uncle Viktor will bring up politics. He always does.","emotion":"anxious","also":["frustrated"],"intensity":4,"people":["Uncle Viktor"]}
+{"id":"e0187","text":"My hands go numb when I think about the money conversation with Dev. We have to have it. Tonight.","emotion":"anxious","intensity":7,"people":["Dev"]}
+{"id":"e0188","text":"Interview went fine I think? But they said they'd be in touch 'by end of week' and it's Thursday afternoon.","emotion":"anxious","intensity":5,"not_people":["Thursday"],"traits":["time"]}
+{"id":"e0189","text":"Tornado warning siren went off. We sat in the basement with the radio for an hour. All clear now but I can't settle.","emotion":"anxious","intensity":7}
+{"id":"e0190","text":"Nervous. Big day tomorrow. Laid my clothes out like a kid before the first day of school.","emotion":"anxious","intensity":5,"traits":["time"]}
+{"id":"e0191","text":"Can't stop worrying about Lukas. He's been drinking more since the job went and he laughs it off when I ask.","emotion":"anxious","intensity":7,"people":["Lukas"]}
+{"id":"e0192","text":"Driving on the motorway for the first time since the accident. Made it. Hands were slippery on the wheel the whole way.","emotion":"anxious","also":["proud"],"intensity":7,"traits":["mixed"]}
+{"id":"e0193","text":"My essay is due tomorrow and I've written 200 words of 3000. My heart is pounding every time I look at the clock.","emotion":"anxious","also":["overwhelmed"],"intensity":7,"traits":["time"]}
+{"id":"e0194","text":"Waiting room. Again. Everyone looks as scared as I feel.","emotion":"anxious","intensity":6,"traits":["short","indirect"]}
+{"id":"e0195","text":"Mortgage approval still 'pending'. If it doesn't come through by the 15th we lose the house we've fallen in love with.","emotion":"anxious","intensity":8,"traits":["time"]}
+{"id":"e0196","text":"Saw a news story about a burglary on our street. Checked every window twice. Moved the bat next to the bed.","emotion":"anxious","intensity":6}
+{"id":"e0197","text":"Today I'm on edge for no clear reason. Snapped at the printer. Apologised to the printer.","emotion":"anxious","intensity":4,"traits":["ambiguous"]}
+{"id":"e0198","text":"Tomás has his biopsy tomorrow and asked me not to make a big deal of it so I'm making a very quiet, very big deal of it in here.","emotion":"anxious","intensity":7,"people":["Tomás"],"traits":["time"]}
+{"id":"e0199","text":"Group project and nobody has done their part. Presentation's Monday. I can feel my jaw clenching.","emotion":"anxious","also":["frustrated"],"intensity":6,"not_people":["Monday"]}
+{"id":"e0200","text":"Third night in a row of nightmares about missing a train. Waking with my heart going like a drum.","emotion":"anxious","intensity":6}
+{"id":"e0201","text":"Dr. Banerjee wants to 'discuss the results in person'. Appointment isn't until Tuesday.","emotion":"anxious","intensity":8,"people":["Dr. Banerjee"],"not_people":["Tuesday"],"traits":["time","names_tricky"]}
+{"id":"e0202","text":"Moving cities alone next week. Excited in theory. In practice, terrified.","emotion":"anxious","also":["excited"],"intensity":7,"traits":["mixed","time"]}
+{"id":"e0203","text":"Small knot of worry about the dog's limp. Vet on Monday. Probably a sprain.","emotion":"anxious","intensity":3,"not_people":["Monday"]}
+{"id":"e0204","text":"I froze in the meeting when Carla asked me a direct question. Now replaying it on loop and imagining what everyone thinks.","emotion":"anxious","intensity":6,"people":["Carla"]}
+{"id":"e0205","text":"The landlord's agent is coming to inspect and the damp patch in the bathroom has spread. I'm sure we'll lose the deposit.","emotion":"anxious","intensity":5}
+{"id":"e0206","text":"Pregnancy test in the bathroom. Two minutes. Longest two minutes of my life. Not sure which answer I'm hoping for.","emotion":"anxious","intensity":9,"traits":["mixed","ambiguous"]}
+{"id":"e0207","text":"Election night. Refreshing the results page like it changes anything. Can't eat.","emotion":"anxious","intensity":7}
+{"id":"e0208","text":"Heard the word 'restructure' in the all-hands. Everyone smiling politely. Me included. Inside, alarms.","emotion":"anxious","intensity":6}
+{"id":"e0209","text":"Patrick is hiking alone this weekend and his tracker's been showing the same spot for three hours.","emotion":"anxious","intensity":7,"people":["Patrick"]}
+{"id":"e0210","text":"Restless and worried all day about the money, the job, my knee, everything at once and nothing in particular.","emotion":"anxious","also":["overwhelmed"],"intensity":6}

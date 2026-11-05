@@ -1,0 +1,70 @@
+{"id":"e0631","text":"Night shift again. Eyes feel like sandpaper. Going straight to bed.","emotion":"tired","intensity":6,"traits":["short"]}
+{"id":"e0632","text":"Baby up every two hours. I made coffee and forgot to drink it. Twice.","emotion":"tired","intensity":7}
+{"id":"e0633","text":"Long day, nothing terrible happened, I'm just wiped out.","emotion":"tired","intensity":5,"traits":["short"]}
+{"id":"e0634","text":"Drove eight hours to Mum's. Back hurts, brain is mush. Ate toast and went to sleep at 8.","emotion":"tired","intensity":6,"people":["Mum"]}
+{"id":"e0635","text":"Jet lag. Wide awake at 3am, falling asleep in my soup at lunch.","emotion":"tired","intensity":5}
+{"id":"e0636","text":"Exhausted after moving all the furniture with Bartek. Every muscle complaining.","emotion":"tired","intensity":6,"people":["Bartek"]}
+{"id":"e0637","text":"So sleepy. Couldn't focus on anything after lunch.","emotion":"tired","intensity":4,"traits":["short"]}
+{"id":"e0638","text":"Three exams in two days. Done. I want to sleep for a week.","emotion":"tired","also":["calm"],"intensity":7}
+{"id":"e0639","text":"Low energy all week. Probably the cold I can't shake.","emotion":"tired","intensity":4}
+{"id":"e0640","text":"Wedding was beautiful but I danced until 2am and now I'm a husk.","emotion":"tired","also":["happy"],"intensity":6,"traits":["mixed"]}
+{"id":"e0641","text":"Covering for two people at work this week. Getting home at nine. Barely talking to Sami.","emotion":"tired","also":["frustrated"],"intensity":7,"people":["Sami"]}
+{"id":"e0642","text":"Didn't sleep. Thunderstorm, dog panicking, then the alarm.","emotion":"tired","intensity":5,"traits":["short"]}
+{"id":"e0643","text":"Chemo week. Body heavy. Sleeping on the sofa most of the day. Lily brought me broth.","emotion":"tired","intensity":8,"people":["Lily"]}
+{"id":"e0644","text":"Not sad, not stressed, just bone tired.","emotion":"tired","intensity":6,"traits":["short","negation"]}
+{"id":"e0645","text":"Finished the marathon. Legs gone. Lying on the floor with a bag of frozen peas on each knee.","emotion":"tired","also":["proud"],"intensity":7}
+{"id":"e0646","text":"Kids are back at school, I'm back at work, the routine is brutal. Asleep on the couch by 9.","emotion":"tired","intensity":6,"people_optional":["Kids"]}
+{"id":"e0647","text":"Spent all day in the hospital waiting room with Dad. Didn't do anything and I'm exhausted.","emotion":"tired","also":["anxious"],"intensity":6,"people":["Dad"]}
+{"id":"e0648","text":"Brain fog today. Read the same email five times.","emotion":"tired","intensity":4,"traits":["short"]}
+{"id":"e0649","text":"Harvest season. Up at four every day, home at dark. Too tired to even shower properly.","emotion":"tired","intensity":7}
+{"id":"e0650","text":"Social battery completely drained after the conference. Three days of small talk. Need a quiet weekend.","emotion":"tired","intensity":6}
+{"id":"e0651","text":"Teething. Hers, not mine. Though at this point I'd believe either.","emotion":"tired","intensity":6,"traits":["indirect"]}
+{"id":"e0652","text":"Yawning all through the meeting. Felix noticed and kindly pretended not to.","emotion":"tired","intensity":4,"people":["Felix"]}
+{"id":"e0653","text":"Flat-out day of cleaning before the in-laws arrive. Floors gleaming, me collapsing.","emotion":"tired","intensity":5,"people_optional":["the in-laws"]}
+{"id":"e0654","text":"Tired in a way sleep doesn't fix. Months of this now.","emotion":"tired","also":["sad"],"intensity":7,"traits":["short","indirect"]}
+{"id":"e0655","text":"Ran the 6am bootcamp, then a full day at the office, then Tomasz's birthday drinks. Done for.","emotion":"tired","intensity":6,"people":["Tomasz"]}
+{"id":"e0656","text":"Too tired to write much. Good day though.","emotion":"tired","also":["happy"],"intensity":5,"traits":["short","mixed"]}
+{"id":"e0657","text":"Overnight flight with a crying baby two rows back. Landed and went straight to work. Zombie mode.","emotion":"tired","intensity":7}
+{"id":"e0658","text":"Ramadan fasting plus long workdays. Feeling slow and sleepy in the afternoons but okay.","emotion":"tired","intensity":4,"not_people":["Ramadan"]}
+{"id":"e0659","text":"Insomnia again. Watched the ceiling until 5. Got up at 7. Everything feels far away.","emotion":"tired","intensity":7}
+{"id":"e0660","text":"Hiking 22km with Wren and Jody. Gorgeous views. Feet destroyed. Will sleep like a log.","emotion":"tired","also":["happy"],"intensity":6,"people":["Wren","Jody"],"traits":["mixed"]}
+{"id":"e0661","text":"Caring for Grandma all weekend while Mum rested. I don't know how she does it every day.","emotion":"tired","also":["grateful"],"intensity":7,"people":["Grandma","Mum"]}
+{"id":"e0662","text":"End of term. Marked ninety essays. My eyes have stopped working.","emotion":"tired","intensity":7}
+{"id":"e0663","text":"Bit sleepy, bit sluggish. Lazy Sunday vibes.","emotion":"tired","intensity":3,"not_people":["Sunday"],"traits":["short"]}
+{"id":"e0664","text":"Iron levels are low, doctor says. Explains the constant fatigue. Starting supplements.","emotion":"tired","intensity":5}
+{"id":"e0665","text":"Newborn week two. I've forgotten what day it is. Matteo keeps bringing me snacks and water like I'm a houseplant.","emotion":"tired","also":["grateful"],"intensity":8,"people":["Matteo"]}
+{"id":"e0666","text":"Pulled an all-nighter for the deadline. Shipped it. Now I can barely string a sentence together.","emotion":"tired","also":["proud"],"intensity":7}
+{"id":"e0667","text":"Heavy legs, heavy head. Went for a walk hoping it'd help. It didn't.","emotion":"tired","intensity":5}
+{"id":"e0668","text":"Moving house is the most tiring thing in the world. Packed 30 boxes. Thirty more to go.","emotion":"tired","also":["overwhelmed"],"intensity":7}
+{"id":"e0669","text":"Long shift at the restaurant. Feet aching, smelling of fryer oil, counting tips on the bus home.","emotion":"tired","intensity":6}
+{"id":"e0670","text":"Sleepless night worrying about Shira. Dragging myself through the day.","emotion":"tired","also":["anxious"],"intensity":6,"people":["Shira"]}
+{"id":"e0671","text":"I'm fine, just knackered. Busy month.","emotion":"tired","intensity":4,"traits":["short"]}
+{"id":"e0672","text":"Ward was understaffed. Twelve hours without a proper break. Came home and lay on the kitchen floor for a bit.","emotion":"tired","intensity":8}
+{"id":"e0673","text":"Exhausted from holding it together for everyone at the funeral. Now that they've gone I can barely stand.","emotion":"tired","also":["sad"],"intensity":8}
+{"id":"e0674","text":"Toddler refused to nap, so I didn't either. Running on fumes.","emotion":"tired","intensity":6}
+{"id":"e0675","text":"Weekend of gigs with the band. Loved it. Voice is gone, body is gone.","emotion":"tired","also":["happy"],"intensity":6,"traits":["mixed"]}
+{"id":"e0676","text":"Too many late nights. My eyes are twitching. Bed by ten tonight, I swear.","emotion":"tired","intensity":5}
+{"id":"e0677","text":"Long recovery day after the operation. Walked to the bathroom and back and needed a nap.","emotion":"tired","intensity":7}
+{"id":"e0678","text":"Can't keep my eyes open. Reading the same page of the book over and over.","emotion":"tired","intensity":5}
+{"id":"e0679","text":"Juggling the two jobs is taking it out of me. Jiho said I look grey. He's not wrong.","emotion":"tired","also":["overwhelmed"],"intensity":7,"people":["Jiho"]}
+{"id":"e0680","text":"Woke up tired, stayed tired, going to bed tired.","emotion":"tired","intensity":5,"traits":["short"]}
+{"id":"e0681","text":"Spent the day helping Ngozi move. Four flights of stairs, no lift. My arms might fall off.","emotion":"tired","intensity":6,"people":["Ngozi"]}
+{"id":"e0682","text":"Dragged myself through the gym session. Zero energy. Probably should have rested.","emotion":"tired","intensity":4}
+{"id":"e0683","text":"Two kids with the flu, me with the flu, nobody sleeping. Survival mode.","emotion":"tired","also":["overwhelmed"],"intensity":8,"people_optional":["Two kids"]}
+{"id":"e0684","text":"Long day of meetings. Talked so much my face hurts. Brain is empty.","emotion":"tired","intensity":5}
+{"id":"e0685","text":"The festival was amazing and I am now seventy years old.","emotion":"tired","also":["happy"],"intensity":5,"traits":["mixed","indirect"]}
+{"id":"e0686","text":"Late flight, delayed baggage, taxi queue. Got home at 3am and slept in my clothes.","emotion":"tired","also":["frustrated"],"intensity":7}
+{"id":"e0687","text":"Feeling drained since the argument with Rafa yesterday. Not angry anymore. Just flat and tired.","emotion":"tired","also":["sad"],"intensity":5,"people":["Rafa"],"traits":["time","negation"]}
+{"id":"e0688","text":"Post-exam crash. Slept 12 hours and still woke up groggy.","emotion":"tired","intensity":5}
+{"id":"e0689","text":"Painted the whole hallway. Ceiling too. Neck is killing me and I'm ready to drop.","emotion":"tired","intensity":6}
+{"id":"e0690","text":"Weary today. Body and mind both asking for a break I can't give them yet.","emotion":"tired","intensity":6}
+{"id":"e0691","text":"Night feeds, early meetings, repeat. Losing track of the days.","emotion":"tired","intensity":7,"traits":["short"]}
+{"id":"e0692","text":"Bit tired after the swim but in a nice way. Early night.","emotion":"tired","also":["content"],"intensity":3,"traits":["short"]}
+{"id":"e0693","text":"Long walk home in the snow because the buses stopped. Thawing by the radiator now, barely awake.","emotion":"tired","intensity":5}
+{"id":"e0694","text":"Up all night with the sick dog. Bram and I took turns. He's better now. We're not.","emotion":"tired","intensity":6,"people":["Bram"]}
+{"id":"e0695","text":"Lethargic. Did nothing all day. Even nothing felt like effort.","emotion":"tired","also":["sad"],"intensity":5,"traits":["ambiguous"]}
+{"id":"e0696","text":"Inventory week at the shop. Counting the same screws for the third day.","emotion":"tired","also":["frustrated"],"intensity":5}
+{"id":"e0697","text":"Exhausted from the long-distance call schedule. Talking to Adaeze at midnight, working at eight.","emotion":"tired","intensity":6,"people":["Adaeze"]}
+{"id":"e0698","text":"Third wedding this month. Lovely couples. My wallet and feet are begging for mercy.","emotion":"tired","intensity":5,"traits":["sarcasm"]}
+{"id":"e0699","text":"Sleep debt catching up with me. Dozed off on the train and missed my stop.","emotion":"tired","intensity":6}
+{"id":"e0700","text":"Long, heavy week. I'm going to sit in the bath until I turn into a prune.","emotion":"tired","intensity":6}
