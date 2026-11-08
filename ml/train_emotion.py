@@ -318,8 +318,34 @@ def compare(base: dict, tuned: dict, ollama: dict) -> dict:
             "can_replace_7b_for_reading": bool(better and no_regression and matches_7b)}
 
 
+def stage_export(out: Path, base: str):
+    """Merge the adapter into the full model and write one GGUF file for Ollama.
+    Unquantised (f16); Ollama quantises it to q4_K_M on the Mac, like the 7B."""
+    import subprocess
+    import torch
+    from peft import PeftModel
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+    out = _base_dir(out, base)
+    adapter, merged = out / "adapter", Path("/content/merged") if Path("/content").exists() else out / "merged"
+    if not adapter.exists():
+        raise SystemExit("Run --stage train first.")
+    model = AutoModelForCausalLM.from_pretrained(BASES[base][0], torch_dtype=torch.float16)
+    model = PeftModel.from_pretrained(model, str(adapter)).merge_and_unload()
+    model.save_pretrained(str(merged))
+    AutoTokenizer.from_pretrained(BASES[base][0]).save_pretrained(str(merged))
+    llama = Path("/content/llama.cpp") if Path("/content").exists() else out / "llama.cpp"
+    if not llama.exists():
+        subprocess.run(["git", "clone", "-q", "--depth", "1", "https://github.com/ggml-org/llama.cpp", str(llama)], check=True)
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q", "gguf", "sentencepiece"], check=True)
+    gguf = out / f"innerbloom-reader-{base}-f16.gguf"
+    subprocess.run([sys.executable, str(llama / "convert_hf_to_gguf.py"), str(merged),
+                    "--outtype", "f16", "--outfile", str(gguf)], check=True)
+    log(out, "export", gguf=str(gguf), size_gb=round(gguf.stat().st_size / 2 ** 30, 2))
+    print(f"Download this one file to your Mac: {gguf}")
+
+
 STAGES = {"check": stage_check, "replies": stage_replies, "smoke": stage_smoke,
-          "train": stage_train, "evaluate": stage_evaluate}
+          "train": stage_train, "evaluate": stage_evaluate, "export": stage_export}
 
 
 def main(argv=None) -> int:
