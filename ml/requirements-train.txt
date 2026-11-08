@@ -1,5 +1,5 @@
 # Phase 3 training on Colab (GPU). Torch comes with Colab and is not pinned here.
 transformers==4.46.3
 peft==0.13.2
-bitsandbytes==0.44.1
+bitsandbytes>=0.46.1  # older releases need triton.ops, which current Colab lacks
 accelerate==1.1.1
