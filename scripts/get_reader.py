@@ -13,7 +13,7 @@ import sys
 
 import requests
 
-READER_REPO = "GhanshyamPaunikar/innerbloom-reader-1.5b-GGUF"
+READER_REPO = "gwagon63/innerbloom-reader-1.5b-GGUF"
 SOURCE = f"hf.co/{READER_REPO}:Q8_0"
 NAME = "innerbloom-reader:1.5b-q8-edited"
 API = os.environ.get("INNERBLOOM_OLLAMA_TAGS_URL", "http://localhost:11434/api/tags").rsplit("/", 1)[0]

@@ -78,7 +78,7 @@ The reader is Qwen2.5-1.5B, fine-tuned on fictional entries and bias-corrected i
 python scripts/get_reader.py
 ```
 
-It comes from Hugging Face ([GhanshyamPaunikar/innerbloom-reader-1.5b-GGUF](https://huggingface.co/GhanshyamPaunikar/innerbloom-reader-1.5b-GGUF)); the model card, `release/reader/README.md`, says how it was made. To pick another reader:
+It comes from Hugging Face ([gwagon63/innerbloom-reader-1.5b-GGUF](https://huggingface.co/gwagon63/innerbloom-reader-1.5b-GGUF)); the model card, `release/reader/README.md`, says how it was made. To pick another reader:
 
 ```bash
 INNERBLOOM_READER_MODEL=qwen2.5:7b python run_local.py

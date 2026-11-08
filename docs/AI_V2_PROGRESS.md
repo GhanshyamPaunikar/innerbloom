@@ -249,5 +249,5 @@ Still open: publishing the reader (Hugging Face or an Ollama registry, Phase 7),
 - Final comparison: the locked test above.
 - `release/reader/`: model card (Apache 2.0, results, how it was made, limits) and the `template`, `system` and `params` files Ollama reads when pulling from Hugging Face, copied from the tested model so installs behave the same.
 - `scripts/release_reader.py` stages the upload folder with the exact GGUF Ollama runs (sha256 `060fdb08…`, checked against Ollama's own file) and uploads with `hf upload` when given `--upload`. The model file is never committed.
-- `scripts/get_reader.py` installs it on any machine: `ollama pull hf.co/GhanshyamPaunikar/innerbloom-reader-1.5b-GGUF:Q8_0`, then names it `innerbloom-reader:1.5b-q8-edited`.
+- `scripts/get_reader.py` installs it on any machine: `ollama pull hf.co/gwagon63/innerbloom-reader-1.5b-GGUF:Q8_0`, then names it `innerbloom-reader:1.5b-q8-edited`.
 - Waiting on: a Hugging Face login, the upload, then a fresh pull and benchmark check that the published model scores the same.
