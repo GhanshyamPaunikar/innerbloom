@@ -180,7 +180,7 @@ Grown from 1,220 to 2,001 entries, aimed at the baseline's weak spots and writte
 
 ### Still to do in Phase 2
 
-- A second reader checks about 100 validation labels against the guidelines.
+- ~~A second reader checks about 100 validation labels~~ Done 2026-11-08: kappa 0.84.
 - The blind safety set.
 
 ### Next human action
@@ -239,5 +239,7 @@ chat and insights keep the 7B. The test split is now spent. Details: `reports/fi
 - `ml/datasets/second_reader/sheet.csv`: 100 validation entries (at least six of each emotion, seed `second-reader-v1`), with the original labels left out. Opens in Excel, Numbers or Google Sheets.
 - `ml/datasets/second_reader/HOW_TO_CHECK.md`: a plain note for the person filling it in.
 - `python -m ml.second_reader score FILLED.csv` writes `reports/second-reader-check.md`: same feeling, close match (counting `also`), Cohen's kappa, strength gap, names, and every disagreement side by side for fixing labels.
+
+**Result (2026-11-08):** a friend labelled all 100 blind. Same main feeling 85%, same or accepted alternative 99%, Cohen's kappa **0.84**, strength within 2 points 98%, same names 99%. The labels hold; none changed. Details: `reports/second-reader-check.md`.
 
 Still open: publishing the reader (Hugging Face or an Ollama registry, Phase 7), so other machines can install it; until then they fall back to the chat model.
