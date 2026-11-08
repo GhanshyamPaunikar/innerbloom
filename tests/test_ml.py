@@ -236,6 +236,31 @@ class ThreeWayComparison(unittest.TestCase):
         self.assertIn("Qwen/Qwen3.5-0.8B", code)
 
 
+class PublicData(unittest.TestCase):
+    def test_mapping_targets_are_production_emotions(self):
+        from ml import public_data
+        self.assertTrue(set(public_data.MAP.values()) <= set(analysis.EMOTIONS))
+
+    def test_records_teach_only_the_emotion(self):
+        from ml import public_data, train_emotion as te
+        rows = {f"c{i}": ("proud" if i % 2 else "terrified", f"I did a thing number {i} today") for i in range(10)}
+        chosen = public_data.select(rows, per_emotion=3)
+        self.assertEqual(sorted({c[0] for c in chosen}), ["anxious", "proud"])
+        rec = public_data.record(*chosen[0])
+        self.assertTrue(rec["messages"][1]["content"].startswith('{"emotion": "'))
+        self.assertFalse(rec["messages"][1]["content"].endswith("}"))
+
+        class FakeTok:
+            def apply_chat_template(self, messages, tokenize, add_generation_prompt):
+                return "<p>"
+
+            def __call__(self, text, add_special_tokens):
+                return {"input_ids": [ord(c) for c in text]}
+        enc = te.encode(FakeTok(), rec, 4096)
+        learned = "".join(chr(t) for t, l in zip(enc["input_ids"], enc["labels"]) if l != -100)
+        self.assertEqual(learned, rec["messages"][1]["content"])  # no end token after the emotion
+
+
 class BlindSafetySet(unittest.TestCase):
     def test_only_totals_leave_the_blind_set(self):
         from ml import safety_eval

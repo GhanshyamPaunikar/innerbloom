@@ -211,3 +211,9 @@ All are scored on the same 402 validation entries; `python -m ml.compare` builds
 
 Trained Qwen2.5-1.5B on validation: macro-F1 **0.746** (7B: 0.636), intensity error **0.88** (7B: 1.23), people F1 0.96 (7B: 0.89), no failed readings, one invented name (same as the 7B). Keep and can-replace-7B both true. About 6.5 compute units. Details: `reports/phase3-qwen2.5-1.5b-validation.md`. Not yet run: the locked test split, the second-reader check, Mac speed.
 
+### Rounds 2 and 3 (2026-11-08)
+
+- **Round 2**: 160 training-only contrast pairs (`ml/datasets/entries_train_only/`), rank 32, learning rate 1e-4. On Colab: macro-F1 0.748 (round 1: 0.746), intensity 0.92 (0.88), people 0.92 (0.96). No gain; round 1 stays the best.
+- **Round 3** (prepared): round 1's settings plus 3,000 situations from Meta's EmpatheticDialogues, 250 for each of 12 mapped emotions (`ml/public_data.py`). They teach only the emotion choice: the target is the reply's opening, so intensity, summary and names still come from Innerbloom's entries. Downloaded at training time, never committed.
+- **Licence**: EmpatheticDialogues is CC BY-NC 4.0. A model trained with it may only be used non-commercially. Credit: Rashkin et al., 2019, "Towards Empathetic Open-domain Conversation Models: a New Benchmark and Dataset".
+

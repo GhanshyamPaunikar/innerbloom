@@ -19,6 +19,7 @@ The locked test split is never touched here.
 """
 import argparse
 import json
+import random
 import os
 import sys
 import time
@@ -70,7 +71,9 @@ def read_jsonl(path: Path) -> list:
 def encode(tokenizer, record: dict, max_length: int) -> dict:
     """Token ids for one example; only the assistant reply is learned."""
     prompt = tokenizer.apply_chat_template(record["messages"][:1], tokenize=False, add_generation_prompt=True)
-    answer = record["messages"][1]["content"] + "<|im_end|>"
+    # Public examples teach only the opening {"emotion": "..."}: no end token,
+    # so the model never learns to stop there.
+    answer = record["messages"][1]["content"] + ("" if record.get("partial") else "<|im_end|>")
     p_ids = tokenizer(prompt, add_special_tokens=False)["input_ids"]
     a_ids = tokenizer(answer, add_special_tokens=False)["input_ids"]
     ids = (p_ids + a_ids)[:max_length]
@@ -177,6 +180,7 @@ def stage_replies(out: Path, base: str):
             minutes=round((time.time() - started) / 60, 1))
 
 
+WITH_PUBLIC = False  # set by --with-public: add ml.public_data examples to training
 TAG = ""  # set by --tag: keeps a later round's model apart from earlier ones
 
 
@@ -191,6 +195,12 @@ def _datasets(out: Path, tok, limit: int = None):
     val = read_jsonl(out / "targets_validation.jsonl")
     if not train or not val:
         raise SystemExit("Run --stage replies first.")
+    if WITH_PUBLIC:
+        public = read_jsonl(out / "public_train.jsonl")
+        if not public:
+            raise SystemExit("Run --stage public first.")
+        train = train + public
+        random.Random(SEED).shuffle(train)
     if limit:
         train, val = train[:limit], val[:16]
     return ([encode(tok, r, CONFIG["max_length"]) for r in train],
@@ -349,7 +359,12 @@ def stage_export(out: Path, base: str):
     print(f"Download this one file to your Mac: {gguf}")
 
 
-STAGES = {"check": stage_check, "replies": stage_replies, "smoke": stage_smoke,
+def stage_public(out: Path, base: str):
+    from ml import public_data
+    public_data.main(["--out", str(out)])
+
+
+STAGES = {"public": stage_public, "check": stage_check, "replies": stage_replies, "smoke": stage_smoke,
           "train": stage_train, "evaluate": stage_evaluate, "export": stage_export}
 
 
@@ -361,9 +376,10 @@ def main(argv=None) -> int:
     ap.add_argument("--tag", default="", help="name for this round, e.g. r2; results go to qwen2.5-<base>-<tag>")
     ap.add_argument("--lora-r", type=int, help="LoRA rank (alpha is set to twice the rank)")
     ap.add_argument("--lr", type=float, help="learning rate")
+    ap.add_argument("--with-public", action="store_true", help="add EmpatheticDialogues examples (non-commercial licence)")
     args = ap.parse_args(argv)
-    global TAG
-    TAG = args.tag
+    global TAG, WITH_PUBLIC
+    TAG, WITH_PUBLIC = args.tag, args.with_public
     if args.lora_r:
         CONFIG["lora_r"], CONFIG["lora_alpha"] = args.lora_r, 2 * args.lora_r
     if args.lr:
