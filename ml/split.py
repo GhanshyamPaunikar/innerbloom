@@ -81,7 +81,8 @@ def near_duplicates(splits: Dict[str, List[dict]]) -> List[str]:
 
 def build():
     entries = dataset.load()
-    bad = dataset.problems(entries)
+    extra = dataset.load(dataset.TRAIN_ONLY_DIR) if dataset.TRAIN_ONLY_DIR.exists() else []
+    bad = dataset.problems(entries + extra)
     if bad:
         raise SystemExit("fix the entries first:\n" + "\n".join(bad))
     where = assign(entries)
@@ -89,6 +90,10 @@ def build():
     for e in sorted(entries, key=lambda e: e["id"]):
         clean = {k: v for k, v in e.items() if k != "_source"}
         splits[where[e["group"]]].append(clean)
+    # Training-only entries never move the split above; they are appended to
+    # train, and must not resemble anything in validation or test.
+    for e in sorted(extra, key=lambda e: e["id"]):
+        splits["train"].append({k: v for k, v in e.items() if k != "_source"})
     dupes = near_duplicates(splits)
     if dupes:
         raise SystemExit("near-duplicates across splits:\n" + "\n".join(dupes))
@@ -98,6 +103,7 @@ def build():
         "seed": "innerbloom-split-v2",
         "shares": dict(SHARES),
         "entries": len(entries),
+        "train_only_entries": len(extra),
         "splits": {name: {"entries": len(splits[name]),
                           "groups": len({e["group"] for e in splits[name]}),
                           "sha256": hashlib.sha256(files[name].encode()).hexdigest()}

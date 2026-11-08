@@ -30,7 +30,7 @@ def reply(emotion="happy", intensity=5, people=()):
 
 class Data(unittest.TestCase):
     def test_committed_entries_are_valid(self):
-        self.assertEqual(dataset.problems(dataset.load()), [])
+        self.assertEqual(dataset.problems(dataset.load_all()), [])
 
     def test_checker_catches_bad_labels(self):
         bad = dataset._normalise(entry(emotion="joyful", intensity=11, people=["Priya"]))

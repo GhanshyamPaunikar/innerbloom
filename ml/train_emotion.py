@@ -138,7 +138,7 @@ def stage_check(out: Path, base: str):
         raise SystemExit("No GPU. Runtime > Change runtime type > A100 GPU, then run again.")
     name = torch.cuda.get_device_name(0)
     vram = torch.cuda.get_device_properties(0).total_memory / 2 ** 30
-    problems = dataset.problems(dataset.load())
+    problems = dataset.problems(dataset.load_all())
     if problems:
         raise SystemExit("Dataset problems:\n" + "\n".join(problems[:10]))
     if split.main(["--check"]) != 0 or spec.main(["--check"]) != 0:
@@ -177,8 +177,11 @@ def stage_replies(out: Path, base: str):
             minutes=round((time.time() - started) / 60, 1))
 
 
+TAG = ""  # set by --tag: keeps a later round's model apart from earlier ones
+
+
 def _base_dir(out: Path, base: str) -> Path:
-    path = out / f"qwen2.5-{base}"
+    path = out / (f"qwen2.5-{base}-{TAG}" if TAG else f"qwen2.5-{base}")
     path.mkdir(parents=True, exist_ok=True)
     return path
 
@@ -339,7 +342,7 @@ def stage_export(out: Path, base: str):
     if not llama.exists():
         subprocess.run(["git", "clone", "-q", "--depth", "1", "https://github.com/ggml-org/llama.cpp", str(llama)], check=True)
     subprocess.run([sys.executable, "-m", "pip", "install", "-q", "gguf", "sentencepiece"], check=True)
-    gguf = out / f"innerbloom-reader-{base}-f16.gguf"
+    gguf = out / f"innerbloom-reader-{base}{'-' + TAG if TAG else ''}-f16.gguf"
     subprocess.run([sys.executable, str(llama / "convert_hf_to_gguf.py"), str(merged),
                     "--outtype", "f16", "--outfile", str(gguf)], check=True)
     log(out, "export", gguf=str(gguf), size_gb=round(gguf.stat().st_size / 2 ** 30, 2))
@@ -355,7 +358,16 @@ def main(argv=None) -> int:
     ap.add_argument("--stage", choices=STAGES, required=True)
     ap.add_argument("--out", type=Path, default=Path(os.environ.get("INNERBLOOM_TRAIN_OUT", ROOT / "reports" / "phase3")))
     ap.add_argument("--base", choices=BASES, default="1.5b", help="model size to train (default 1.5b)")
+    ap.add_argument("--tag", default="", help="name for this round, e.g. r2; results go to qwen2.5-<base>-<tag>")
+    ap.add_argument("--lora-r", type=int, help="LoRA rank (alpha is set to twice the rank)")
+    ap.add_argument("--lr", type=float, help="learning rate")
     args = ap.parse_args(argv)
+    global TAG
+    TAG = args.tag
+    if args.lora_r:
+        CONFIG["lora_r"], CONFIG["lora_alpha"] = args.lora_r, 2 * args.lora_r
+    if args.lr:
+        CONFIG["learning_rate"] = args.lr
     args.out.mkdir(parents=True, exist_ok=True)
     started = time.time()
     STAGES[args.stage](args.out, args.base)

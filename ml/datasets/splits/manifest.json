@@ -6,11 +6,12 @@
     "test": 0.2
   },
   "entries": 2001,
+  "train_only_entries": 160,
   "splits": {
     "train": {
-      "entries": 1199,
-      "groups": 1196,
-      "sha256": "524f01c8a62bcb28464e6e317190ffc5030f0d540cda2bc4d992066fb7252faf"
+      "entries": 1359,
+      "groups": 1296,
+      "sha256": "fc9b825fc41c0d49fe96efc7631b7e88587b3f25acee11e95f6670a6aca947cd"
     },
     "validation": {
       "entries": 402,

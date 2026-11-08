@@ -1,0 +1,80 @@
+{"id":"e2002","group":"c001","text":"Finished the quilt I've been working on for a year. Every stitch by hand. I did that.","emotion":"proud","intensity":7}
+{"id":"e2003","group":"c001","text":"Wrapped up in the new quilt Gran sent, rain outside, tea in hand. Lovely evening.","emotion":"happy","also":["content"],"intensity":5,"people":["Gran"]}
+{"id":"e2004","group":"c002","text":"Got the promotion I've been working towards for three years. I earned this one.","emotion":"proud","also":["happy"],"intensity":8}
+{"id":"e2005","group":"c002","text":"Office party tonight, everyone in silly hats, cake for days. Such a fun evening.","emotion":"happy","intensity":6}
+{"id":"e2006","group":"c003","text":"Taught myself to change the car's oil from videos. Did it right first time. Look at me.","emotion":"proud","intensity":6}
+{"id":"e2007","group":"c003","text":"Sunny drive to the coast with the windows down and our favourite songs on. Perfect day.","emotion":"happy","intensity":7}
+{"id":"e2008","group":"c004","text":"My son read his poem at assembly and didn't stumble once. I worked on it with him every night for a week.","emotion":"proud","intensity":8,"people_optional":["My son"]}
+{"id":"e2009","group":"c004","text":"My son made me laugh so hard at dinner I had to leave the table. What a silly, lovely kid.","emotion":"happy","intensity":7,"people_optional":["My son"]}
+{"id":"e2010","group":"c005","text":"Held my ground in the negotiation and got a fair price. Old me would have folded.","emotion":"proud","intensity":6}
+{"id":"e2011","group":"c005","text":"Found a vintage lamp at the market for three pounds. Love it. Little joys.","emotion":"happy","intensity":4}
+{"id":"e2012","group":"c006","text":"Hit my savings goal for the year two months early. All those packed lunches paid off.","emotion":"proud","also":["happy"],"intensity":7}
+{"id":"e2013","group":"c006","text":"Lazy brunch with Kemi, pancakes and gossip. Felt light all afternoon.","emotion":"happy","intensity":5,"people":["Kemi"]}
+{"id":"e2014","group":"c007","text":"Passed the bar exam on my second attempt. I didn't give up.","emotion":"proud","intensity":9}
+{"id":"e2015","group":"c007","text":"Puppy fell asleep on my lap during the film. Couldn't stop smiling.","emotion":"happy","intensity":5}
+{"id":"e2016","group":"c008","text":"I said no to the extra project and explained why, calmly. Holding a boundary felt like an achievement.","emotion":"proud","intensity":5}
+{"id":"e2017","group":"c008","text":"Weekend off, no plans, sunshine. Wandered the park eating an ice cream. Delightful.","emotion":"happy","also":["content"],"intensity":5}
+{"id":"e2018","group":"c009","text":"Built the website for the charity myself, from nothing. It went live today and it works.","emotion":"proud","also":["excited"],"intensity":7}
+{"id":"e2019","group":"c009","text":"Danced around the kitchen to the radio with the kids. Everyone laughing.","emotion":"happy","intensity":7,"people_optional":["the kids"]}
+{"id":"e2020","group":"c010","text":"Ran my first 5k without walking. Six months ago I couldn't run to the bus stop.","emotion":"proud","intensity":7}
+{"id":"e2021","group":"c010","text":"Beautiful morning run by the river, mist on the water, ducks everywhere. What a start to the day.","emotion":"happy","also":["calm"],"intensity":5}
+{"id":"e2022","group":"c011","text":"My students all passed the exam. Every single one. I pushed them hard and they rose to it.","emotion":"proud","intensity":8}
+{"id":"e2023","group":"c011","text":"Students threw me a surprise party for my birthday. Balloons, terrible singing, a card from all of them.","emotion":"happy","also":["grateful"],"intensity":7}
+{"id":"e2024","group":"c012","text":"Spoke up about the unfair rota in the staff meeting, and they changed it. I made that happen.","emotion":"proud","intensity":6}
+{"id":"e2025","group":"c012","text":"Good chat with the team over lunch, lots of laughing. Nice day at work for once.","emotion":"happy","intensity":4}
+{"id":"e2026","group":"c013","text":"Learned the whole piano piece by heart. Played it for Mum without a single mistake.","emotion":"proud","intensity":7,"people":["Mum"]}
+{"id":"e2027","group":"c013","text":"Mum played her old records and we sang along badly all evening. Such a happy night.","emotion":"happy","intensity":6,"people":["Mum"]}
+{"id":"e2028","group":"c014","text":"Paid off the car loan. Eighteen months of being careful and it's done.","emotion":"proud","also":["calm"],"intensity":6}
+{"id":"e2029","group":"c014","text":"Picnic in the garden with Leo, strawberries and lemonade. Simple and lovely.","emotion":"happy","also":["content"],"intensity":5,"people":["Leo"]}
+{"id":"e2030","group":"c015","text":"Two years sober today. I fought for every one of those days.","emotion":"proud","also":["grateful"],"intensity":9}
+{"id":"e2031","group":"c015","text":"Fireworks over the bay tonight. We all oohed like children. Magic.","emotion":"happy","also":["excited"],"intensity":7}
+{"id":"e2032","group":"c016","text":"Fixed the leaking pipe myself instead of calling someone. Took two hours and a lot of swearing, but it's fixed.","emotion":"proud","intensity":5}
+{"id":"e2033","group":"c016","text":"New coffee shop round the corner and the barista remembered my order. Little things make my day.","emotion":"happy","intensity":4}
+{"id":"e2034","group":"c017","text":"I finally finished my degree at forty-three, working nights the whole way through.","emotion":"proud","intensity":9}
+{"id":"e2035","group":"c017","text":"Graduation party for my niece. Music, food, dancing. Great fun.","emotion":"happy","intensity":6,"people_optional":["my niece"]}
+{"id":"e2036","group":"c018","text":"Gave my first talk at a conference and people came up afterwards to ask questions. I did a good job.","emotion":"proud","intensity":7}
+{"id":"e2037","group":"c018","text":"Conference trip was a blast. Met lovely people, ate great food, laughed a lot.","emotion":"happy","intensity":6}
+{"id":"e2038","group":"c019","text":"Kept my temper all week with the difficult customer. Stayed professional every time. Quietly chuffed with myself.","emotion":"proud","intensity":5}
+{"id":"e2039","group":"c019","text":"Sun's out, it's Friday, the shop was quiet and I'm going to the pub. Happy days.","emotion":"happy","intensity":5,"not_people":["Friday"]}
+{"id":"e2040","group":"c020","text":"Rescued the dying plant from the office bin and nursed it back. It's flowering now. My doing.","emotion":"proud","also":["happy"],"intensity":4}
+{"id":"e2041","group":"c020","text":"The plant on my desk flowered today. Bright pink. Made me smile all morning.","emotion":"happy","intensity":4}
+{"id":"e2042","group":"c021","text":"Long day, nothing dramatic, just tired. Heavy eyes, early bed.","emotion":"tired","intensity":5}
+{"id":"e2043","group":"c021","text":"Ten things due today, four people waiting on me, phone won't stop. I can't keep up.","emotion":"overwhelmed","intensity":7}
+{"id":"e2044","group":"c022","text":"Slept badly so I've been yawning all day. Calm enough, just sleepy.","emotion":"tired","intensity":4}
+{"id":"e2045","group":"c022","text":"Slept badly because my head was spinning with everything I have to sort out this week. It's too much at once.","emotion":"overwhelmed","also":["anxious"],"intensity":7}
+{"id":"e2046","group":"c023","text":"Hiked fifteen miles. Legs done, body done. Good tired.","emotion":"tired","also":["content"],"intensity":6}
+{"id":"e2047","group":"c023","text":"Wedding planning, work deadline and the house move all in the same fortnight. I don't know where to start.","emotion":"overwhelmed","intensity":8}
+{"id":"e2048","group":"c024","text":"Night shift again. Body's running on fumes but work was steady.","emotion":"tired","intensity":6}
+{"id":"e2049","group":"c024","text":"Night shift chaos. Three emergencies at once, everyone needing me, no time to think.","emotion":"overwhelmed","also":["anxious"],"intensity":8}
+{"id":"e2050","group":"c025","text":"Drained after the long drive. Just want my bed.","emotion":"tired","intensity":6}
+{"id":"e2051","group":"c025","text":"Too many choices, too many forms, too many calls about Dad's care. My head is full and I can't think.","emotion":"overwhelmed","also":["sad"],"intensity":8,"people":["Dad"]}
+{"id":"e2052","group":"c026","text":"Newborn kept us up again. Sleepy, slow, but okay.","emotion":"tired","intensity":6}
+{"id":"e2053","group":"c026","text":"Baby screaming, toddler sick, partner away, dishes piled up. Everything at once and I'm drowning.","emotion":"overwhelmed","intensity":9}
+{"id":"e2054","group":"c027","text":"Low energy today. Did the basics and rested.","emotion":"tired","intensity":4}
+{"id":"e2055","group":"c027","text":"So many tabs open in my head I couldn't finish a single task. Started five, finished none.","emotion":"overwhelmed","intensity":6}
+{"id":"e2056","group":"c028","text":"Played football all afternoon. Exhausted in the best way.","emotion":"tired","also":["happy"],"intensity":5}
+{"id":"e2057","group":"c028","text":"Coaching the team, running the club accounts and organising the tournament. Too many hats. I'm stretched thin.","emotion":"overwhelmed","also":["tired"],"intensity":7}
+{"id":"e2058","group":"c029","text":"Jet lag. Can't keep my eyes open after lunch.","emotion":"tired","intensity":5}
+{"id":"e2059","group":"c029","text":"Back from the trip to 300 emails, a broken boiler and a sick cat. I just sat on my suitcase.","emotion":"overwhelmed","also":["frustrated"],"intensity":7}
+{"id":"e2060","group":"c030","text":"Tired after a full day of gardening. Back aching, but nothing to worry about.","emotion":"tired","intensity":4}
+{"id":"e2061","group":"c030","text":"The garden, the house repairs, Mum's appointments, the kids' clubs. I can't hold all of it at once.","emotion":"overwhelmed","intensity":8,"people":["Mum"],"people_optional":["the kids"]}
+{"id":"e2062","group":"c031","text":"Just worn out. Nothing wrong. Need sleep.","emotion":"tired","intensity":5,"traits":["short"]}
+{"id":"e2063","group":"c031","text":"Everything is piling up faster than I can clear it.","emotion":"overwhelmed","intensity":7,"traits":["short"]}
+{"id":"e2064","group":"c032","text":"Ran the stall at the fair all day. Feet ache. Happy, but shattered.","emotion":"tired","also":["happy"],"intensity":6}
+{"id":"e2065","group":"c032","text":"Running the stall, the kids got lost, the card machine died and it started raining. Everything went wrong at once.","emotion":"overwhelmed","also":["frustrated"],"intensity":7,"people_optional":["the kids"]}
+{"id":"e2066","group":"c033","text":"Sleepy after the big lunch. Napped on the sofa.","emotion":"tired","intensity":3}
+{"id":"e2067","group":"c033","text":"Big family lunch: twelve people, three dietary needs, one oven. I panicked in the kitchen.","emotion":"overwhelmed","also":["anxious"],"intensity":6}
+{"id":"e2068","group":"c034","text":"Studied until midnight. Brain's foggy. Bed.","emotion":"tired","intensity":6}
+{"id":"e2069","group":"c034","text":"Four exams, two essays and a part-time job this week. I keep rewriting my to-do list instead of doing it.","emotion":"overwhelmed","also":["anxious"],"intensity":7}
+{"id":"e2070","group":"c035","text":"Body still recovering from the flu. Slept most of the day.","emotion":"tired","intensity":6}
+{"id":"e2071","group":"c035","text":"Off sick, and every hour the inbox grows. Work, school forms, bills. I can't face any of it.","emotion":"overwhelmed","also":["tired"],"intensity":7}
+{"id":"e2072","group":"c036","text":"Weary today. Eyes heavy, steps slow.","emotion":"tired","intensity":5,"traits":["short"]}
+{"id":"e2073","group":"c036","text":"Head spinning from all the decisions.","emotion":"overwhelmed","intensity":6,"traits":["short"]}
+{"id":"e2074","group":"c037","text":"Long week. Ready for the weekend and a lie-in.","emotion":"tired","intensity":4}
+{"id":"e2075","group":"c037","text":"Long week where everything landed at once. I don't know which fire to put out first.","emotion":"overwhelmed","intensity":7}
+{"id":"e2076","group":"c038","text":"Painted the whole fence. Arms like jelly. Done for the day.","emotion":"tired","also":["proud"],"intensity":5}
+{"id":"e2077","group":"c038","text":"The builders need answers on tiles, taps, lights and doors by tomorrow. I can't decide anything.","emotion":"overwhelmed","also":["anxious"],"intensity":6,"traits":["time"]}
+{"id":"e2078","group":"c039","text":"Up at five for the early flight. Dozing at the gate.","emotion":"tired","intensity":5}
+{"id":"e2079","group":"c039","text":"Missed flight, lost bag, hotel cancelled, kids crying. Too much to deal with at once.","emotion":"overwhelmed","also":["frustrated"],"intensity":8,"people_optional":["kids"]}
+{"id":"e2080","group":"c040","text":"Tired after the move but the boxes are in. Will unpack slowly.","emotion":"tired","also":["calm"],"intensity":5}
+{"id":"e2081","group":"c040","text":"Moving day: boxes everywhere, keys missing, landlord calling, van late. I just stood in the hallway frozen.","emotion":"overwhelmed","intensity":8}
