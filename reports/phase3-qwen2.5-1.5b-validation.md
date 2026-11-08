@@ -43,3 +43,20 @@ The trained model exported to GGUF (`ml.train_emotion --stage export`), loaded i
 | Size | 4.7 GB | **0.99 GB** |
 
 The 1.5B keeps its lead on everything except sarcasm, at a quarter of the time and a fifth of the size. Its emotion score drops from 0.746 (4-bit transformers on Colab) to 0.672 here, most likely from q4_K_M quantisation and Ollama's sampling; a q8_0 build (about 1.6 GB) is the next thing to try to recover it.
+
+### q8_0 build (2026-11-08)
+
+Same round-1 GGUF, quantised to q8_0 (`innerbloom-reader:1.5b-q8`, 1.6 GB). Run: `reports/runs/reader-1.5b-q8-ollama-validation/`.
+
+| On the Mac (Ollama) | 7B q4 | 1.5B q4_K_M | **1.5B q8_0** |
+|---|---|---|---|
+| Emotion macro-F1 | 0.636 | 0.672 | **0.711** |
+| Accuracy, defensible alternatives | 78.9% | 79.6% | **82.6%** |
+| Intensity error | 1.229 | 0.806 | **0.799** |
+| People F1 | 0.890 | 0.955 | 0.954 |
+| Failed readings / invented names | 0 / 1 | 0 / 1 | 0 / 1 |
+| Sarcasm (10) | 5 | 3 | 4 |
+| Median seconds per entry | 8.64 | 2.16 | 2.64 |
+| Size | 4.7 GB | 0.99 GB | 1.6 GB |
+
+q8_0 recovers about half of the gap to the Colab score (0.746) at 0.5 s more per entry. It is the recommended build for Innerbloom's entry reading.
