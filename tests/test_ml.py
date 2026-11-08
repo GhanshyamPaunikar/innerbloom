@@ -209,6 +209,33 @@ class Training(unittest.TestCase):
         self.assertNotIn("--split test", code)
 
 
+class ThreeWayComparison(unittest.TestCase):
+    def test_eval_hf_strips_thinking_and_guards_test(self):
+        from ml import eval_hf
+        self.assertEqual(eval_hf.strip_thinking("<think>hmm</think>\n{\"emotion\":\"sad\"}"), '{"emotion":"sad"}')
+        self.assertEqual(eval_hf.strip_thinking('{"emotion":"sad"}'), '{"emotion":"sad"}')
+        self.assertEqual(eval_hf.main(["--model", "x", "--split", "test"]), 2)
+
+    def test_compare_marks_the_best(self):
+        from ml import compare
+        def m(f1, mae):
+            return {"scored": 402, "emotion": {"macro_f1": f1, "accuracy": f1, "lenient_accuracy": f1},
+                    "intensity": {"mae": mae}, "structure": {"failed_rate": 0, "schema_complete_rate": 1},
+                    "people": {"f1": 0.9, "invented": 0}, "by_trait": {}, "seconds": {"p50": 1.0}}
+        t = compare.table([("7b", m(0.636, 1.23)), ("0.8b", m(0.70, 1.1))])
+        self.assertIn("**0.7**", t)
+        self.assertIn("**1.1**", t)
+        self.assertNotIn("Warning", t)
+
+    def test_notebook_keeps_validation_and_test_away_from_editing(self):
+        brief = (ROOT / "ml" / "weight_editing" / "BRIEF.md").read_text()
+        self.assertIn("must not use", brief)
+        nb = json.loads((ROOT / "notebooks" / "03_qwen3.5_weight_editing.ipynb").read_text())
+        code = "\n".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
+        self.assertNotIn("--split test", code)
+        self.assertIn("Qwen/Qwen3.5-0.8B", code)
+
+
 class BlindSafetySet(unittest.TestCase):
     def test_only_totals_leave_the_blind_set(self):
         from ml import safety_eval

@@ -199,3 +199,11 @@ Goal, from the user: a light model that runs on ordinary laptops without slowing
 - Rough cost for the first size: about 1 hour, 6-12 units. The smoke test comes first and costs under 1 unit.
 - Chat and insights keep using the larger model: only entry reading moves to the light one (Phase 6 adds the setting).
 
+### Three-way comparison (set up 2026-11-08)
+
+1. **qwen2.5:7b**, unchanged: the production reference (validation v2: macro-F1 0.636).
+2. **Qwen2.5-1.5B, trained** with QLoRA: `notebooks/02_emotion_training.ipynb`.
+3. **Qwen3.5-0.8B, weights edited** by a frontier model, no gradient training: brief in `ml/weight_editing/BRIEF.md`, scored with `notebooks/03_qwen3.5_weight_editing.ipynb` (Apache 2.0; needs the newest `transformers`, so it has its own notebook). The editor may use only the training split, with a budget of 3,000 scored entries.
+
+All are scored on the same 402 validation entries; `python -m ml.compare` builds one table. The 7B runs through Ollama (4-bit), the others through transformers, so speed numbers are not directly comparable across runtimes.
+
