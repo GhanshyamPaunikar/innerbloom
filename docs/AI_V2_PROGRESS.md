@@ -218,3 +218,12 @@ Trained Qwen2.5-1.5B on validation: macro-F1 **0.746** (7B: 0.636), intensity er
 - **Round 3 setup**: round 1's settings plus 3,000 situations from Meta's EmpatheticDialogues, 250 for each of 12 mapped emotions (`ml/public_data.py`). They teach only the emotion choice: the target is the reply's opening, so intensity, summary and names still come from Innerbloom's entries. Downloaded at training time, never committed.
 - **Licence**: EmpatheticDialogues is CC BY-NC 4.0. A model trained with it may only be used non-commercially. Credit: Rashkin et al., 2019, "Towards Empathetic Open-domain Conversation Models: a New Benchmark and Dataset".
 
+
+### Final locked test (2026-11-08)
+
+The 400-entry test split, scored once on the Mac: edited 1.5B q8 macro-F1 **0.746**, plain 1.5B q8 0.702, 7B 0.652.
+Intensity error 0.80 / 0.78 / 1.16; invented names 2 / 3 / 9; median 2.6 s / 3.4 s / 13.3 s per entry.
+Test scores match validation (0.752 / 0.711 / 0.636). Verdict: the edited 1.5B q8 becomes the entry reader;
+chat and insights keep the 7B. The test split is now spent. Details: `reports/final-test.md`.
+
+Next: Phase 6, wire `innerbloom-reader:1.5b-q8-edited` into Innerbloom as the reading model.
