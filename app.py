@@ -82,6 +82,13 @@ GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models"
 
 MODEL = os.environ.get("INNERBLOOM_MODEL",
                        "gemini-flash-lite-latest" if PROVIDER == "gemini" else "qwen2.5:7b")
+# Entry reading (emotion, intensity, summary, names) has its own model: the
+# fine-tuned, bias-edited Qwen2.5-1.5B beat the 7B on the locked test
+# (macro-F1 0.746 against 0.652) at about a fifth of the time per entry
+# (reports/final-test.md). Chat and insights keep MODEL. When the reader is
+# not installed in Ollama, reading falls back to MODEL.
+DEFAULT_READER_MODEL = "innerbloom-reader:1.5b-q8-edited"
+READER_MODEL_SETTING = os.environ.get("INNERBLOOM_READER_MODEL", "").strip()
 EMBED_MODEL = os.environ.get("INNERBLOOM_EMBED_MODEL",
                              "gemini-embedding-001" if PROVIDER == "gemini" else "mxbai-embed-large")
 
@@ -655,7 +662,8 @@ def _gemini_error(r) -> str:
     return f"[LLM error: Gemini {r.status_code} {msg}]".strip()
 
 
-def call_llama(prompt: str, system: str = "", temperature: float = 0.7, timeout: int = 180) -> str:
+def call_llama(prompt: str, system: str = "", temperature: float = 0.7, timeout: int = 180,
+               model: str = "") -> str:
     limited = _ai_call_allowed()
     if limited:
         return limited
@@ -671,7 +679,7 @@ def call_llama(prompt: str, system: str = "", temperature: float = 0.7, timeout:
             return f"[LLM error: {e}]"
     try:
         payload = {
-            "model": MODEL,
+            "model": model or MODEL,
             "prompt": prompt,
             "stream": False,
             "options": {"temperature": temperature},
@@ -776,9 +784,42 @@ def embed(text: str) -> Optional[List[float]]:
 # Entry analysis (prompt, schema and parser live in innerbloom_core/analysis.py)
 # ---------------------------------------------------------------------------
 
+_reader_cache: Dict[str, Any] = {"model": None, "checked": 0.0}
+_READER_RECHECK_SECONDS = 300
+
+
+def _installed_ollama_models() -> Optional[set]:
+    try:
+        r = requests.get(OLLAMA_TAGS_URL, timeout=3)
+        return {m.get("name", "") for m in r.json().get("models", [])}
+    except Exception:
+        return None
+
+
+def reader_model() -> str:
+    """The model that reads entries.
+
+    INNERBLOOM_READER_MODEL wins when set. Otherwise the trained reader is
+    used if Ollama has it, else MODEL. The check is cached for five minutes,
+    so installing the reader takes effect without a restart."""
+    if PROVIDER != "ollama":
+        return MODEL
+    if READER_MODEL_SETTING:
+        return READER_MODEL_SETTING
+    now = time.time()
+    if _reader_cache["model"] is None or now - _reader_cache["checked"] > _READER_RECHECK_SECONDS:
+        installed = _installed_ollama_models()
+        if installed is None:  # Ollama down: keep the last answer, retry next time
+            return _reader_cache["model"] or MODEL
+        _reader_cache["model"] = DEFAULT_READER_MODEL if DEFAULT_READER_MODEL in installed else MODEL
+        _reader_cache["checked"] = now
+    return _reader_cache["model"]
+
+
 def analyze_entry(text: str) -> Dict[str, Any]:
     return entry_analysis.parse(call_llama(entry_analysis.build_prompt(text),
-                                           temperature=entry_analysis.TEMPERATURE))
+                                           temperature=entry_analysis.TEMPERATURE,
+                                           model=reader_model()))
 
 
 def _has_reading(entry: dict) -> bool:
@@ -6093,7 +6134,7 @@ def log_person_checkin(key: str):
 
 @app.get("/")
 def root():
-    return {"app": "Innerbloom", "model": MODEL, "status": "ok"}
+    return {"app": "Innerbloom", "model": MODEL, "reader_model": reader_model(), "status": "ok"}
 
 
 @app.get("/health")
@@ -6102,6 +6143,6 @@ def health():
         return {"ollama": "up" if GEMINI_API_KEY else "down", "provider": "gemini"}
     try:
         r = requests.get(OLLAMA_TAGS_URL, timeout=3)
-        return {"ollama": "up", "models": r.json()}
+        return {"ollama": "up", "models": r.json(), "reader_model": reader_model()}
     except Exception as e:
         return {"ollama": "down", "error": str(e)}

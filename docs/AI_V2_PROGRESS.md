@@ -226,4 +226,12 @@ Intensity error 0.80 / 0.78 / 1.16; invented names 2 / 3 / 9; median 2.6 s / 3.4
 Test scores match validation (0.752 / 0.711 / 0.636). Verdict: the edited 1.5B q8 becomes the entry reader;
 chat and insights keep the 7B. The test split is now spent. Details: `reports/final-test.md`.
 
-Next: Phase 6, wire `innerbloom-reader:1.5b-q8-edited` into Innerbloom as the reading model.
+## Phase 6: the reader in Innerbloom (2026-11-08)
+
+- `app.py`: `reader_model()` picks the model for entry reading. `INNERBLOOM_READER_MODEL` wins when set; otherwise `innerbloom-reader:1.5b-q8-edited` if Ollama lists it (checked every five minutes), else the chat model. `analyze_entry` passes it to `call_llama(model=...)`; chat, insights and safety keep `INNERBLOOM_MODEL`.
+- `/` and `/health` report `reader_model`.
+- Tests: `test_reader_model` covers installed, missing, Ollama down and the setting; the suite pins `INNERBLOOM_READER_MODEL` so it never asks Ollama.
+- Live check on the Mac with a temporary data folder: a fictional entry was read by the reader (happy, 7, "Priya" found); `/` showed the 7B for chat.
+- Docs: `docs/SETUP.md`, "Reading entries".
+
+Still open: publishing the reader (Hugging Face or an Ollama registry, Phase 7), so other machines can install it; until then they fall back to the chat model.
