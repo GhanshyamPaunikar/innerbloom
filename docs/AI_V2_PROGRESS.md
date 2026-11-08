@@ -11,7 +11,7 @@ Working branch: `feature/innerbloom-ai-v2`. `main` stays stable until a phase is
 | 4 | Memory reranker | 25 units | Not started |
 | 5 | Evidence verifier | 20 units | Not started |
 | 6 | Ollama export and integration | 0 | Not started |
-| 7 | Final comparisons and release | 20 units | Not started |
+| 7 | Final comparisons and release | 20 units | Final test done (0 units); reader staged for Hugging Face, upload waiting on login |
 
 Reserve: 34 units. No GPU run starts without an agreed objective, cost ceiling and pass/fail criteria.
 
@@ -243,3 +243,11 @@ chat and insights keep the 7B. The test split is now spent. Details: `reports/fi
 **Result (2026-11-08):** a friend labelled all 100 blind. Same main feeling 85%, same or accepted alternative 99%, Cohen's kappa **0.84**, strength within 2 points 98%, same names 99%. The labels hold; none changed. Details: `reports/second-reader-check.md`.
 
 Still open: publishing the reader (Hugging Face or an Ollama registry, Phase 7), so other machines can install it; until then they fall back to the chat model.
+
+## Phase 7: release (2026-11-08)
+
+- Final comparison: the locked test above.
+- `release/reader/`: model card (Apache 2.0, results, how it was made, limits) and the `template`, `system` and `params` files Ollama reads when pulling from Hugging Face, copied from the tested model so installs behave the same.
+- `scripts/release_reader.py` stages the upload folder with the exact GGUF Ollama runs (sha256 `060fdb08…`, checked against Ollama's own file) and uploads with `hf upload` when given `--upload`. The model file is never committed.
+- `scripts/get_reader.py` installs it on any machine: `ollama pull hf.co/GhanshyamPaunikar/innerbloom-reader-1.5b-GGUF:Q8_0`, then names it `innerbloom-reader:1.5b-q8-edited`.
+- Waiting on: a Hugging Face login, the upload, then a fresh pull and benchmark check that the published model scores the same.

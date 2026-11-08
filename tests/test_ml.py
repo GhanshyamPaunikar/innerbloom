@@ -351,3 +351,20 @@ class SecondReader(unittest.TestCase):
             text = sr.report(result)
             self.assertIn("Entries to look at again", text)
             self.assertIn(rows[0]["Code (leave as is)"], text)
+
+
+class ReaderRelease(unittest.TestCase):
+    def test_release_kit_matches_the_app(self):
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import get_reader
+        import app
+        kit = ROOT / "release" / "reader"
+        self.assertEqual(get_reader.NAME, app.DEFAULT_READER_MODEL)
+        self.assertTrue(get_reader.SOURCE.startswith("hf.co/") and get_reader.SOURCE.endswith(":Q8_0"))
+        self.assertEqual(json.loads((kit / "params").read_text())["temperature"], analysis.TEMPERATURE)
+        self.assertIn(".System", (kit / "template").read_text())
+        card = (kit / "README.md").read_text(encoding="utf-8")
+        self.assertIn("{REPO}", card)
+        self.assertIn("license: apache-2.0", card)
+        for e in analysis.EMOTIONS:
+            self.assertIn(e, card)

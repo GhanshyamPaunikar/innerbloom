@@ -72,7 +72,13 @@ INNERBLOOM_MODEL=llama3.1:8b python run_local.py
 
 Reading an entry (emotion, intensity, summary, tags and names) has its own model. When Ollama has **`innerbloom-reader:1.5b-q8-edited`**, Innerbloom uses it for reading and keeps the chat model for everything else. Otherwise reading uses the chat model, so nothing breaks without it.
 
-The reader is Qwen2.5-1.5B, fine-tuned on fictional entries and bias-corrected in its output weights. On the locked 400-entry test it beat `qwen2.5:7b` (emotion macro-F1 0.746 against 0.652, intensity error 0.80 against 1.16, 2 invented names against 9) at about 2.6 s per entry instead of 13 s, in 1.9 GB (`reports/final-test.md`). It is not published yet; `docs/AI_V2_PROGRESS.md` describes how it is built. To pick another reader:
+The reader is Qwen2.5-1.5B, fine-tuned on fictional entries and bias-corrected in its output weights. On the locked 400-entry test it beat `qwen2.5:7b` (emotion macro-F1 0.746 against 0.652, intensity error 0.80 against 1.16, 2 invented names against 9) at about 2.6 s per entry instead of 13 s, in 1.9 GB (`reports/final-test.md`). Install it once (1.9 GB) with Ollama running:
+
+```bash
+python scripts/get_reader.py
+```
+
+It comes from Hugging Face ([GhanshyamPaunikar/innerbloom-reader-1.5b-GGUF](https://huggingface.co/GhanshyamPaunikar/innerbloom-reader-1.5b-GGUF)); the model card, `release/reader/README.md`, says how it was made. To pick another reader:
 
 ```bash
 INNERBLOOM_READER_MODEL=qwen2.5:7b python run_local.py

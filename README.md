@@ -132,6 +132,7 @@ git clone https://github.com/GhanshyamPaunikar/innerbloom.git
 cd innerbloom
 pip install -r requirements.txt
 ollama pull qwen2.5:7b && ollama pull mxbai-embed-large
+python scripts/get_reader.py   # optional: the fast entry reader, 1.9 GB
 python run_local.py
 ```
 
