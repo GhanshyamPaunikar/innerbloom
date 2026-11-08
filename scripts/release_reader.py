@@ -67,7 +67,8 @@ def main(argv=None) -> int:
     print(f"staged {args.out}\n  {GGUF_NAME}: {target.stat().st_size / 1e9:.2f} GB, sha256 {digest}")
 
     if args.upload:
-        cmd = ["hf", "upload", READER_REPO, str(args.out), ".", "--repo-type", "model",
+        hf = shutil.which("hf") or str(ROOT / ".venv-ml" / "bin" / "hf")
+        cmd = [hf, "upload", READER_REPO, str(args.out), ".", "--repo-type", "model",
                "--commit-message", "Innerbloom reader 1.5B, Q8_0"]
         print("running:", " ".join(cmd))
         return subprocess.run(cmd).returncode
