@@ -7,7 +7,7 @@ Working branch: `feature/innerbloom-ai-v2`. `main` stays stable until a phase is
 | 0 | Audit, backup, branch | 0 | Done (2026-11-05) |
 | 1 | Data and security stability | 0 | Done (2026-11-05), awaiting review |
 | 2 | Fictional benchmark and baseline | 15 units | Baseline done on the Mac (0 units); second-reader check and retrieval/evidence sets still to do |
-| 3 | Light emotion model (QLoRA) | 45 units | Notebook ready, not run |
+| 3 | Light emotion model (QLoRA) | 45 units | 1.5B trained: beats the 7B on validation (about 6.5 units) |
 | 4 | Memory reranker | 25 units | Not started |
 | 5 | Evidence verifier | 20 units | Not started |
 | 6 | Ollama export and integration | 0 | Not started |
@@ -206,4 +206,8 @@ Goal, from the user: a light model that runs on ordinary laptops without slowing
 3. **Qwen3.5-0.8B, weights edited** by a frontier model, no gradient training: brief in `ml/weight_editing/BRIEF.md`, scored with `notebooks/03_qwen3.5_weight_editing.ipynb` (Apache 2.0; needs the newest `transformers`, so it has its own notebook). The editor may use only the training split, with a budget of 3,000 scored entries.
 
 All are scored on the same 402 validation entries; `python -m ml.compare` builds one table. The 7B runs through Ollama (4-bit), the others through transformers, so speed numbers are not directly comparable across runtimes.
+
+### Phase 3 result (2026-11-08)
+
+Trained Qwen2.5-1.5B on validation: macro-F1 **0.746** (7B: 0.636), intensity error **0.88** (7B: 1.23), people F1 0.96 (7B: 0.89), no failed readings, one invented name (same as the 7B). Keep and can-replace-7B both true. About 6.5 compute units. Details: `reports/phase3-qwen2.5-1.5b-validation.md`. Not yet run: the locked test split, the second-reader check, Mac speed.
 
