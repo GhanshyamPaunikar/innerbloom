@@ -234,4 +234,10 @@ chat and insights keep the 7B. The test split is now spent. Details: `reports/fi
 - Live check on the Mac with a temporary data folder: a fictional entry was read by the reader (happy, 7, "Priya" found); `/` showed the 7B for chat.
 - Docs: `docs/SETUP.md`, "Reading entries".
 
+## Second-reader check kit (2026-11-08)
+
+- `ml/datasets/second_reader/sheet.csv`: 100 validation entries (at least six of each emotion, seed `second-reader-v1`), with the original labels left out. Opens in Excel, Numbers or Google Sheets.
+- `ml/datasets/second_reader/HOW_TO_CHECK.md`: a plain note for the person filling it in.
+- `python -m ml.second_reader score FILLED.csv` writes `reports/second-reader-check.md`: same feeling, close match (counting `also`), Cohen's kappa, strength gap, names, and every disagreement side by side for fixing labels.
+
 Still open: publishing the reader (Hugging Face or an Ollama registry, Phase 7), so other machines can install it; until then they fall back to the chat model.

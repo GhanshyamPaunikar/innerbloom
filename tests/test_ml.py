@@ -301,3 +301,53 @@ class Runs(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SecondReader(unittest.TestCase):
+    def test_sheet_is_blind_balanced_and_scores_back(self):
+        import csv, tempfile
+        from ml import second_reader as sr
+        from innerbloom_core.analysis import EMOTIONS
+        entries = sr.load_validation()
+        chosen = sr.pick(entries)
+        self.assertEqual(len(chosen), 100)
+        self.assertEqual(len({e["id"] for e in chosen}), 100)
+        counts = {emo: sum(e["emotion"] == emo for e in chosen) for emo in EMOTIONS}
+        self.assertTrue(all(c >= 6 for c in counts.values()), counts)
+        self.assertEqual([e["id"] for e in sr.pick(entries)], [e["id"] for e in chosen])
+
+        with tempfile.TemporaryDirectory() as d:
+            sheet = Path(d) / "sheet.csv"
+            sr.make(sheet)
+            rows = list(csv.DictReader(sheet.open(encoding="utf-8-sig")))
+            self.assertEqual(set(rows[0]), set(sr.COLUMNS))  # entry text and code only: no original labels
+            for r in rows:
+                self.assertFalse(any(r[c] for c in sr.COLUMNS[2:7]))
+            by_id = {e["id"]: e for e in entries}
+            for i, r in enumerate(rows):
+                e = by_id[r["Code (leave as is)"]]
+                if i == 0:
+                    r["Main feeling"] = "sad" if e["emotion"] != "sad" else "happy"
+                    r["How strong (1-10)"] = "1" if e["intensity"] > 5 else "10"
+                elif i == 1:
+                    r["Main feeling"] = "meh"
+                elif i == 2:
+                    continue
+                else:
+                    r["Main feeling"] = e["emotion"].upper()
+                    r["How strong (1-10)"] = str(e["intensity"])
+                    r["Names of people"] = ", ".join(e["people"])
+            filled = Path(d) / "filled.csv"
+            with filled.open("w", encoding="utf-8", newline="") as f:
+                w = csv.DictWriter(f, fieldnames=rows[0].keys())
+                w.writeheader()
+                w.writerows(rows)
+            result = sr.compare(by_id, sr.read_sheet(filled))
+            self.assertEqual(result["checked"], 98)
+            self.assertEqual(len(result["skipped"]), 1)
+            self.assertEqual(result["unknown"][0][1], "meh")
+            self.assertAlmostEqual(result["exact"], 97 / 98, places=3)
+            self.assertGreater(result["kappa"], 0.95)
+            text = sr.report(result)
+            self.assertIn("Entries to look at again", text)
+            self.assertIn(rows[0]["Code (leave as is)"], text)
