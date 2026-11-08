@@ -1,0 +1,14 @@
+{
+  "run": "reader-1.5b-ollama-validation",
+  "model": "innerbloom-reader:1.5b",
+  "provider": "ollama",
+  "split": "validation",
+  "limit": null,
+  "seed": 7,
+  "temperature": 0.3,
+  "prompt_sha256": "5e4346e7c6d8ce6c074fe03cff82a471d4cfd1adc7bb5e2beeb06e4e684834d3",
+  "spec_prompt_sha256": "5e4346e7c6d8ce6c074fe03cff82a471d4cfd1adc7bb5e2beeb06e4e684834d3",
+  "split_sha256": "63e45a2a7635fcbb33a8e2939512cd78b81f99ca952b99788f10623b322eaa4e",
+  "machine": "Darwin arm64 arm",
+  "started": "2026-11-08T13:34:21"
+}
