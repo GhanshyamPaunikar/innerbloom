@@ -1,0 +1,14 @@
+{
+  "run": "edited-q8-train-check",
+  "model": "innerbloom-reader:1.5b-q8-edited",
+  "provider": "ollama",
+  "split": "train",
+  "limit": 80,
+  "seed": 7,
+  "temperature": 0.3,
+  "prompt_sha256": "5e4346e7c6d8ce6c074fe03cff82a471d4cfd1adc7bb5e2beeb06e4e684834d3",
+  "spec_prompt_sha256": "5e4346e7c6d8ce6c074fe03cff82a471d4cfd1adc7bb5e2beeb06e4e684834d3",
+  "split_sha256": "fc9b825fc41c0d49fe96efc7631b7e88587b3f25acee11e95f6670a6aca947cd",
+  "machine": "Darwin arm64 arm",
+  "started": "2026-11-08T17:14:44"
+}

@@ -1,0 +1,205 @@
+{
+  "run": "edited-q8-train-check",
+  "model": "innerbloom-reader:1.5b-q8-edited",
+  "provider": "ollama",
+  "split": "train",
+  "limit": 80,
+  "seed": 7,
+  "temperature": 0.3,
+  "prompt_sha256": "5e4346e7c6d8ce6c074fe03cff82a471d4cfd1adc7bb5e2beeb06e4e684834d3",
+  "spec_prompt_sha256": "5e4346e7c6d8ce6c074fe03cff82a471d4cfd1adc7bb5e2beeb06e4e684834d3",
+  "split_sha256": "fc9b825fc41c0d49fe96efc7631b7e88587b3f25acee11e95f6670a6aca947cd",
+  "machine": "Darwin arm64 arm",
+  "started": "2026-11-08T17:14:44",
+  "scored_at": "2026-11-08T17:19:40",
+  "metrics": {
+    "scored": 80,
+    "emotion": {
+      "accuracy": 0.787,
+      "macro_f1": 0.882,
+      "lenient_accuracy": 0.925,
+      "per_class": {
+        "happy": {
+          "precision": 1.0,
+          "recall": 0.773,
+          "f1": 0.872,
+          "support": 44
+        },
+        "sad": {
+          "precision": 1.0,
+          "recall": 0.806,
+          "f1": 0.892,
+          "support": 36
+        },
+        "anxious": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "calm": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "grateful": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "frustrated": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "excited": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "reflective": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "hopeful": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "tired": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "angry": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "content": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "lonely": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "proud": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "overwhelmed": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion": {
+        "angry": {},
+        "anxious": {},
+        "calm": {},
+        "content": {},
+        "excited": {},
+        "frustrated": {},
+        "grateful": {},
+        "happy": {
+          "excited": 5,
+          "happy": 34,
+          "proud": 2,
+          "content": 1,
+          "grateful": 1,
+          "hopeful": 1
+        },
+        "hopeful": {},
+        "lonely": {},
+        "neutral": {},
+        "overwhelmed": {},
+        "proud": {},
+        "reflective": {},
+        "sad": {
+          "sad": 29,
+          "neutral": 1,
+          "lonely": 2,
+          "reflective": 3,
+          "grateful": 1
+        },
+        "tired": {}
+      }
+    },
+    "intensity": {
+      "mae": 0.963,
+      "within_1": 0.825
+    },
+    "structure": {
+      "failed_rate": 0.0,
+      "direct_json_rate": 1.0,
+      "schema_complete_rate": 1.0,
+      "emotion_in_list_rate": 1.0
+    },
+    "people": {
+      "precision": 0.943,
+      "recall": 1.0,
+      "f1": 0.971,
+      "invented": 1,
+      "not_people_extracted": 2,
+      "predicted": 54
+    },
+    "by_trait": {
+      "ambiguous": {
+        "lenient_accuracy": 1.0,
+        "n": 3
+      },
+      "indirect": {
+        "lenient_accuracy": 0.667,
+        "n": 3
+      },
+      "mixed": {
+        "lenient_accuracy": 1.0,
+        "n": 5
+      },
+      "names_tricky": {
+        "lenient_accuracy": 1.0,
+        "n": 9
+      },
+      "plain": {
+        "lenient_accuracy": 0.926,
+        "n": 54
+      },
+      "short": {
+        "lenient_accuracy": 0.75,
+        "n": 4
+      },
+      "time": {
+        "lenient_accuracy": 1.0,
+        "n": 4
+      }
+    },
+    "seconds": {
+      "mean": 3.69,
+      "p50": 3.6,
+      "p95": 4.47
+    }
+  }
+}
