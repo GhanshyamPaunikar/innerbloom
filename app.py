@@ -88,6 +88,7 @@ MODEL = os.environ.get("INNERBLOOM_MODEL",
 # (reports/final-test.md). Chat and insights keep MODEL. When the reader is
 # not installed in Ollama, reading falls back to MODEL.
 DEFAULT_READER_MODEL = "innerbloom-reader:1.5b-q8-edited"
+READER_SOURCE = "hf.co/gwagon63/innerbloom-reader-1.5b-GGUF:Q8_0"  # where Ollama downloads it from
 READER_MODEL_SETTING = os.environ.get("INNERBLOOM_READER_MODEL", "").strip()
 EMBED_MODEL = os.environ.get("INNERBLOOM_EMBED_MODEL",
                              "gemini-embedding-001" if PROVIDER == "gemini" else "mxbai-embed-large")

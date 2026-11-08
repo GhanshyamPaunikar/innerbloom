@@ -1,0 +1,49 @@
+name: desktop app
+
+on:
+  push:
+    tags: ["v*"]
+  pull_request:
+    paths: ["desktop/**", ".github/workflows/desktop.yml", "app.py", "requirements.txt"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-15          # Apple silicon
+            artifact: dist/Innerbloom-mac-apple-silicon.dmg
+          - os: macos-15-intel    # Intel Macs
+            artifact: dist/Innerbloom-mac-intel.dmg
+          - os: windows-latest
+            artifact: dist/Innerbloom-windows.zip
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt -r desktop/requirements.txt
+      - run: python desktop/build.py
+      - name: Start the built app once and check its pages
+        shell: bash
+        env:
+          INNERBLOOM_SMOKE_TEST: "1"
+          INNERBLOOM_DATA_DIR: ${{ runner.temp }}/innerbloom-smoke
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then dist/Innerbloom/Innerbloom.exe; else dist/Innerbloom.app/Contents/MacOS/Innerbloom; fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}
+          path: ${{ matrix.artifact }}
+      - if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ matrix.artifact }}
+          body_path: desktop/RELEASE_NOTES.md

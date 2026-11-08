@@ -125,13 +125,16 @@ There is no company in the middle. Your journal lives where you put it.
 
 ## Get started.
 
-You need Python 3.10+ and [Ollama](https://ollama.ai).
+**The easy way: download the app.** Innerbloom for Mac and Windows is on the [Releases page](https://github.com/GhanshyamPaunikar/innerbloom/releases/latest). Open it and it walks you through the rest: installing Ollama and downloading the AI, about 7 GB, once. No coding tools needed.
+
+**From the source**, if you want to change it: you need Python 3.10+ and [Ollama](https://ollama.ai).
 
 ```bash
 git clone https://github.com/GhanshyamPaunikar/innerbloom.git
 cd innerbloom
 pip install -r requirements.txt
 ollama pull qwen2.5:7b && ollama pull mxbai-embed-large
+python scripts/get_reader.py   # optional: the fast entry reader, 1.9 GB
 python run_local.py
 ```
 

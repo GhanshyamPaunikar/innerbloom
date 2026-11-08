@@ -11,7 +11,7 @@ Working branch: `feature/innerbloom-ai-v2`. `main` stays stable until a phase is
 | 4 | Memory reranker | 25 units | Not started |
 | 5 | Evidence verifier | 20 units | Not started |
 | 6 | Ollama export and integration | 0 | Not started |
-| 7 | Final comparisons and release | 20 units | Not started |
+| 7 | Final comparisons and release | 20 units | Done (0 units): final test, reader published on Hugging Face, desktop app for Mac and Windows |
 
 Reserve: 34 units. No GPU run starts without an agreed objective, cost ceiling and pass/fail criteria.
 
@@ -180,7 +180,7 @@ Grown from 1,220 to 2,001 entries, aimed at the baseline's weak spots and writte
 
 ### Still to do in Phase 2
 
-- A second reader checks about 100 validation labels against the guidelines.
+- ~~A second reader checks about 100 validation labels~~ Done 2026-11-08: kappa 0.84.
 - The blind safety set.
 
 ### Next human action
@@ -234,4 +234,28 @@ chat and insights keep the 7B. The test split is now spent. Details: `reports/fi
 - Live check on the Mac with a temporary data folder: a fictional entry was read by the reader (happy, 7, "Priya" found); `/` showed the 7B for chat.
 - Docs: `docs/SETUP.md`, "Reading entries".
 
+## Second-reader check kit (2026-11-08)
+
+- `ml/datasets/second_reader/sheet.csv`: 100 validation entries (at least six of each emotion, seed `second-reader-v1`), with the original labels left out. Opens in Excel, Numbers or Google Sheets.
+- `ml/datasets/second_reader/HOW_TO_CHECK.md`: a plain note for the person filling it in.
+- `python -m ml.second_reader score FILLED.csv` writes `reports/second-reader-check.md`: same feeling, close match (counting `also`), Cohen's kappa, strength gap, names, and every disagreement side by side for fixing labels.
+
+**Result (2026-11-08):** a friend labelled all 100 blind. Same main feeling 85%, same or accepted alternative 99%, Cohen's kappa **0.84**, strength within 2 points 98%, same names 99%. The labels hold; none changed. Details: `reports/second-reader-check.md`.
+
 Still open: publishing the reader (Hugging Face or an Ollama registry, Phase 7), so other machines can install it; until then they fall back to the chat model.
+
+## Phase 7: release (2026-11-08)
+
+- Final comparison: the locked test above.
+- `release/reader/`: model card (Apache 2.0, results, how it was made, limits) and the `template`, `system` and `params` files Ollama reads when pulling from Hugging Face, copied from the tested model so installs behave the same.
+- `scripts/release_reader.py` stages the upload folder with the exact GGUF Ollama runs (sha256 `060fdb08…`, checked against Ollama's own file) and uploads with `hf upload` when given `--upload`. The model file is never committed.
+- `scripts/get_reader.py` installs it on any machine: `ollama pull hf.co/gwagon63/innerbloom-reader-1.5b-GGUF:Q8_0`, then names it `innerbloom-reader:1.5b-q8-edited`.
+- Published 2026-11-08 at https://huggingface.co/gwagon63/innerbloom-reader-1.5b-GGUF (public). Pulled fresh with `ollama pull hf.co/gwagon63/innerbloom-reader-1.5b-GGUF:Q8_0`: same weights file (sha256 `060fdb08…`), same template and system prompt (a trailing newline in `system` was found and fixed). Scored on validation (`reports/runs/published-reader-validation/`): all 402 replies identical to the tested model's, macro-F1 0.752.
+
+## Desktop app (2026-11-08)
+
+- `desktop/launcher.py`: starts the backend on 127.0.0.1 (port 47615, or the next free one) and opens it in its own window (pywebview: WebKit on macOS, WebView2 on Windows; falls back to the browser). The journal lives in the user's folder (`~/Library/Application Support/Innerbloom`, `%APPDATA%\Innerbloom`), not in the app.
+- `desktop/setup.html` and `desktop/setup_routes.py`: first-run setup. Finds or starts Ollama, links to its download, and downloads the chat, memory and reader models with real progress; the reader can be skipped. Opens on setup whenever something is missing, otherwise straight on the journal.
+- `desktop/build.py`: PyInstaller; a `.dmg` on macOS (20 MB), a `.zip` on Windows. `.github/workflows/desktop.yml` builds Apple silicon, Intel Mac and Windows on pull requests that touch the app and on `v*` tags, runs each built app once (`INNERBLOOM_SMOKE_TEST=1`), and attaches the files to a GitHub Release on tags. `desktop/RELEASE_NOTES.md` is the plain install guide shown there.
+- Checked on the Mac: the built app served the journal, saved an entry read by the reader (calm, 4, Priya) into its own data folder, and a download from the setup page showed real progress.
+- Not signed: macOS asks for "Open Anyway" once and Windows SmartScreen for "Run anyway". Signing needs an Apple Developer account ($99 a year) and a Windows code-signing certificate.
