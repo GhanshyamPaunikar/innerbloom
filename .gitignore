@@ -43,3 +43,7 @@ htmlcov/
 
 # Local journal backup before adding fictional UI samples
 data/journal.before-ui-samples.json
+
+# Desktop app build output
+/build/
+/dist/

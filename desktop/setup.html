@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Set up Innerbloom</title>
+<style>
+  @font-face { font-family: "Urbanist"; src: url("/assets/fonts/Urbanist-Variable.ttf") format("truetype"); font-weight: 100 900; }
+  :root {
+    --bg: #faf8f4; --surface: #ffffff; --text: #18181b; --muted: #52525b; --dim: #a1a1aa;
+    --accent: #b95116; --accent-soft: rgba(219,94,18,0.08); --border: #e5e7eb; --ok: #2f7d4f; --bad: #b42318;
+    --shadow: 0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.03);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #17140f; --surface: #221e18; --text: #f4f1ea; --muted: #bdb6aa; --dim: #7c756a;
+            --accent: #e0782f; --accent-soft: rgba(224,120,47,0.12); --border: #3a342b; --ok: #6cc28f; --bad: #f2867d; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 "Urbanist", system-ui, sans-serif; }
+  main { max-width: 640px; margin: 0 auto; padding: 56px 24px 64px; }
+  h1 { font-size: 34px; font-weight: 650; letter-spacing: -0.02em; margin: 0 0 8px; }
+  .lead { color: var(--muted); margin: 0 0 36px; font-size: 17px; }
+  .step { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 22px 24px; margin-bottom: 16px; box-shadow: var(--shadow); }
+  .step h2 { font-size: 18px; font-weight: 650; margin: 0 0 4px; display: flex; align-items: center; gap: 10px; }
+  .num { width: 26px; height: 26px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-size: 14px; display: inline-grid; place-items: center; flex: none; }
+  .num.done { background: var(--ok); color: #fff; }
+  .step p { color: var(--muted); margin: 0 0 14px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  button { font: inherit; font-weight: 600; border-radius: 10px; padding: 9px 16px; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button:disabled { opacity: 0.5; cursor: default; }
+  .link { background: none; border: none; color: var(--muted); text-decoration: underline; padding: 9px 4px; font-weight: 500; }
+  .model { border-top: 1px solid var(--border); padding: 14px 0; display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; align-items: center; }
+  .model:first-of-type { border-top: none; padding-top: 4px; }
+  .model b { font-weight: 650; }
+  .model small { color: var(--muted); grid-column: 1; }
+  .model .act { grid-row: 1 / span 2; grid-column: 2; text-align: right; }
+  .bar { grid-column: 1 / -1; height: 6px; border-radius: 3px; background: var(--accent-soft); overflow: hidden; display: none; }
+  .bar span { display: block; height: 100%; width: 0; background: var(--accent); transition: width .4s; }
+  .ok { color: var(--ok); font-weight: 600; }
+  .bad { color: var(--bad); }
+  .note { color: var(--dim); font-size: 14px; margin-top: 24px; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Welcome to Innerbloom</h1>
+  <p class="lead">Two quick steps and your private journal is ready. Everything runs on this computer, so nothing you write ever leaves it.</p>
+
+  <section class="step" id="step-ollama">
+    <h2><span class="num" id="n1">1</span> Get Ollama</h2>
+    <p id="ollama-text">Checking for Ollama, the free program that runs the AI on your computer…</p>
+    <div class="row" id="ollama-actions"></div>
+  </section>
+
+  <section class="step" id="step-models">
+    <h2><span class="num" id="n2">2</span> Download the AI</h2>
+    <p>A one-time download. It can take a while on slower internet, and you can keep using your computer meanwhile.</p>
+    <div id="models"></div>
+    <div class="row" style="margin-top:8px">
+      <button class="primary" id="get-all">Download all</button>
+      <span id="models-total" class="note" style="margin:0"></span>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2><span class="num" id="n3">3</span> Start writing</h2>
+    <p id="finish-text">Once the steps above are done, your journal opens here.</p>
+    <div class="row"><button class="primary" id="open" disabled>Open my journal</button></div>
+  </section>
+
+  <p class="note">Your journal is saved in your own user folder, never inside the app, so updating or reinstalling Innerbloom keeps it safe.</p>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const post = (url, body) => fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body || {}) }).then(r => r.json());
+let state = null, startedOllama = false;
+
+function gb(bytes) { return (bytes / 1e9).toFixed(1) + " GB"; }
+
+function renderOllama(s) {
+  const text = $("ollama-text"), acts = $("ollama-actions");
+  $("n1").classList.toggle("done", s.ollama === "running");
+  $("n1").textContent = s.ollama === "running" ? "✓" : "1";
+  if (s.ollama === "running") {
+    text.innerHTML = '<span class="ok">Ollama is running.</span>';
+    acts.innerHTML = "";
+  } else if (s.ollama === "installed") {
+    text.textContent = startedOllama ? "Starting Ollama…" : "Ollama is installed but not running.";
+    acts.innerHTML = '<button class="primary" id="start-ollama">Start Ollama</button>';
+    $("start-ollama").onclick = () => { startedOllama = true; post("/setup/ollama/start"); renderOllama(s); };
+    if (!startedOllama) { startedOllama = true; post("/setup/ollama/start"); }
+  } else {
+    text.textContent = "Innerbloom needs Ollama, a free program that runs the AI privately on your computer. Download it, open the installer, then come back here. This page notices by itself when it's ready.";
+    acts.innerHTML = '<button class="primary" id="dl-ollama">Download Ollama</button>';
+    $("dl-ollama").onclick = () => post("/setup/ollama/download");
+  }
+}
+
+function renderModels(s) {
+  const box = $("models"), running = s.ollama === "running";
+  box.innerHTML = "";
+  let left = 0, busy = false;
+  for (const m of s.models) {
+    const skipped = !m.required && s.skip_reader;
+    const pulling = m.pull && !m.pull.done;
+    busy = busy || pulling;
+    if (!m.installed && !skipped) left += m.size_gb;
+    const row = document.createElement("div");
+    row.className = "model";
+    let act;
+    if (m.installed) act = '<span class="ok">Ready</span>';
+    else if (pulling) {
+      const pct = m.pull.total ? Math.floor(100 * m.pull.completed / m.pull.total) : 0;
+      act = m.pull.total ? `${pct}% of ${gb(m.pull.total)}` : "Starting…";
+    } else if (skipped) act = '<button data-unskip="1">Add it</button>';
+    else act = `<button data-pull="${m.name}" ${running ? "" : "disabled"}>Download · ${m.size_gb} GB</button>`;
+    const failed = m.pull && m.pull.error ? `<small class="bad">Download stopped: ${m.pull.error}. Try again.</small>` : "";
+    const skip = !m.required && !m.installed && !pulling && !skipped ? ' <button class="link" data-skip="1">Skip for now</button>' : "";
+    row.innerHTML = `<b>${m.label}</b><div class="act">${act}${skip}</div><small>${m.about}</small>${failed}
+      <div class="bar" style="display:${pulling ? "block" : "none"}"><span style="width:${m.pull && m.pull.total ? 100 * m.pull.completed / m.pull.total : 0}%"></span></div>`;
+    box.appendChild(row);
+  }
+  box.querySelectorAll("[data-pull]").forEach(b => b.onclick = () => post("/setup/pull", { name: b.dataset.pull }).then(poll));
+  box.querySelectorAll("[data-skip]").forEach(b => b.onclick = () => post("/setup/skip-reader", { skip: true }).then(poll));
+  box.querySelectorAll("[data-unskip]").forEach(b => b.onclick = () => post("/setup/skip-reader", { skip: false }).then(poll));
+  const all = $("get-all");
+  all.disabled = !running || busy || left === 0;
+  all.classList.toggle("hidden", left === 0);
+  $("models-total").textContent = left > 0 ? `${left.toFixed(1)} GB to download` : "";
+  const done = running && left === 0;
+  $("n2").classList.toggle("done", done);
+  $("n2").textContent = done ? "✓" : "2";
+}
+
+function render(s) {
+  state = s;
+  renderOllama(s);
+  renderModels(s);
+  $("open").disabled = !s.ready;
+  $("finish-text").textContent = s.ready ? "All set. Your journal is ready." : "Once the steps above are done, your journal opens here.";
+}
+
+$("get-all").onclick = async () => {
+  for (const m of state.models) {
+    if (!m.installed && !(m.pull && !m.pull.done) && (m.required || !state.skip_reader)) await post("/setup/pull", { name: m.name });
+  }
+  poll();
+};
+$("open").onclick = () => { location.href = "/app"; };
+
+async function poll() {
+  try { render(await fetch("/setup/status").then(r => r.json())); } catch (e) {}
+}
+poll();
+setInterval(poll, 1500);
+</script>
+</body>
+</html>

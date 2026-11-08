@@ -251,3 +251,11 @@ Still open: publishing the reader (Hugging Face or an Ollama registry, Phase 7),
 - `scripts/release_reader.py` stages the upload folder with the exact GGUF Ollama runs (sha256 `060fdb08…`, checked against Ollama's own file) and uploads with `hf upload` when given `--upload`. The model file is never committed.
 - `scripts/get_reader.py` installs it on any machine: `ollama pull hf.co/gwagon63/innerbloom-reader-1.5b-GGUF:Q8_0`, then names it `innerbloom-reader:1.5b-q8-edited`.
 - Waiting on: a Hugging Face login, the upload, then a fresh pull and benchmark check that the published model scores the same.
+
+## Desktop app (2026-11-08)
+
+- `desktop/launcher.py`: starts the backend on 127.0.0.1 (port 47615, or the next free one) and opens it in its own window (pywebview: WebKit on macOS, WebView2 on Windows; falls back to the browser). The journal lives in the user's folder (`~/Library/Application Support/Innerbloom`, `%APPDATA%\Innerbloom`), not in the app.
+- `desktop/setup.html` and `desktop/setup_routes.py`: first-run setup. Finds or starts Ollama, links to its download, and downloads the chat, memory and reader models with real progress; the reader can be skipped. Opens on setup whenever something is missing, otherwise straight on the journal.
+- `desktop/build.py`: PyInstaller; a `.dmg` on macOS (20 MB), a `.zip` on Windows. `.github/workflows/desktop.yml` builds Apple silicon, Intel Mac and Windows on pull requests that touch the app and on `v*` tags, runs each built app once (`INNERBLOOM_SMOKE_TEST=1`), and attaches the files to a GitHub Release on tags. `desktop/RELEASE_NOTES.md` is the plain install guide shown there.
+- Checked on the Mac: the built app served the journal, saved an entry read by the reader (calm, 4, Priya) into its own data folder, and a download from the setup page showed real progress.
+- Not signed: macOS asks for "Open Anyway" once and Windows SmartScreen for "Run anyway". Signing needs an Apple Developer account ($99 a year) and a Windows code-signing certificate.

@@ -360,6 +360,7 @@ class ReaderRelease(unittest.TestCase):
         import app
         kit = ROOT / "release" / "reader"
         self.assertEqual(get_reader.NAME, app.DEFAULT_READER_MODEL)
+        self.assertEqual(get_reader.SOURCE, app.READER_SOURCE)
         self.assertTrue(get_reader.SOURCE.startswith("hf.co/") and get_reader.SOURCE.endswith(":Q8_0"))
         self.assertEqual(json.loads((kit / "params").read_text())["temperature"], analysis.TEMPERATURE)
         self.assertIn(".System", (kit / "template").read_text())
@@ -368,3 +369,37 @@ class ReaderRelease(unittest.TestCase):
         self.assertIn("license: apache-2.0", card)
         for e in analysis.EMOTIONS:
             self.assertIn(e, card)
+
+
+class DesktopSetup(unittest.TestCase):
+    def test_setup_status_ready_and_skip(self):
+        from unittest.mock import patch
+        from fastapi.testclient import TestClient
+        with tempfile.TemporaryDirectory() as d:
+            import app as backend
+            from desktop import setup_routes as sr
+            from desktop import launcher
+            with patch.object(sr, "CHOICES", Path(d) / "desktop.json"):
+                client = TestClient(backend.app, base_url="http://127.0.0.1:47615")
+                if not any(getattr(r, "path", "") == "/setup/status" for r in backend.app.routes):
+                    backend.app.include_router(sr.router)
+                names = [m["name"] for m in sr.models()]
+                with patch.object(sr, "installed_models", return_value=None), \
+                     patch.object(launcher, "ollama_app_path", return_value=None):
+                    s = client.get("/setup/status").json()
+                    self.assertEqual((s["ollama"], s["ready"]), ("missing", False))
+                with patch.object(sr, "installed_models", return_value=set(names[:2])):
+                    self.assertFalse(client.get("/setup/status").json()["ready"])  # reader still wanted
+                    client.post("/setup/skip-reader", json={"skip": True})
+                    s = client.get("/setup/status").json()
+                    self.assertTrue(s["ready"] and s["skip_reader"])
+                with patch.object(sr, "installed_models", return_value={sr._bare(n) for n in names}):
+                    client.post("/setup/skip-reader", json={"skip": False})
+                    self.assertTrue(client.get("/setup/status").json()["ready"])
+                self.assertEqual(client.post("/setup/pull", json={"name": "not-a-model"}).status_code, 404)
+                self.assertIn("Welcome to Innerbloom", client.get("/setup").text)
+
+    def test_data_dir_is_outside_the_app(self):
+        from desktop import launcher
+        self.assertEqual(launcher.data_dir().name, "Innerbloom")
+        self.assertNotIn(str(ROOT), str(launcher.data_dir()))
