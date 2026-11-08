@@ -1,5 +1,7 @@
 # Phase 3 training on Colab (GPU). Torch comes with Colab and is not pinned here.
-transformers==4.46.3
-peft==0.13.2
-bitsandbytes>=0.46.1  # older releases need triton.ops, which current Colab lacks
-accelerate==1.1.1
+# Ranges, not exact pins: Colab moves to new Python and Triton releases, and old
+# builds of these libraries stop working there (bitsandbytes < 0.46 needs triton.ops).
+transformers>=4.50,<5
+peft>=0.15
+bitsandbytes>=0.46.1
+accelerate>=1.5
