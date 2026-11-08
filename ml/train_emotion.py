@@ -322,6 +322,8 @@ def stage_export(out: Path, base: str):
     """Merge the adapter into the full model and write one GGUF file for Ollama.
     Unquantised (f16); Ollama quantises it to q4_K_M on the Mac, like the 7B."""
     import subprocess
+    # Colab ships an old torchao that current peft refuses to load beside; we don't use it.
+    subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", "-q", "torchao"], check=False)
     import torch
     from peft import PeftModel
     from transformers import AutoModelForCausalLM, AutoTokenizer
