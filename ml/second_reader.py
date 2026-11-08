@@ -203,6 +203,10 @@ def report(result: dict) -> str:
 
 
 def score(path: Path, out: Path = REPORT) -> int:
+    if not path.exists():
+        print(f"No file at {path}.\nThis step is for the sheet your friend sends back. "
+              f"The blank one to send them is {SHEET}")
+        return 1
     entries = {e["id"]: e for e in load_validation()}
     result = compare(entries, read_sheet(path))
     if not result["checked"]:
