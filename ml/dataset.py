@@ -14,6 +14,8 @@ from typing import Dict, List
 
 ROOT = Path(__file__).resolve().parents[1]
 ENTRIES_DIR = ROOT / "ml" / "datasets" / "entries"
+# Extra entries that only ever go into the training split (round-2 contrast pairs).
+TRAIN_ONLY_DIR = ROOT / "ml" / "datasets" / "entries_train_only"
 sys.path.insert(0, str(ROOT))
 
 from innerbloom_core.analysis import EMOTIONS  # noqa: E402
@@ -103,8 +105,13 @@ def summary(entries: List[dict]) -> Dict[str, object]:
     }
 
 
+def load_all() -> List[dict]:
+    """Split entries plus training-only entries, for checks that span both."""
+    return load() + (load(TRAIN_ONLY_DIR) if TRAIN_ONLY_DIR.exists() else [])
+
+
 def main() -> int:
-    entries = load()
+    entries = load_all()
     found = problems(entries)
     for p in found:
         print(p)

@@ -1,4 +1,4 @@
-"""Split the entries 70/15/15 into train, validation and a locked test set.
+"""Split the entries 60/20/20 into train, validation and a locked test set.
 
     python -m ml.split            # write ml/datasets/splits/*.jsonl and the manifest
     python -m ml.split --check    # confirm the splits match the entries and the manifest
@@ -25,12 +25,15 @@ sys.path.insert(0, str(ROOT))
 
 from ml import dataset  # noqa: E402
 
-SHARES = (("train", 0.70), ("validation", 0.15), ("test", 0.15))
+# 60/20/20 so validation and test each hold about 25 entries per emotion: enough
+# to tell a real improvement from noise. v2: re-split at 2,001 entries, before
+# the test split was ever scored.
+SHARES = (("train", 0.60), ("validation", 0.20), ("test", 0.20))
 NEAR_DUPLICATE = 0.6  # Jaccard similarity of word trigrams
 
 
 def _rank(group: str) -> str:
-    return hashlib.sha256(f"innerbloom-split-v1:{group}".encode()).hexdigest()
+    return hashlib.sha256(f"innerbloom-split-v2:{group}".encode()).hexdigest()
 
 
 def assign(entries: List[dict]) -> Dict[str, str]:
@@ -78,7 +81,8 @@ def near_duplicates(splits: Dict[str, List[dict]]) -> List[str]:
 
 def build():
     entries = dataset.load()
-    bad = dataset.problems(entries)
+    extra = dataset.load(dataset.TRAIN_ONLY_DIR) if dataset.TRAIN_ONLY_DIR.exists() else []
+    bad = dataset.problems(entries + extra)
     if bad:
         raise SystemExit("fix the entries first:\n" + "\n".join(bad))
     where = assign(entries)
@@ -86,15 +90,20 @@ def build():
     for e in sorted(entries, key=lambda e: e["id"]):
         clean = {k: v for k, v in e.items() if k != "_source"}
         splits[where[e["group"]]].append(clean)
+    # Training-only entries never move the split above; they are appended to
+    # train, and must not resemble anything in validation or test.
+    for e in sorted(extra, key=lambda e: e["id"]):
+        splits["train"].append({k: v for k, v in e.items() if k != "_source"})
     dupes = near_duplicates(splits)
     if dupes:
         raise SystemExit("near-duplicates across splits:\n" + "\n".join(dupes))
     files = {name: "\n".join(json.dumps(e, ensure_ascii=False) for e in rows) + "\n"
              for name, rows in splits.items()}
     manifest = {
-        "seed": "innerbloom-split-v1",
+        "seed": "innerbloom-split-v2",
         "shares": dict(SHARES),
         "entries": len(entries),
+        "train_only_entries": len(extra),
         "splits": {name: {"entries": len(splits[name]),
                           "groups": len({e["group"] for e in splits[name]}),
                           "sha256": hashlib.sha256(files[name].encode()).hexdigest()}

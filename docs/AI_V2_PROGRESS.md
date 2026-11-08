@@ -7,7 +7,7 @@ Working branch: `feature/innerbloom-ai-v2`. `main` stays stable until a phase is
 | 0 | Audit, backup, branch | 0 | Done (2026-11-05) |
 | 1 | Data and security stability | 0 | Done (2026-11-05), awaiting review |
 | 2 | Fictional benchmark and baseline | 15 units | Baseline done on the Mac (0 units); second-reader check and retrieval/evidence sets still to do |
-| 3 | Emotion model QLoRA | 45 units | Not started |
+| 3 | Light emotion model (QLoRA) | 45 units | 1.5B trained: beats the 7B on validation (about 6.5 units) |
 | 4 | Memory reranker | 25 units | Not started |
 | 5 | Evidence verifier | 20 units | Not started |
 | 6 | Ollama export and integration | 0 | Not started |
@@ -160,10 +160,27 @@ Full write-up: `reports/baseline-qwen2.5-7b-validation.md`. On 183 validation en
 - The safety classifier with the model on: 39 of 40 crisis statements get full help, 2 of 40 harmless ones alert (seen set)
 - Bug found and fixed: the parser stripped accented letters from names ("Tomás" became "Toms") and dropped names in other scripts. Rescored: people precision 0.964, recall 0.885, no invented names
 
+### Memory search and evidence checking (2026-11-05)
+
+Full write-up: `reports/baseline-retrieval-evidence-validation.md`.
+
+- `ml/datasets/retrieval/`: three fictional journals (108 entries) and 54 questions with marked answers; journal c locked.
+- `ml/datasets/evidence/claims.jsonl`: 120 claims with dated evidence, labelled supported, contradicted or insufficient; half locked.
+- Keyword search: the answer is in the top 5 for 80.6% of questions; meaning search (what the chat agent uses): 91.7%, recall 82.3%. Both ignore time (27-28% of results inside the asked window), and meaning search finds about 62% of entries for questions needing several.
+- `qwen2.5:7b` as a plain evidence judge: accepts 39% of claims the entries do not support (mostly overreach from thin evidence), rejects no valid claims.
+
+### Dataset v2 (2026-11-05)
+
+Grown from 1,220 to 2,001 entries, aimed at the baseline's weak spots and written in more voices: teenagers and students, elderly writers, second-language English, parents and carers, shift workers, one-line notes, long entries, chronic illness, LGBTQ+ writers, artists, rural life, faith, neurodivergent writers and Indian English.
+
+- 122-129 entries per emotion. Sarcasm 18 → 51, long entries 11 → 50, implied feelings 46 → 106, mixed 63 → 93, intensity 1-2 and 9-10 much better covered.
+- Re-split 60/20/20 (seed v2): 1,199 train, 402 validation, 400 locked test; 24-26 per emotion in validation and in test. The test split had never been scored, so re-splitting was safe.
+- Still one writer. A second reader's check, and entries from other people, matter more than further volume.
+- New baseline on the 402 validation entries (`reports/baseline-qwen2.5-7b-validation-v2.md`): macro-F1 0.636, accuracy 64.2% (78.9% lenient), intensity MAE 1.23, people 0.96 / 0.83, 8.6 s per entry. Weakest: overwhelmed (read as anxious 12 of 25), lonely (as sad 10 of 25), proud (as excited 8 of 25), sarcasm 5 of 10. This replaces 0.705 as the number to beat.
+
 ### Still to do in Phase 2
 
 - A second reader checks about 100 validation labels against the guidelines.
-- Retrieval and evidence-grounding datasets, and their baselines.
 - The blind safety set.
 
 ### Next human action
@@ -171,3 +188,50 @@ Full write-up: `reports/baseline-qwen2.5-7b-validation.md`. On 183 validation en
 1. Read `reports/baseline-qwen2.5-7b-validation.md`.
 2. Ask someone who has not seen the rules to write the blind safety set (`ml/datasets/blind/HOW_TO_WRITE.md`).
 
+## Phase 3: light entry-reading model (prepared 2026-11-05)
+
+Goal, from the user: a light model that runs on ordinary laptops without slowing them, for Innerbloom's fixed entry-reading job. The 7B takes about 15 seconds per entry on an 8 GB M1.
+
+- `ml/train_emotion.py`, run stage by stage from `notebooks/02_emotion_training.ipynb` on a Colab A100. Each stage saves to Google Drive and resumes after a disconnect.
+- The base size is a setting: Qwen2.5 **1.5B** (Apache 2.0) is the main candidate; 0.5B and 3B for comparison. The 3B is under Qwen's research licence, so check it before shipping it in a public app.
+- Targets (`ml/targets.py`): the 7B writes the summary, tags and themes for each training entry; the labels replace emotion, intensity and names. A dry run on the validation replies gave 183 of 183 valid targets.
+- Decision rules (`compare` in `ml/train_emotion.py`): **keep** if the trained model beats its untrained self on emotion and intensity with no loss on structure or names; **can replace the 7B for reading** if it is also within 0.02 macro-F1 and 0.05 intensity error of the 7B in production.
+- Rough cost for the first size: about 1 hour, 6-12 units. The smoke test comes first and costs under 1 unit.
+- Chat and insights keep using the larger model: only entry reading moves to the light one (Phase 6 adds the setting).
+
+### Three-way comparison (set up 2026-11-08)
+
+1. **qwen2.5:7b**, unchanged: the production reference (validation v2: macro-F1 0.636).
+2. **Qwen2.5-1.5B, trained** with QLoRA: `notebooks/02_emotion_training.ipynb`.
+3. **Qwen3.5-0.8B, weights edited** by a frontier model, no gradient training: brief in `ml/weight_editing/BRIEF.md`, scored with `notebooks/03_qwen3.5_weight_editing.ipynb` (Apache 2.0; needs the newest `transformers`, so it has its own notebook). The editor may use only the training split, with a budget of 3,000 scored entries.
+
+All are scored on the same 402 validation entries; `python -m ml.compare` builds one table. The 7B runs through Ollama (4-bit), the others through transformers, so speed numbers are not directly comparable across runtimes.
+
+### Phase 3 result (2026-11-08)
+
+Trained Qwen2.5-1.5B on validation: macro-F1 **0.746** (7B: 0.636), intensity error **0.88** (7B: 1.23), people F1 0.96 (7B: 0.89), no failed readings, one invented name (same as the 7B). Keep and can-replace-7B both true. About 6.5 compute units. Details: `reports/phase3-qwen2.5-1.5b-validation.md`. Not yet run: the locked test split, the second-reader check, Mac speed.
+
+### Rounds 2 and 3 (2026-11-08)
+
+- **Round 2**: 160 training-only contrast pairs (`ml/datasets/entries_train_only/`), rank 32, learning rate 1e-4. On Colab: macro-F1 0.748 (round 1: 0.746), intensity 0.92 (0.88), people 0.92 (0.96). No gain; round 1 stays the best.
+- **Round 3** (run 2026-11-08, rejected): macro-F1 0.690, intensity 0.94, people F1 0.80, 1.2% failed readings; keep = false (a regression). Likely causes: EmpatheticDialogues' labels follow its writers' own words, not Innerbloom's guidelines, and 3,000 of them outweighed Innerbloom's 1,359; training on reply openings alone also loosened the reply format. Round 1 stays the best.
+- **Round 3 setup**: round 1's settings plus 3,000 situations from Meta's EmpatheticDialogues, 250 for each of 12 mapped emotions (`ml/public_data.py`). They teach only the emotion choice: the target is the reply's opening, so intensity, summary and names still come from Innerbloom's entries. Downloaded at training time, never committed.
+- **Licence**: EmpatheticDialogues is CC BY-NC 4.0. A model trained with it may only be used non-commercially. Credit: Rashkin et al., 2019, "Towards Empathetic Open-domain Conversation Models: a New Benchmark and Dataset".
+
+
+### Final locked test (2026-11-08)
+
+The 400-entry test split, scored once on the Mac: edited 1.5B q8 macro-F1 **0.746**, plain 1.5B q8 0.702, 7B 0.652.
+Intensity error 0.80 / 0.78 / 1.16; invented names 2 / 3 / 9; median 2.6 s / 3.4 s / 13.3 s per entry.
+Test scores match validation (0.752 / 0.711 / 0.636). Verdict: the edited 1.5B q8 becomes the entry reader;
+chat and insights keep the 7B. The test split is now spent. Details: `reports/final-test.md`.
+
+## Phase 6: the reader in Innerbloom (2026-11-08)
+
+- `app.py`: `reader_model()` picks the model for entry reading. `INNERBLOOM_READER_MODEL` wins when set; otherwise `innerbloom-reader:1.5b-q8-edited` if Ollama lists it (checked every five minutes), else the chat model. `analyze_entry` passes it to `call_llama(model=...)`; chat, insights and safety keep `INNERBLOOM_MODEL`.
+- `/` and `/health` report `reader_model`.
+- Tests: `test_reader_model` covers installed, missing, Ollama down and the setting; the suite pins `INNERBLOOM_READER_MODEL` so it never asks Ollama.
+- Live check on the Mac with a temporary data folder: a fictional entry was read by the reader (happy, 7, "Priya" found); `/` showed the 7B for chat.
+- Docs: `docs/SETUP.md`, "Reading entries".
+
+Still open: publishing the reader (Hugging Face or an Ollama registry, Phase 7), so other machines can install it; until then they fall back to the chat model.

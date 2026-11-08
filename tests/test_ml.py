@@ -30,7 +30,7 @@ def reply(emotion="happy", intensity=5, people=()):
 
 class Data(unittest.TestCase):
     def test_committed_entries_are_valid(self):
-        self.assertEqual(dataset.problems(dataset.load()), [])
+        self.assertEqual(dataset.problems(dataset.load_all()), [])
 
     def test_checker_catches_bad_labels(self):
         bad = dataset._normalise(entry(emotion="joyful", intensity=11, people=["Priya"]))
@@ -83,6 +83,182 @@ class Scoring(unittest.TestCase):
         self.assertEqual(m["emotion"]["confusion"]["calm"], {"<failed>": 1})
         self.assertEqual(m["intensity"]["mae"], 0.5)  # failed reading not scored for intensity
         self.assertEqual(m["structure"]["failed_rate"], round(1 / 3, 3))
+
+
+class Retrieval(unittest.TestCase):
+    def test_answers_and_windows_match_the_journals(self):
+        from datetime import datetime
+        from ml import retrieval_eval as r
+        now = datetime.now()
+        journals = {n: {e["id"]: e for e in r.load_journal(n, now)} for n in ("a", "b", "c")}
+        queries = r.load_queries(("a", "b", "c"))
+        self.assertEqual(len({q["id"] for q in queries}), len(queries))
+        for q in queries:
+            with self.subTest(q=q["id"]):
+                entries = journals[q["journal"]]
+                self.assertTrue(set(q["relevant"]) <= set(entries))
+                self.assertIn(2, q["relevant"].values())
+                if q.get("window"):
+                    lo, hi = q["window"]
+                    best = [i for i, g in q["relevant"].items() if g == 2]
+                    self.assertTrue(all(lo <= entries[i]["days_ago"] <= hi for i in best))
+
+    def test_scores(self):
+        from ml import retrieval_eval as r
+        q = {"id": "q", "relevant": {"x": 2, "y": 1}, "window": [0, 5]}
+        row = r.score_query(q, ["z", "x", "w", "v", "u"], {"x": 3, "y": 9, "z": 1, "w": 20, "v": 30, "u": 40})
+        self.assertEqual((row["recall"], row["answer_found"], row["mrr"]), (0.5, True, 0.5))
+        self.assertEqual(row["in_window"], 0.4)
+        self.assertTrue(0 < row["ndcg"] < 1)
+        self.assertEqual(r.main(["--split", "test"]), 2)
+
+
+class Evidence(unittest.TestCase):
+    def test_claims_are_well_formed_and_pairs_share_a_half(self):
+        from ml import evidence_eval as ev
+        items = ev.load()
+        self.assertEqual(len({i["id"] for i in items}), len(items))
+        halves = {}
+        for i in items:
+            with self.subTest(i=i["id"]):
+                self.assertIn(i["label"], ev.LABELS)
+                self.assertTrue(i["evidence"])
+            halves.setdefault(ev.group_of(i), set()).add(ev.split_of(i))
+        self.assertTrue(all(len(s) == 1 for s in halves.values()))
+
+    def test_reply_parsing_and_scores(self):
+        from ml import evidence_eval as ev
+        self.assertEqual(ev.parse_label("SUPPORTED - clearly"), "supported")
+        self.assertEqual(ev.parse_label("**Contradicted**"), "contradicted")
+        self.assertIsNone(ev.parse_label("Maybe?"))
+        rows = [{"label": "supported", "pred": "supported", "traits": []},
+                {"label": "contradicted", "pred": "supported", "traits": []},
+                {"label": "insufficient", "pred": "insufficient", "traits": []}]
+        m = ev.score(rows)
+        self.assertEqual(m["unsupported_claims_accepted"], 0.5)
+        self.assertEqual(m["valid_claims_rejected"], 0.0)
+        self.assertEqual(ev.main(["--split", "test"]), 2)
+
+
+class TrainingTargets(unittest.TestCase):
+    def test_labels_replace_fields_and_base_keeps_the_rest(self):
+        from ml import targets
+        e = dataset._normalise(entry(text="Lunch with Sam and my sister.", emotion="calm", intensity=3,
+                                     people=["Sam"], people_optional=["my sister"]))
+        base = reply("happy", 8, ["Sam", "my sister", "Priya"])
+        t = json.loads(targets.target_reply(e, base))
+        self.assertEqual(list(t), ["emotion", "intensity", "summary", "tags", "themes", "people"])
+        self.assertEqual((t["emotion"], t["intensity"]), ("calm", 3))
+        self.assertEqual((t["summary"], t["tags"], t["themes"]), ("x", ["a"], ["b"]))
+        self.assertEqual(t["people"], ["Sam", "my sister"])  # invented Priya dropped, optional kept
+        self.assertEqual(analysis.parse(json.dumps(t))["analysis_status"], "ok")
+
+    def test_failed_base_reply_still_gives_labelled_target(self):
+        from ml import targets
+        e = dataset._normalise(entry(people=["Sam"]))
+        t = json.loads(targets.target_reply(e, "[LLM error: down]"))
+        self.assertEqual((t["emotion"], t["summary"], t["people"]), ("happy", "", ["Sam"]))
+
+    def test_every_train_entry_needs_a_reply(self):
+        from ml import targets
+        with self.assertRaises(ValueError):
+            targets.build([dataset._normalise(entry())], {})
+
+    def test_prompt_is_the_production_prompt(self):
+        from ml import targets
+        rec = targets.chat_record(dataset._normalise(entry()), reply())
+        self.assertEqual(rec["messages"][0]["content"], analysis.build_prompt("Lunch with Sam on Monday."))
+
+
+class Training(unittest.TestCase):
+    def test_only_the_reply_is_learned(self):
+        from ml import train_emotion as te
+
+        class FakeTok:
+            def apply_chat_template(self, messages, tokenize, add_generation_prompt):
+                return "<user>" + messages[0]["content"] + "<assistant>"
+
+            def __call__(self, text, add_special_tokens):
+                return {"input_ids": [ord(c) for c in text]}
+
+        rec = {"messages": [{"role": "user", "content": "hi"}, {"role": "assistant", "content": "ok"}]}
+        enc = te.encode(FakeTok(), rec, 1024)
+        prompt_len = len("<user>hi<assistant>")
+        self.assertEqual(enc["labels"][:prompt_len], [-100] * prompt_len)
+        self.assertEqual(enc["labels"][prompt_len:], [ord(c) for c in "ok<|im_end|>"])
+        self.assertEqual(len(enc["input_ids"]), len(enc["labels"]))
+
+    def test_keep_only_when_better_without_regressions(self):
+        from ml import train_emotion as te
+
+        def m(f1, mae, failed=0.0, people=0.9, invented=0):
+            return {"emotion": {"macro_f1": f1, "lenient_accuracy": f1}, "intensity": {"mae": mae},
+                    "structure": {"failed_rate": failed}, "people": {"f1": people, "invented": invented}}
+        base = m(0.70, 1.2)
+        self.assertTrue(te.compare(base, m(0.75, 1.0), base)["keep"])
+        self.assertFalse(te.compare(base, m(0.75, 1.3), base)["keep"])
+        self.assertFalse(te.compare(base, m(0.75, 1.0, people=0.8), base)["keep"])
+        self.assertFalse(te.compare(base, m(0.75, 1.0, invented=2), base)["keep"])
+
+    def test_notebook_runs_every_stage_in_order(self):
+        nb = json.loads((ROOT / "notebooks" / "02_emotion_training.ipynb").read_text())
+        code = "\n".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
+        positions = [code.find(f"--stage {s}") for s in ("check", "replies", "smoke", "train", "evaluate")]
+        self.assertTrue(all(p >= 0 for p in positions))
+        self.assertEqual(positions, sorted(positions))
+        self.assertNotIn("--split test", code)
+
+
+class ThreeWayComparison(unittest.TestCase):
+    def test_eval_hf_strips_thinking_and_guards_test(self):
+        from ml import eval_hf
+        self.assertEqual(eval_hf.strip_thinking("<think>hmm</think>\n{\"emotion\":\"sad\"}"), '{"emotion":"sad"}')
+        self.assertEqual(eval_hf.strip_thinking('{"emotion":"sad"}'), '{"emotion":"sad"}')
+        self.assertEqual(eval_hf.main(["--model", "x", "--split", "test"]), 2)
+
+    def test_compare_marks_the_best(self):
+        from ml import compare
+        def m(f1, mae):
+            return {"scored": 402, "emotion": {"macro_f1": f1, "accuracy": f1, "lenient_accuracy": f1},
+                    "intensity": {"mae": mae}, "structure": {"failed_rate": 0, "schema_complete_rate": 1},
+                    "people": {"f1": 0.9, "invented": 0}, "by_trait": {}, "seconds": {"p50": 1.0}}
+        t = compare.table([("7b", m(0.636, 1.23)), ("0.8b", m(0.70, 1.1))])
+        self.assertIn("**0.7**", t)
+        self.assertIn("**1.1**", t)
+        self.assertNotIn("Warning", t)
+
+    def test_notebook_keeps_validation_and_test_away_from_editing(self):
+        brief = (ROOT / "ml" / "weight_editing" / "BRIEF.md").read_text()
+        self.assertIn("must not use", brief)
+        nb = json.loads((ROOT / "notebooks" / "03_qwen3.5_weight_editing.ipynb").read_text())
+        code = "\n".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
+        self.assertNotIn("--split test", code)
+        self.assertIn("Qwen/Qwen3.5-0.8B", code)
+
+
+class PublicData(unittest.TestCase):
+    def test_mapping_targets_are_production_emotions(self):
+        from ml import public_data
+        self.assertTrue(set(public_data.MAP.values()) <= set(analysis.EMOTIONS))
+
+    def test_records_teach_only_the_emotion(self):
+        from ml import public_data, train_emotion as te
+        rows = {f"c{i}": ("proud" if i % 2 else "terrified", f"I did a thing number {i} today") for i in range(10)}
+        chosen = public_data.select(rows, per_emotion=3)
+        self.assertEqual(sorted({c[0] for c in chosen}), ["anxious", "proud"])
+        rec = public_data.record(*chosen[0])
+        self.assertTrue(rec["messages"][1]["content"].startswith('{"emotion": "'))
+        self.assertFalse(rec["messages"][1]["content"].endswith("}"))
+
+        class FakeTok:
+            def apply_chat_template(self, messages, tokenize, add_generation_prompt):
+                return "<p>"
+
+            def __call__(self, text, add_special_tokens):
+                return {"input_ids": [ord(c) for c in text]}
+        enc = te.encode(FakeTok(), rec, 4096)
+        learned = "".join(chr(t) for t, l in zip(enc["input_ids"], enc["labels"]) if l != -100)
+        self.assertEqual(learned, rec["messages"][1]["content"])  # no end token after the emotion
 
 
 class BlindSafetySet(unittest.TestCase):

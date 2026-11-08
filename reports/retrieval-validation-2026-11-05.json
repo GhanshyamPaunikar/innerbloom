@@ -1,0 +1,2080 @@
+{
+  "date": "2026-11-05",
+  "split": "validation",
+  "k": 5,
+  "embed_model": "mxbai-embed-large",
+  "note": "entries carry text only (no summary/tags), as if analysis were unavailable",
+  "results": {
+    "keyword": {
+      "overall": {
+        "questions": 36,
+        "recall@5": 0.655,
+        "answer_in_top5": 0.806,
+        "mrr": 0.578,
+        "ndcg@5": 0.532,
+        "temporal_in_window": 0.27
+      },
+      "by_trait": {
+        "lookup": {
+          "questions": 7,
+          "recall@5": 1.0,
+          "answer_in_top5": 1.0,
+          "mrr": 0.738,
+          "ndcg@5": 0.764,
+          "temporal_in_window": null
+        },
+        "multi": {
+          "questions": 11,
+          "recall@5": 0.324,
+          "answer_in_top5": 0.727,
+          "mrr": 0.386,
+          "ndcg@5": 0.297,
+          "temporal_in_window": 0.4
+        },
+        "paraphrase": {
+          "questions": 13,
+          "recall@5": 0.699,
+          "answer_in_top5": 0.846,
+          "mrr": 0.65,
+          "ndcg@5": 0.562,
+          "temporal_in_window": 0.75
+        },
+        "person": {
+          "questions": 17,
+          "recall@5": 0.587,
+          "answer_in_top5": 0.765,
+          "mrr": 0.531,
+          "ndcg@5": 0.501,
+          "temporal_in_window": 0.1
+        },
+        "temporal": {
+          "questions": 7,
+          "recall@5": 0.667,
+          "answer_in_top5": 0.714,
+          "mrr": 0.457,
+          "ndcg@5": 0.468,
+          "temporal_in_window": 0.27
+        }
+      }
+    },
+    "meaning": {
+      "overall": {
+        "questions": 36,
+        "recall@5": 0.823,
+        "answer_in_top5": 0.917,
+        "mrr": 0.85,
+        "ndcg@5": 0.751,
+        "temporal_in_window": 0.28
+      },
+      "by_trait": {
+        "lookup": {
+          "questions": 7,
+          "recall@5": 0.905,
+          "answer_in_top5": 1.0,
+          "mrr": 0.929,
+          "ndcg@5": 0.879,
+          "temporal_in_window": null
+        },
+        "multi": {
+          "questions": 11,
+          "recall@5": 0.618,
+          "answer_in_top5": 0.909,
+          "mrr": 0.803,
+          "ndcg@5": 0.629,
+          "temporal_in_window": 0.0
+        },
+        "paraphrase": {
+          "questions": 13,
+          "recall@5": 0.859,
+          "answer_in_top5": 1.0,
+          "mrr": 0.865,
+          "ndcg@5": 0.821,
+          "temporal_in_window": 0.6
+        },
+        "person": {
+          "questions": 17,
+          "recall@5": 0.841,
+          "answer_in_top5": 0.941,
+          "mrr": 0.873,
+          "ndcg@5": 0.742,
+          "temporal_in_window": 0.3
+        },
+        "temporal": {
+          "questions": 7,
+          "recall@5": 0.786,
+          "answer_in_top5": 0.714,
+          "mrr": 0.536,
+          "ndcg@5": 0.547,
+          "temporal_in_window": 0.28
+        }
+      }
+    },
+    "agent_search": {
+      "overall": {
+        "questions": 36,
+        "recall@5": 0.823,
+        "answer_in_top5": 0.917,
+        "mrr": 0.85,
+        "ndcg@5": 0.751,
+        "temporal_in_window": 0.28
+      },
+      "by_trait": {
+        "lookup": {
+          "questions": 7,
+          "recall@5": 0.905,
+          "answer_in_top5": 1.0,
+          "mrr": 0.929,
+          "ndcg@5": 0.879,
+          "temporal_in_window": null
+        },
+        "multi": {
+          "questions": 11,
+          "recall@5": 0.618,
+          "answer_in_top5": 0.909,
+          "mrr": 0.803,
+          "ndcg@5": 0.629,
+          "temporal_in_window": 0.0
+        },
+        "paraphrase": {
+          "questions": 13,
+          "recall@5": 0.859,
+          "answer_in_top5": 1.0,
+          "mrr": 0.865,
+          "ndcg@5": 0.821,
+          "temporal_in_window": 0.6
+        },
+        "person": {
+          "questions": 17,
+          "recall@5": 0.841,
+          "answer_in_top5": 0.941,
+          "mrr": 0.873,
+          "ndcg@5": 0.742,
+          "temporal_in_window": 0.3
+        },
+        "temporal": {
+          "questions": 7,
+          "recall@5": 0.786,
+          "answer_in_top5": 0.714,
+          "mrr": 0.536,
+          "ndcg@5": 0.547,
+          "temporal_in_window": 0.28
+        }
+      }
+    }
+  },
+  "per_query": {
+    "keyword": [
+      {
+        "id": "qa01",
+        "top": [
+          "a07",
+          "a33",
+          "a10",
+          "a17",
+          "a25"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.940914767159646,
+        "traits": [
+          "lookup",
+          "person"
+        ]
+      },
+      {
+        "id": "qa02",
+        "top": [
+          "a03",
+          "a16",
+          "a17",
+          "a21",
+          "a29"
+        ],
+        "recall": 0.5,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.6131471927654584,
+        "traits": [
+          "paraphrase",
+          "person"
+        ]
+      },
+      {
+        "id": "qa03",
+        "top": [
+          "a03",
+          "a34",
+          "a01",
+          "a08",
+          "a12"
+        ],
+        "recall": 0.0,
+        "answer_found": false,
+        "mrr": 0.0,
+        "ndcg": 0.0,
+        "traits": [
+          "person"
+        ]
+      },
+      {
+        "id": "qa04",
+        "top": [
+          "a02",
+          "a26",
+          "a30",
+          "a36",
+          "a35"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 0.3333333333333333,
+        "ndcg": 0.5,
+        "traits": [
+          "lookup"
+        ]
+      },
+      {
+        "id": "qa05",
+        "top": [
+          "a02",
+          "a08",
+          "a15",
+          "a28",
+          "a36"
+        ],
+        "recall": 0.0,
+        "answer_found": false,
+        "mrr": 0.0,
+        "ndcg": 0.0,
+        "traits": [
+          "paraphrase",
+          "multi"
+        ]
+      },
+      {
+        "id": "qa06",
+        "top": [
+          "a35",
+          "a04",
+          "a11",
+          "a16",
+          "a33"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 0.5,
+        "ndcg": 0.5865409417085417,
+        "traits": [
+          "person",
+          "multi"
+        ]
+      },
+      {
+        "id": "qa07",
+        "top": [
+          "a32",
+          "a36",
+          "a35",
+          "a34",
+          "a33"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qa08",
+        "top": [
+          "a10",
+          "a33",
+          "a13",
+          "a31",
+          "a36"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.7579237460681981,
+        "traits": [
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qa09",
+        "top": [
+          "a34",
+          "a03",
+          "a12",
+          "a01",
+          "a08"
+        ],
+        "recall": 0.3333333333333333,
+        "answer_found": true,
+        "mrr": 0.3333333333333333,
+        "ndcg": 0.3631143808977028,
+        "traits": [
+          "person",
+          "multi"
+        ]
+      },
+      {
+        "id": "qa10",
+        "top": [
+          "a01",
+          "a08",
+          "a18",
+          "a36",
+          "a35"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 0.3333333333333333,
+        "ndcg": 0.5,
+        "traits": [
+          "person",
+          "lookup"
+        ]
+      },
+      {
+        "id": "qa11",
+        "top": [
+          "a01",
+          "a08",
+          "a12",
+          "a17",
+          "a21"
+        ],
+        "recall": 0.5,
+        "answer_found": true,
+        "mrr": 0.2,
+        "ndcg": 0.3196311965446524,
+        "traits": [
+          "person"
+        ]
+      },
+      {
+        "id": "qa12",
+        "top": [
+          "a33",
+          "a36",
+          "a04",
+          "a31",
+          "a35"
+        ],
+        "recall": 0.6666666666666666,
+        "answer_found": true,
+        "mrr": 0.5,
+        "ndcg": 0.4776237035032179,
+        "in_window": 0.4,
+        "traits": [
+          "temporal",
+          "multi"
+        ]
+      },
+      {
+        "id": "qa13",
+        "top": [
+          "a15",
+          "a34",
+          "a07",
+          "a08",
+          "a11"
+        ],
+        "recall": 0.0,
+        "answer_found": false,
+        "mrr": 0.0,
+        "ndcg": 0.0,
+        "in_window": 0.0,
+        "traits": [
+          "temporal"
+        ]
+      },
+      {
+        "id": "qa14",
+        "top": [
+          "a17",
+          "a33",
+          "a31",
+          "a36",
+          "a35"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qa15",
+        "top": [
+          "a36",
+          "a35",
+          "a34",
+          "a33",
+          "a32"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 0.5,
+        "ndcg": 0.6309297535714574,
+        "traits": [
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qa16",
+        "top": [
+          "a20",
+          "a34",
+          "a09",
+          "a15",
+          "a28"
+        ],
+        "recall": 0.3333333333333333,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.5562983930884396,
+        "traits": [
+          "multi"
+        ]
+      },
+      {
+        "id": "qa17",
+        "top": [
+          "a36",
+          "a34",
+          "a32",
+          "a02",
+          "a06"
+        ],
+        "recall": 0.4,
+        "answer_found": true,
+        "mrr": 0.3333333333333333,
+        "ndcg": 0.2673869927938316,
+        "traits": [
+          "person",
+          "multi"
+        ]
+      },
+      {
+        "id": "qa18",
+        "top": [
+          "a33",
+          "a28",
+          "a32",
+          "a08",
+          "a19"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 0.2,
+        "ndcg": 0.38685280723454163,
+        "traits": [
+          "paraphrase",
+          "temporal"
+        ]
+      },
+      {
+        "id": "qb01",
+        "top": [
+          "b35",
+          "b01",
+          "b08",
+          "b25",
+          "b03"
+        ],
+        "recall": 0.25,
+        "answer_found": true,
+        "mrr": 0.3333333333333333,
+        "ndcg": 0.2575785703353275,
+        "traits": [
+          "person",
+          "multi"
+        ]
+      },
+      {
+        "id": "qb02",
+        "top": [
+          "b08",
+          "b35",
+          "b01",
+          "b12",
+          "b25"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.631251450669265,
+        "traits": [
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qb03",
+        "top": [
+          "b03",
+          "b26",
+          "b11",
+          "b20",
+          "b25"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.8213137146137828,
+        "traits": [
+          "person",
+          "temporal"
+        ]
+      },
+      {
+        "id": "qb04",
+        "top": [
+          "b09",
+          "b36",
+          "b35",
+          "b34",
+          "b33"
+        ],
+        "recall": 0.0,
+        "answer_found": false,
+        "mrr": 0.0,
+        "ndcg": 0.0,
+        "traits": [
+          "paraphrase",
+          "person"
+        ]
+      },
+      {
+        "id": "qb05",
+        "top": [
+          "b14",
+          "b18",
+          "b19",
+          "b36",
+          "b35"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 0.5,
+        "ndcg": 0.58688267143572,
+        "traits": [
+          "lookup"
+        ]
+      },
+      {
+        "id": "qb06",
+        "top": [
+          "b22",
+          "b36",
+          "b35",
+          "b34",
+          "b33"
+        ],
+        "recall": 0.25,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.515157140670655,
+        "traits": [
+          "paraphrase",
+          "multi"
+        ]
+      },
+      {
+        "id": "qb07",
+        "top": [
+          "b24",
+          "b27",
+          "b36",
+          "b35",
+          "b34"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "person"
+        ]
+      },
+      {
+        "id": "qb08",
+        "top": [
+          "b02",
+          "b24",
+          "b36",
+          "b35",
+          "b34"
+        ],
+        "recall": 0.0,
+        "answer_found": false,
+        "mrr": 0.0,
+        "ndcg": 0.0,
+        "traits": [
+          "multi"
+        ]
+      },
+      {
+        "id": "qb09",
+        "top": [
+          "b21",
+          "b36",
+          "b35",
+          "b34",
+          "b33"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "lookup"
+        ]
+      },
+      {
+        "id": "qb10",
+        "top": [
+          "b22",
+          "b33",
+          "b05",
+          "b07",
+          "b23"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.8503449055347546,
+        "traits": [
+          "person"
+        ]
+      },
+      {
+        "id": "qb11",
+        "top": [
+          "b04",
+          "b28",
+          "b17",
+          "b36",
+          "b35"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.8213137146137828,
+        "traits": [
+          "lookup"
+        ]
+      },
+      {
+        "id": "qb12",
+        "top": [
+          "b36",
+          "b35",
+          "b34",
+          "b33"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 0.5,
+        "ndcg": 0.58688267143572,
+        "in_window": 0.75,
+        "traits": [
+          "temporal",
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qb13",
+        "top": [
+          "b35",
+          "b01",
+          "b08",
+          "b09",
+          "b25"
+        ],
+        "recall": 0.3333333333333333,
+        "answer_found": true,
+        "mrr": 0.25,
+        "ndcg": 0.23958467719708867,
+        "traits": [
+          "paraphrase",
+          "multi"
+        ]
+      },
+      {
+        "id": "qb14",
+        "top": [
+          "b15",
+          "b35",
+          "b01",
+          "b05",
+          "b08"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "person",
+          "lookup"
+        ]
+      },
+      {
+        "id": "qb15",
+        "top": [
+          "b35",
+          "b01",
+          "b05",
+          "b08",
+          "b12"
+        ],
+        "recall": 0.0,
+        "answer_found": false,
+        "mrr": 0.0,
+        "ndcg": 0.0,
+        "traits": [
+          "person",
+          "multi"
+        ]
+      },
+      {
+        "id": "qb16",
+        "top": [
+          "b32",
+          "b07",
+          "b08",
+          "b16",
+          "b26"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.944847956559586,
+        "traits": [
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qb17",
+        "top": [
+          "b36",
+          "b02",
+          "b06",
+          "b13",
+          "b21"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "in_window": 0.2,
+        "traits": [
+          "person",
+          "temporal"
+        ]
+      },
+      {
+        "id": "qb18",
+        "top": [
+          "b12",
+          "b30",
+          "b36",
+          "b35",
+          "b34"
+        ],
+        "recall": 0.0,
+        "answer_found": false,
+        "mrr": 0.0,
+        "ndcg": 0.0,
+        "in_window": 0.0,
+        "traits": [
+          "temporal",
+          "person"
+        ]
+      }
+    ],
+    "meaning": [
+      {
+        "id": "qa01",
+        "top": [
+          "a07",
+          "a14",
+          "a19",
+          "a36",
+          "a17"
+        ],
+        "recall": 0.3333333333333333,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.7262287617954056,
+        "traits": [
+          "lookup",
+          "person"
+        ]
+      },
+      {
+        "id": "qa02",
+        "top": [
+          "a17",
+          "a08",
+          "a15",
+          "a23",
+          "a16"
+        ],
+        "recall": 0.5,
+        "answer_found": true,
+        "mrr": 0.5,
+        "ndcg": 0.3868528072345416,
+        "traits": [
+          "paraphrase",
+          "person"
+        ]
+      },
+      {
+        "id": "qa03",
+        "top": [
+          "a23",
+          "a08",
+          "a15",
+          "a35",
+          "a19"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "person"
+        ]
+      },
+      {
+        "id": "qa04",
+        "top": [
+          "a30",
+          "a26",
+          "a36",
+          "a20",
+          "a28"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "lookup"
+        ]
+      },
+      {
+        "id": "qa05",
+        "top": [
+          "a26",
+          "a15",
+          "a28",
+          "a08",
+          "a02"
+        ],
+        "recall": 0.5,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.8262346571285599,
+        "traits": [
+          "paraphrase",
+          "multi"
+        ]
+      },
+      {
+        "id": "qa06",
+        "top": [
+          "a04",
+          "a11",
+          "a16",
+          "a35",
+          "a27"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.7579237460681981,
+        "traits": [
+          "person",
+          "multi"
+        ]
+      },
+      {
+        "id": "qa07",
+        "top": [
+          "a32",
+          "a06",
+          "a21",
+          "a18",
+          "a14"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qa08",
+        "top": [
+          "a13",
+          "a10",
+          "a03",
+          "a34",
+          "a33"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.9726097514324383,
+        "traits": [
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qa09",
+        "top": [
+          "a23",
+          "a03",
+          "a29",
+          "a01",
+          "a12"
+        ],
+        "recall": 0.6666666666666666,
+        "answer_found": true,
+        "mrr": 0.3333333333333333,
+        "ndcg": 0.40198176216091885,
+        "traits": [
+          "person",
+          "multi"
+        ]
+      },
+      {
+        "id": "qa10",
+        "top": [
+          "a18",
+          "a08",
+          "a35",
+          "a14",
+          "a36"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "person",
+          "lookup"
+        ]
+      },
+      {
+        "id": "qa11",
+        "top": [
+          "a29",
+          "a32",
+          "a11",
+          "a01",
+          "a18"
+        ],
+        "recall": 0.5,
+        "answer_found": false,
+        "mrr": 1.0,
+        "ndcg": 0.27541155237618664,
+        "traits": [
+          "person"
+        ]
+      },
+      {
+        "id": "qa12",
+        "top": [
+          "a15",
+          "a11",
+          "a22",
+          "a07",
+          "a19"
+        ],
+        "recall": 0.0,
+        "answer_found": false,
+        "mrr": 0.0,
+        "ndcg": 0.0,
+        "in_window": 0.0,
+        "traits": [
+          "temporal",
+          "multi"
+        ]
+      },
+      {
+        "id": "qa13",
+        "top": [
+          "a36",
+          "a28",
+          "a15",
+          "a35",
+          "a07"
+        ],
+        "recall": 0.5,
+        "answer_found": false,
+        "mrr": 0.5,
+        "ndcg": 0.17376534287144002,
+        "in_window": 0.2,
+        "traits": [
+          "temporal"
+        ]
+      },
+      {
+        "id": "qa14",
+        "top": [
+          "a17",
+          "a33",
+          "a35",
+          "a22",
+          "a08"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qa15",
+        "top": [
+          "a35",
+          "a22",
+          "a34",
+          "a11",
+          "a04"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qa16",
+        "top": [
+          "a20",
+          "a15",
+          "a30",
+          "a28",
+          "a27"
+        ],
+        "recall": 0.6666666666666666,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.649014791936513,
+        "traits": [
+          "multi"
+        ]
+      },
+      {
+        "id": "qa17",
+        "top": [
+          "a32",
+          "a06",
+          "a30",
+          "a34",
+          "a24"
+        ],
+        "recall": 0.8,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.6086067874378557,
+        "traits": [
+          "person",
+          "multi"
+        ]
+      },
+      {
+        "id": "qa18",
+        "top": [
+          "a18",
+          "a31",
+          "a25",
+          "a19",
+          "a11"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 0.25,
+        "ndcg": 0.4306765580733931,
+        "traits": [
+          "paraphrase",
+          "temporal"
+        ]
+      },
+      {
+        "id": "qb01",
+        "top": [
+          "b08",
+          "b01",
+          "b25",
+          "b05",
+          "b35"
+        ],
+        "recall": 0.5,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.5891125087409779,
+        "traits": [
+          "person",
+          "multi"
+        ]
+      },
+      {
+        "id": "qb02",
+        "top": [
+          "b08",
+          "b12",
+          "b14",
+          "b36",
+          "b22"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.7967075809905066,
+        "traits": [
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qb03",
+        "top": [
+          "b26",
+          "b34",
+          "b03",
+          "b11",
+          "b16"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.9515234565959557,
+        "traits": [
+          "person",
+          "temporal"
+        ]
+      },
+      {
+        "id": "qb04",
+        "top": [
+          "b10",
+          "b36",
+          "b20",
+          "b11",
+          "b34"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "paraphrase",
+          "person"
+        ]
+      },
+      {
+        "id": "qb05",
+        "top": [
+          "b18",
+          "b19",
+          "b14",
+          "b26",
+          "b36"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.7967075809905066,
+        "traits": [
+          "lookup"
+        ]
+      },
+      {
+        "id": "qb06",
+        "top": [
+          "b07",
+          "b29",
+          "b14",
+          "b01",
+          "b22"
+        ],
+        "recall": 0.5,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.7144471267060176,
+        "traits": [
+          "paraphrase",
+          "multi"
+        ]
+      },
+      {
+        "id": "qb07",
+        "top": [
+          "b27",
+          "b10",
+          "b24",
+          "b20",
+          "b23"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.6885288809404666,
+        "traits": [
+          "person"
+        ]
+      },
+      {
+        "id": "qb08",
+        "top": [
+          "b02",
+          "b31",
+          "b13",
+          "b36",
+          "b19"
+        ],
+        "recall": 0.5,
+        "answer_found": true,
+        "mrr": 0.5,
+        "ndcg": 0.497223749750845,
+        "traits": [
+          "multi"
+        ]
+      },
+      {
+        "id": "qb09",
+        "top": [
+          "b21",
+          "b36",
+          "b06",
+          "b18",
+          "b07"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "lookup"
+        ]
+      },
+      {
+        "id": "qb10",
+        "top": [
+          "b22",
+          "b23",
+          "b35",
+          "b20",
+          "b09"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "person"
+        ]
+      },
+      {
+        "id": "qb11",
+        "top": [
+          "b28",
+          "b17",
+          "b04",
+          "b14",
+          "b30"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "lookup"
+        ]
+      },
+      {
+        "id": "qb12",
+        "top": [
+          "b09",
+          "b34",
+          "b14",
+          "b35",
+          "b36"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 0.5,
+        "ndcg": 0.639909328045346,
+        "in_window": 0.6,
+        "traits": [
+          "temporal",
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qb13",
+        "top": [
+          "b09",
+          "b29",
+          "b01",
+          "b34",
+          "b36"
+        ],
+        "recall": 0.6666666666666666,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.9072836011519267,
+        "traits": [
+          "paraphrase",
+          "multi"
+        ]
+      },
+      {
+        "id": "qb14",
+        "top": [
+          "b30",
+          "b15",
+          "b05",
+          "b12",
+          "b35"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 0.5,
+        "ndcg": 0.6309297535714574,
+        "traits": [
+          "person",
+          "lookup"
+        ]
+      },
+      {
+        "id": "qb15",
+        "top": [
+          "b30",
+          "b25",
+          "b05",
+          "b08",
+          "b20"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.9726097514324383,
+        "traits": [
+          "person",
+          "multi"
+        ]
+      },
+      {
+        "id": "qb16",
+        "top": [
+          "b32",
+          "b16",
+          "b07",
+          "b36",
+          "b14"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qb17",
+        "top": [
+          "b36",
+          "b26",
+          "b12",
+          "b09",
+          "b02"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "in_window": 0.2,
+        "traits": [
+          "person",
+          "temporal"
+        ]
+      },
+      {
+        "id": "qb18",
+        "top": [
+          "b08",
+          "b01",
+          "b12",
+          "b05",
+          "b25"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 0.5,
+        "ndcg": 0.6309297535714574,
+        "in_window": 0.4,
+        "traits": [
+          "temporal",
+          "person"
+        ]
+      }
+    ],
+    "agent_search": [
+      {
+        "id": "qa01",
+        "top": [
+          "a07",
+          "a14",
+          "a19",
+          "a36",
+          "a17"
+        ],
+        "recall": 0.3333333333333333,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.7262287617954056,
+        "traits": [
+          "lookup",
+          "person"
+        ]
+      },
+      {
+        "id": "qa02",
+        "top": [
+          "a17",
+          "a08",
+          "a15",
+          "a23",
+          "a16"
+        ],
+        "recall": 0.5,
+        "answer_found": true,
+        "mrr": 0.5,
+        "ndcg": 0.3868528072345416,
+        "traits": [
+          "paraphrase",
+          "person"
+        ]
+      },
+      {
+        "id": "qa03",
+        "top": [
+          "a23",
+          "a08",
+          "a15",
+          "a35",
+          "a19"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "person"
+        ]
+      },
+      {
+        "id": "qa04",
+        "top": [
+          "a30",
+          "a26",
+          "a36",
+          "a20",
+          "a28"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "lookup"
+        ]
+      },
+      {
+        "id": "qa05",
+        "top": [
+          "a26",
+          "a15",
+          "a28",
+          "a08",
+          "a02"
+        ],
+        "recall": 0.5,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.8262346571285599,
+        "traits": [
+          "paraphrase",
+          "multi"
+        ]
+      },
+      {
+        "id": "qa06",
+        "top": [
+          "a04",
+          "a11",
+          "a16",
+          "a35",
+          "a27"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.7579237460681981,
+        "traits": [
+          "person",
+          "multi"
+        ]
+      },
+      {
+        "id": "qa07",
+        "top": [
+          "a32",
+          "a06",
+          "a21",
+          "a18",
+          "a14"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qa08",
+        "top": [
+          "a13",
+          "a10",
+          "a03",
+          "a34",
+          "a33"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.9726097514324383,
+        "traits": [
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qa09",
+        "top": [
+          "a23",
+          "a03",
+          "a29",
+          "a01",
+          "a12"
+        ],
+        "recall": 0.6666666666666666,
+        "answer_found": true,
+        "mrr": 0.3333333333333333,
+        "ndcg": 0.40198176216091885,
+        "traits": [
+          "person",
+          "multi"
+        ]
+      },
+      {
+        "id": "qa10",
+        "top": [
+          "a18",
+          "a08",
+          "a35",
+          "a14",
+          "a36"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "person",
+          "lookup"
+        ]
+      },
+      {
+        "id": "qa11",
+        "top": [
+          "a29",
+          "a32",
+          "a11",
+          "a01",
+          "a18"
+        ],
+        "recall": 0.5,
+        "answer_found": false,
+        "mrr": 1.0,
+        "ndcg": 0.27541155237618664,
+        "traits": [
+          "person"
+        ]
+      },
+      {
+        "id": "qa12",
+        "top": [
+          "a15",
+          "a11",
+          "a22",
+          "a07",
+          "a19"
+        ],
+        "recall": 0.0,
+        "answer_found": false,
+        "mrr": 0.0,
+        "ndcg": 0.0,
+        "in_window": 0.0,
+        "traits": [
+          "temporal",
+          "multi"
+        ]
+      },
+      {
+        "id": "qa13",
+        "top": [
+          "a36",
+          "a28",
+          "a15",
+          "a35",
+          "a07"
+        ],
+        "recall": 0.5,
+        "answer_found": false,
+        "mrr": 0.5,
+        "ndcg": 0.17376534287144002,
+        "in_window": 0.2,
+        "traits": [
+          "temporal"
+        ]
+      },
+      {
+        "id": "qa14",
+        "top": [
+          "a17",
+          "a33",
+          "a35",
+          "a22",
+          "a08"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qa15",
+        "top": [
+          "a35",
+          "a22",
+          "a34",
+          "a11",
+          "a04"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qa16",
+        "top": [
+          "a20",
+          "a15",
+          "a30",
+          "a28",
+          "a27"
+        ],
+        "recall": 0.6666666666666666,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.649014791936513,
+        "traits": [
+          "multi"
+        ]
+      },
+      {
+        "id": "qa17",
+        "top": [
+          "a32",
+          "a06",
+          "a30",
+          "a34",
+          "a24"
+        ],
+        "recall": 0.8,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.6086067874378557,
+        "traits": [
+          "person",
+          "multi"
+        ]
+      },
+      {
+        "id": "qa18",
+        "top": [
+          "a18",
+          "a31",
+          "a25",
+          "a19",
+          "a11"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 0.25,
+        "ndcg": 0.4306765580733931,
+        "traits": [
+          "paraphrase",
+          "temporal"
+        ]
+      },
+      {
+        "id": "qb01",
+        "top": [
+          "b08",
+          "b01",
+          "b25",
+          "b05",
+          "b35"
+        ],
+        "recall": 0.5,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.5891125087409779,
+        "traits": [
+          "person",
+          "multi"
+        ]
+      },
+      {
+        "id": "qb02",
+        "top": [
+          "b08",
+          "b12",
+          "b14",
+          "b36",
+          "b22"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.7967075809905066,
+        "traits": [
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qb03",
+        "top": [
+          "b26",
+          "b34",
+          "b03",
+          "b11",
+          "b16"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.9515234565959557,
+        "traits": [
+          "person",
+          "temporal"
+        ]
+      },
+      {
+        "id": "qb04",
+        "top": [
+          "b10",
+          "b36",
+          "b20",
+          "b11",
+          "b34"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "paraphrase",
+          "person"
+        ]
+      },
+      {
+        "id": "qb05",
+        "top": [
+          "b18",
+          "b19",
+          "b14",
+          "b26",
+          "b36"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.7967075809905066,
+        "traits": [
+          "lookup"
+        ]
+      },
+      {
+        "id": "qb06",
+        "top": [
+          "b07",
+          "b29",
+          "b14",
+          "b01",
+          "b22"
+        ],
+        "recall": 0.5,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.7144471267060176,
+        "traits": [
+          "paraphrase",
+          "multi"
+        ]
+      },
+      {
+        "id": "qb07",
+        "top": [
+          "b27",
+          "b10",
+          "b24",
+          "b20",
+          "b23"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.6885288809404666,
+        "traits": [
+          "person"
+        ]
+      },
+      {
+        "id": "qb08",
+        "top": [
+          "b02",
+          "b31",
+          "b13",
+          "b36",
+          "b19"
+        ],
+        "recall": 0.5,
+        "answer_found": true,
+        "mrr": 0.5,
+        "ndcg": 0.497223749750845,
+        "traits": [
+          "multi"
+        ]
+      },
+      {
+        "id": "qb09",
+        "top": [
+          "b21",
+          "b36",
+          "b06",
+          "b18",
+          "b07"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "lookup"
+        ]
+      },
+      {
+        "id": "qb10",
+        "top": [
+          "b22",
+          "b23",
+          "b35",
+          "b20",
+          "b09"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "person"
+        ]
+      },
+      {
+        "id": "qb11",
+        "top": [
+          "b28",
+          "b17",
+          "b04",
+          "b14",
+          "b30"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "lookup"
+        ]
+      },
+      {
+        "id": "qb12",
+        "top": [
+          "b09",
+          "b34",
+          "b14",
+          "b35",
+          "b36"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 0.5,
+        "ndcg": 0.639909328045346,
+        "in_window": 0.6,
+        "traits": [
+          "temporal",
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qb13",
+        "top": [
+          "b09",
+          "b29",
+          "b01",
+          "b34",
+          "b36"
+        ],
+        "recall": 0.6666666666666666,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.9072836011519267,
+        "traits": [
+          "paraphrase",
+          "multi"
+        ]
+      },
+      {
+        "id": "qb14",
+        "top": [
+          "b30",
+          "b15",
+          "b05",
+          "b12",
+          "b35"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 0.5,
+        "ndcg": 0.6309297535714574,
+        "traits": [
+          "person",
+          "lookup"
+        ]
+      },
+      {
+        "id": "qb15",
+        "top": [
+          "b30",
+          "b25",
+          "b05",
+          "b08",
+          "b20"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 0.9726097514324383,
+        "traits": [
+          "person",
+          "multi"
+        ]
+      },
+      {
+        "id": "qb16",
+        "top": [
+          "b32",
+          "b16",
+          "b07",
+          "b36",
+          "b14"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "traits": [
+          "paraphrase"
+        ]
+      },
+      {
+        "id": "qb17",
+        "top": [
+          "b36",
+          "b26",
+          "b12",
+          "b09",
+          "b02"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 1.0,
+        "ndcg": 1.0,
+        "in_window": 0.2,
+        "traits": [
+          "person",
+          "temporal"
+        ]
+      },
+      {
+        "id": "qb18",
+        "top": [
+          "b08",
+          "b01",
+          "b12",
+          "b05",
+          "b25"
+        ],
+        "recall": 1.0,
+        "answer_found": true,
+        "mrr": 0.5,
+        "ndcg": 0.6309297535714574,
+        "in_window": 0.4,
+        "traits": [
+          "temporal",
+          "person"
+        ]
+      }
+    ]
+  }
+}

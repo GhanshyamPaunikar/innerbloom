@@ -35,7 +35,7 @@ Thumbs.db
 .env.local
 
 # SSH agent artifacts
-eval*
+/eval*
 
 # Coverage
 htmlcov/

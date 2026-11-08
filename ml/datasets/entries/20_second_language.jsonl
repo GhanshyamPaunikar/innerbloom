@@ -1,0 +1,70 @@
+{"id":"e1361","text":"Today my manager was telling me I am doing very good job. First time in this company. I am feeling very much proud.","emotion":"proud","also":["happy"],"intensity":7,"people_optional":["my manager"]}
+{"id":"e1362","text":"Missing my family in Kerala so much. Here nobody is knowing my name properly. Everybody says it wrong.","emotion":"lonely","also":["sad"],"intensity":6,"not_people":["Kerala"]}
+{"id":"e1363","text":"Visa interview tomorrow morning. Not able to sleep. All documents I have checked five times only.","emotion":"anxious","intensity":8,"traits":["time"]}
+{"id":"e1364","text":"Finally passed the IELTS with 7.5! Called Amma and she was crying on phone. So happy today.","emotion":"happy","also":["proud"],"intensity":9,"people":["Amma"],"not_people":["IELTS"]}
+{"id":"e1365","text":"Landlord is again not fixing the heater. Three weeks I am asking. In this cold. Very angry now.","emotion":"angry","also":["frustrated"],"intensity":7}
+{"id":"e1366","text":"Rainy Sunday, made chai, called nobody, did nothing. Quite peaceful actually.","emotion":"calm","also":["content"],"intensity":4,"not_people":["Sunday"]}
+{"id":"e1367","text":"My colleague Dmitri is always making jokes about my accent. Others are laughing. I am also laughing but inside not.","emotion":"sad","also":["frustrated"],"intensity":6,"people":["Dmitri"],"traits":["indirect"]}
+{"id":"e1368","text":"Thank you god for this job. After eight months searching, finally something. Grateful for every small thing today.","emotion":"grateful","also":["happy"],"intensity":8}
+{"id":"e1369","text":"So many forms for the residence permit. Each office sending me to other office. My head is spinning.","emotion":"overwhelmed","also":["frustrated"],"intensity":7}
+{"id":"e1370","text":"Went to the Diwali event at community hall. Met people from my state. Felt like home for few hours.","emotion":"happy","also":["content"],"intensity":7,"not_people":["Diwali"]}
+{"id":"e1371","text":"Working double shift for sending more money home. Body is not having any energy left.","emotion":"tired","intensity":8}
+{"id":"e1372","text":"Lucía from language class invited me for dinner with her family. They were so warm. I am not feeling foreigner tonight.","emotion":"happy","also":["grateful"],"intensity":7,"people":["Lucía"],"traits":["negation"]}
+{"id":"e1373","text":"I am thinking a lot, is it right decision to come here? Money is better, but life is less. Don't know.","emotion":"reflective","also":["sad"],"intensity":5}
+{"id":"e1374","text":"My daughter is speaking English better than me now. She is correcting me in shop. I am proud and little bit sad also.","emotion":"proud","also":["sad"],"intensity":6,"people_optional":["My daughter"],"traits":["mixed"]}
+{"id":"e1375","text":"Bus was late, train was late, I was late, boss was not happy. Bad bad day.","emotion":"frustrated","intensity":5}
+{"id":"e1376","text":"Next month my parents are coming for visiting! First time in three years. Cleaning the flat already.","emotion":"excited","also":["happy"],"intensity":8,"people_optional":["my parents"],"traits":["time"]}
+{"id":"e1377","text":"Nobody to talk in my language here. Sometimes I am talking to myself in Tamil only to hear it.","emotion":"lonely","intensity":6,"not_people":["Tamil"],"traits":["indirect"]}
+{"id":"e1378","text":"Passed the driving test in first attempt! The examiner was also smiling. Feeling like king today.","emotion":"proud","also":["happy"],"intensity":8}
+{"id":"e1379","text":"The doctor is not understanding what I am explaining. I am not understanding what she is explaining. Very frustrating.","emotion":"frustrated","also":["anxious"],"intensity":6}
+{"id":"e1380","text":"Today I am content. Small room, but warm. Good food, phone call with Appa. Enough.","emotion":"content","also":["calm"],"intensity":5,"people":["Appa"]}
+{"id":"e1381","text":"My hands are shaking. The court is deciding about my asylum next week. Everything depends on this.","emotion":"anxious","intensity":9,"traits":["time"]}
+{"id":"e1382","text":"Neighbour old lady is giving me apples from her tree every week. She is not speaking my language but is very kind.","emotion":"grateful","intensity":5,"people_optional":["Neighbour old lady"]}
+{"id":"e1383","text":"Hopefully this new course will help me get better job. Classes start Monday. Bought new notebook.","emotion":"hopeful","also":["excited"],"intensity":5,"not_people":["Monday"],"traits":["time"]}
+{"id":"e1384","text":"Ramadan alone in new country is very different. Breaking fast by myself in kitchen. Missing the noise of home.","emotion":"lonely","also":["sad"],"intensity":6,"not_people":["Ramadan"]}
+{"id":"e1385","text":"My son got the scholarship. All the sacrifice is worth it now. I am crying happy tears.","emotion":"happy","also":["proud","grateful"],"intensity":9,"people_optional":["My son"]}
+{"id":"e1386","text":"I am so much tired of explaining where I am really from. I am from here also now.","emotion":"frustrated","also":["tired"],"intensity":5}
+{"id":"e1387","text":"Man in supermarket shouted 'go back to your country' at me. Still shaking. Why people are like this.","emotion":"angry","also":["sad","anxious"],"intensity":8}
+{"id":"e1388","text":"Cooked biryani for my flatmates. They are asking for recipe! Little victory.","emotion":"proud","also":["happy"],"intensity":5}
+{"id":"e1389","text":"Long day of interviews. Three companies. All are saying 'we will let you know'. Waiting now.","emotion":"tired","also":["hopeful","anxious"],"intensity":5,"traits":["ambiguous"]}
+{"id":"e1390","text":"Very calm today. Went to the lake after work, sat on bench, watched ducks. No thinking.","emotion":"calm","intensity":5}
+{"id":"e1391","text":"So many things happening: new job, moving flat, wife's pregnancy, papers for the bank. I am not able to think straight.","emotion":"overwhelmed","also":["anxious"],"intensity":7,"people_optional":["wife"]}
+{"id":"e1392","text":"Thinking of my father today. He died when I was here and I could not go. Still this is hurting.","emotion":"sad","also":["reflective"],"intensity":8,"people_optional":["my father"]}
+{"id":"e1393","text":"The tea lady at office, Mrs. Begum, is always asking how is my mother. Small thing. Means a lot.","emotion":"grateful","intensity":5,"people":["Mrs. Begum"]}
+{"id":"e1394","text":"I got the permanent residence!!! After six years! I want to tell everybody on the street!","emotion":"excited","also":["happy","grateful"],"intensity":10}
+{"id":"e1395","text":"Today nothing special. Work, gym, dinner. Okay day.","emotion":"neutral","intensity":2,"traits":["short"]}
+{"id":"e1396","text":"Nervous for presentation in English in front of whole team. I am practising whole night.","emotion":"anxious","intensity":7}
+{"id":"e1397","text":"My English teacher Ruth said my writing is improving very fast. Feeling hopeful that one day I can write like native.","emotion":"hopeful","also":["proud"],"intensity":6,"people":["Ruth"]}
+{"id":"e1398","text":"Housemates are having party again until 3am on work night. I am asking politely many times. Now I am angry.","emotion":"angry","also":["tired"],"intensity":6}
+{"id":"e1399","text":"Cleaned the whole flat, did laundry, cooked for the week. Feeling good, everything in order.","emotion":"content","intensity":4}
+{"id":"e1400","text":"Watching old video of my wedding back home. Everybody dancing. Some of them now not alive. Heavy heart.","emotion":"sad","also":["reflective"],"intensity":7}
+{"id":"e1401","text":"The bank refused my loan because I am not here long enough. Every door is closing. What I am supposed to do.","emotion":"frustrated","also":["sad","anxious"],"intensity":7}
+{"id":"e1402","text":"Am I becoming different person in this country? My friends back home say I am talking differently. Thinking about it.","emotion":"reflective","intensity":5}
+{"id":"e1403","text":"First snow of my life today!! I went outside in slippers like small child. Neighbours were laughing at me.","emotion":"excited","also":["happy"],"intensity":8}
+{"id":"e1404","text":"Grateful for video calls. I am seeing my nephew grow even from far away.","emotion":"grateful","intensity":5,"people_optional":["my nephew"]}
+{"id":"e1405","text":"Too much tired for writing today. Only: shift was twelve hours.","emotion":"tired","intensity":7,"traits":["short"]}
+{"id":"e1406","text":"Lonely in the evenings mostly. Daytime is okay with work. After 7pm the room is very quiet.","emotion":"lonely","intensity":5}
+{"id":"e1407","text":"Got promotion to team leader. Me, who could not speak English properly five years ago. Who is laughing now.","emotion":"proud","also":["happy"],"intensity":8}
+{"id":"e1408","text":"Hoping my brother's visa will be approved this time. Second application. Praying.","emotion":"hopeful","also":["anxious"],"intensity":6,"people_optional":["my brother"]}
+{"id":"e1409","text":"Kenji from the factory is teaching me to fish on Sundays. We don't speak much. It is peaceful.","emotion":"calm","also":["content","grateful"],"intensity":4,"people":["Kenji"],"not_people":["Sundays"]}
+{"id":"e1410","text":"The officer at immigration was so rude to my mother at airport. I am still boiling.","emotion":"angry","intensity":8,"people_optional":["my mother"]}
+{"id":"e1411","text":"Is it normal to feel happy and guilty same time? I am enjoying my life here while family is struggling.","emotion":"reflective","also":["happy","sad"],"intensity":6,"traits":["mixed"]}
+{"id":"e1412","text":"Tomorrow is citizenship ceremony. I bought a new suit. Cannot believe this day is coming.","emotion":"excited","also":["proud"],"intensity":9,"traits":["time"]}
+{"id":"e1413","text":"Fixed the bicycle myself watching videos. Small things I am learning here alone.","emotion":"proud","also":["content"],"intensity":4}
+{"id":"e1414","text":"The children at the school are asking my daughter why she is wearing hijab. She came home very quiet.","emotion":"sad","also":["anxious"],"intensity":6,"people_optional":["my daughter"]}
+{"id":"e1415","text":"Life is slowly settling. Job is stable, flat is nice, I have two friends now. Feeling content.","emotion":"content","also":["hopeful"],"intensity":5}
+{"id":"e1416","text":"I cannot sleep thinking about Ammi's operation back home. I am so far. If something happens I cannot reach.","emotion":"anxious","also":["sad"],"intensity":8,"people":["Ammi"]}
+{"id":"e1417","text":"Thank you to the volunteer at the food bank, Tom. He helped me fill the forms in simple English.","emotion":"grateful","intensity":6,"people":["Tom"]}
+{"id":"e1418","text":"Weekend I am working, weekdays I am studying. No time for anything. Too many responsibilities.","emotion":"overwhelmed","also":["tired"],"intensity":6}
+{"id":"e1419","text":"Went for interview, waited two hours, they said position is filled already. Wasted whole day.","emotion":"frustrated","also":["angry"],"intensity":6}
+{"id":"e1420","text":"Paid the rent, bought groceries, sent money home. Balance is zero but everything is paid.","emotion":"neutral","also":["tired"],"intensity":3,"traits":["factual"]}
+{"id":"e1421","text":"The landlady invited me for Christmas dinner. First Christmas I am not alone in this country.","emotion":"grateful","also":["happy"],"intensity":7,"people_optional":["The landlady"],"not_people":["Christmas"],"traits":["negation"]}
+{"id":"e1422","text":"I am feeling hopeful. Small steps every day. One day this will feel like home.","emotion":"hopeful","intensity":5}
+{"id":"e1423","text":"Somebody stole my bike from outside the station. The only thing I own here that cost money. Very sad and angry.","emotion":"sad","also":["angry"],"intensity":6,"traits":["mixed"]}
+{"id":"e1424","text":"Sunday market with Aisha and her kids. We are buying vegetables and laughing at prices. Simple happiness.","emotion":"happy","also":["content"],"intensity":5,"people":["Aisha"],"not_people":["Sunday"]}
+{"id":"e1425","text":"My boss is shouting at everybody but specially at me. I think because I am not answering back. Feeling small.","emotion":"sad","also":["frustrated"],"intensity":6,"people_optional":["My boss"]}
+{"id":"e1426","text":"Tired but satisfied. Finished night school course with distinction. Certificate on wall.","emotion":"proud","also":["tired","content"],"intensity":7,"traits":["mixed"]}
+{"id":"e1427","text":"So much paperwork for registering the baby. Two languages, three offices, one crying baby.","emotion":"overwhelmed","also":["tired","frustrated"],"intensity":6}
+{"id":"e1428","text":"Looking at the sky tonight and thinking same moon is over my village. That is giving me some peace.","emotion":"calm","also":["lonely","reflective"],"intensity":4,"traits":["ambiguous"]}
+{"id":"e1429","text":"In ten days I will see my children after two years. I am counting the hours.","emotion":"excited","also":["happy"],"intensity":9,"people_optional":["my children"],"traits":["time"]}
+{"id":"e1430","text":"I think I am finally understanding British humour. Laughed at a joke in meeting at right time. Big moment.","emotion":"happy","also":["proud"],"intensity":5}

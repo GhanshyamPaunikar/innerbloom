@@ -1,26 +1,27 @@
 {
-  "seed": "innerbloom-split-v1",
+  "seed": "innerbloom-split-v2",
   "shares": {
-    "train": 0.7,
-    "validation": 0.15,
-    "test": 0.15
+    "train": 0.6,
+    "validation": 0.2,
+    "test": 0.2
   },
-  "entries": 1220,
+  "entries": 2001,
+  "train_only_entries": 160,
   "splits": {
     "train": {
-      "entries": 855,
-      "groups": 851,
-      "sha256": "7cc410ddb1e169c1bdc4e980c8e3faa7984e6e11abf634d148b408137f11822b"
+      "entries": 1359,
+      "groups": 1296,
+      "sha256": "fc9b825fc41c0d49fe96efc7631b7e88587b3f25acee11e95f6670a6aca947cd"
     },
     "validation": {
-      "entries": 183,
-      "groups": 182,
-      "sha256": "b0dcab49af32b4f01738419657e20681b730f694738ac7f75f092006402d6187"
+      "entries": 402,
+      "groups": 400,
+      "sha256": "63e45a2a7635fcbb33a8e2939512cd78b81f99ca952b99788f10623b322eaa4e"
     },
     "test": {
-      "entries": 182,
-      "groups": 182,
-      "sha256": "e622927f7b546baa7b3015574759a2ccf959f87138961af4a65fa23b32ea4610"
+      "entries": 400,
+      "groups": 400,
+      "sha256": "d522357791888d65a407dc846a1ad32f6fefedcbd21af8f4bef3224db65f9ed9"
     }
   },
   "locked": "test"

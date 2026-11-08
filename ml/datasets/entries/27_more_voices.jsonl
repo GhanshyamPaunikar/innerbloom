@@ -1,0 +1,126 @@
+{"id":"e1876","text":"Flare day. Joints on fire, brain fog thick as soup. Cancelled everything. Again. People think I'm flaky; I'm just ill.","emotion":"frustrated","also":["tired","sad"],"intensity":7}
+{"id":"e1877","text":"Spoon count today: about three. Used two on a shower. Saving the last one for dinner.","emotion":"tired","intensity":7,"traits":["indirect"]}
+{"id":"e1878","text":"Neurologist finally believed me. Seven years of 'it's anxiety' and now there's a name for it. Relieved and furious in equal measure.","emotion":"angry","also":["calm"],"intensity":7,"people_optional":["Neurologist"],"traits":["mixed"]}
+{"id":"e1879","text":"Good pain day! Walked to the corner shop and back without the stick. Small things.","emotion":"hopeful","also":["happy"],"intensity":5}
+{"id":"e1880","text":"Wheelchair access at the theatre was 'temporarily unavailable'. Third time this year. Missed the show Esther got me tickets for.","emotion":"angry","also":["sad"],"intensity":7,"people":["Esther"]}
+{"id":"e1881","text":"Feeling okay with my body today, which is rare. It's carrying me through a lot.","emotion":"content","also":["grateful"],"intensity":4}
+{"id":"e1882","text":"Pain clinic appointment moved again. Four months more. I can't plan anything, not even a holiday, around a body like this.","emotion":"frustrated","also":["sad"],"intensity":6}
+{"id":"e1883","text":"Infusion day. Six hours in the chair. Read a whole book, chatted with Jun in the next chair. Not the worst Tuesday.","emotion":"calm","also":["tired"],"intensity":3,"people":["Jun"],"not_people":["Tuesday"]}
+{"id":"e1884","text":"Came out to my parents tonight. Mum hugged me. Dad went quiet and then said 'I just want you happy'. I'm shaking with relief.","emotion":"calm","also":["happy","grateful"],"intensity":8,"people":["Mum","Dad"],"traits":["mixed"]}
+{"id":"e1885","text":"First Pride. Twenty-nine and finally here. Dancing in the street with strangers who feel like family.","emotion":"happy","also":["excited","proud"],"intensity":9,"not_people":["Pride"]}
+{"id":"e1886","text":"Someone shouted at me and Mattie for holding hands on the bus. Mattie squeezed tighter. I'm still rattled.","emotion":"anxious","also":["angry"],"intensity":7,"people":["Mattie"]}
+{"id":"e1887","text":"Changed my name on the bank account today. Small form, huge feeling. It's really me now.","emotion":"proud","also":["happy"],"intensity":7}
+{"id":"e1888","text":"Hoping the gender clinic writes back soon. Two years on the waiting list. Checking the post every morning.","emotion":"hopeful","also":["anxious"],"intensity":6}
+{"id":"e1889","text":"Lonely being the only queer person in this village. The nearest community group is an hour's bus ride.","emotion":"lonely","intensity":6}
+{"id":"e1890","text":"Finished the commission for the café mural. Three weeks on scaffolding. Stood back today and felt like it was worth it.","emotion":"proud","also":["content"],"intensity":6}
+{"id":"e1891","text":"Creative block, day nineteen. Staring at blank canvases. Washed every brush I own twice.","emotion":"frustrated","also":["sad"],"intensity":5}
+{"id":"e1892","text":"Gallery wants six pieces for the spring show. Six! I've got two finished and a lot of sketches.","emotion":"excited","also":["anxious","overwhelmed"],"intensity":7}
+{"id":"e1893","text":"Played the piano for two hours without noticing time pass. That's the feeling I chase.","emotion":"calm","also":["content"],"intensity":5}
+{"id":"e1894","text":"Wondering whether my art is any good or whether I just like making it. Maybe that's enough.","emotion":"reflective","intensity":4}
+{"id":"e1895","text":"Pottery class: my first bowl that doesn't wobble. Taking it home like a trophy.","emotion":"proud","also":["happy"],"intensity":5}
+{"id":"e1896","text":"Album finished. Sent the masters off. Strange empty feeling now it's out of my hands.","emotion":"reflective","also":["proud","sad"],"intensity":5,"traits":["mixed"]}
+{"id":"e1897","text":"Can't decide between the two job offers and the deadline is Friday. Spreadsheets, lists, sleepless nights.","emotion":"overwhelmed","also":["anxious"],"intensity":6,"not_people":["Friday"]}
+{"id":"e1898","text":"Dad and I fixed the shed roof. Didn't say much. Good day.","emotion":"content","intensity":4,"people":["Dad"]}
+{"id":"e1899","text":"Match on. Pint. Dog asleep on my feet. Sorted.","emotion":"content","also":["calm"],"intensity":4,"traits":["short"]}
+{"id":"e1900","text":"Lads cancelled the fishing trip. Again. Not bothered. Bit bothered.","emotion":"lonely","also":["frustrated"],"intensity":4,"traits":["negation","ambiguous"]}
+{"id":"e1901","text":"Long day on the site. Concrete pour. Knackered but it went in level.","emotion":"tired","also":["proud"],"intensity":6}
+{"id":"e1902","text":"Thinking about what Dad would've made of me now. Reckon he'd be alright with it.","emotion":"reflective","also":["sad"],"intensity":4,"people":["Dad"]}
+{"id":"e1903","text":"Lambing season. Up four times a night. Lost one ewe, saved her twins. Mixed day.","emotion":"tired","also":["sad","proud"],"intensity":7,"traits":["mixed"]}
+{"id":"e1904","text":"Hay's in before the rain. Whole family on the trailer. Sat on the bales after with cider.","emotion":"content","also":["happy","tired"],"intensity":6}
+{"id":"e1905","text":"Milk price dropped again. Feed price up. Not sure how much longer we can keep the herd.","emotion":"anxious","also":["sad"],"intensity":7}
+{"id":"e1906","text":"First frost on the fields this morning. Breath clouding, dogs bouncing. Quiet and beautiful.","emotion":"calm","also":["content"],"intensity":5}
+{"id":"e1907","text":"Market day. Sold all the eggs and most of the honey. Mrs. Fairweather bought six jars for Christmas.","emotion":"happy","also":["content"],"intensity":5,"people":["Mrs. Fairweather"],"not_people":["Christmas"]}
+{"id":"e1908","text":"Prayed this morning before the hospital visit. Felt held. Whatever happens, we're not alone in it.","emotion":"calm","also":["hopeful"],"intensity":5}
+{"id":"e1909","text":"Fasting has made me notice how much I take for granted. Thinking about gratitude all day.","emotion":"reflective","also":["grateful"],"intensity":4}
+{"id":"e1910","text":"Gurdwara langar today. Served food for four hours with Uncle Harjit. Tired legs, full heart.","emotion":"content","also":["tired","grateful"],"intensity":5,"people":["Uncle Harjit"],"not_people":["Gurdwara"],"traits":["names_tricky"]}
+{"id":"e1911","text":"Questioning my faith a lot lately. Not losing it, just turning it over in my hands.","emotion":"reflective","intensity":5,"traits":["negation"]}
+{"id":"e1912","text":"Church choir is doing the Messiah at Easter and I've got a solo. Terrified and thrilled.","emotion":"excited","also":["anxious"],"intensity":7,"not_people":["Messiah","Easter"],"traits":["names_tricky","mixed"]}
+{"id":"e1913","text":"Too many sounds in the supermarket. Lights buzzing, music, beeping. Left my basket and walked out.","emotion":"overwhelmed","intensity":7}
+{"id":"e1914","text":"Got my ADHD diagnosis. Thirty-four years of feeling broken and now there's a reason. Spent the evening reading everything.","emotion":"reflective","also":["calm","sad"],"intensity":6,"not_people":["ADHD"]}
+{"id":"e1915","text":"Hyperfocused on the coding project for nine hours. Forgot lunch. Made something brilliant.","emotion":"proud","also":["tired"],"intensity":6}
+{"id":"e1916","text":"Masked all day at work. Smiled, nodded, small-talked. Home now in the dark with headphones on. So drained.","emotion":"tired","also":["overwhelmed"],"intensity":7}
+{"id":"e1917","text":"Found a group for autistic adults that meets on Thursdays. First time I've felt like I'm speaking the same language.","emotion":"hopeful","also":["happy"],"intensity":6,"not_people":["Thursdays"]}
+{"id":"e1918","text":"The plan changed at the last minute and my whole day fell apart. I know it's small to others.","emotion":"overwhelmed","also":["frustrated"],"intensity":6}
+{"id":"e1919","text":"Maa made aloo paratha for breakfast and packed extra for office. Feeling very looked after today.","emotion":"grateful","also":["content"],"intensity":5,"people":["Maa"]}
+{"id":"e1920","text":"Sharma ji's son got into IIT and now the whole colony is comparing. Not stressed only, just tired of it.","emotion":"frustrated","also":["tired"],"intensity":5,"people":["Sharma ji"],"not_people":["IIT"],"traits":["negation","names_tricky"]}
+{"id":"e1921","text":"Wedding season again. Three functions this week, mehendi, sangeet, reception. My feet have filed a complaint.","emotion":"tired","also":["happy"],"intensity":6,"traits":["mixed"]}
+{"id":"e1922","text":"Rishta meeting tomorrow. Mummy has already planned the menu. I have planned my escape. Very nervous.","emotion":"anxious","intensity":6,"people":["Mummy"],"traits":["time"]}
+{"id":"e1923","text":"Board exam results day. 92%. Papa distributed sweets in the whole building before I even saw the marksheet.","emotion":"proud","also":["happy"],"intensity":8,"people":["Papa"]}
+{"id":"e1924","text":"Monsoon finally here. Sat on the balcony with chai and pakoras watching the rain. Total peace.","emotion":"calm","also":["content"],"intensity":5}
+{"id":"e1925","text":"Shifting to Bangalore next month for the new job. Excited, but leaving Nani is breaking my heart.","emotion":"excited","also":["sad"],"intensity":6,"people":["Nani"],"not_people":["Bangalore"],"traits":["mixed","time"]}
+{"id":"e1926","text":"Auto driver took the long route and charged double. Argued for ten minutes. Lost. Sigh.","emotion":"frustrated","intensity":4}
+{"id":"e1927","text":"Diwali cleaning: every cupboard, every fan, every corner. House is shining. Me, not so much.","emotion":"tired","also":["proud"],"intensity":6,"not_people":["Diwali"]}
+{"id":"e1928","text":"Hostel is very quiet this weekend, everyone went home. Me and the mess food.","emotion":"lonely","intensity":5}
+{"id":"e1929","text":"Dissertation submitted at 11:58pm. Two minutes to spare. I'm free, I'm free, I'm free.","emotion":"excited","also":["happy","tired"],"intensity":9}
+{"id":"e1930","text":"Second year is harder than I thought. Lectures, labs, part-time job, rent. Something has to give.","emotion":"overwhelmed","also":["anxious"],"intensity":7}
+{"id":"e1931","text":"Seminar went well. I spoke three times and nobody looked at me funny. Small wins.","emotion":"proud","also":["calm"],"intensity":5}
+{"id":"e1932","text":"Library till midnight again. Too tired to walk home. Got a taxi I can't afford.","emotion":"tired","intensity":7}
+{"id":"e1933","text":"Graduation in two weeks. Mum and Dad flying in from Nairobi. Already crying thinking about it.","emotion":"excited","also":["happy"],"intensity":8,"people":["Mum","Dad"],"not_people":["Nairobi"],"traits":["time"]}
+{"id":"e1934","text":"I'm wondering if I picked the wrong course. I love the idea of law more than actually doing it.","emotion":"reflective","also":["anxious"],"intensity":5}
+{"id":"e1935","text":"Hoping the internship comes through. Final interview went well. They said 'end of the week'.","emotion":"hopeful","also":["anxious"],"intensity":6}
+{"id":"e1936","text":"Flatmates are lovely but loud. Hiding in my room with earplugs just to read a chapter.","emotion":"overwhelmed","also":["frustrated"],"intensity":4}
+{"id":"e1937","text":"Sunday bike ride with Bas along the dyke. Wind in our faces, cheese sandwiches. Good life.","emotion":"content","also":["happy"],"intensity":5,"people":["Bas"],"not_people":["Sunday"]}
+{"id":"e1938","text":"Mum's memory clinic said it's early dementia. Driving home, I kept thinking about all the years we have left and how to fill them.","emotion":"sad","also":["reflective"],"intensity":8,"people":["Mum"]}
+{"id":"e1939","text":"Visited the grave on his birthday. Told him about the new job. Left a cigar, as a joke he'd have liked.","emotion":"reflective","also":["sad"],"intensity":5}
+{"id":"e1940","text":"Six months since Ana died and I laughed properly today. Then felt guilty. Then decided she'd want me to.","emotion":"hopeful","also":["sad"],"intensity":5,"people":["Ana"],"traits":["mixed"]}
+{"id":"e1941","text":"Clearing Grandad's shed. Every tin of screws sorted by size. He was so careful. I kept one tin.","emotion":"reflective","also":["sad"],"intensity":5,"people":["Grandad"]}
+{"id":"e1942","text":"Grief group tonight. Seven strangers, one candle, lots of tissues. I wasn't the only one. That helped.","emotion":"hopeful","also":["sad","grateful"],"intensity":5,"traits":["mixed"]}
+{"id":"e1943","text":"Ordinary day. Walked to the station, worked, came back. Nothing to note.","emotion":"neutral","intensity":1,"traits":["factual"]}
+{"id":"e1944","text":"Worked on the spreadsheet. Sent it to Monique. Lunch at 1.","emotion":"neutral","intensity":1,"people":["Monique"],"traits":["factual","short"]}
+{"id":"e1945","text":"Car insurance renewed online. Cheaper than last year by a bit.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1946","text":"Planted onions in the raised bed. Watered the tomatoes. Swept the path.","emotion":"neutral","intensity":1,"traits":["factual"]}
+{"id":"e1947","text":"Booked the plumber for next Tuesday. Bought filters for the tap.","emotion":"neutral","intensity":1,"not_people":["Tuesday"],"traits":["factual","short"]}
+{"id":"e1948","text":"Gym at 6, office at 8, home at 6. Pasta. Bed at 11.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1949","text":"Took the cat to the vet for her jabs. All fine. Paid £46.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1950","text":"Returned the parcel at the post office. Got a receipt.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1951","text":"Finished the quarterly report and filed it. Meeting with Lars tomorrow.","emotion":"neutral","intensity":1,"people":["Lars"],"traits":["factual","short","time"]}
+{"id":"e1952","text":"It was a day. Some good bits, some bad bits, nothing big either way.","emotion":"neutral","intensity":2,"traits":["ambiguous"]}
+{"id":"e1953","text":"Sorted the bookshelf. Took two bags to the charity shop.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1954","text":"Rang the council about the pothole. Reference number noted.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1955","text":"Thank you to Oskar for lending me his drill and his patience.","emotion":"grateful","intensity":4,"people":["Oskar"]}
+{"id":"e1956","text":"Grateful to the night bus driver who waited for me to run the last fifty metres.","emotion":"grateful","intensity":4}
+{"id":"e1957","text":"My mentor, Dr. Yildiz, read my whole grant proposal on her weekend. I owe her.","emotion":"grateful","intensity":6,"people":["Dr. Yildiz"],"people_optional":["My mentor"]}
+{"id":"e1958","text":"Furious that the gym cancelled my membership without telling me and kept charging the card.","emotion":"angry","also":["frustrated"],"intensity":6}
+{"id":"e1959","text":"Neighbour cut down the tree on my side of the fence without asking. Forty years old. Raging.","emotion":"angry","also":["sad"],"intensity":7}
+{"id":"e1960","text":"The airline cancelled our flight home and offered a voucher. Stranded with two kids. So angry I can't think.","emotion":"angry","also":["anxious"],"intensity":8}
+{"id":"e1961","text":"Thinking about how much of my week goes to things I don't care about. Time to cut some.","emotion":"reflective","intensity":4}
+{"id":"e1962","text":"I wonder if Nadia knows how much that conversation meant. Should tell her.","emotion":"reflective","also":["grateful"],"intensity":4,"people":["Nadia"]}
+{"id":"e1963","text":"Midlife audit: good marriage, so-so job, bad knees, great kids. Could be worse. Could be better.","emotion":"reflective","also":["content"],"intensity":4}
+{"id":"e1964","text":"I keep noticing I'm happiest around water. Rivers, sea, even the bath. Something in that.","emotion":"reflective","intensity":4}
+{"id":"e1965","text":"Excited to start the pottery wheel course on Saturday. Bought an apron already.","emotion":"excited","intensity":6,"not_people":["Saturday"],"traits":["time"]}
+{"id":"e1966","text":"New bike arrives tomorrow! Planned my first route along the coast.","emotion":"excited","intensity":7,"traits":["time"]}
+{"id":"e1967","text":"Hoping my sister and I can fix things at the wedding. We haven't spoken properly in a year.","emotion":"hopeful","also":["anxious"],"intensity":5,"people_optional":["my sister"]}
+{"id":"e1968","text":"The garden is slowly coming back after the flood. New shoots on the roses. Maybe it'll be okay.","emotion":"hopeful","intensity":5}
+{"id":"e1969","text":"Started saving for the deposit properly. £200 a month. Long way to go, but it's a start.","emotion":"hopeful","also":["proud"],"intensity":4}
+{"id":"e1970","text":"Therapy is slowly helping. I caught myself in the old thought pattern today and stepped out of it.","emotion":"hopeful","also":["proud"],"intensity":5}
+{"id":"e1971","text":"I think the worst of the money stuff might be behind us. Paid off the last overdue bill today.","emotion":"hopeful","also":["calm"],"intensity":6}
+{"id":"e1972","text":"Signed up for the evening course in counselling. Maybe this is what I'm meant to do.","emotion":"hopeful","also":["excited"],"intensity":5}
+{"id":"e1973","text":"Physio says the shoulder's healing well. Swimming again by summer, hopefully.","emotion":"hopeful","intensity":5,"traits":["time"]}
+{"id":"e1974","text":"Missing Ahmed. He moved to Dubai and the evenings feel empty without our chess games.","emotion":"lonely","also":["sad"],"intensity":5,"people":["Ahmed"],"not_people":["Dubai"]}
+{"id":"e1975","text":"Third weekend in a row with no plans. Everybody's busy with their families.","emotion":"lonely","intensity":5}
+{"id":"e1976","text":"Moved to the suburbs for space and now I barely see anyone. Space was overrated.","emotion":"lonely","also":["reflective"],"intensity":5}
+{"id":"e1977","text":"Even at the party I felt like I was watching through glass. Smiled, left early.","emotion":"lonely","also":["sad"],"intensity":5}
+{"id":"e1978","text":"My twin is away for six months on the research ship. I didn't know quiet could be this loud.","emotion":"lonely","intensity":6,"people_optional":["My twin"]}
+{"id":"e1979","text":"Divorce papers signed today. The flat feels enormous and I don't know who to tell.","emotion":"lonely","also":["sad"],"intensity":7}
+{"id":"e1980","text":"Feeling completely swamped. Moving house, new team, Gran's operation, all in March.","emotion":"overwhelmed","also":["anxious"],"intensity":7,"people":["Gran"],"not_people":["March"]}
+{"id":"e1981","text":"The wedding planning spreadsheet has 214 rows. I closed it and lay on the floor.","emotion":"overwhelmed","intensity":6}
+{"id":"e1982","text":"Too much input at the conference. Three days of talks and networking. My brain is full.","emotion":"overwhelmed","also":["tired"],"intensity":6}
+{"id":"e1983","text":"Kids sick, deadline moved up, car battery dead, fridge broken. All before 9am.","emotion":"overwhelmed","also":["frustrated"],"intensity":7,"people_optional":["Kids"]}
+{"id":"e1984","text":"Every time I tick something off the list two more things appear. Hydra list.","emotion":"overwhelmed","intensity":6}
+{"id":"e1985","text":"Grandad's 100th birthday party. Telegram from the King, cake the size of a table, and Grandad flirting with the nurse. Perfect.","emotion":"happy","also":["proud"],"intensity":8,"people":["Grandad"],"not_people":["King"]}
+{"id":"e1986","text":"Bit content today. Garden, sun, a good book.","emotion":"content","intensity":3,"traits":["short"]}
+{"id":"e1987","text":"Satisfying evening repotting every plant in the flat. They look happier. So do I.","emotion":"content","also":["happy"],"intensity":4}
+{"id":"e1988","text":"Life is simple at the moment and I like it. Work, walks, Sunday calls with my brother.","emotion":"content","intensity":4,"people_optional":["my brother"],"not_people":["Sunday"]}
+{"id":"e1989","text":"Dinner with Rahul's family. His aunt kept feeding me. Left full and happy.","emotion":"content","also":["happy"],"intensity":5,"people":["Rahul"],"people_optional":["His aunt"]}
+{"id":"e1990","text":"Got my first article published in the local paper. Mum bought ten copies.","emotion":"proud","also":["happy"],"intensity":7,"people":["Mum"]}
+{"id":"e1991","text":"I've been anxious about the move for weeks, and today it all just worked. Van came, boxes in, keys handed over.","emotion":"calm","also":["happy"],"intensity":5,"traits":["mixed"]}
+{"id":"e1992","text":"Meditated for twenty minutes without checking the timer. First time.","emotion":"calm","also":["proud"],"intensity":4}
+{"id":"e1993","text":"Quiet evening by the fire. The house is creaking and settling. So am I.","emotion":"calm","intensity":4}
+{"id":"e1994","text":"Feeling really sad that Bianca and I fell out over something so small.","emotion":"sad","intensity":5,"people":["Bianca"]}
+{"id":"e1995","text":"Sold Dad's car today. Watched it drive away with someone else at the wheel.","emotion":"sad","intensity":6,"people":["Dad"],"traits":["indirect"]}
+{"id":"e1996","text":"Can't sleep thinking about the job interview tomorrow. Practising answers in the dark.","emotion":"anxious","intensity":6,"traits":["time"]}
+{"id":"e1997","text":"Exhausted after the move. Every muscle aches and there are still forty boxes.","emotion":"tired","also":["overwhelmed"],"intensity":7}
+{"id":"e1998","text":"Drained after the family reunion. Lovely to see everyone. Need a week of silence now.","emotion":"tired","also":["happy"],"intensity":6,"traits":["mixed"]}
+{"id":"e1999","text":"Long haul flight, then straight into a full workday. Running on airport coffee.","emotion":"tired","intensity":7}
+{"id":"e2000","text":"Excited for the first camping trip with the kids. Tent pitched in the garden for practice.","emotion":"excited","also":["happy"],"intensity":6,"people_optional":["the kids"]}
+{"id":"e2001","text":"Hopeful that this winter will be gentler than the last. Bought a light box. Booked the coast for February.","emotion":"hopeful","intensity":5,"not_people":["February"],"traits":["time"]}

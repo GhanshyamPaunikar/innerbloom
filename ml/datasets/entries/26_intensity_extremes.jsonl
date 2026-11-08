@@ -1,0 +1,125 @@
+{"id":"e1751","text":"I have never been this angry in my life. He hit my mother. I am shaking so hard I can barely hold the pen.","emotion":"angry","intensity":10,"people_optional":["my mother"]}
+{"id":"e1752","text":"They kept my brother in a cell overnight for something he didn't do and nobody will tell us anything. I could tear the building down.","emotion":"angry","also":["anxious"],"intensity":9,"people_optional":["my brother"]}
+{"id":"e1753","text":"Found out my business partner has been stealing from the company for three years. Everything I built. I want to scream until my lungs give out.","emotion":"angry","intensity":10,"people_optional":["my business partner"]}
+{"id":"e1754","text":"The driver who killed Sam's dog laughed out of his window as he drove off. I've never felt rage like it.","emotion":"angry","also":["sad"],"intensity":9,"people":["Sam"]}
+{"id":"e1755","text":"The school covered up what that teacher did to my daughter. I am incandescent. I will not stop until someone answers for it.","emotion":"angry","intensity":10,"people_optional":["my daughter"]}
+{"id":"e1756","text":"My ex turned up at the kids' school drunk and screamed at me in front of every parent. I am beyond furious.","emotion":"angry","also":["anxious"],"intensity":9,"people_optional":["My ex"]}
+{"id":"e1757","text":"Pure rage. The landlord changed the locks while we were at work. Our things are inside. The baby's medicine is inside.","emotion":"angry","also":["anxious"],"intensity":10}
+{"id":"e1758","text":"Mildly irked that the café gave me oat milk instead of normal. Drank it anyway.","emotion":"angry","also":["frustrated"],"intensity":1}
+{"id":"e1759","text":"Ambulance came for Dad at 3am. They took him to resus and won't let me in. I can't breathe. I can't stop shaking.","emotion":"anxious","intensity":10,"people":["Dad"]}
+{"id":"e1760","text":"Leo hasn't come home and his phone is off and it's two in the morning. I've called everyone. I'm sick with fear.","emotion":"anxious","intensity":10,"people":["Leo"]}
+{"id":"e1761","text":"The biopsy results are tomorrow at nine. I haven't slept, haven't eaten, haven't stopped pacing. Every minute is an hour.","emotion":"anxious","intensity":9,"traits":["time"]}
+{"id":"e1762","text":"Lost Mia at the festival for forty minutes. Forty minutes. Found her at the lost-children tent eating a lolly. I'm still trembling.","emotion":"anxious","also":["calm"],"intensity":9,"people":["Mia"]}
+{"id":"e1763","text":"The plane dropped so suddenly people screamed. I was gripping the seat in front so hard my nails broke. Landed an hour ago and I'm still shaking.","emotion":"anxious","intensity":9}
+{"id":"e1764","text":"Slightly nervous about tomorrow's dentist check-up. Nothing major.","emotion":"anxious","intensity":2,"traits":["time"]}
+{"id":"e1765","text":"Everything is falling at once. Mum's in hospital, the house flooded, I lost my job and the kids are terrified. I can't hold any of it.","emotion":"overwhelmed","also":["anxious","sad"],"intensity":10,"people":["Mum"],"people_optional":["the kids"]}
+{"id":"e1766","text":"Sat on the kitchen floor for an hour unable to move. Too many things, too many people, too much. Nothing left in me.","emotion":"overwhelmed","also":["tired"],"intensity":9}
+{"id":"e1767","text":"The funeral, the will, the house, the debts, the phone calls. All mine to sort. I'm going under.","emotion":"overwhelmed","also":["sad"],"intensity":9}
+{"id":"e1768","text":"Exams, the eviction notice, Dad's diagnosis and my own surgery, all in one fortnight. I can't think. I can barely see.","emotion":"overwhelmed","also":["anxious"],"intensity":10,"people":["Dad"]}
+{"id":"e1769","text":"Launch day disaster. Servers down, investors on the phone, press asking questions, team in tears. I hid in the stairwell and couldn't stop shaking.","emotion":"overwhelmed","also":["anxious"],"intensity":9}
+{"id":"e1770","text":"Twins in hospital with bronchiolitis, Grandma visiting from abroad, work threatening a disciplinary. I don't know which way is up.","emotion":"overwhelmed","also":["anxious"],"intensity":9,"people":["Grandma"],"people_optional":["Twins"]}
+{"id":"e1771","text":"Christmas with forty relatives in a three-bedroom house. I have hidden in the shed. I may live here now.","emotion":"overwhelmed","intensity":9,"not_people":["Christmas"]}
+{"id":"e1772","text":"Seven different people needed me between nine and ten this morning and I said yes to all of them. I'm drowning.","emotion":"overwhelmed","intensity":9}
+{"id":"e1773","text":"WE WON THE LOTTERY. Not the big one. But enough to clear the mortgage. I'm jumping on the bed at 47 years old.","emotion":"excited","also":["happy"],"intensity":10}
+{"id":"e1774","text":"She said yes. On the beach, at sunset, with the ring I nearly dropped in the sand. I can't stop screaming into my pillow.","emotion":"excited","also":["happy"],"intensity":10}
+{"id":"e1775","text":"I got into Juilliard. JUILLIARD. Mum and I ran around the garden shrieking like children.","emotion":"excited","also":["happy","proud"],"intensity":10,"people":["Mum"],"not_people":["Juilliard"]}
+{"id":"e1776","text":"Flying out tomorrow to meet my birth mother for the first time. Haven't slept. Can't sit still. Twenty-nine years.","emotion":"excited","also":["anxious"],"intensity":9,"people_optional":["my birth mother"],"traits":["time"]}
+{"id":"e1777","text":"The band is signed! A real record deal! Kofi cried, Jas fainted (a bit), I screamed in a car park.","emotion":"excited","also":["happy","proud"],"intensity":10,"people":["Kofi","Jas"]}
+{"id":"e1778","text":"Two hours until the baby arrives by C-section. We've waited six years for this. I'm vibrating.","emotion":"excited","also":["anxious"],"intensity":10,"traits":["time"]}
+{"id":"e1779","text":"Tickets to the World Cup final!!! Uncle Moe had a spare. I've been screaming for an hour.","emotion":"excited","intensity":9,"people":["Uncle Moe"],"not_people":["World Cup"]}
+{"id":"e1780","text":"The publisher wants the trilogy. All three books. I've had to lie down on the floor.","emotion":"excited","also":["happy","proud"],"intensity":10}
+{"id":"e1781","text":"Mildly looking forward to the long weekend. Might paint the fence.","emotion":"excited","also":["content"],"intensity":2}
+{"id":"e1782","text":"A small flicker of excitement about the new series starting next month.","emotion":"excited","intensity":2,"traits":["time"]}
+{"id":"e1783","text":"Quietly looking forward to the farmers' market on Saturday.","emotion":"excited","also":["content"],"intensity":2,"not_people":["Saturday"]}
+{"id":"e1784","text":"I carried the Olympic torch through my home town today. My whole street came out. I've never been so proud in my life.","emotion":"proud","also":["happy"],"intensity":10,"not_people":["Olympic"]}
+{"id":"e1785","text":"Watched my son, who they said would never walk, cross the stage at his graduation on his own two feet. I'm undone.","emotion":"proud","also":["happy"],"intensity":10,"people_optional":["my son"]}
+{"id":"e1786","text":"Defended my PhD. Seven years, a divorce and a cancer scare later. Doctor Achebe. I keep saying it out loud.","emotion":"proud","also":["happy"],"intensity":10,"people":["Doctor Achebe"],"traits":["names_tricky"]}
+{"id":"e1787","text":"Pulled a stranger out of the river today. The paramedics said she'd have drowned. My hands won't stop shaking but I'm so glad I jumped.","emotion":"proud","also":["anxious"],"intensity":9}
+{"id":"e1788","text":"First in my family to own a house. Signed the papers today with Grandma's pen. I'm so proud I could burst.","emotion":"proud","also":["happy"],"intensity":9,"people":["Grandma"]}
+{"id":"e1789","text":"Ran the ultra. 100km. 19 hours. Crawled the last mile but crossed the line. I am a different person now.","emotion":"proud","also":["tired"],"intensity":10}
+{"id":"e1790","text":"A tiny bit pleased with how the bread turned out. Nothing to write home about.","emotion":"proud","also":["content"],"intensity":2}
+{"id":"e1791","text":"Not a single person knows I exist this week. Not one message, not one knock, not one voice. It feels like being erased.","emotion":"lonely","also":["sad"],"intensity":9}
+{"id":"e1792","text":"Fifth Christmas alone. I set the table for one, ate in silence and cried into the gravy. I don't think anyone would notice if I vanished.","emotion":"lonely","also":["sad"],"intensity":9,"not_people":["Christmas"]}
+{"id":"e1793","text":"Since Mariam died there's no one left who knew me before. The loneliness is like a weight on my chest every hour of the day.","emotion":"lonely","also":["sad"],"intensity":10,"people":["Mariam"]}
+{"id":"e1794","text":"In a city of eight million people and I haven't had a real conversation in a month. The isolation is crushing me.","emotion":"lonely","intensity":9}
+{"id":"e1795","text":"Everyone has someone. I have a phone that never rings and a flat that echoes. It's unbearable tonight.","emotion":"lonely","also":["sad"],"intensity":9}
+{"id":"e1796","text":"Locked down alone for six weeks. I've started talking to the radio like it's a person. I'm so desperately lonely.","emotion":"lonely","intensity":10}
+{"id":"e1797","text":"A touch lonely this evening. Nobody around. It'll pass.","emotion":"lonely","intensity":2}
+{"id":"e1798","text":"Slightly missed having company at dinner. Fine though.","emotion":"lonely","intensity":2}
+{"id":"e1799","text":"We buried our daughter today. She was four. I don't know how to keep breathing.","emotion":"sad","intensity":10,"people_optional":["our daughter"]}
+{"id":"e1800","text":"Twenty-five years together and she's gone. I sat in the car outside the hospital and howled.","emotion":"sad","intensity":10}
+{"id":"e1801","text":"The vet said there's nothing more they can do for Luna. I held her while she went. My heart is in pieces.","emotion":"sad","intensity":9,"not_people":["Luna"],"traits":["names_tricky"]}
+{"id":"e1802","text":"Lost the baby at twenty weeks. We'd already painted the room. I can't stop crying.","emotion":"sad","intensity":10}
+{"id":"e1803","text":"The donor family wrote to us. Their son's heart is beating in my husband's chest. I'll never be able to thank them enough.","emotion":"grateful","also":["sad"],"intensity":10,"people_optional":["my husband","Their son"]}
+{"id":"e1804","text":"A stranger gave Mum CPR in the supermarket until the ambulance came. She's alive because of him. I'm overwhelmed with gratitude.","emotion":"grateful","intensity":10,"people":["Mum"]}
+{"id":"e1805","text":"My whole community raised the money for Kai's surgery in three days. Three days. I have no words for how thankful I am.","emotion":"grateful","also":["happy"],"intensity":9,"people":["Kai"]}
+{"id":"e1806","text":"The firefighters went back into the house for the dog. Everyone's alive. I hugged every single one of them.","emotion":"grateful","also":["calm"],"intensity":9}
+{"id":"e1807","text":"Clean scan after two years of treatment. Thank you to every nurse, every doctor, every friend who drove me to chemo. Thank you.","emotion":"grateful","also":["happy"],"intensity":10}
+{"id":"e1808","text":"The judge granted us asylum. After four years. I fell to my knees in the courtroom and thanked our lawyer, Mrs. Osei, through my tears.","emotion":"grateful","also":["happy"],"intensity":10,"people":["Mrs. Osei"]}
+{"id":"e1809","text":"Slightly grateful the rain held off for the school run.","emotion":"grateful","intensity":2}
+{"id":"e1810","text":"Small thanks to the bus driver who waited. Nice touch.","emotion":"grateful","intensity":2}
+{"id":"e1811","text":"A quiet bit of thankfulness for a warm cup of tea.","emotion":"grateful","also":["content"],"intensity":1}
+{"id":"e1812","text":"Thirty hours awake. Two emergency surgeries and a ward with no doctors. I can't feel my hands. I'm so exhausted I'm hallucinating shadows.","emotion":"tired","intensity":10}
+{"id":"e1813","text":"Three weeks of newborn twins, maybe ten hours of sleep in total. I can barely stand. I'm crying from tiredness.","emotion":"tired","also":["overwhelmed"],"intensity":10}
+{"id":"e1814","text":"Ran on no sleep for four days covering for the whole team. My body is shutting down.","emotion":"tired","intensity":9}
+{"id":"e1815","text":"Drove fourteen hours through the night to get to Gran in time. Made it. Now I'm so tired I can't see straight.","emotion":"tired","also":["sad"],"intensity":9,"people":["Gran"]}
+{"id":"e1816","text":"Glandular fever. Sleeping eighteen hours a day and still too exhausted to lift a cup.","emotion":"tired","intensity":9}
+{"id":"e1817","text":"Finished the harvest at 3am. Every bone aches. I could sleep for a month.","emotion":"tired","intensity":9}
+{"id":"e1818","text":"Bit sleepy after lunch. Nothing a coffee won't fix.","emotion":"tired","intensity":2}
+{"id":"e1819","text":"Slightly tired, a lazy kind of tired. Nice sofa evening.","emotion":"tired","also":["content"],"intensity":2}
+{"id":"e1820","text":"A little drowsy from the antihistamines. Nothing major.","emotion":"tired","intensity":2}
+{"id":"e1821","text":"Yawned through the afternoon meeting. Early night probably.","emotion":"tired","intensity":2}
+{"id":"e1822","text":"After eight years of rejections, I'm so done with this industry I could set fire to my CV. Every door, slammed.","emotion":"frustrated","also":["angry","sad"],"intensity":9}
+{"id":"e1823","text":"Three months fighting the bank's computer system that keeps freezing my account. I am at the absolute end of my rope.","emotion":"frustrated","also":["angry"],"intensity":9}
+{"id":"e1824","text":"Tried the recipe nine times. Still collapses. I threw the whole tray against the wall. I'm done with baking forever.","emotion":"frustrated","also":["angry"],"intensity":9}
+{"id":"e1825","text":"Slightly annoyed the parcel came a day late. No big deal.","emotion":"frustrated","intensity":2}
+{"id":"e1826","text":"The trial results came back: the treatment is working. For the first time in two years I can see a future with my children grown up.","emotion":"hopeful","also":["happy"],"intensity":10,"people_optional":["my children"]}
+{"id":"e1827","text":"The court has given me the kids back. Supervised at first but they're coming home. I've never felt hope like this.","emotion":"hopeful","also":["happy"],"intensity":10,"people_optional":["the kids"]}
+{"id":"e1828","text":"He opened his eyes today after eleven days in a coma. Squeezed my hand. The doctors are cautiously optimistic and so am I, with every cell of me.","emotion":"hopeful","also":["grateful"],"intensity":10}
+{"id":"e1829","text":"Donor match found for Ana. A real chance. I keep reading the message over and over.","emotion":"hopeful","also":["excited"],"intensity":9,"people":["Ana"]}
+{"id":"e1830","text":"Faint hope the rain clears by Saturday. Probably won't.","emotion":"hopeful","intensity":2,"not_people":["Saturday"]}
+{"id":"e1831","text":"Bit of hope the new job ad might be a fit. Will look later.","emotion":"hopeful","intensity":2}
+{"id":"e1832","text":"Mildly optimistic about the garden this year.","emotion":"hopeful","intensity":2,"traits":["short"]}
+{"id":"e1833","text":"Small hope that the café reopens. Liked that place.","emotion":"hopeful","also":["sad"],"intensity":1}
+{"id":"e1834","text":"Faintly hopeful the train is on time tomorrow.","emotion":"hopeful","intensity":1,"traits":["short","time"]}
+{"id":"e1835","text":"Took the bins out. Watered the plants.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1836","text":"Meeting at 10, lunch at 1, dentist at 4.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1837","text":"Read the paper. Did the crossword. Went for a walk.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1838","text":"Cooked rice and lentils. Ate. Washed up.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1839","text":"Changed the lightbulb in the hall. Ordered more printer paper.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1840","text":"Drove to the garden centre for compost. Twenty minutes each way.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1841","text":"Phoned the insurance about renewal. They'll email the quote.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1842","text":"Worked from the library today. Wifi was fine.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1843","text":"Swapped the winter duvet for the summer one.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1844","text":"Collected the parcel from the depot. Signed for it.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1845","text":"Defrosted the freezer. Took about an hour.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1846","text":"Booked train tickets for the 14th. Seat reservations included.","emotion":"neutral","intensity":1,"traits":["factual","short","time"]}
+{"id":"e1847","text":"Neither up nor down today. Just steady.","emotion":"neutral","also":["calm"],"intensity":2,"traits":["short","negation"]}
+{"id":"e1848","text":"Pleasant enough afternoon. Bit of reading, bit of sun.","emotion":"content","intensity":2}
+{"id":"e1849","text":"Mildly content. Nothing to complain about.","emotion":"content","intensity":2,"traits":["short"]}
+{"id":"e1850","text":"Nice enough lunch with the team. Sandwiches in the park.","emotion":"content","intensity":2}
+{"id":"e1851","text":"A small, decent day. Got the washing dry.","emotion":"content","intensity":2,"traits":["short"]}
+{"id":"e1852","text":"Fairly satisfied with the tidy-up. Desk is clear.","emotion":"content","intensity":2,"traits":["short"]}
+{"id":"e1853","text":"Okay day. Small pleasures: good coffee, sunny walk.","emotion":"content","intensity":2}
+{"id":"e1854","text":"Bit cosy tonight. Blanket, film, nothing pressing.","emotion":"content","also":["calm"],"intensity":2}
+{"id":"e1855","text":"Quietly satisfied with the week. Got through the list.","emotion":"content","intensity":2}
+{"id":"e1856","text":"Mild sense of things being in order.","emotion":"content","also":["calm"],"intensity":1,"traits":["short"]}
+{"id":"e1857","text":"Soft, unremarkable evening. That suits me.","emotion":"content","intensity":2,"traits":["short"]}
+{"id":"e1858","text":"Bit calmer than yesterday.","emotion":"calm","intensity":2,"traits":["short","time"]}
+{"id":"e1859","text":"Slightly settled after the walk.","emotion":"calm","intensity":2,"traits":["short"]}
+{"id":"e1860","text":"Mildly relaxed. Nothing much on.","emotion":"calm","intensity":2,"traits":["short"]}
+{"id":"e1861","text":"A faint, peaceful feeling after the rain.","emotion":"calm","intensity":2,"traits":["short"]}
+{"id":"e1862","text":"Easy-going morning. No rush.","emotion":"calm","intensity":2,"traits":["short"]}
+{"id":"e1863","text":"Quietish day. Mind not racing for once.","emotion":"calm","intensity":2,"traits":["short","negation"]}
+{"id":"e1864","text":"Little bit of stillness before bed.","emotion":"calm","intensity":1,"traits":["short"]}
+{"id":"e1865","text":"Faintly at ease today.","emotion":"calm","intensity":1,"traits":["short"]}
+{"id":"e1866","text":"Passing thought about how fast the kids are growing.","emotion":"reflective","intensity":2,"people_optional":["the kids"],"traits":["short"]}
+{"id":"e1867","text":"Idly wondering whether to change jobs one day.","emotion":"reflective","intensity":2,"traits":["short"]}
+{"id":"e1868","text":"Mild musing on the train about where I'll be in ten years.","emotion":"reflective","intensity":2,"traits":["time"]}
+{"id":"e1869","text":"A small thought about Grandma's old garden today.","emotion":"reflective","intensity":2,"people":["Grandma"],"traits":["short"]}
+{"id":"e1870","text":"Briefly considered what I'd do differently at twenty.","emotion":"reflective","intensity":2,"traits":["short"]}
+{"id":"e1871","text":"Thinking a little about the book club discussion.","emotion":"reflective","intensity":2,"traits":["short"]}
+{"id":"e1872","text":"Half-thought about whether I talk too much in meetings.","emotion":"reflective","intensity":2,"traits":["short"]}
+{"id":"e1873","text":"Pondered the old photos for a minute, then put them away.","emotion":"reflective","intensity":2}
+{"id":"e1874","text":"A light reflection on the year so far. Mostly fine.","emotion":"reflective","intensity":2,"traits":["short"]}
+{"id":"e1875","text":"Brief wondering about Dad's choices at my age.","emotion":"reflective","intensity":2,"people":["Dad"],"traits":["short"]}

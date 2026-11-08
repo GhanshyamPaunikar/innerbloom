@@ -1,0 +1,70 @@
+{"id":"e1571","text":"Groceries. Laundry. Bed.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1572","text":"Furious. Will write tomorrow.","emotion":"angry","intensity":8,"traits":["short","time"]}
+{"id":"e1573","text":"Good day. Nothing to add.","emotion":"content","intensity":4,"traits":["short"]}
+{"id":"e1574","text":"Too much. All of it.","emotion":"overwhelmed","intensity":7,"traits":["short"]}
+{"id":"e1575","text":"Flights booked!!!","emotion":"excited","intensity":8,"traits":["short"]}
+{"id":"e1576","text":"Wondering where this year went.","emotion":"reflective","intensity":3,"traits":["short"]}
+{"id":"e1577","text":"Wiped out.","emotion":"tired","intensity":6,"traits":["short"]}
+{"id":"e1578","text":"Maybe tomorrow's better.","emotion":"hopeful","also":["sad"],"intensity":3,"traits":["short","time"]}
+{"id":"e1579","text":"Nobody called.","emotion":"lonely","intensity":5,"traits":["short","indirect"]}
+{"id":"e1580","text":"Quiet. Settled. Fine.","emotion":"calm","intensity":3,"traits":["short"]}
+{"id":"e1581","text":"Thank you, Sana. Truly.","emotion":"grateful","intensity":6,"people":["Sana"],"traits":["short"]}
+{"id":"e1582","text":"Did it. Ran the whole 10k.","emotion":"proud","intensity":7,"traits":["short"]}
+{"id":"e1583","text":"Results tomorrow. Can't eat.","emotion":"anxious","intensity":7,"traits":["short","time"]}
+{"id":"e1584","text":"Miss you, Dad.","emotion":"sad","intensity":7,"people":["Dad"],"traits":["short"]}
+{"id":"e1585","text":"Printer. Again. Why.","emotion":"frustrated","intensity":4,"traits":["short"]}
+{"id":"e1586","text":"Dentist 3pm. Shopping after.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1587","text":"How dare he.","emotion":"angry","intensity":7,"traits":["short","indirect"]}
+{"id":"e1588","text":"Tea, book, rain. Perfect.","emotion":"content","also":["calm"],"intensity":4,"traits":["short"]}
+{"id":"e1589","text":"Drowning in emails.","emotion":"overwhelmed","intensity":6,"traits":["short"]}
+{"id":"e1590","text":"Two sleeps till Goa!","emotion":"excited","intensity":8,"not_people":["Goa"],"traits":["short","time"]}
+{"id":"e1591","text":"Still thinking about what Ana said.","emotion":"reflective","intensity":4,"people":["Ana"],"traits":["short"]}
+{"id":"e1592","text":"Bed by nine. Done.","emotion":"tired","intensity":5,"traits":["short"]}
+{"id":"e1593","text":"Second interview! Fingers crossed.","emotion":"hopeful","also":["excited"],"intensity":6,"traits":["short"]}
+{"id":"e1594","text":"Empty flat again.","emotion":"lonely","intensity":5,"traits":["short"]}
+{"id":"e1595","text":"Slow morning, no rush.","emotion":"calm","intensity":3,"traits":["short"]}
+{"id":"e1596","text":"Grateful for small mercies today.","emotion":"grateful","intensity":4,"traits":["short"]}
+{"id":"e1597","text":"Got the promotion. Me!","emotion":"proud","also":["happy"],"intensity":8,"traits":["short"]}
+{"id":"e1598","text":"Heart racing. Not sure why.","emotion":"anxious","intensity":5,"traits":["short"]}
+{"id":"e1599","text":"Rained. Stayed in. Read.","emotion":"neutral","also":["calm"],"intensity":2,"traits":["short","factual"]}
+{"id":"e1600","text":"So done with this landlord.","emotion":"angry","also":["frustrated"],"intensity":6,"traits":["short"]}
+{"id":"e1601","text":"Life's pretty good right now.","emotion":"content","intensity":5,"traits":["short"]}
+{"id":"e1602","text":"Everything at once this week.","emotion":"overwhelmed","intensity":6,"traits":["short"]}
+{"id":"e1603","text":"Concert tonight!!","emotion":"excited","intensity":7,"traits":["short"]}
+{"id":"e1604","text":"Asking myself what I actually want.","emotion":"reflective","intensity":4,"traits":["short"]}
+{"id":"e1605","text":"Too tired to think.","emotion":"tired","intensity":6,"traits":["short"]}
+{"id":"e1606","text":"Scan was clear. Breathing.","emotion":"calm","also":["happy","grateful"],"intensity":7,"traits":["short"]}
+{"id":"e1607","text":"First green shoots on the plot.","emotion":"hopeful","also":["happy"],"intensity":4,"traits":["short"]}
+{"id":"e1608","text":"Ate dinner alone. Again.","emotion":"lonely","intensity":5,"traits":["short"]}
+{"id":"e1609","text":"Thanks, Mum, for everything.","emotion":"grateful","intensity":6,"people":["Mum"],"traits":["short"]}
+{"id":"e1610","text":"Taxes filed. Filing cabinet tidied.","emotion":"neutral","also":["content"],"intensity":2,"traits":["factual","short"]}
+{"id":"e1611","text":"Can't believe she lied.","emotion":"angry","also":["sad"],"intensity":7,"traits":["short"]}
+{"id":"e1612","text":"Warm socks, warm soup, warm bed.","emotion":"content","also":["calm"],"intensity":4,"traits":["short"]}
+{"id":"e1613","text":"Holiday countdown: five days!","emotion":"excited","intensity":6,"traits":["short","time"]}
+{"id":"e1614","text":"Hmm. Long day of thinking.","emotion":"reflective","intensity":3,"traits":["short"]}
+{"id":"e1615","text":"Night shift done. Sleep now.","emotion":"tired","intensity":6,"traits":["short"]}
+{"id":"e1616","text":"Things might turn around.","emotion":"hopeful","intensity":4,"traits":["short"]}
+{"id":"e1617","text":"Nobody to tell the good news.","emotion":"lonely","also":["happy"],"intensity":5,"traits":["short","mixed"]}
+{"id":"e1618","text":"Lake, quiet, me.","emotion":"calm","intensity":4,"traits":["short"]}
+{"id":"e1619","text":"Grateful for Kaz today.","emotion":"grateful","intensity":5,"people":["Kaz"],"traits":["short"]}
+{"id":"e1620","text":"Fixed the sink myself!","emotion":"proud","intensity":5,"traits":["short"]}
+{"id":"e1621","text":"Waiting for the call. Pacing.","emotion":"anxious","intensity":6,"traits":["short"]}
+{"id":"e1622","text":"Low today.","emotion":"sad","intensity":4,"traits":["short"]}
+{"id":"e1623","text":"Train cancelled. Obviously.","emotion":"frustrated","intensity":4,"traits":["short","sarcasm"]}
+{"id":"e1624","text":"Gym, work, dinner, TV.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1625","text":"Livid with the bank.","emotion":"angry","intensity":7,"traits":["short"]}
+{"id":"e1626","text":"Pottered about. Lovely.","emotion":"content","intensity":3,"traits":["short"]}
+{"id":"e1627","text":"Twenty tabs open in my head.","emotion":"overwhelmed","intensity":5,"traits":["short"]}
+{"id":"e1628","text":"Puppy arrives Saturday!!","emotion":"excited","intensity":8,"not_people":["Saturday"],"traits":["short","time"]}
+{"id":"e1629","text":"Wiped. Absolutely wiped.","emotion":"tired","intensity":7,"traits":["short"]}
+{"id":"e1630","text":"Seeds planted. Waiting.","emotion":"hopeful","intensity":3,"traits":["short"]}
+{"id":"e1631","text":"Weekend without a single message.","emotion":"lonely","intensity":6,"traits":["short"]}
+{"id":"e1632","text":"Breathed. Better.","emotion":"calm","intensity":4,"traits":["short"]}
+{"id":"e1633","text":"Picked up the car from the garage.","emotion":"neutral","intensity":1,"traits":["factual","short"]}
+{"id":"e1634","text":"Why does he always do this.","emotion":"angry","also":["frustrated"],"intensity":6,"traits":["short"]}
+{"id":"e1635","text":"Home, fire on, feet up. Bliss.","emotion":"content","also":["calm"],"intensity":5,"traits":["short"]}
+{"id":"e1636","text":"Meeting moved. Fine. Whatever.","emotion":"neutral","also":["frustrated"],"intensity":2,"traits":["short","ambiguous"]}
+{"id":"e1637","text":"Can't keep up anymore.","emotion":"overwhelmed","also":["tired"],"intensity":7,"traits":["short"]}
+{"id":"e1638","text":"New job Monday!","emotion":"excited","intensity":7,"not_people":["Monday"],"traits":["short","time"]}
+{"id":"e1639","text":"Wondering if I said too much.","emotion":"anxious","also":["reflective"],"intensity":4,"traits":["short"]}
+{"id":"e1640","text":"Library card renewed. Borrowed three.","emotion":"neutral","intensity":1,"traits":["factual","short"]}

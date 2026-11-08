@@ -74,10 +74,14 @@ class PublicDemoTests(unittest.TestCase):
             self.assertEqual(run.returncode, 0, run.stderr[-2000:])
             out = json.loads(run.stdout.strip().splitlines()[-1])
 
-        from datetime import date, timedelta
+        from datetime import date, datetime as _dt, timedelta
         today = date.today()
+        # The 09:00 sample entry moves to 20 minutes ago while 09:00 is still
+        # ahead, which is yesterday in the first 20 minutes after midnight.
+        sample_day = min(_dt.combine(today, _dt.min.time()).replace(hour=9),
+                         _dt.now() - timedelta(minutes=20)).date()
         self.assertTrue(out["cookie"])
-        self.assertEqual(out["timestamp"], today.isoformat())  # the sample ends today
+        self.assertEqual(out["timestamp"], sample_day.isoformat())  # the sample ends today, never in the future
         self.assertIn((today - timedelta(days=1)).isoformat(), out["text"])
         self.assertEqual((out["a_count"], out["b_count"]), (2, 1))  # visitors never see each other
         self.assertTrue(out["spotify_status"]["demo"])

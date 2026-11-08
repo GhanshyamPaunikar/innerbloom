@@ -1,0 +1,80 @@
+{"id":"e2082","group":"c041","text":"They cut my hours without telling me. I found out from the rota. I'm furious.","emotion":"angry","intensity":8}
+{"id":"e2083","group":"c041","text":"They cut my hours. I'll struggle with rent now. I feel low and scared.","emotion":"sad","also":["anxious"],"intensity":6}
+{"id":"e2084","group":"c042","text":"My brother lied to Mum about where the money went. How dare he.","emotion":"angry","intensity":8,"people":["Mum"],"people_optional":["My brother"]}
+{"id":"e2085","group":"c042","text":"My brother and I haven't spoken in a year. I miss him. It just hurts.","emotion":"sad","also":["lonely"],"intensity":6,"people_optional":["My brother"]}
+{"id":"e2086","group":"c043","text":"Someone dented my car and drove off. No note. I'm livid.","emotion":"angry","intensity":7}
+{"id":"e2087","group":"c043","text":"Sold Dad's old car today. Watched it go and felt hollow.","emotion":"sad","intensity":6,"people":["Dad"]}
+{"id":"e2088","group":"c044","text":"The council ignored our complaint for the fourth time. I wrote them a very angry letter.","emotion":"angry","also":["frustrated"],"intensity":7}
+{"id":"e2089","group":"c044","text":"The council knocked down the old library. I spent my childhood there. Feels like losing a friend.","emotion":"sad","intensity":6}
+{"id":"e2090","group":"c045","text":"Boss blamed me for his mistake in front of the client. I wanted to throw my laptop.","emotion":"angry","intensity":8}
+{"id":"e2091","group":"c045","text":"Boss said my work 'isn't good enough' and I went home and cried. I'm so disappointed in myself.","emotion":"sad","intensity":6}
+{"id":"e2092","group":"c046","text":"The app crashed again and lost my notes. Third time. So irritating.","emotion":"frustrated","intensity":5}
+{"id":"e2093","group":"c046","text":"Lost the notebook with all of Gran's recipes. Can't replace it. Heartbroken.","emotion":"sad","intensity":7,"people":["Gran"]}
+{"id":"e2094","group":"c047","text":"Stuck in traffic for two hours because of roadworks nobody's working on. Grr.","emotion":"frustrated","intensity":4}
+{"id":"e2095","group":"c047","text":"Stuck in traffic and the radio played our wedding song. Cried at the lights. Miss her.","emotion":"sad","also":["lonely"],"intensity":7}
+{"id":"e2096","group":"c048","text":"Can't get the code to compile. Tried everything. Banging my head on the desk.","emotion":"frustrated","intensity":5}
+{"id":"e2097","group":"c048","text":"Didn't get the job. They went with someone else. Feeling flat and rejected.","emotion":"sad","intensity":6}
+{"id":"e2098","group":"c049","text":"The kids won't listen. I've asked ten times to put shoes on. My patience is gone.","emotion":"frustrated","also":["tired"],"intensity":5,"people_optional":["The kids"]}
+{"id":"e2099","group":"c049","text":"The kids are at their dad's for the holidays. The house is so quiet. I miss them.","emotion":"sad","also":["lonely"],"intensity":6,"people_optional":["The kids","their dad"]}
+{"id":"e2100","group":"c050","text":"Someone stole my parcel off the doorstep. Again. Absolutely fuming.","emotion":"angry","intensity":7}
+{"id":"e2101","group":"c050","text":"The parcel was a gift from Nana, the last one she sent. Now it's gone. I just feel empty.","emotion":"sad","intensity":7,"people":["Nana"]}
+{"id":"e2102","group":"c051","text":"He laughed at me in front of everyone. I'm boiling with rage.","emotion":"angry","intensity":8}
+{"id":"e2103","group":"c051","text":"He moved out today. I sat on the bed for an hour, just quiet and sad.","emotion":"sad","intensity":7}
+{"id":"e2104","group":"c052","text":"Printer jammed right before the meeting. Ugh. Of course.","emotion":"frustrated","intensity":3}
+{"id":"e2105","group":"c052","text":"Meeting confirmed what we feared. The project's cancelled and people will lose their jobs. Heavy heart.","emotion":"sad","also":["anxious"],"intensity":7}
+{"id":"e2106","group":"c053","text":"Settled evening. Dinner done, book open, nothing I'd change.","emotion":"content","also":["calm"],"intensity":4}
+{"id":"e2107","group":"c053","text":"Brilliant evening. Surprise visit from Sol, we laughed until midnight.","emotion":"happy","intensity":7,"people":["Sol"]}
+{"id":"e2108","group":"c054","text":"My life is pretty much how I want it right now. Steady job, good friends, a quiet flat.","emotion":"content","intensity":5}
+{"id":"e2109","group":"c054","text":"Got the keys to the flat today! Jumped around the empty living room.","emotion":"happy","also":["excited"],"intensity":8}
+{"id":"e2110","group":"c055","text":"Satisfied with the week. Did what I planned, nothing more, nothing less.","emotion":"content","intensity":4}
+{"id":"e2111","group":"c055","text":"What a week! Won the quiz, saw old friends, the sun shone every day.","emotion":"happy","intensity":7}
+{"id":"e2112","group":"c056","text":"Thank you, Ruth, for sitting with me at the hospital all night. I won't forget it.","emotion":"grateful","intensity":7,"people":["Ruth"]}
+{"id":"e2113","group":"c056","text":"Ruth and I went to the funfair and screamed on every ride. Best day.","emotion":"happy","also":["excited"],"intensity":8,"people":["Ruth"]}
+{"id":"e2114","group":"c057","text":"Grateful for my neighbours. They shovelled our path and brought soup when we were ill.","emotion":"grateful","intensity":6}
+{"id":"e2115","group":"c057","text":"Street party with the neighbours. Music, food, kids running around. Loved it.","emotion":"happy","intensity":6}
+{"id":"e2116","group":"c058","text":"So thankful Dad's surgery went well. Thank you to every nurse on that ward.","emotion":"grateful","also":["calm"],"intensity":8,"people":["Dad"]}
+{"id":"e2117","group":"c058","text":"Dad's home and we had a big dinner to celebrate. Laughter round the table again.","emotion":"happy","intensity":7,"people":["Dad"]}
+{"id":"e2118","group":"c059","text":"Nothing exciting, just a comfortable Sunday at home. That's enough for me.","emotion":"content","intensity":3,"not_people":["Sunday"]}
+{"id":"e2119","group":"c059","text":"Sunday trip to the zoo. The penguins! The kids were thrilled and so was I.","emotion":"happy","also":["excited"],"intensity":7,"not_people":["Sunday"],"people_optional":["The kids"]}
+{"id":"e2120","group":"c060","text":"I appreciate how my partner always makes my coffee before I'm awake. Lucky.","emotion":"grateful","also":["content"],"intensity":4,"people_optional":["my partner"]}
+{"id":"e2121","group":"c060","text":"Partner booked a surprise weekend away! Giddy all evening.","emotion":"happy","also":["excited"],"intensity":8,"people_optional":["Partner"]}
+{"id":"e2122","group":"c061","text":"Oh brilliant, another rejection email. Exactly what I needed today.","emotion":"sad","also":["frustrated"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e2123","group":"c062","text":"Wonderful. The boiler's broken in January. My favourite kind of adventure.","emotion":"frustrated","intensity":6,"not_people":["January"],"traits":["sarcasm"]}
+{"id":"e2124","group":"c063","text":"Thrilled that my 'friend' told everyone my secret. Such loyalty.","emotion":"angry","also":["sad"],"intensity":7,"traits":["sarcasm"]}
+{"id":"e2125","group":"c064","text":"Love spending my Saturday on hold to the bank. Best hobby ever.","emotion":"frustrated","intensity":5,"not_people":["Saturday"],"traits":["sarcasm"]}
+{"id":"e2126","group":"c065","text":"Great, the dog ate my glasses. Can't wait to explain that at work.","emotion":"frustrated","intensity":4,"traits":["sarcasm"]}
+{"id":"e2127","group":"c066","text":"Fantastic, the train's cancelled again. Really loving this commute.","emotion":"frustrated","intensity":5,"traits":["sarcasm"]}
+{"id":"e2128","group":"c067","text":"So glad my manager scheduled a 7am call on my day off. Truly considerate.","emotion":"angry","also":["frustrated"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e2129","group":"c068","text":"Lovely of my sister to announce my break-up at the family dinner. Very kind.","emotion":"angry","also":["sad"],"intensity":7,"people_optional":["my sister"],"traits":["sarcasm"]}
+{"id":"e2130","group":"c069","text":"Yay, a fourth night of the neighbours' party. Sleep is overrated anyway.","emotion":"tired","also":["frustrated"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e2131","group":"c070","text":"Excellent, I locked myself out in the rain. Nailed it.","emotion":"frustrated","intensity":5,"traits":["sarcasm"]}
+{"id":"e2132","group":"c071","text":"Super, the landlord's 'fix' made the leak worse. Top-class work.","emotion":"angry","also":["frustrated"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e2133","group":"c072","text":"Awesome, nobody remembered my birthday. Such a special day.","emotion":"sad","also":["lonely"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e2134","group":"c073","text":"Perfect, spilled coffee on my white shirt right before the interview. Of course.","emotion":"frustrated","also":["anxious"],"intensity":5,"traits":["sarcasm"]}
+{"id":"e2135","group":"c074","text":"Wonderful, another 'urgent' task dumped on me at 5pm. Living the dream.","emotion":"frustrated","also":["tired"],"intensity":5,"traits":["sarcasm"]}
+{"id":"e2136","group":"c075","text":"Love how the airline lost my bag and then hung up on me. Fabulous service.","emotion":"angry","intensity":7,"traits":["sarcasm"]}
+{"id":"e2137","group":"c076","text":"Great timing, the car died on the motorway in the dark. Brilliant.","emotion":"frustrated","also":["anxious"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e2138","group":"c077","text":"Fantastic, my ex is dating my best friend. What a lovely surprise.","emotion":"sad","also":["angry"],"intensity":7,"traits":["sarcasm"]}
+{"id":"e2139","group":"c078","text":"Yay, another family holiday where Dad criticises everything. Can't wait.","emotion":"frustrated","also":["anxious"],"intensity":5,"people":["Dad"],"traits":["sarcasm"]}
+{"id":"e2140","group":"c079","text":"Brilliant, my 'quick' dentist visit turned into two fillings and a bill I can't afford. Love it.","emotion":"frustrated","also":["anxious"],"intensity":5,"traits":["sarcasm"]}
+{"id":"e2141","group":"c080","text":"So nice to be the only one who wasn't invited to the team drinks. Really makes you feel welcome.","emotion":"lonely","also":["sad"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e2142","group":"c081","text":"Wonderful start to the year: laid off on January the 2nd. Thanks, universe.","emotion":"sad","also":["anxious"],"intensity":7,"not_people":["January"],"traits":["sarcasm"]}
+{"id":"e2143","group":"c082","text":"Excellent, the 'five-minute' form took two hours. Government websites are a joy.","emotion":"frustrated","intensity":5,"traits":["sarcasm"]}
+{"id":"e2144","group":"c083","text":"Great, my flatmate ate my labelled leftovers. Again. Very respectful.","emotion":"angry","also":["frustrated"],"intensity":5,"traits":["sarcasm"]}
+{"id":"e2145","group":"c084","text":"Lovely, it's raining on the one day I planned a picnic. Just my luck.","emotion":"frustrated","also":["sad"],"intensity":4,"traits":["sarcasm"]}
+{"id":"e2146","group":"c085","text":"Perfect, the dog was sick on the new carpet. Best gift ever.","emotion":"frustrated","intensity":4,"traits":["sarcasm"]}
+{"id":"e2147","group":"c086","text":"Amazing, I get to work this bank holiday too. Truly blessed.","emotion":"frustrated","also":["tired"],"intensity":5,"traits":["sarcasm"]}
+{"id":"e2148","group":"c087","text":"Wonderful, the school wants a cake for tomorrow. At 9pm. I love baking at midnight.","emotion":"frustrated","also":["tired"],"intensity":5,"traits":["sarcasm","time"]}
+{"id":"e2149","group":"c088","text":"Oh good, the scale says I gained four pounds on holiday. Fabulous.","emotion":"frustrated","intensity":3,"traits":["sarcasm"]}
+{"id":"e2150","group":"c089","text":"Fantastic, they've cancelled the only bus to my village. Who needs to get to work.","emotion":"angry","also":["frustrated"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e2151","group":"c090","text":"Brilliant, my phone screen cracked the day after the warranty ended. Lucky me.","emotion":"frustrated","intensity":4,"traits":["sarcasm"]}
+{"id":"e2152","group":"c091","text":"So grateful to my colleague for taking full credit for my idea in the meeting. What a gem.","emotion":"angry","intensity":7,"traits":["sarcasm"]}
+{"id":"e2153","group":"c092","text":"Thanks, autocorrect, for sending 'I love you' to my boss instead of my wife. Smooth.","emotion":"frustrated","also":["anxious"],"intensity":4,"traits":["sarcasm"]}
+{"id":"e2154","group":"c093","text":"Proud moment: I burnt the pasta. Pasta. Michelin, here I come.","emotion":"frustrated","intensity":3,"not_people":["Michelin"],"traits":["sarcasm"]}
+{"id":"e2155","group":"c094","text":"Wonderful, the hospital moved Mum's surgery again. Third time. Very reassuring.","emotion":"angry","also":["anxious"],"intensity":7,"people":["Mum"],"traits":["sarcasm"]}
+{"id":"e2156","group":"c095","text":"Great news, my rent's going up again and the mould's still there. Value for money.","emotion":"angry","also":["frustrated"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e2157","group":"c096","text":"Lovely, ate dinner alone on Valentine's Day. Romance is alive.","emotion":"lonely","also":["sad"],"intensity":5,"not_people":["Valentine's Day"],"traits":["sarcasm"]}
+{"id":"e2158","group":"c097","text":"Excellent, I forgot my own anniversary. Husband of the year.","emotion":"frustrated","also":["sad"],"intensity":5,"traits":["sarcasm"]}
+{"id":"e2159","group":"c098","text":"Fantastic, it took three doctors to say 'it's probably stress'. So helpful.","emotion":"frustrated","also":["angry"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e2160","group":"c099","text":"Super, the gym membership renewed itself for another year I won't use. Thanks.","emotion":"frustrated","intensity":4,"traits":["sarcasm"]}
+{"id":"e2161","group":"c100","text":"Amazing, my 'quick' coffee with Jade turned into four hours of her complaining about her ex. Riveting.","emotion":"tired","also":["frustrated"],"intensity":5,"people":["Jade"],"traits":["sarcasm"]}

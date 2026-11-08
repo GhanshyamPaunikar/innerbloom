@@ -1,0 +1,70 @@
+{"id":"e1681","text":"Oh fantastic, my 'friend' posted the embarrassing photo after I begged her not to. Truly a gift.","emotion":"angry","intensity":7,"traits":["sarcasm"]}
+{"id":"e1682","text":"Love how the landlord 'fixed' the boiler by turning it off and on. Fourth cold shower this week. Living the dream.","emotion":"angry","also":["frustrated"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e1683","text":"Great to hear in the all-hands that 'we're a family here' right before they announced the layoffs.","emotion":"angry","also":["sad"],"intensity":7,"traits":["sarcasm"]}
+{"id":"e1684","text":"So nice of Gavin to reply-all with my mistake to the entire company. What a team player.","emotion":"angry","also":["frustrated"],"intensity":7,"people":["Gavin"],"traits":["sarcasm"]}
+{"id":"e1685","text":"Wonderful. The council fined me for parking in my own street because the sign changed overnight. Brilliant system.","emotion":"angry","also":["frustrated"],"intensity":7,"traits":["sarcasm"]}
+{"id":"e1686","text":"Oh sure, Dad, I'll 'just get a proper job'. Thanks for that insight at my own birthday dinner.","emotion":"angry","also":["sad"],"intensity":6,"people":["Dad"],"traits":["sarcasm"]}
+{"id":"e1687","text":"Delighted that the airline charged me £60 for a bag they then lost. Superb value.","emotion":"angry","also":["frustrated"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e1688","text":"Fantastic news: the insurance won't cover the flood because it was 'surface water'. As opposed to what, sky water?","emotion":"angry","intensity":8,"traits":["sarcasm"]}
+{"id":"e1689","text":"Ah yes, another 5am wake-up from the toddler. My favourite time of day.","emotion":"tired","also":["frustrated"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e1690","text":"Loving this fourth night of insomnia. Really refreshing.","emotion":"tired","also":["frustrated"],"intensity":7,"traits":["sarcasm","short"]}
+{"id":"e1691","text":"What a relaxing holiday: three flights, two delays, one lost passport and zero sleep.","emotion":"tired","also":["frustrated"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e1692","text":"Nothing says self-care like working through lunch for the eleventh day running.","emotion":"tired","also":["frustrated"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e1693","text":"Brilliant weekend of 'rest': cleaned the house, did the shopping, drove the kids to four parties.","emotion":"tired","intensity":6,"people_optional":["the kids"],"traits":["sarcasm"]}
+{"id":"e1694","text":"Perfect, the software update deleted my settings. Again. Thanks so much.","emotion":"frustrated","intensity":5,"traits":["sarcasm"]}
+{"id":"e1695","text":"Oh good, another meeting that could have been an email. Can't get enough of those.","emotion":"frustrated","intensity":4,"traits":["sarcasm"]}
+{"id":"e1696","text":"Absolutely love being put on hold for 45 minutes to be told to 'check the website'.","emotion":"frustrated","intensity":5,"traits":["sarcasm"]}
+{"id":"e1697","text":"Great, my 'quick' tax return has now taken three evenings. Very quick indeed.","emotion":"frustrated","intensity":4,"traits":["sarcasm"]}
+{"id":"e1698","text":"Superb timing from the washing machine, dying on the day the in-laws arrive.","emotion":"frustrated","also":["anxious"],"intensity":5,"people_optional":["the in-laws"],"traits":["sarcasm"]}
+{"id":"e1699","text":"Thrilled to discover the 'shortcut' Asif recommended added forty minutes to the drive.","emotion":"frustrated","intensity":4,"people":["Asif"],"traits":["sarcasm"]}
+{"id":"e1700","text":"Lovely birthday. Everyone forgot. Even the bakery forgot my order. Truly memorable.","emotion":"sad","also":["lonely"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e1701","text":"Yay, another wedding where I'm the only single one at the table. So much fun answering questions about it.","emotion":"sad","also":["lonely","frustrated"],"intensity":5,"traits":["sarcasm"]}
+{"id":"e1702","text":"Great, the job I really wanted went to the boss's nephew. Life is so fair.","emotion":"sad","also":["angry"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e1703","text":"Oh brilliant, three deadlines on the same day. Who doesn't love a challenge.","emotion":"overwhelmed","also":["anxious"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e1704","text":"Really enjoying juggling the move, the new job and a sick dog all in one week. Highly recommend.","emotion":"overwhelmed","also":["tired"],"intensity":7,"traits":["sarcasm"]}
+{"id":"e1705","text":"Fun times: forty unread emails, six missed calls and a calendar that looks like a game of Tetris.","emotion":"overwhelmed","intensity":6,"not_people":["Tetris"],"traits":["sarcasm","names_tricky"]}
+{"id":"e1706","text":"Super fun Saturday night with my best friend, Netflix. Again.","emotion":"lonely","also":["sad"],"intensity":5,"not_people":["Netflix","Saturday"],"traits":["sarcasm","names_tricky"]}
+{"id":"e1707","text":"So great having 800 followers and nobody to call when the car broke down.","emotion":"lonely","also":["sad"],"intensity":6,"traits":["sarcasm"]}
+{"id":"e1708","text":"Wonderful being the friend everyone forgets until they need a lift to the airport.","emotion":"lonely","also":["frustrated"],"intensity":5,"traits":["sarcasm"]}
+{"id":"e1709","text":"Set one place at the table. Opened one beer. Turned on the match and talked to the telly.","emotion":"lonely","intensity":5,"traits":["indirect"]}
+{"id":"e1710","text":"Phone in my hand all evening, scrolling through contacts, not pressing any of them.","emotion":"lonely","also":["sad"],"intensity":5,"traits":["indirect"]}
+{"id":"e1711","text":"Walked through the park and every bench had two people on it.","emotion":"lonely","intensity":4,"traits":["indirect","short"]}
+{"id":"e1712","text":"Talked to the barista for longer than strictly necessary. Then the man at the post office. Then the cat.","emotion":"lonely","intensity":5,"traits":["indirect"]}
+{"id":"e1713","text":"Booked a table for one at the restaurant and the waiter took the other chair away.","emotion":"lonely","also":["sad"],"intensity":5,"traits":["indirect"]}
+{"id":"e1714","text":"Feet up, a pot of tea, the garden doing its thing outside the window. Wouldn't swap it.","emotion":"content","also":["calm"],"intensity":4,"traits":["indirect"]}
+{"id":"e1715","text":"The bills are paid, the fridge is full and the kids are laughing upstairs. That'll do.","emotion":"content","intensity":5,"people_optional":["the kids"],"traits":["indirect"]}
+{"id":"e1716","text":"Same café, same seat, same flat white, same nod from the owner. I love my little rut.","emotion":"content","intensity":4,"traits":["indirect"]}
+{"id":"e1717","text":"Dinner with the old crowd. Nobody looked at their phone. Walked home humming.","emotion":"content","also":["happy"],"intensity":5,"traits":["indirect"]}
+{"id":"e1718","text":"Clean sheets, open window, a book I'm halfway through. Not asking for anything else today.","emotion":"content","also":["calm"],"intensity":4,"traits":["indirect"]}
+{"id":"e1719","text":"Shoulders down for the first time all week. Long exhale on the doorstep.","emotion":"calm","intensity":4,"traits":["indirect","short"]}
+{"id":"e1720","text":"Let the phone ring out. Finished my tea. The world kept turning.","emotion":"calm","intensity":3,"traits":["indirect"]}
+{"id":"e1721","text":"Watched the rain run down the window for twenty minutes and didn't think about a single thing.","emotion":"calm","intensity":5,"traits":["indirect"]}
+{"id":"e1722","text":"Breathing slowed, heartbeat slowed, the decision made itself.","emotion":"calm","intensity":4,"traits":["indirect"]}
+{"id":"e1723","text":"Already packed. The trip is in nine days.","emotion":"excited","intensity":6,"traits":["indirect","short","time"]}
+{"id":"e1724","text":"Checked the tracking number eleven times today. The parcel is in Leicester. Getting closer.","emotion":"excited","intensity":5,"not_people":["Leicester"],"traits":["indirect"]}
+{"id":"e1725","text":"Made a playlist for the road trip. It's four hours long. The trip is three.","emotion":"excited","intensity":5,"traits":["indirect"]}
+{"id":"e1726","text":"Couldn't sit still at work. Kept opening the venue website to look at the stage.","emotion":"excited","intensity":6,"traits":["indirect"]}
+{"id":"e1727","text":"Bought a guidebook, a phrasebook and a tiny umbrella. The flights are in March.","emotion":"excited","intensity":5,"not_people":["March"],"traits":["indirect","time"]}
+{"id":"e1728","text":"Planted the apple tree for whoever lives here in twenty years.","emotion":"hopeful","intensity":4,"traits":["indirect","short"]}
+{"id":"e1729","text":"Put my name down for the course starting in September. Bought the textbook already.","emotion":"hopeful","also":["excited"],"intensity":5,"not_people":["September"],"traits":["indirect","time"]}
+{"id":"e1730","text":"Wrote the CV. Sent four applications. Ironed the interview shirt just in case.","emotion":"hopeful","intensity":5,"traits":["indirect"]}
+{"id":"e1731","text":"Taped the scan photo to the fridge. Bought one tiny pair of socks. Not tempting fate further.","emotion":"hopeful","also":["anxious"],"intensity":6,"traits":["indirect"]}
+{"id":"e1732","text":"The rescue dog took a treat from my hand today instead of from the floor.","emotion":"hopeful","also":["happy"],"intensity":5,"traits":["indirect"]}
+{"id":"e1733","text":"Wrote Mrs. Lindgren a card for every Christmas for ten years. Today I finally told her why.","emotion":"grateful","intensity":6,"people":["Mrs. Lindgren"],"not_people":["Christmas"],"traits":["indirect"]}
+{"id":"e1734","text":"Saved the voicemail from the surgeon who caught it early. Listen to it sometimes.","emotion":"grateful","intensity":6,"traits":["indirect"]}
+{"id":"e1735","text":"Paid for the stranger's groceries in front of me, like someone once did for me.","emotion":"grateful","also":["happy"],"intensity":5,"traits":["indirect"]}
+{"id":"e1736","text":"Kept the note Dimitri slipped under my door in the worst week. Folded it into my wallet.","emotion":"grateful","intensity":6,"people":["Dimitri"],"traits":["indirect"]}
+{"id":"e1737","text":"Pinned the certificate above my desk where I can see it every morning.","emotion":"proud","intensity":5,"traits":["indirect"]}
+{"id":"e1738","text":"Showed Mum the article with my name in it. Read it to her twice.","emotion":"proud","also":["happy"],"intensity":6,"people":["Mum"],"traits":["indirect"]}
+{"id":"e1739","text":"Wore the medal to the pub. Didn't take it off all evening.","emotion":"proud","also":["happy"],"intensity":7,"traits":["indirect","short"]}
+{"id":"e1740","text":"Hung the painting I made in the hall where visitors see it first.","emotion":"proud","intensity":5,"traits":["indirect"]}
+{"id":"e1741","text":"Checked the door lock three times and the oven twice before I could sleep.","emotion":"anxious","intensity":5,"traits":["indirect"]}
+{"id":"e1742","text":"Rehearsed what I'm going to say to the consultant out loud in the car. Twelve times.","emotion":"anxious","intensity":6,"traits":["indirect"]}
+{"id":"e1743","text":"Bit my nails down to nothing waiting for the email.","emotion":"anxious","intensity":6,"traits":["indirect","short"]}
+{"id":"e1744","text":"Wrote a list of lists. Then lost it. Then cried in the stationery aisle.","emotion":"overwhelmed","intensity":6,"traits":["indirect"]}
+{"id":"e1745","text":"Opened the laptop, stared at the inbox, closed it again, sat in the car for twenty minutes.","emotion":"overwhelmed","intensity":6,"traits":["indirect"]}
+{"id":"e1746","text":"Forgot to eat, forgot the dentist, forgot it was Tuesday.","emotion":"overwhelmed","also":["tired"],"intensity":6,"not_people":["Tuesday"],"traits":["indirect"]}
+{"id":"e1747","text":"Kept turning the old photo over in my hands. Same face, different person.","emotion":"reflective","intensity":4,"traits":["indirect"]}
+{"id":"e1748","text":"Sat on the bench outside my old school for a while and didn't go in.","emotion":"reflective","also":["sad"],"intensity":4,"traits":["indirect"]}
+{"id":"e1749","text":"Left his toothbrush where it was. It's been six months.","emotion":"sad","intensity":7,"traits":["indirect","short"]}
+{"id":"e1750","text":"Made his favourite tea out of habit and then poured it down the sink.","emotion":"sad","intensity":7,"traits":["indirect"]}

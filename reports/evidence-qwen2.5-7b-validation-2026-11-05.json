@@ -1,0 +1,816 @@
+{
+  "date": "2026-11-05",
+  "model": "qwen2.5:7b",
+  "split": "validation",
+  "judge": "plain prompt with label definitions only",
+  "metrics": {
+    "claims": 67,
+    "accuracy": 0.731,
+    "macro_f1": 0.588,
+    "per_label": {
+      "supported": {
+        "precision": 0.78,
+        "recall": 1.0,
+        "f1": 0.876,
+        "support": 39
+      },
+      "contradicted": {
+        "precision": 1.0,
+        "recall": 0.286,
+        "f1": 0.444,
+        "support": 14
+      },
+      "insufficient": {
+        "precision": 0.462,
+        "recall": 0.429,
+        "f1": 0.444,
+        "support": 14
+      }
+    },
+    "unsupported_claims_accepted": 0.393,
+    "valid_claims_rejected": 0.0,
+    "unreadable_replies": 0,
+    "confusion": {
+      "supported": {
+        "supported": 39
+      },
+      "contradicted": {
+        "contradicted": 4,
+        "supported": 3,
+        "insufficient": 7
+      },
+      "insufficient": {
+        "supported": 8,
+        "insufficient": 6
+      }
+    },
+    "by_trait": {
+      "behaviour": {
+        "accuracy": 0.667,
+        "n": 6
+      },
+      "causal": {
+        "accuracy": 0.9,
+        "n": 10
+      },
+      "clinical": {
+        "accuracy": 1.0,
+        "n": 2
+      },
+      "hedged": {
+        "accuracy": 1.0,
+        "n": 3
+      },
+      "intention": {
+        "accuracy": 1.0,
+        "n": 5
+      },
+      "mixed": {
+        "accuracy": 0.5,
+        "n": 2
+      },
+      "overreach": {
+        "accuracy": 0.5,
+        "n": 4
+      },
+      "pattern": {
+        "accuracy": 0.889,
+        "n": 18
+      },
+      "person": {
+        "accuracy": 0.611,
+        "n": 18
+      },
+      "thin": {
+        "accuracy": 0.375,
+        "n": 8
+      },
+      "time": {
+        "accuracy": 1.0,
+        "n": 1
+      },
+      "trend": {
+        "accuracy": 0.7,
+        "n": 10
+      },
+      "universal": {
+        "accuracy": 0.25,
+        "n": 4
+      },
+      "unrelated": {
+        "accuracy": 1.0,
+        "n": 1
+      },
+      "value": {
+        "accuracy": 1.0,
+        "n": 9
+      }
+    }
+  },
+  "rows": [
+    {
+      "id": "v004",
+      "label": "insufficient",
+      "traits": [
+        "universal",
+        "thin"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 15.96
+    },
+    {
+      "id": "v007",
+      "label": "insufficient",
+      "traits": [
+        "person",
+        "thin"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.89
+    },
+    {
+      "id": "v009",
+      "label": "contradicted",
+      "traits": [
+        "intention"
+      ],
+      "reply": "CONTRADICTED",
+      "pred": "contradicted",
+      "seconds": 2.3
+    },
+    {
+      "id": "v010",
+      "label": "supported",
+      "traits": [
+        "intention"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 2.02
+    },
+    {
+      "id": "v012",
+      "label": "supported",
+      "traits": [
+        "pattern"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 2.01
+    },
+    {
+      "id": "v014",
+      "label": "contradicted",
+      "traits": [
+        "causal"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.95
+    },
+    {
+      "id": "v017",
+      "label": "insufficient",
+      "traits": [
+        "value",
+        "unrelated"
+      ],
+      "reply": "INSUFFICIENT",
+      "pred": "insufficient",
+      "seconds": 2.21
+    },
+    {
+      "id": "v018",
+      "label": "contradicted",
+      "traits": [
+        "trend"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 2.64
+    },
+    {
+      "id": "v019",
+      "label": "supported",
+      "traits": [
+        "trend"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 2.3
+    },
+    {
+      "id": "v020",
+      "label": "contradicted",
+      "traits": [
+        "universal",
+        "person"
+      ],
+      "reply": "INSUFFICIENT",
+      "pred": "insufficient",
+      "seconds": 4.88
+    },
+    {
+      "id": "v021",
+      "label": "supported",
+      "traits": [
+        "hedged",
+        "person"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 3.94
+    },
+    {
+      "id": "v022",
+      "label": "supported",
+      "traits": [
+        "causal",
+        "pattern"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 3.39
+    },
+    {
+      "id": "v027",
+      "label": "contradicted",
+      "traits": [
+        "person",
+        "pattern"
+      ],
+      "reply": "INSUFFICIENT",
+      "pred": "insufficient",
+      "seconds": 4.75
+    },
+    {
+      "id": "v028",
+      "label": "supported",
+      "traits": [
+        "behaviour"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.96
+    },
+    {
+      "id": "v029",
+      "label": "contradicted",
+      "traits": [
+        "behaviour"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.74
+    },
+    {
+      "id": "v030",
+      "label": "insufficient",
+      "traits": [
+        "causal",
+        "thin"
+      ],
+      "reply": "INSUFFICIENT",
+      "pred": "insufficient",
+      "seconds": 2.18
+    },
+    {
+      "id": "v031",
+      "label": "supported",
+      "traits": [
+        "causal"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 2.11
+    },
+    {
+      "id": "v034",
+      "label": "supported",
+      "traits": [
+        "trend"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 2.09
+    },
+    {
+      "id": "v035",
+      "label": "insufficient",
+      "traits": [
+        "trend",
+        "thin"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.29
+    },
+    {
+      "id": "v036",
+      "label": "insufficient",
+      "traits": [
+        "universal",
+        "person",
+        "thin"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.79
+    },
+    {
+      "id": "v040",
+      "label": "supported",
+      "traits": [
+        "value",
+        "pattern"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.9
+    },
+    {
+      "id": "v041",
+      "label": "supported",
+      "traits": [
+        "person",
+        "causal"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.68
+    },
+    {
+      "id": "v042",
+      "label": "insufficient",
+      "traits": [
+        "person",
+        "thin"
+      ],
+      "reply": "INSUFFICIENT",
+      "pred": "insufficient",
+      "seconds": 1.4
+    },
+    {
+      "id": "v043",
+      "label": "supported",
+      "traits": [
+        "intention"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.62
+    },
+    {
+      "id": "v044",
+      "label": "contradicted",
+      "traits": [
+        "intention"
+      ],
+      "reply": "CONTRADICTED",
+      "pred": "contradicted",
+      "seconds": 1.73
+    },
+    {
+      "id": "v045",
+      "label": "supported",
+      "traits": [
+        "person",
+        "value"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.54
+    },
+    {
+      "id": "v048",
+      "label": "supported",
+      "traits": [
+        "pattern"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.48
+    },
+    {
+      "id": "v050",
+      "label": "insufficient",
+      "traits": [
+        "thin"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.17
+    },
+    {
+      "id": "v051",
+      "label": "supported",
+      "traits": [
+        "value",
+        "trend"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.51
+    },
+    {
+      "id": "v055",
+      "label": "supported",
+      "traits": [
+        "person",
+        "trend"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.55
+    },
+    {
+      "id": "v056",
+      "label": "supported",
+      "traits": [
+        "universal",
+        "pattern"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.49
+    },
+    {
+      "id": "v059",
+      "label": "supported",
+      "traits": [
+        "pattern"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.46
+    },
+    {
+      "id": "v061",
+      "label": "supported",
+      "traits": [
+        "pattern",
+        "value"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.5
+    },
+    {
+      "id": "v064",
+      "label": "contradicted",
+      "traits": [
+        "person"
+      ],
+      "reply": "INSUFFICIENT",
+      "pred": "insufficient",
+      "seconds": 1.48
+    },
+    {
+      "id": "v065",
+      "label": "insufficient",
+      "traits": [
+        "person",
+        "thin"
+      ],
+      "reply": "INSUFFICIENT",
+      "pred": "insufficient",
+      "seconds": 1.18
+    },
+    {
+      "id": "v066",
+      "label": "supported",
+      "traits": [
+        "causal"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.39
+    },
+    {
+      "id": "v067",
+      "label": "supported",
+      "traits": [
+        "causal",
+        "pattern"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.39
+    },
+    {
+      "id": "v070",
+      "label": "contradicted",
+      "traits": [
+        "person"
+      ],
+      "reply": "CONTRADICTED",
+      "pred": "contradicted",
+      "seconds": 1.62
+    },
+    {
+      "id": "v071",
+      "label": "supported",
+      "traits": [
+        "causal",
+        "pattern"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.42
+    },
+    {
+      "id": "v072",
+      "label": "supported",
+      "traits": [
+        "value"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.4
+    },
+    {
+      "id": "v073",
+      "label": "insufficient",
+      "traits": [
+        "overreach"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.38
+    },
+    {
+      "id": "v074",
+      "label": "supported",
+      "traits": [
+        "behaviour"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.11
+    },
+    {
+      "id": "v075",
+      "label": "supported",
+      "traits": [
+        "person",
+        "pattern"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.39
+    },
+    {
+      "id": "v077",
+      "label": "supported",
+      "traits": [
+        "behaviour",
+        "pattern"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.43
+    },
+    {
+      "id": "v078",
+      "label": "contradicted",
+      "traits": [
+        "behaviour"
+      ],
+      "reply": "INSUFFICIENT",
+      "pred": "insufficient",
+      "seconds": 1.19
+    },
+    {
+      "id": "v081",
+      "label": "supported",
+      "traits": [
+        "person"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.4
+    },
+    {
+      "id": "v082",
+      "label": "contradicted",
+      "traits": [
+        "person"
+      ],
+      "reply": "INSUFFICIENT",
+      "pred": "insufficient",
+      "seconds": 1.49
+    },
+    {
+      "id": "v083",
+      "label": "supported",
+      "traits": [
+        "pattern",
+        "time"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.46
+    },
+    {
+      "id": "v086",
+      "label": "supported",
+      "traits": [
+        "causal"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.18
+    },
+    {
+      "id": "v087",
+      "label": "insufficient",
+      "traits": [
+        "overreach",
+        "clinical"
+      ],
+      "reply": "INSUFFICIENT",
+      "pred": "insufficient",
+      "seconds": 1.21
+    },
+    {
+      "id": "v088",
+      "label": "supported",
+      "traits": [
+        "hedged"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.14
+    },
+    {
+      "id": "v089",
+      "label": "insufficient",
+      "traits": [
+        "overreach",
+        "clinical"
+      ],
+      "reply": "INSUFFICIENT",
+      "pred": "insufficient",
+      "seconds": 1.23
+    },
+    {
+      "id": "v092",
+      "label": "contradicted",
+      "traits": [
+        "person",
+        "trend"
+      ],
+      "reply": "INSUFFICIENT",
+      "pred": "insufficient",
+      "seconds": 1.49
+    },
+    {
+      "id": "v093",
+      "label": "supported",
+      "traits": [
+        "value",
+        "pattern"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.42
+    },
+    {
+      "id": "v097",
+      "label": "supported",
+      "traits": [
+        "intention"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.17
+    },
+    {
+      "id": "v098",
+      "label": "insufficient",
+      "traits": [
+        "overreach"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.16
+    },
+    {
+      "id": "v099",
+      "label": "supported",
+      "traits": [
+        "person",
+        "pattern"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.5
+    },
+    {
+      "id": "v101",
+      "label": "contradicted",
+      "traits": [
+        "trend"
+      ],
+      "reply": "CONTRADICTED",
+      "pred": "contradicted",
+      "seconds": 1.53
+    },
+    {
+      "id": "v102",
+      "label": "supported",
+      "traits": [
+        "trend",
+        "causal"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.53
+    },
+    {
+      "id": "v106",
+      "label": "supported",
+      "traits": [
+        "pattern"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.48
+    },
+    {
+      "id": "v107",
+      "label": "contradicted",
+      "traits": [
+        "pattern"
+      ],
+      "reply": "INSUFFICIENT",
+      "pred": "insufficient",
+      "seconds": 1.59
+    },
+    {
+      "id": "v108",
+      "label": "supported",
+      "traits": [
+        "value"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.56
+    },
+    {
+      "id": "v109",
+      "label": "insufficient",
+      "traits": [
+        "mixed"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.29
+    },
+    {
+      "id": "v110",
+      "label": "supported",
+      "traits": [
+        "mixed",
+        "hedged"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.6
+    },
+    {
+      "id": "v111",
+      "label": "supported",
+      "traits": [
+        "trend",
+        "person"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.77
+    },
+    {
+      "id": "v113",
+      "label": "supported",
+      "traits": [
+        "behaviour",
+        "pattern"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 1.75
+    },
+    {
+      "id": "v120",
+      "label": "supported",
+      "traits": [
+        "value"
+      ],
+      "reply": "SUPPORTED",
+      "pred": "supported",
+      "seconds": 2.12
+    }
+  ]
+}

@@ -13,6 +13,7 @@ from unittest.mock import patch, MagicMock
 TMP = tempfile.mkdtemp(prefix="innerbloom_test_")
 os.environ["INNERBLOOM_DATA_DIR"] = TMP
 os.environ["INNERBLOOM_MODEL"] = "test-model"
+os.environ["INNERBLOOM_READER_MODEL"] = "test-reader"  # no Ollama lookups in tests
 
 # Import after env is set
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -42,7 +43,7 @@ def section(title):
 
 # ---------- LLM mocks ----------
 
-def fake_llama(prompt, system="", temperature=0.7, timeout=180):
+def fake_llama(prompt, system="", temperature=0.7, timeout=180, model=""):
     if "Return ONLY a compact JSON object" in prompt:
         return '{"emotion":"happy","intensity":7,"summary":"A good day at work.","tags":["work","life","focus"],"themes":["productivity","growth"]}'
     if "exactly 3 follow-up questions" in prompt:
@@ -277,7 +278,7 @@ def test_chat_routes():
     # Force the fake reply to include a [cite:xxxx] matching a real entry id
     entries = innerbloom_app.load_file(innerbloom_app.JOURNAL_FILE)
     short_id = entries[-1]["id"][:8]
-    def fake_llama_with_cite(prompt, system="", temperature=0.7, timeout=180):
+    def fake_llama_with_cite(prompt, system="", temperature=0.7, timeout=180, model=""):
         return f"A calm thought grounded in your last entry. [cite:{short_id}]"
 
     with patch.object(innerbloom_app, "call_llama", side_effect=fake_llama_with_cite):
@@ -446,6 +447,41 @@ def test_spotify():
 # =========================================================================
 # Health
 # =========================================================================
+
+def test_reader_model():
+    section("Reader model")
+    app_ = innerbloom_app
+    saved = (app_.READER_MODEL_SETTING, dict(app_._reader_cache))
+
+    def fresh(installed, setting=""):
+        app_.READER_MODEL_SETTING = setting
+        app_._reader_cache.update(model=None, checked=0.0)
+        with patch.object(app_, "_installed_ollama_models", return_value=installed):
+            return app_.reader_model()
+
+    try:
+        check("trained reader used when Ollama has it",
+              fresh({app_.DEFAULT_READER_MODEL, "qwen2.5:7b"}) == app_.DEFAULT_READER_MODEL)
+        check("falls back to the main model when the reader is missing",
+              fresh({"qwen2.5:7b"}) == app_.MODEL)
+        check("falls back to the main model when Ollama is down", fresh(None) == app_.MODEL)
+        check("INNERBLOOM_READER_MODEL wins", fresh(set(), setting="my-reader") == "my-reader")
+
+        seen = {}
+        def spy(prompt, system="", temperature=0.7, timeout=180, model=""):
+            seen["model"], seen["temperature"] = model, temperature
+            return '{"emotion":"calm","intensity":4,"summary":"A quiet walk.","tags":["walk"],"themes":["rest"]}'
+        app_.READER_MODEL_SETTING = "my-reader"
+        with patch.object(app_, "call_llama", side_effect=spy):
+            out = app_.analyze_entry("Went for a quiet walk by the canal.")
+        check("entry reading asks the reader model", seen.get("model") == "my-reader", str(seen))
+        check("entry reading keeps the analysis temperature",
+              seen.get("temperature") == app_.entry_analysis.TEMPERATURE)
+        check("reader reply parsed", out.get("emotion") == "calm")
+    finally:
+        app_.READER_MODEL_SETTING = saved[0]
+        app_._reader_cache.clear(); app_._reader_cache.update(saved[1])
+
 
 def test_health():
     section("Health")
@@ -781,6 +817,7 @@ if __name__ == "__main__":
         test_wellbeing_levels()
         test_derived_data()
         test_local_only()
+        test_reader_model()
         test_health()
     finally:
         shutil.rmtree(TMP, ignore_errors=True)
