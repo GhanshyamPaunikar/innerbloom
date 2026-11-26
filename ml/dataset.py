@@ -16,6 +16,9 @@ ROOT = Path(__file__).resolve().parents[1]
 ENTRIES_DIR = ROOT / "ml" / "datasets" / "entries"
 # Extra entries that only ever go into the training split (round-2 contrast pairs).
 TRAIN_ONLY_DIR = ROOT / "ml" / "datasets" / "entries_train_only"
+# Long entries (over 120 words) that form their own locked test split, test_long.
+# Written once, scored once per finished model, never used for any choice.
+TEST_LONG_DIR = ROOT / "ml" / "datasets" / "entries_test_long"
 sys.path.insert(0, str(ROOT))
 
 from innerbloom_core.analysis import EMOTIONS  # noqa: E402
@@ -106,8 +109,9 @@ def summary(entries: List[dict]) -> Dict[str, object]:
 
 
 def load_all() -> List[dict]:
-    """Split entries plus training-only entries, for checks that span both."""
-    return load() + (load(TRAIN_ONLY_DIR) if TRAIN_ONLY_DIR.exists() else [])
+    """Split entries plus training-only and long-test entries, for checks that span all."""
+    extra = [d for d in (TRAIN_ONLY_DIR, TEST_LONG_DIR) if d.exists()]
+    return load() + [e for d in extra for e in load(d)]
 
 
 def main() -> int:

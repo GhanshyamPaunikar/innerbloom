@@ -86,8 +86,8 @@ def summary_lines(report: dict) -> list:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--split", choices=("train", "validation", "test"), default="validation")
-    ap.add_argument("--final", action="store_true", help="required to run on the locked test split")
+    ap.add_argument("--split", choices=("train", "validation", "test", "test_long"), default="validation")
+    ap.add_argument("--final", action="store_true", help="required to run on a locked split (test, test_long)")
     ap.add_argument("--model", default=SPEC["model"])
     ap.add_argument("--ollama-url", default="http://localhost:11434/api/generate")
     ap.add_argument("--limit", type=int, help="first N entries only (smoke test)")
@@ -105,8 +105,8 @@ def main(argv=None) -> int:
         print("\n".join(summary_lines(_report(args.rescore, meta, entries))))
         return 0
 
-    if args.split == "test" and not args.final:
-        print("The test split is locked. Tune on validation; add --final for the one scored test run.")
+    if args.split in ("test", "test_long") and not args.final:
+        print(f"The {args.split} split is locked. Tune on validation; add --final for the one scored test run.")
         return 2
 
     entries = load_split(args.split)

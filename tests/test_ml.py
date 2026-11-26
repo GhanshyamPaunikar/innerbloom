@@ -55,6 +55,16 @@ class Data(unittest.TestCase):
         rows = [json.loads(l) for l in (split.SPLIT_DIR / "test.jsonl").read_text().splitlines() if l]
         self.assertEqual({r["emotion"] for r in rows}, set(analysis.EMOTIONS))
 
+    def test_long_test_split_is_long_locked_and_apart(self):
+        rows = [json.loads(l) for l in (split.SPLIT_DIR / "test_long.jsonl").read_text().splitlines() if l]
+        self.assertEqual({r["emotion"] for r in rows}, set(analysis.EMOTIONS))
+        self.assertTrue(all(len(r["text"].split()) > 120 and "long" in r["traits"] for r in rows))
+        others = {json.loads(l)["id"] for name in ("train", "validation", "test")
+                  for l in (split.SPLIT_DIR / f"{name}.jsonl").read_text().splitlines() if l}
+        self.assertFalse({r["id"] for r in rows} & others)
+        self.assertIn("test_long", json.loads(split.MANIFEST.read_text())["locked"])
+        self.assertEqual(benchmark.main(["--split", "test_long"]), 2)
+
 
 class People(unittest.TestCase):
     def test_title_and_partial_names_match(self):
