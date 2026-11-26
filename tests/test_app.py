@@ -21,6 +21,9 @@ import app as innerbloom_app  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
 
 client = TestClient(innerbloom_app.app, base_url="http://127.0.0.1:5000")
+# The automatic insight refresh (every few saves) waits for a quiet moment in
+# a background thread; tests run insight jobs explicitly instead.
+innerbloom_app.AUTO_REFRESH_EVERY = 10 ** 6
 
 # ---------- tiny helpers ----------
 
@@ -798,6 +801,204 @@ def test_local_only():
 
 
 # =========================================================================
+# Speed and safety: chat order, save follow-up, background jobs
+# =========================================================================
+
+def _agent_events(message, fake_llama_fn, fake_stream_fn=fake_llama_stream):
+    with patch.object(innerbloom_app, "call_llama", side_effect=fake_llama_fn), \
+         patch.object(innerbloom_app, "call_llama_stream", side_effect=fake_stream_fn), \
+         patch.object(innerbloom_app, "embed", return_value=None):
+        with client.stream("POST", "/chat/agent", json={"message": message}) as resp:
+            body = b"".join(resp.iter_bytes()).decode()
+    return [json.loads(l) for l in body.splitlines() if l.strip()]
+
+
+def test_chat_agent_order():
+    section("Chat agent: progress first, one routing call")
+    calls = []
+
+    def fake(prompt, system="", temperature=0.7, timeout=180, model=""):
+        if "self-harm risk" in prompt:
+            calls.append("safety")
+            return "CRISIS" if "kill myself" in prompt else "NONE"
+        if "fast classifier" in prompt:
+            calls.append("classifier")
+            return '{"small_talk": false, "follow_up": false, "brevity": false, "intent": "sleep"}'
+        if "Available tools:" in prompt:
+            calls.append("plan")
+            return ('{"thinking": "look for sleep", "tools": [{"name": "search_entries", '
+                    '"args": {"query": "sleep", "k": 5}}], "ask_back": null}')
+        return "{}"
+
+    events = _agent_events("How have I been sleeping?", fake)
+    check("agent: the first event is a progress step", events and events[0]["type"] == "step"
+          and events[0]["status"] == "running", str(events[:2]))
+    check("agent: safety, then the classifier and the planner", calls == ["safety", "classifier", "plan"], str(calls))
+    tools = [e for e in events if e["type"] == "step" and e.get("kind") == "tool"]
+    check("agent: the planned search runs", tools and "search_entries" in tools[0]["label"], str(tools))
+    check("agent: the reply streams", any(e["type"] == "token" for e in events), str(events[-3:]))
+
+    calls.clear()
+    events = _agent_events("How was my week?", fake)
+    tools = [e for e in events if e["type"] == "step" and e.get("kind") == "tool"]
+    check("agent: a common question is routed by rules, no model call", calls == ["safety"]
+          and tools and "period_summary" in tools[0]["label"], f"{calls} {tools}")
+
+    calls.clear()
+    events = _agent_events("hey", fake)
+    check("agent: plain small talk skips the routing calls", calls == ["safety"], str(calls))
+
+    calls.clear()
+    events = _agent_events("I want to kill myself", fake)
+    kinds = [e["type"] for e in events]
+    check("agent: the safety card comes before the reply",
+          "safety" in kinds and kinds.index("safety") < kinds.index("token")
+          and events[kinds.index("safety")]["safety"]["level"] == "high", str(kinds))
+
+    def model_down(prompt, system="", temperature=0.7, timeout=180, model=""):
+        return "[LLM error: connection refused]"
+    events = _agent_events("What did I write about Sofia?", model_down)
+    tools = [e for e in events if e["type"] == "step" and e.get("kind") == "tool"]
+    check("agent: with the model down, a plain search still grounds the reply",
+          tools and "search_entries" in tools[0]["label"], str(events[:4]))
+
+
+def test_rule_routes():
+    section("Chat: the commonest questions are routed by rules")
+    plan = innerbloom_app.rule_plan
+    expect = {
+        "What was my hardest day this month?": ("emotion_extremes", "negative"),
+        "When was I happiest recently?": ("emotion_extremes", "positive"),
+        "when was I most anxious?": ("emotion_extremes", "anxious"),
+        "How was my week?": ("period_summary", "week"),
+        "How have I been lately?": ("period_summary", "week"),
+        "What themes keep coming up in my journal?": ("list_themes", 60),
+        "Show me what I wrote on 2026-11-02": ("get_entry", "2026-11-02"),
+    }
+    for message, (tool, arg) in expect.items():
+        p = plan(message)
+        check(f"rule: {message}", p and p["tools"][0]["name"] == tool
+              and arg in p["tools"][0]["args"].values(), str(p))
+    for message in ("How have I been sleeping?", "my hardest day with Sam", "What did I write about Sofia?",
+                    "How was my week at work with Priya?", "what themes come up around my sister?",
+                    "Was 2026-11-02 the day I met Sam?", "why do you think that is?"):
+        check(f"no rule: {message}", plan(message) is None, str(plan(message)))
+
+
+def test_save_safety_follow_up():
+    section("Save: reading first, safety check after")
+
+    def fake(prompt, system="", temperature=0.7, timeout=180, model=""):
+        if "self-harm risk" in prompt:
+            time.sleep(0.2)  # the check finishes after the save has answered
+            return "CRISIS"
+        return fake_llama(prompt, system, temperature, timeout, model)
+
+    with patch.object(innerbloom_app, "call_llama", side_effect=fake), \
+         patch.object(innerbloom_app, "embed", return_value=None):
+        r = client.post("/save", json={"text": "I've given my things away and written the letters."})
+        body = r.json()
+        check("save answers before the model's safety check", r.status_code == 200
+              and body["safety"] is None and body.get("safety_check"), str(body)[:200])
+        result = {"status": "pending"}
+        for _ in range(50):
+            result = client.get(f"/safety/result/{body['safety_check']}").json()
+            if result["status"] == "done":
+                break
+            time.sleep(0.05)
+        check("the safety result follows", result["status"] == "done"
+              and (result["safety"] or {}).get("level") == "high", str(result))
+    check("an unknown check id says so", client.get("/safety/result/nope").json()["status"] == "unknown")
+
+
+def test_background_jobs():
+    section("Background jobs: one at a time, after the person")
+    app_ = innerbloom_app
+    spans, lock = [], threading.Lock()
+
+    def job(name, seconds=0.15):
+        def run():
+            start = time.time()
+            time.sleep(seconds)
+            with lock:
+                spans.append((name, start, time.time()))
+        return run
+
+    old_soon = app_.BACKGROUND_SOON_SECONDS
+    app_.BACKGROUND_SOON_SECONDS = 0
+    try:
+        for k in ("job_a", "job_b", "job_c"):
+            app_._run_insight_in_background(k, job(k))
+        app_._INSIGHT_JOBS.join()
+        spans.sort(key=lambda x: x[1])
+        overlap = any(spans[i + 1][1] < spans[i][2] for i in range(len(spans) - 1))
+        check("background jobs never overlap", len(spans) == 3 and not overlap, str(spans))
+
+        with app_._foreground_ai():  # the person is using the model
+            app_._run_insight_in_background("job_d", job("job_d", 0.01))
+            time.sleep(0.4)
+            check("a background job waits while the person uses the model",
+                  app_.INSIGHT_STATUS.get("job_d") == "queued", app_.INSIGHT_STATUS.get("job_d"))
+        app_._INSIGHT_JOBS.join()
+        check("then it runs", app_.INSIGHT_STATUS.get("job_d") == "idle", app_.INSIGHT_STATUS.get("job_d"))
+
+        attempts = []
+
+        def fake_generate(payload, timeout):
+            attempts.append(1)
+            if len(attempts) == 1:
+                raise app_._GaveWay()  # cancelled because the person needed the model
+            return "the answer"
+
+        got = {}
+        with patch.object(app_, "_cancellable_generate", side_effect=fake_generate):
+            app_._run_insight_in_background("job_e", lambda: got.update(r=app_.call_llama("x")))
+            app_._INSIGHT_JOBS.join()
+        check("a request that gave way is asked again", got.get("r") == "the answer"
+              and len(attempts) == 2, f"{got} {attempts}")
+    finally:
+        app_.BACKGROUND_SOON_SECONDS = old_soon
+
+
+def test_insight_failure_is_honest():
+    section("Insights: a failed refresh keeps the last result and says so")
+    app_ = innerbloom_app
+    with patch.object(app_, "call_llama", side_effect=fake_llama), \
+         patch.object(app_, "embed", return_value=None):
+        for t in ["I'll go to bed by eleven every night this week.", "Stayed up till two again.",
+                  "I won't check work email after dinner.", "Answered emails at midnight.",
+                  "Going to run every morning.", "Skipped the run, slept in."]:
+            client.post("/save", json={"text": t})
+    previous = {"items": [{"stated": "an older finding", "evidence": []}],
+                "generated_at": "2026-11-01T10:00:00", "window_days": 60, "entry_count": 6}
+    app_._update_insight("contradictions", previous)
+
+    def timed_out(prompt, system="", temperature=0.7, timeout=180, model=""):
+        return "[LLM error: Read timed out. (read timeout=240)]"
+    with patch.object(app_, "call_llama", side_effect=timed_out), \
+         patch.object(app_, "SANDBOX_MODE", True):
+        app_._run_insight_in_background("contradictions", lambda: app_.compute_contradictions(window_days=60))
+        r = client.post("/insights/contradictions/refresh", params={"wait": "true"})
+    check("a waited-for refresh that fails answers 503", r.status_code == 503, r.text[:120])
+    cache = app_._load_insights()["contradictions"]
+    check("the previous result is kept", cache["items"] == previous["items"], str(cache)[:160])
+    got = client.get("/insights/contradictions").json()
+    check("the card says the refresh failed", "refresh_failed" in got
+          and "previous result" in got["refresh_failed"]["message"], str(got)[:200])
+
+    with patch.object(app_, "call_llama", side_effect=timed_out):
+        weekly = client.get("/weekly-review").json()["result"]
+        latest = app_.load_file(app_.JOURNAL_FILE)[-1]["id"]
+        reflect = client.get(f"/reflect/{latest}").json()
+        prompt = client.get("/prompt").json()["prompt"]
+    check("reviews show a plain sentence, not the raw error", "[LLM error" not in weekly
+          and "couldn't answer" in weekly, weekly)
+    check("reflect returns no questions and the reason", reflect["questions"] == []
+          and reflect.get("error"), str(reflect))
+    check("the writing prompt falls back to a gentle opener", "[LLM error" not in prompt and prompt, prompt)
+
+
+# =========================================================================
 # Run
 # =========================================================================
 
@@ -819,6 +1020,11 @@ if __name__ == "__main__":
         test_local_only()
         test_reader_model()
         test_health()
+        test_chat_agent_order()
+        test_rule_routes()
+        test_save_safety_follow_up()
+        test_background_jobs()
+        test_insight_failure_is_honest()
     finally:
         shutil.rmtree(TMP, ignore_errors=True)
 

@@ -19,8 +19,8 @@ If the model cannot be reached or its reply cannot be read, the entry is still s
 
 Chat (`/chat/agent`) is a real agent, streamed as JSONL so you watch each step:
 
-1. **Classify.** Small talk, a follow-up, or a real question?
-2. **Plan.** The model chooses tools, or asks you to clarify.
+1. **Classify.** Small talk, a follow-up, or a real question? Plain small talk ("hey", "thanks") and the commonest questions ("how was my week", "my hardest day", "what themes come up", an exact date) are settled by rules, instantly and with the tool the planner's own rules name; anything longer or more specific goes to the model.
+2. **Plan.** The model chooses tools, or asks you to clarify. If it can't answer, a plain search keeps the reply grounded in the journal.
 3. **Tools.** `search_entries`, `get_entry`, `list_themes`, `period_summary`, `emotion_extremes`.
 4. **Draft.** The model writes the answer and streams it, citing entries as `[cite:id]`, which become clickable sources.
 
@@ -28,7 +28,7 @@ Three voices change the system prompt: **Companion** (a warm friend who has read
 
 ## Insight engines
 
-Four engines, cached in `data/insights.json`, refreshed on request or in the background every few new entries:
+Four engines, cached in `data/insights.json`, refreshed on request or in the background every few new entries. They run one at a time in a single background thread: an automatic refresh waits until the AI has been unused for 45 seconds, and any request of yours (saving, chat, a safety check) goes first, cancelling a background request that is in the way, which is then asked again later. When a refresh fails, the card keeps its previous result and says the refresh couldn't finish, instead of showing "nothing found".
 
 - **Contradictions.** Real intention sentences ("I'll stop checking email at night") are found in your text first; the model only matches them to later entries, and anything not grounded in your words is dropped.
 - **Emotional triggers.** Which tags and people reliably lift or drain your mood, scored statistically, explained in plain language.
@@ -55,7 +55,8 @@ Helplines (iCall, AASRA, 988, Samaritans, Find a Helpline) are attached when wri
 - **Every chat message and saved entry is checked by a small classifier** when the model is available. No list of phrases can cover the ways people say they want to die, so the model always looks. This is one extra model call per message.
 - **Clear phrases** ("thinking about ending my life", "i want to stop existing", stockpiling pills) show the full list straight away, without waiting for the model. Told at a distance (negated, in the past, about a book or a friend), they are left to the classifier.
 - **If the classifier cannot answer**, the gentle version (AASRA, 24/7, and Find a Helpline, worldwide) is shown whenever the message holds a warning sign. An unreachable model is never read as "safe".
-- The writing page checks clear phrases as you pause (`POST /safety/check`, no model call). Saving runs the full check and shows the full or gentle lines.
+- The writing page checks clear phrases as you pause (`POST /safety/check`, no model call). Saving shows the reading at once and runs the classifier straight after; the page asks for its result (`GET /safety/result/{id}`) and shows the full or gentle lines when it arrives. Clear phrases alert in the save's own answer.
+- The classifier waits up to 120 seconds, because loading the chat model alone can take 18 on an 8 GB computer; a 20-second limit used to give up mid-load, leaving the message to the word lists. In chat it runs inside the stream, so progress shows from the first second.
 - In the public demo these checks count towards each visitor's AI limit; clear phrases still work once the limit is reached.
 
 ## Storage and privacy
