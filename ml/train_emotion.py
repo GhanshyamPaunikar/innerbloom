@@ -21,7 +21,9 @@ import argparse
 import json
 import random
 import os
+import re
 import sys
+from collections import Counter
 import time
 from datetime import datetime
 from pathlib import Path
@@ -47,7 +49,15 @@ CONFIG = {
     "lora_r": 16, "lora_alpha": 32, "lora_dropout": 0.05,
     "target_modules": ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
     "max_length": 1024, "learning_rate": 2e-4, "per_device_batch": 4, "grad_accum": 4,  # effective 16
-    "max_epochs": 3, "warmup_ratio": 0.05, "eval_every_steps": 20, "early_stop_patience": 2,
+    "max_epochs": 3, "warmup_ratio": 0.05, "eval_every_steps": 20, "early_stop_patience": 4,
+    # The feeling and its strength are about 2 of the ~55 reply tokens; the rest
+    # copies the 7B's summary, tags and themes. These weights make them count,
+    # and the feeling's weight is balanced by how common it is in training, so
+    # a common feeling (happy, 9% of train) doesn't become the default answer.
+    "emotion_weight": 5.0, "intensity_weight": 3.0, "class_weight_range": (0.5, 2.0),
+    # The best checkpoint is the one that reads feelings best on validation
+    # (macro-F1 from a short greedy generation), not the lowest overall loss.
+    "select_by": "eval_macro_f1", "f1_max_new_tokens": 10, "f1_batch": 32,
     "smoke_steps": 10, "smoke_examples": 64,
     "gen_max_new_tokens": 256, "gen_batch": 8, "temperature": analysis.TEMPERATURE,
 }
@@ -68,17 +78,125 @@ def read_jsonl(path: Path) -> list:
     return [json.loads(l) for l in path.read_text(encoding="utf-8").splitlines() if l.strip()]
 
 
-def encode(tokenizer, record: dict, max_length: int) -> dict:
-    """Token ids for one example; only the assistant reply is learned."""
+_EMOTION_VALUE = re.compile(r'"emotion"\s*:\s*"([^"]*)"')
+_INTENSITY_VALUE = re.compile(r'"intensity"\s*:\s*"?(\d+)')
+
+
+def class_weights(records: list) -> dict:
+    """emotion -> weight, so every feeling counts about equally in the loss
+    however often it appears in training. Clipped to class_weight_range."""
+    counts = Counter(m.group(1) for r in records
+                     for m in [_EMOTION_VALUE.search(r["messages"][1]["content"])] if m)
+    if not counts:
+        return {}
+    mean = sum(counts.values()) / len(counts)
+    lo, hi = CONFIG["class_weight_range"]
+    return {e: round(min(hi, max(lo, mean / n)), 3) for e, n in counts.items()}
+
+
+def token_weights(answer: str, offsets: list, weights_by_emotion: dict = None) -> list:
+    """One loss weight per reply token: 1, or more for the tokens that spell
+    the feeling and the intensity (found by character position)."""
+    spans = []
+    m = _EMOTION_VALUE.search(answer)
+    if m:
+        w = CONFIG["emotion_weight"] * (weights_by_emotion or {}).get(m.group(1), 1.0)
+        spans.append((m.start(1), m.end(1), w))
+    m = _INTENSITY_VALUE.search(answer)
+    if m:
+        spans.append((m.start(1), m.end(1), CONFIG["intensity_weight"]))
+    out = []
+    for start, end in offsets:
+        w = 1.0
+        for s0, s1, sw in spans:
+            if start < s1 and end > s0:  # the token overlaps the value
+                w = max(w, sw)
+        out.append(w)
+    return out
+
+
+def encode(tokenizer, record: dict, max_length: int, weights_by_emotion: dict = None) -> dict:
+    """Token ids for one example; only the assistant reply is learned, with the
+    feeling and intensity weighted (see token_weights)."""
     prompt = tokenizer.apply_chat_template(record["messages"][:1], tokenize=False, add_generation_prompt=True)
     # Public examples teach only the opening {"emotion": "..."}: no end token,
     # so the model never learns to stop there.
     answer = record["messages"][1]["content"] + ("" if record.get("partial") else "<|im_end|>")
     p_ids = tokenizer(prompt, add_special_tokens=False)["input_ids"]
-    a_ids = tokenizer(answer, add_special_tokens=False)["input_ids"]
+    a = tokenizer(answer, add_special_tokens=False, return_offsets_mapping=True)
+    a_ids = a["input_ids"]
+    a_w = token_weights(answer, a["offset_mapping"], weights_by_emotion)
     ids = (p_ids + a_ids)[:max_length]
     labels = ([-100] * len(p_ids) + a_ids)[:max_length]
-    return {"input_ids": ids, "attention_mask": [1] * len(ids), "labels": labels}
+    loss_weights = ([0.0] * len(p_ids) + a_w)[:max_length]
+    return {"input_ids": ids, "attention_mask": [1] * len(ids), "labels": labels,
+            "loss_weights": loss_weights}
+
+
+def pad_batch(features: list, pad_id: int) -> dict:
+    """Right-pad a batch: ids with pad_id, labels with -100, weights with 0."""
+    import torch
+    n = max(len(f["input_ids"]) for f in features)
+
+    def col(key, fill, dtype):
+        return torch.tensor([f[key] + [fill] * (n - len(f[key])) for f in features], dtype=dtype)
+    return {"input_ids": col("input_ids", pad_id, torch.long),
+            "attention_mask": col("attention_mask", 0, torch.long),
+            "labels": col("labels", -100, torch.long),
+            "loss_weights": col("loss_weights", 0.0, torch.float32)}
+
+
+def weighted_loss(logits, labels, weights):
+    """Next-token cross-entropy, as a weighted mean over the learned tokens."""
+    import torch.nn.functional as F
+    logits, labels, weights = logits[:, :-1, :].float(), labels[:, 1:], weights[:, 1:]
+    ce = F.cross_entropy(logits.reshape(-1, logits.size(-1)), labels.reshape(-1),
+                         ignore_index=-100, reduction="none").view(labels.shape)
+    w = weights * (labels != -100).float()
+    return (ce * w).sum() / w.sum().clamp(min=1e-6)
+
+
+def macro_f1(gold: list, pred: list) -> float:
+    """Macro-F1 over the feelings present in gold, like ml.metrics.score."""
+    labels = sorted(set(gold))
+    scores = []
+    for label in labels:
+        tp = sum(1 for g, p in zip(gold, pred) if g == label and p == label)
+        fp = sum(1 for g, p in zip(gold, pred) if g != label and p == label)
+        fn = sum(1 for g, p in zip(gold, pred) if g == label and p != label)
+        prec = tp / (tp + fp) if tp + fp else 0.0
+        rec = tp / (tp + fn) if tp + fn else 0.0
+        scores.append(2 * prec * rec / (prec + rec) if prec + rec else 0.0)
+    return round(sum(scores) / len(scores), 4) if scores else 0.0
+
+
+def first_emotion(raw: str) -> str:
+    m = _EMOTION_VALUE.search(raw or "") or re.search(r'"emotion"\s*:\s*"([a-z]+)', raw or "")
+    return m.group(1).strip().lower() if m else "<failed>"
+
+
+def validation_macro_f1(model, tok, entries: list) -> float:
+    """Greedy, a few tokens each: enough to read the feeling the model chose."""
+    import torch
+    was_training, side = model.training, tok.padding_side
+    model.eval()
+    tok.padding_side = "left"
+    preds = []
+    try:
+        for i in range(0, len(entries), CONFIG["f1_batch"]):
+            batch = entries[i:i + CONFIG["f1_batch"]]
+            prompts = [tok.apply_chat_template([{"role": "user", "content": analysis.build_prompt(e["text"])}],
+                                               tokenize=False, add_generation_prompt=True) for e in batch]
+            enc = tok(prompts, return_tensors="pt", padding=True).to(model.device)
+            with torch.no_grad():
+                out = model.generate(**enc, max_new_tokens=CONFIG["f1_max_new_tokens"], do_sample=False,
+                                     use_cache=True, pad_token_id=tok.pad_token_id or tok.eos_token_id)
+            preds += [first_emotion(tok.decode(ids[enc["input_ids"].shape[1]:], skip_special_tokens=True))
+                      for ids in out]
+    finally:
+        tok.padding_side = side
+        model.train(was_training)
+    return macro_f1([e["emotion"] for e in entries], preds)
 
 
 def load_model(adapter: Path = None, train: bool = False, base: str = TEACHER):
@@ -191,6 +309,7 @@ def _base_dir(out: Path, base: str) -> Path:
 
 
 def _datasets(out: Path, tok, limit: int = None):
+    """Encoded train and validation examples, and the per-feeling weights."""
     train = read_jsonl(out / "targets_train.jsonl")
     val = read_jsonl(out / "targets_validation.jsonl")
     if not train or not val:
@@ -203,14 +322,30 @@ def _datasets(out: Path, tok, limit: int = None):
         random.Random(SEED).shuffle(train)
     if limit:
         train, val = train[:limit], val[:16]
-    return ([encode(tok, r, CONFIG["max_length"]) for r in train],
-            [encode(tok, r, CONFIG["max_length"]) for r in val])
+    weights = class_weights(train)
+    return ([encode(tok, r, CONFIG["max_length"], weights) for r in train],
+            [encode(tok, r, CONFIG["max_length"], weights) for r in val], weights)
 
 
-def _trainer(model, tok, train_ds, val_ds, out_dir: Path, max_steps: int = -1):
-    from transformers import (DataCollatorForSeq2Seq, EarlyStoppingCallback, Trainer,
-                              TrainingArguments, set_seed)
+def _trainer(model, tok, train_ds, val_ds, out_dir: Path, max_steps: int = -1, f1_entries: list = None):
+    from transformers import EarlyStoppingCallback, Trainer, TrainerCallback, TrainingArguments, set_seed
     set_seed(SEED)
+
+    class WeightedTrainer(Trainer):
+        def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
+            labels, weights = inputs.pop("labels"), inputs.pop("loss_weights")
+            outputs = model(**inputs)
+            loss = weighted_loss(outputs.logits, labels, weights)
+            return (loss, outputs) if return_outputs else loss
+
+    class ValidationF1(TrainerCallback):
+        """Adds eval_macro_f1 to every evaluation, before early stopping and
+        best-checkpoint tracking read the metrics."""
+        def on_evaluate(self, args, state, control, metrics=None, model=None, **kwargs):
+            if metrics is not None and model is not None and f1_entries:
+                metrics["eval_macro_f1"] = validation_macro_f1(model, tok, f1_entries)
+                print(f"  step {state.global_step}: validation macro-F1 {metrics['eval_macro_f1']}")
+
     args = TrainingArguments(
         output_dir=str(out_dir), seed=SEED, bf16=True,
         per_device_train_batch_size=CONFIG["per_device_batch"], per_device_eval_batch_size=CONFIG["per_device_batch"],
@@ -219,23 +354,31 @@ def _trainer(model, tok, train_ds, val_ds, out_dir: Path, max_steps: int = -1):
         lr_scheduler_type="cosine", logging_steps=5,
         eval_strategy="steps", eval_steps=CONFIG["eval_every_steps"],
         save_strategy="steps", save_steps=CONFIG["eval_every_steps"], save_total_limit=3,
-        load_best_model_at_end=max_steps < 0, metric_for_best_model="eval_loss", greater_is_better=False,
+        load_best_model_at_end=max_steps < 0 and bool(f1_entries),
+        metric_for_best_model=CONFIG["select_by"] if f1_entries else "eval_loss",
+        greater_is_better=bool(f1_entries),
         gradient_checkpointing=True, gradient_checkpointing_kwargs={"use_reentrant": False},
-        report_to=[], optim="paged_adamw_8bit")
+        report_to=[], optim="paged_adamw_8bit",
+        remove_unused_columns=False)  # keep loss_weights for compute_loss
     tok.padding_side = "right"
-    callbacks = [EarlyStoppingCallback(CONFIG["early_stop_patience"])] if max_steps < 0 else []
-    return Trainer(model=model, args=args, train_dataset=train_ds, eval_dataset=val_ds,
-                   data_collator=DataCollatorForSeq2Seq(tok, padding=True, label_pad_token_id=-100),
-                   callbacks=callbacks)
+    callbacks = [ValidationF1()]  # first, so the metric exists for what follows
+    if max_steps < 0:
+        callbacks.append(EarlyStoppingCallback(CONFIG["early_stop_patience"]))
+    pad_id = tok.pad_token_id if tok.pad_token_id is not None else tok.eos_token_id
+    return WeightedTrainer(model=model, args=args, train_dataset=train_ds, eval_dataset=val_ds,
+                           data_collator=lambda feats: pad_batch(feats, pad_id), callbacks=callbacks)
 
 
 def stage_smoke(out: Path, base: str):
     started = time.time()
     model, tok = load_model(train=True, base=base)
     out = _base_dir(out, base)
-    train_ds, val_ds = _datasets(out.parent, tok, limit=CONFIG["smoke_examples"])
-    trainer = _trainer(model, tok, train_ds, val_ds, out / "smoke", max_steps=CONFIG["smoke_steps"])
+    train_ds, val_ds, weights = _datasets(out.parent, tok, limit=CONFIG["smoke_examples"])
+    f1_entries = benchmark.load_split("validation")[:16]
+    trainer = _trainer(model, tok, train_ds, val_ds, out / "smoke", max_steps=CONFIG["smoke_steps"],
+                       f1_entries=f1_entries)
     result = trainer.train()
+    smoke_f1 = trainer.evaluate().get("eval_macro_f1")  # proves the weighted loss and F1 check run
     adapter = out / "smoke" / "adapter"
     model.save_pretrained(str(adapter))
     del model, trainer
@@ -249,6 +392,7 @@ def stage_smoke(out: Path, base: str):
     parsed = [analysis.parse(r["raw"]) for r in read_jsonl(path)]
     ok = all(p["analysis_status"] == "ok" for p in parsed)
     log(out, "smoke", train_loss=round(result.training_loss, 4), steps=CONFIG["smoke_steps"],
+        validation_macro_f1_16=smoke_f1, class_weights=weights,
         reload_and_read_ok=ok, emotions=[p["emotion"] for p in parsed],
         minutes=round((time.time() - started) / 60, 1))
     if not ok:
@@ -259,10 +403,10 @@ def stage_smoke(out: Path, base: str):
 def stage_train(out: Path, base: str):
     started = time.time()
     model, tok = load_model(train=True, base=base)
-    train_ds, val_ds = _datasets(out, tok)
+    train_ds, val_ds, weights = _datasets(out, tok)
     out = _base_dir(out, base)
     run_dir = out / "train"
-    trainer = _trainer(model, tok, train_ds, val_ds, run_dir)
+    trainer = _trainer(model, tok, train_ds, val_ds, run_dir, f1_entries=benchmark.load_split("validation"))
     resume = any(p.name.startswith("checkpoint-") for p in run_dir.glob("checkpoint-*"))
     result = trainer.train(resume_from_checkpoint=resume or None)
     adapter = out / "adapter"
@@ -271,12 +415,13 @@ def stage_train(out: Path, base: str):
     (adapter / "training.json").write_text(json.dumps({
         "base_model": BASES[base][0], "teacher": BASES[TEACHER][0], "config": CONFIG, "seed": SEED,
         "train_examples": len(train_ds), "validation_examples": len(val_ds),
-        "best_checkpoint": trainer.state.best_model_checkpoint, "best_eval_loss": trainer.state.best_metric,
+        "class_weights": weights, "selected_by": CONFIG["select_by"],
+        "best_checkpoint": trainer.state.best_model_checkpoint, "best_metric": trainer.state.best_metric,
         "training_loss": result.training_loss, "steps": trainer.state.global_step,
         "split_manifest": json.loads((ROOT / "ml" / "datasets" / "splits" / "manifest.json").read_text()),
     }, indent=2) + "\n")
     hours = (time.time() - started) / 3600
-    log(out, "train", steps=trainer.state.global_step, best_eval_loss=trainer.state.best_metric,
+    log(out, "train", steps=trainer.state.global_step, best_validation_macro_f1=trainer.state.best_metric,
         resumed=resume, hours=round(hours, 2), approx_units=round(hours * UNITS_PER_HOUR, 1))
 
 
@@ -369,6 +514,7 @@ STAGES = {"public": stage_public, "check": stage_check, "replies": stage_replies
 
 
 def main(argv=None) -> int:
+    global TAG, WITH_PUBLIC, SEED
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--stage", choices=STAGES, required=True)
     ap.add_argument("--out", type=Path, default=Path(os.environ.get("INNERBLOOM_TRAIN_OUT", ROOT / "reports" / "phase3")))
@@ -377,9 +523,12 @@ def main(argv=None) -> int:
     ap.add_argument("--lora-r", type=int, help="LoRA rank (alpha is set to twice the rank)")
     ap.add_argument("--lr", type=float, help="learning rate")
     ap.add_argument("--with-public", action="store_true", help="add EmpatheticDialogues examples (non-commercial licence)")
+    ap.add_argument("--seed", type=int, default=SEED,
+                    help="training seed; train three (7, 8, 9) and keep the best on validation")
     args = ap.parse_args(argv)
-    global TAG, WITH_PUBLIC
-    TAG, WITH_PUBLIC = args.tag, args.with_public
+    TAG, WITH_PUBLIC, SEED = args.tag, args.with_public, args.seed
+    if SEED != 7:  # the first seed keeps the old folder names
+        TAG = f"{TAG}-s{SEED}" if TAG else f"s{SEED}"
     if args.lora_r:
         CONFIG["lora_r"], CONFIG["lora_alpha"] = args.lora_r, 2 * args.lora_r
     if args.lr:

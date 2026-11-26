@@ -188,8 +188,11 @@ class Training(unittest.TestCase):
             def apply_chat_template(self, messages, tokenize, add_generation_prompt):
                 return "<user>" + messages[0]["content"] + "<assistant>"
 
-            def __call__(self, text, add_special_tokens):
-                return {"input_ids": [ord(c) for c in text]}
+            def __call__(self, text, add_special_tokens, return_offsets_mapping=False):
+                out = {"input_ids": [ord(c) for c in text]}
+                if return_offsets_mapping:
+                    out["offset_mapping"] = [(i, i + 1) for i in range(len(text))]
+                return out
 
         rec = {"messages": [{"role": "user", "content": "hi"}, {"role": "assistant", "content": "ok"}]}
         enc = te.encode(FakeTok(), rec, 1024)
@@ -197,6 +200,44 @@ class Training(unittest.TestCase):
         self.assertEqual(enc["labels"][:prompt_len], [-100] * prompt_len)
         self.assertEqual(enc["labels"][prompt_len:], [ord(c) for c in "ok<|im_end|>"])
         self.assertEqual(len(enc["input_ids"]), len(enc["labels"]))
+
+    def test_feeling_and_strength_weigh_more(self):
+        from ml import train_emotion as te
+
+        class FakeTok:
+            def apply_chat_template(self, messages, tokenize, add_generation_prompt):
+                return "<p>"
+
+            def __call__(self, text, add_special_tokens, return_offsets_mapping=False):
+                out = {"input_ids": [ord(c) for c in text]}
+                if return_offsets_mapping:
+                    out["offset_mapping"] = [(i, i + 1) for i in range(len(text))]
+                return out
+        reply = '{"emotion": "proud", "intensity": 7, "summary": "Finished the quilt."}'
+        rec = {"messages": [{"role": "user", "content": "x"}, {"role": "assistant", "content": reply}]}
+        enc = te.encode(FakeTok(), rec, 4096, {"proud": 2.0})
+        learned = [(chr(t), w) for t, l, w in zip(enc["input_ids"], enc["labels"], enc["loss_weights"]) if l != -100]
+        heavy = "".join(c for c, w in learned if w > 1)
+        self.assertEqual(heavy, "proud7")
+        self.assertEqual({w for c, w in learned if c in "proud" and w > 1}, {te.CONFIG["emotion_weight"] * 2.0})
+        self.assertEqual(enc["loss_weights"][:3], [0.0, 0.0, 0.0])  # the prompt is never learned
+
+    def test_class_weights_balance_common_feelings(self):
+        from ml import train_emotion as te
+        rec = lambda e: {"messages": [{}, {"content": f'{{"emotion": "{e}", "intensity": 5}}'}]}
+        w = te.class_weights([rec("happy")] * 6 + [rec("calm")] * 2)
+        self.assertLess(w["happy"], 1.0)
+        self.assertGreater(w["calm"], 1.0)
+        lo, hi = te.CONFIG["class_weight_range"]
+        self.assertTrue(all(lo <= v <= hi for v in w.values()))
+
+    def test_checkpoints_are_chosen_by_feelings(self):
+        from ml import train_emotion as te
+        self.assertEqual(te.CONFIG["select_by"], "eval_macro_f1")
+        self.assertEqual(te.first_emotion('{"emotion": "calm", "intens'), "calm")
+        self.assertEqual(te.first_emotion("no json"), "<failed>")
+        self.assertEqual(te.macro_f1(["a", "a", "b"], ["a", "a", "b"]), 1.0)
+        self.assertAlmostEqual(te.macro_f1(["a", "b"], ["a", "a"]), round((2 / 3 + 0) / 2, 4))
 
     def test_keep_only_when_better_without_regressions(self):
         from ml import train_emotion as te
@@ -264,8 +305,11 @@ class PublicData(unittest.TestCase):
             def apply_chat_template(self, messages, tokenize, add_generation_prompt):
                 return "<p>"
 
-            def __call__(self, text, add_special_tokens):
-                return {"input_ids": [ord(c) for c in text]}
+            def __call__(self, text, add_special_tokens, return_offsets_mapping=False):
+                out = {"input_ids": [ord(c) for c in text]}
+                if return_offsets_mapping:
+                    out["offset_mapping"] = [(i, i + 1) for i in range(len(text))]
+                return out
         enc = te.encode(FakeTok(), rec, 4096)
         learned = "".join(chr(t) for t, l in zip(enc["input_ids"], enc["labels"]) if l != -100)
         self.assertEqual(learned, rec["messages"][1]["content"])  # no end token after the emotion
