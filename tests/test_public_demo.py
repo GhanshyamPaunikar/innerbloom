@@ -90,8 +90,11 @@ class PublicDemoTests(unittest.TestCase):
         self.assertEqual((out["own_site"], out["other_site"]), (200, 403))  # behind the website's rewrite
         from datetime import datetime
         from zoneinfo import ZoneInfo
-        far_today = datetime.now(ZoneInfo("Pacific/Kiritimati")).date().isoformat()
-        self.assertEqual(out["far_seed_day"], far_today)  # the sample ends on the visitor's today
+        far_now = datetime.now(ZoneInfo("Pacific/Kiritimati")).replace(tzinfo=None)
+        far_today = far_now.date().isoformat()
+        far_day = min(far_now.replace(hour=9, minute=0, second=0, microsecond=0),
+                      far_now - timedelta(minutes=20)).date().isoformat()  # same rule as sample_day
+        self.assertEqual(out["far_seed_day"], far_day)  # the sample ends on the visitor's today
         self.assertEqual(out["far_saved_day"], far_today)  # and new entries carry their date
         self.assertLessEqual(out["far_seed_time"], datetime.now(ZoneInfo("Pacific/Kiritimati")).replace(tzinfo=None).isoformat())
         self.assertEqual(out["replies"][:2], ["ok", "ok"])

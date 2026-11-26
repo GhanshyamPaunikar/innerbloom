@@ -3,7 +3,6 @@
 No model is needed: replies are scripted.
 """
 import json
-import os
 import sys
 import tempfile
 import unittest

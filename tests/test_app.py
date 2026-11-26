@@ -185,7 +185,6 @@ def test_unit_helpers():
     check("retrieve includes recent entry as grounding", any(e["id"] == "a" for e in hits))
 
     # streak
-    today = datetime.now().date()
     e = [{"timestamp": (datetime.now() - timedelta(days=i)).isoformat()} for i in [0, 1, 2, 5, 6]]
     s = innerbloom_app.compute_streak(e)
     check("streak current=3", s["current"] == 3, str(s))
