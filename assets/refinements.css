@@ -74,3 +74,7 @@
 /* Wellbeing with too few entries: neutral, not the green of "no pattern" */
 .wellbeing-card.insufficient .level-strip{background:var(--border)}
 .wellbeing-card.insufficient .level{background:transparent;color:var(--text-muted);border-color:var(--border)}
+
+/* An insight whose last refresh failed says so above its previous result. */
+.refresh-note { margin: 0 0 10px; padding: 8px 12px; border-radius: 10px; font-size: 13px;
+  color: var(--text-muted); background: var(--warm-soft); grid-column: 1 / -1; }

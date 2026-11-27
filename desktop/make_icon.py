@@ -2,7 +2,7 @@
 import math
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image, ImageDraw
 
 S = 1024
 OUT = Path(__file__).with_name("icon.png")
@@ -14,7 +14,6 @@ def main() -> None:
     pad = 72
     d.rounded_rectangle([pad, pad, S - pad, S - pad], radius=200, fill=(250, 248, 244, 255))
     petals = Image.new("RGBA", (S, S), (0, 0, 0, 0))
-    p = ImageDraw.Draw(petals)
     cx, cy, r, w, h = S / 2, S / 2 + 10, 150, 150, 230
     for k in range(5):
         a = -math.pi / 2 + k * 2 * math.pi / 5

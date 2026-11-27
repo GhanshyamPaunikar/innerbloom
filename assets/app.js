@@ -243,23 +243,42 @@ $("clear-btn").addEventListener("click", () => {
   }
 });
 
+function showSavedSafety(safety) {
+  if (safety?.level === "high") showCrisisSupport();
+  else if (safety?.level === "soft") {
+    const lines = (safety.resources || []).map(r => `${r.name}: ${r.detail}`).join(" · ");
+    toast(`${safety.message} ${lines}`, "success", 12000);
+  }
+}
+
+// The reading arrives first; the model's safety check finishes a few seconds
+// later (longer while the AI loads) and its help lines appear then.
+async function followSafetyCheck(id) {
+  const started = Date.now();
+  while (Date.now() - started < 4 * 60 * 1000) {
+    await new Promise(r => setTimeout(r, 1500));
+    try {
+      const r = await api(`/safety/result/${encodeURIComponent(id)}`);
+      if (r.status === "done") { showSavedSafety(r.safety); return; }
+      if (r.status === "unknown") return;
+    } catch { /* the server may be busy; keep asking */ }
+  }
+}
+
 async function saveEntry() {
   const text = entryText.value.trim();
   if (!text) { toast("Write something first.", "error"); return; }
   const btn = $("save-btn"); const originalHtml = btn.innerHTML;
   btn.disabled = true;
-  btn.innerHTML = '<span>Saving & reflecting…</span>';
+  btn.innerHTML = '<span>Saving & reading…</span>';
   try {
     const saved = await api("/save", {
       method: "POST",
       body: JSON.stringify({ text, title: entryTitle.value.trim() || null, mood: $("entry-intensity").value ? Number($("entry-intensity").value) : null }),
     });
     entryText.value = ""; entryTitle.value = "";
-    if (saved?.safety?.level === "high") showCrisisSupport();
-    else if (saved?.safety?.level === "soft") {
-      const lines = (saved.safety.resources || []).map(r => `${r.name}: ${r.detail}`).join(" · ");
-      toast(`${saved.safety.message} ${lines}`, "success", 12000);
-    }
+    showSavedSafety(saved?.safety);
+    if (saved?.safety_check) followSafetyCheck(saved.safety_check);
     crisisShown = false;
     clearSavedDraft(); updateWordCount();
     const hardEmotions = ["sad", "anxious", "angry", "overwhelmed", "lonely", "frustrated", "tired"];
@@ -697,7 +716,11 @@ $("modal-generate").addEventListener("click", async () => {
   try {
     const r = await api(`/reflect/${activeEntry.id}`);
     const qs = r.questions || [];
-    if (!qs.length) { host.innerHTML = `<div style="color:var(--text-muted);font-size:13px;">No questions generated.</div>`; return; }
+    if (!qs.length) {
+      host.innerHTML = `<div style="color:var(--text-muted);font-size:13px;"></div>`;
+      host.firstElementChild.textContent = r.error || "No questions generated.";
+      return;
+    }
     const saved = activeEntry.reflections || [];
     host.innerHTML = `
       <div style="display:flex;flex-direction:column;gap:14px;">
@@ -1372,10 +1395,21 @@ function renderContradictions(data) {
   }
 }
 
+// When the last refresh failed, the card says so above the previous result,
+// so an old or empty card is never mistaken for a fresh finding.
+function showRefreshNote(host, data) {
+  if (!host || !data || !data.refresh_failed) return;
+  const note = document.createElement("p");
+  note.className = "refresh-note";
+  note.textContent = data.refresh_failed.message || "The last refresh couldn't finish.";
+  host.prepend(note);
+}
+
 async function loadContradictions() {
   try {
     const data = await api("/insights/contradictions");
     renderContradictions(data);
+    showRefreshNote($("contradiction-list"), data);
   } catch {
     $("contradiction-list").innerHTML = `<div class="contradictions-empty">Couldn't reach the backend.</div>`;
   }
@@ -1493,6 +1527,7 @@ async function loadTriggers() {
   try {
     const data = await api("/insights/triggers");
     renderTriggers(data);
+    showRefreshNote($("trigger-grid"), data);
   } catch {
     $("trigger-grid").innerHTML = `<div class="triggers-empty">Couldn't reach the backend.</div>`;
   }
@@ -1691,6 +1726,7 @@ async function loadNarrative() {
   try {
     const data = await api("/insights/narrative");
     renderNarrative(data);
+    showRefreshNote($("narrative-host"), data);
   } catch {
     $("narrative-host").innerHTML = `<div class="narrative-empty">Couldn't reach the backend.</div>`;
   }

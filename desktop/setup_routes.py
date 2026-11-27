@@ -4,7 +4,6 @@ Served by the desktop launcher only (desktop/launcher.py), on the same
 loopback-only backend as the journal. The page is desktop/setup.html.
 """
 import json
-import os
 import platform
 import threading
 import webbrowser

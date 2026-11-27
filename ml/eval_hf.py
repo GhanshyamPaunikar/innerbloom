@@ -94,14 +94,14 @@ def run(model_id: str, split: str, out_dir: Path, limit: int = None, batch: int 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--model", required=True, help="Hugging Face id or local folder")
-    ap.add_argument("--split", choices=("train", "validation", "test"), default="validation")
+    ap.add_argument("--split", choices=("train", "validation", "test", "test_long"), default="validation")
     ap.add_argument("--final", action="store_true")
     ap.add_argument("--limit", type=int)
     ap.add_argument("--name", help="folder name for the results (default from --model)")
     ap.add_argument("--out", type=Path, default=ROOT / "reports" / "runs")
     args = ap.parse_args(argv)
-    if args.split == "test" and not args.final:
-        print("The test split is locked. Add --final for the one scored test run.")
+    if args.split in ("test", "test_long") and not args.final:
+        print(f"The {args.split} split is locked. Add --final for the one scored test run.")
         return 2
     name = args.name or Path(args.model.rstrip("/")).name
     report = run(args.model, args.split, args.out / f"{name}-{args.split}" , args.limit)

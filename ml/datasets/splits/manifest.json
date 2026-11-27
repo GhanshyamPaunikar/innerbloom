@@ -6,12 +6,13 @@
     "test": 0.2
   },
   "entries": 2001,
-  "train_only_entries": 160,
+  "train_only_entries": 680,
+  "test_long_entries": 48,
   "splits": {
     "train": {
-      "entries": 1359,
-      "groups": 1296,
-      "sha256": "fc9b825fc41c0d49fe96efc7631b7e88587b3f25acee11e95f6670a6aca947cd"
+      "entries": 1879,
+      "groups": 1686,
+      "sha256": "8dddf73c02f9e9bcf5b27327ed27e40541b91f77f90ecba59e1ec32feccd6af2"
     },
     "validation": {
       "entries": 402,
@@ -22,7 +23,15 @@
       "entries": 400,
       "groups": 400,
       "sha256": "d522357791888d65a407dc846a1ad32f6fefedcbd21af8f4bef3224db65f9ed9"
+    },
+    "test_long": {
+      "entries": 48,
+      "groups": 48,
+      "sha256": "9f1d743268f42eaaaa76d289af766d5e1f093a61f7f4324f71259c791722739c"
     }
   },
-  "locked": "test"
+  "locked": [
+    "test",
+    "test_long"
+  ]
 }

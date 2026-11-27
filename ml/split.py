@@ -82,7 +82,10 @@ def near_duplicates(splits: Dict[str, List[dict]]) -> List[str]:
 def build():
     entries = dataset.load()
     extra = dataset.load(dataset.TRAIN_ONLY_DIR) if dataset.TRAIN_ONLY_DIR.exists() else []
-    bad = dataset.problems(entries + extra)
+    long_test = dataset.load(dataset.TEST_LONG_DIR) if dataset.TEST_LONG_DIR.exists() else []
+    bad = dataset.problems(entries + extra + long_test)
+    bad += [f"{e['_source']} {e['id']}: every test_long entry must carry the 'long' trait"
+            for e in long_test if "long" not in e["traits"]]
     if bad:
         raise SystemExit("fix the entries first:\n" + "\n".join(bad))
     where = assign(entries)
@@ -94,6 +97,11 @@ def build():
     # train, and must not resemble anything in validation or test.
     for e in sorted(extra, key=lambda e: e["id"]):
         splits["train"].append({k: v for k, v in e.items() if k != "_source"})
+    # The long-entry test is its own locked split: real journal entries run to
+    # a few hundred words, while most benchmark entries are short notes.
+    if long_test:
+        splits["test_long"] = [{k: v for k, v in e.items() if k != "_source"}
+                               for e in sorted(long_test, key=lambda e: e["id"])]
     dupes = near_duplicates(splits)
     if dupes:
         raise SystemExit("near-duplicates across splits:\n" + "\n".join(dupes))
@@ -104,11 +112,12 @@ def build():
         "shares": dict(SHARES),
         "entries": len(entries),
         "train_only_entries": len(extra),
+        "test_long_entries": len(long_test),
         "splits": {name: {"entries": len(splits[name]),
                           "groups": len({e["group"] for e in splits[name]}),
                           "sha256": hashlib.sha256(files[name].encode()).hexdigest()}
                    for name in files},
-        "locked": "test",
+        "locked": ["test", "test_long"] if long_test else "test",
     }
     return files, manifest
 

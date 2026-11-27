@@ -259,3 +259,95 @@ Still open: publishing the reader (Hugging Face or an Ollama registry, Phase 7),
 - `desktop/build.py`: PyInstaller; a `.dmg` on macOS (20 MB), a `.zip` on Windows. `.github/workflows/desktop.yml` builds Apple silicon, Intel Mac and Windows on pull requests that touch the app and on `v*` tags, runs each built app once (`INNERBLOOM_SMOKE_TEST=1`), and attaches the files to a GitHub Release on tags. `desktop/RELEASE_NOTES.md` is the plain install guide shown there.
 - Checked on the Mac: the built app served the journal, saved an entry read by the reader (calm, 4, Priya) into its own data folder, and a download from the setup page showed real progress.
 - Not signed: macOS asks for "Open Anyway" once and Windows SmartScreen for "Run anyway". Signing needs an Apple Developer account ($99 a year) and a Windows code-signing certificate.
+
+## Reader data, round 3 (2026-11-11)
+
+What the locked test said the reader gets wrong, and the data written to fix it. No model has been trained on this yet.
+
+| Weak spot on the test | Evidence | Added (training only) |
+|---|---|---|
+| Real entries are long; the benchmark's are short | train median 16 words, 29 `long` entries | 128 long entries, 8 per emotion, 125–220 words (`30_long_a`, `31_long_b`) |
+| Over-picks `happy` (precision 0.46); `proud` found only 48% of the time | content→happy 5, hopeful→happy 3, proud→happy 3, proud→excited 3, calm→happy 2 | 60 proud / happy / excited triplets on one scene each (`32_`), 60 content / hopeful / calm against happy (`33_`) |
+| `angry` read as `sad` | 4 misses | 40 angry / sad pairs on one scene each (`34_`) |
+| Feelings shown, never named | `indirect` 47% | 80 indirect entries (`35_`) |
+| Sarcasm | 44%, no better than the 7B | 60 sarcastic entries (`36_`) |
+
+- Train grows from 1,359 to 1,787 entries. **Validation and test are byte-identical** (sha `63e45a26…` and `d5223577…`), so every score so far stays comparable.
+- **New locked split `test_long`**: 48 entries, 3 per emotion, 141–202 words, in `ml/datasets/entries_test_long/`. Written once, before any training on the new data, and scored once per finished model (`python -m ml.benchmark --split test_long --final`). It answers the question the current test cannot: does the reader hold up on entries the length people actually write? `ml.split` keeps it out of train and checks near-duplicates against every split.
+- Caution from round 2: 160 contrast pairs alone gave no gain (0.748 against 0.746), so this round comes with training changes (below).
+- Every entry is fictional. Written by one person; the second-reader check covers the earlier validation entries only.
+
+### Review of the first pass, and a second pass (2026-11-26)
+
+A review found three problems in the data above before any training used it:
+
+- **It was designed from the locked test's mistakes.** The test is for judging, not for choosing what to write, so a round-3 model's score on `test` would be optimistic. The validation split, the right place to look, shows different weak spots: angry read as frustrated (7), sad as reflective (5), tired as overwhelmed (4), frustrated as anxious (3). `proud` is much less of a problem than the test suggested (recall 0.72 on validation, 0.48 on test). Decisions for this round use validation only; the final verdict uses `test_long` and, ideally, entries not written by the same person.
+- **Happy became the commonest feeling in training** (167 of 1,787), the one the reader already over-picks (precision 0.52 on validation). Training now balances the feelings in the loss instead of deleting good contrast pairs.
+- **Sarcasm taught a shortcut:** 63% of the new sarcastic entries were `frustrated`, against 3 of 9 in the test split, and none were positive.
+
+Second pass (`ml/datasets/entries_train_only/`):
+
+| Change | Entries |
+|---|---|
+| `36_sarcasm`: sarcasm hiding other feelings (sad, anxious, tired, lonely, overwhelmed, angry), rewritten from `frustrated` | 18 |
+| `36_sarcasm`: positive sarcasm ("Oh no. Disaster. The meeting's cancelled…") | 12 added |
+| `37_contrast_validation`: same-scene pairs for validation's commonest mistakes, angry/frustrated, sad/reflective, tired/overwhelmed, frustrated/anxious | 80 added |
+
+Train is now 1,879 entries; `frustrated` is 28% of the round's sarcasm. Validation and test are still byte-identical (`63e45a26…`, `d5223577…`).
+
+`test_long` has 3 entries per feeling, so its accuracy carries about ±12 points of uncertainty: it shows whether the reader breaks on long entries, not which of two close models is better.
+
+### Training changes for round 4 (`ml/train_emotion.py`)
+
+- **The feeling and its strength count more.** They are about 2 of the ~55 tokens the reader learns to write; the rest copies the 7B's summary, tags and themes. Their loss weights are 5 and 3, and the feeling's weight is balanced by how common it is in training (clipped to 0.5-2), so `happy` being common doesn't make it the default.
+- **The best checkpoint reads feelings best on validation** (macro-F1 from a short greedy generation at every check), instead of the lowest overall loss, which is mostly summary-copying. Early stopping follows the same number, with patience 4.
+- **Three seeds** (`--seed 7/8/9`), keeping the best on validation; then the weight edit is refitted for the new model on the Mac.
+- Checked without a GPU: the real training loop ran on a tiny random model with a stand-in tokenizer (weights applied, macro-F1 added to every evaluation, best checkpoint chosen by it). The smoke stage on Colab now also runs one evaluation, so both are proven there before the long run. `notebooks/02_emotion_training.ipynb` has the steps as Round 4.
+- Dropped from the earlier plan: partial credit for `also` (it would make the choice between close feelings more random, which doesn't help against single labels) and full fine-tuning as a default (round 2's larger LoRA gained nothing; it stays an experiment for validation).
+
+## Speed and safety on an 8 GB Mac (2026-11-26)
+
+Measured on the M1 with 8 GB, running the real app against the 40 fictional demo entries in a scratch folder (never the real journal), with every Ollama call timed and Ollama's own log read.
+
+### What was wrong
+
+- **The models can't share memory.** Ollama gets about 5.3 GB on this Mac; the 7B takes 4.6 GB, and with other apps open only about 300 MB of memory was left. Any other model (the reader, the memory model) pushes the 7B out, and each reload takes 4-18 s (31 evictions and an average 5.6 s per load in the logs).
+- **Saving took 25-27 s**, not the reader's 2.6 s: the reader reloaded (about 4 s), then the 7B reloaded for the safety check (about 10 s), all before the page saw anything.
+- **Safety checks were skipped.** The classifier gave up after 20 s. In a follow-up chat message Ollama's log shows *"client connection closed before server finished loading, aborting load"*: the check was abandoned while the 7B was loading, and the message was left to the word lists, which on the seen set give no help for 9 of 40 crisis statements. On saves it came within 4-5 s of the limit.
+- **Every 5th save jammed the app.** It started all four insight engines at once on the 7B. The next save took 233 s and its reading failed; the safety check timed out; the contradictions job timed out too, and then reported "what you said and what you did roughly line up", having checked nothing.
+- **Chat showed nothing for 10-17 s** (only typing dots): the safety check and the classifier ran before the stream began. The first word came after about 50 s.
+
+### What changed (`app.py`, `assets/app.js`)
+
+- **Who gets the model first.** Requests from the person (saving, chat, safety checks, reviews) are marked as such. Background insight jobs run one at a time in one thread, start only after the AI has been unused for 45 s (3 s when the person asks for a refresh), and stream their requests so they can be cancelled: the moment the person needs the model, the background request is closed (Ollama stops at once) and asked again later.
+- **Safety checks wait for the model** (120 s instead of 20), and run where they don't hold anything up: on save, the reading comes back first and the page asks `GET /safety/result/{id}` for the check, which follows within seconds; clear words still alert in the save's own answer. In chat the check runs inside the stream, after a first progress step.
+- **Failed insights say so.** A refresh whose model call fails raises instead of saving an empty result: the previous result is kept and the card says the refresh couldn't finish. Reviews, reflections, the writing prompt and the music insight show a plain sentence (or fall back), never `[LLM error: …]`.
+- **Chat routing.** The commonest questions (how was my week, how have I been lately, hardest or happiest day, when was I most X, what themes come up, an exact date) are routed by the planner's own written rules, with no model call; plain small talk skips the classifier. Everything else goes through the classifier and the planner as before, and a failed planner falls back to a plain search.
+- Smaller: "your story" thins a long window evenly so its prompt stays inside the 4,096-token context; requests 2.31 → 2.32.4; Ollama's own error replies are reported as errors.
+
+### After (same Mac, same data)
+
+| | Before | After |
+|---|---|---|
+| Save: reading on screen | 25-27 s | **5-7 s** |
+| Save: safety check result | inside the 25-27 s, near its 20 s limit | 13-15 s, in the background, no timeouts |
+| Chat: first progress step | 10-17 s | **0 s** |
+| Chat: first word, "How was my week?" | about 50 s | **10 s** (rules, no routing call) |
+| Chat: first word, "What did I write about Sofia?" | 49-57 s | 32 s |
+| The save after the 5th | **233 s, reading failed** | 6 s |
+| A save while an insight job runs | jammed | 7 s; the job stepped aside once and finished later |
+| Requests from the person that timed out | safety check, classifier, reading | none |
+| Insight jobs | contradictions timed out and reported a false "all good" | all four finished |
+
+### Tried and dropped
+
+- **The reader as the safety classifier** (it is already loaded when saving): on the 110 seen cases it gave full crisis alerts for 24 of 40 harmless sentences and help lines for half the everyday ones. The 7B: 39 of 40 crisis statements, 2 of 40 false alarms. Kept the 7B.
+- **Memory search on the CPU** to keep the 7B loaded: Ollama still evicts the 7B, for lack of system memory.
+- **mxbai's documented query prefix** ("Represent this sentence for searching relevant passages: "): worse on the validation journals, answer in the top 5 91.7% → 86.1%, recall 80.9% → 75.5%. Search stays as it was.
+- **Skipping the embedding after each chat reply:** no measurable change.
+- **Merging the classifier and the planner into one call:** on 24 fictional messages with known answers, 19 right against 21, for about 2 s less per message (19.1 against 21.0). Reverted; the rules above fixed the three questions both versions missed.
+
+### Still true
+
+- On 8 GB every switch between the 7B and another model still costs a reload; the fixes keep switches out of the person's way rather than removing them. A single 1.5B model doing reading, chat and insights would fit with room to spare (reader and memory model together are 2.7 GB), but the reader's safety result shows a model trained for one job doesn't pick up others: each job would need its own data and test.
+- These timings are one Mac with whatever else was open; memory pressure varies.

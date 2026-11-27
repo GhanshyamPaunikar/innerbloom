@@ -68,7 +68,6 @@ def main(argv=None) -> int:
     writer.write_kv_data_to_file()
     writer.write_tensors_to_file()
     writer.close()
-    total = len(EMOTIONS) * hbar.size
     print(f"wrote {out}: {changed} of 151,936 output rows changed "
           f"({changed * hbar.size:,} numbers, {changed * hbar.size / 1.54e9:.6%} of the model)")
     return 0

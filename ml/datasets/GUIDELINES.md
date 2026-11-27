@@ -66,3 +66,11 @@ Following the production prompt: names of other people, in the form written.
 2. The label follows these rules, and a second reader agrees or the entry is marked `ambiguous` with `also` filled in.
 3. It is not a near-copy of another entry (checked automatically by `python -m ml.split`).
 4. It contains no real person's private details.
+
+## Where entries live
+
+| Folder | Goes into | Notes |
+|---|---|---|
+| `entries/` | train, validation and test, split 60/20/20 by `ml.split` | Adding here re-splits everything; the splits were frozen at 2,001 entries |
+| `entries_train_only/` | train only | Contrast pairs, long entries and other targeted data. Must not resemble anything in validation or test (`ml.split` refuses near-duplicates) |
+| `entries_test_long/` | the locked `test_long` split | Entries over 120 words, every one marked `long`. Scored once per finished model, never used to choose anything |

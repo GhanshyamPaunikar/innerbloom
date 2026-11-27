@@ -1,7 +1,8 @@
 """
 Innerbloom — Advanced AI Journal Backend
 ----------------------------------------
-FastAPI + Ollama (llama3.2:3b) + Spotify integration
+FastAPI + Ollama (qwen2.5:7b for chat and insights, the fine-tuned
+Innerbloom reader for entries, mxbai-embed-large for memory) + Spotify
 
 Features:
 - Structured entry analysis (emotion, intensity, tags, themes, summary)
@@ -21,8 +22,8 @@ All data stored locally as JSON; nothing leaves the machine except Spotify
 traffic when the user explicitly connects.
 """
 
-from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import StreamingResponse, PlainTextResponse, HTMLResponse
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import StreamingResponse, PlainTextResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -41,6 +42,7 @@ import random
 import threading
 import uuid
 import time
+import queue
 from datetime import datetime as _datetime, timedelta, date as _date
 from zoneinfo import ZoneInfo
 from collections import Counter, defaultdict
@@ -48,6 +50,7 @@ from collections import Counter, defaultdict
 from innerbloom_core import analysis as entry_analysis
 from innerbloom_core.analysis import EMOTIONS, extract_json
 from innerbloom_core.safety import assess as assess_crisis
+from innerbloom_core.safety import GENTLE_RESOURCES, _SOFT as _SAFETY_SOFT_MESSAGE
 
 # A hosted server's clock is not the visitor's. When a request carries the
 # browser's time zone (X-Timezone), "now" and "today" follow it, so entries,
@@ -579,41 +582,86 @@ def _set_insight_status(kind: str, status: str, error: Optional[str] = None) -> 
                                         "at": datetime.now().isoformat()}
 
 
-def _run_insight_in_background(kind: str, fn, *args, **kwargs) -> None:
-    """Run an insight compute function in a background thread, updating
-    INSIGHT_STATUS as it goes. Safe to call multiple times — concurrent
-    runs of the same engine are coalesced (the 2nd call no-ops while the
-    1st is in flight)."""
-    with INSIGHT_STATUS_LOCK:
-        if INSIGHT_STATUS.get(kind) == "running":
-            return  # already in flight
-        INSIGHT_STATUS[kind] = "queued"
+_INSIGHT_JOBS: "queue.Queue" = queue.Queue()
+_INSIGHT_WORKER: Dict[str, Optional[threading.Thread]] = {"thread": None}
+_INSIGHT_WORKER_LOCK = threading.Lock()
+_INSIGHT_QUIET: Dict[str, float] = {}  # kind -> seconds of quiet it waits for; a click lowers it
 
-    def worker():
-        _set_insight_status(kind, "running")
+
+def _turn_is_free(quiet: float) -> bool:
+    with _FG_LOCK:
+        return _FG_STATE["active"] == 0 and time.time() - _FG_STATE["last"] >= quiet
+
+
+def _run_insight_job(kind: str, fn, quiet: Optional[float]) -> None:
+    """Run one job, updating INSIGHT_STATUS. With `quiet` set it runs as a
+    background job: it waits its turn and gives way to the person."""
+    if quiet is not None:
+        # Stays "queued" until it can really start. Asking for a refresh while
+        # it waits lowers its wait (see _run_insight_in_background).
+        while not _turn_is_free(_INSIGHT_QUIET.get(kind, quiet)):
+            time.sleep(0.5)
+        quiet = _INSIGHT_QUIET.pop(kind, quiet)
+        _BACKGROUND.quiet = quiet
+    _set_insight_status(kind, "running")
+    try:
+        fn()
+    except Exception as e:
+        print(f"[insights/{kind}] background run failed: {e}")
+        _set_insight_status(kind, "failed", f"{type(e).__name__}: {e}")
+    else:
+        _set_insight_status(kind, "idle")
+    finally:
+        _BACKGROUND.quiet = None
+
+
+def _insight_worker() -> None:
+    while True:
+        kind, fn, quiet = _INSIGHT_JOBS.get()
         try:
-            fn(*args, **kwargs)
-        except Exception as e:
-            print(f"[insights/{kind}] background run failed: {e}")
-            _set_insight_status(kind, "failed", f"{type(e).__name__}: {e}")
-        else:
-            _set_insight_status(kind, "idle")
+            _run_insight_job(kind, fn, quiet)
+        finally:
+            _INSIGHT_JOBS.task_done()
+
+
+def _run_insight_in_background(kind: str, fn, *args, soon: bool = True, **kwargs) -> None:
+    """Queue an insight job. Jobs run one at a time in a single background
+    thread, so they never pile onto the model together. `soon=False` (the
+    automatic refresh every few entries) waits until nobody has used the AI
+    for BACKGROUND_QUIET_SECONDS; a refresh the person asked for starts
+    within a few seconds. A job already queued or running is not added again."""
+    with INSIGHT_STATUS_LOCK:
+        busy = INSIGHT_STATUS.get(kind) in ("queued", "running")
+        if soon:  # the person is waiting: everything still queued starts soon
+            for k, status in INSIGHT_STATUS.items():
+                if status == "queued":
+                    _INSIGHT_QUIET[k] = BACKGROUND_SOON_SECONDS
+        if busy:
+            return
+        INSIGHT_STATUS[kind] = "queued"
+    job = (lambda: fn(*args, **kwargs))
 
     if SANDBOX_MODE:
         # Serverless functions may freeze threads after responding, and the
         # visitor's sandbox must stay attached, so the demo runs it inline.
-        worker()
+        _run_insight_job(kind, job, None)
         return
-    t = threading.Thread(target=worker, name=f"insight-{kind}", daemon=True)
-    t.start()
+    quiet = BACKGROUND_SOON_SECONDS if soon else BACKGROUND_QUIET_SECONDS
+    _INSIGHT_QUIET[kind] = quiet
+    _INSIGHT_JOBS.put((kind, job, quiet))
+    with _INSIGHT_WORKER_LOCK:
+        if not (_INSIGHT_WORKER["thread"] and _INSIGHT_WORKER["thread"].is_alive()):
+            t = threading.Thread(target=_insight_worker, name="insight-worker", daemon=True)
+            _INSIGHT_WORKER["thread"] = t
+            t.start()
 
 
-def _refresh_all_insights_async() -> None:
-    """Kick off all four engines concurrently in background threads."""
-    _run_insight_in_background("contradictions", lambda: compute_contradictions(window_days=60))
-    _run_insight_in_background("triggers",       lambda: compute_triggers(window_days=90))
-    _run_insight_in_background("wellbeing",      lambda: compute_wellbeing(window_days=14))
-    _run_insight_in_background("narrative",      lambda: compute_narrative(window_days=120))
+def _refresh_all_insights_async(soon: bool = True) -> None:
+    """Queue all four engines; they run one after another."""
+    _run_insight_in_background("contradictions", lambda: compute_contradictions(window_days=60), soon=soon)
+    _run_insight_in_background("triggers",       lambda: compute_triggers(window_days=90), soon=soon)
+    _run_insight_in_background("wellbeing",      lambda: compute_wellbeing(window_days=14), soon=soon)
+    _run_insight_in_background("narrative",      lambda: compute_narrative(window_days=120), soon=soon)
 
 
 def _maybe_trigger_insight_refresh(entries_count: int) -> None:
@@ -628,7 +676,7 @@ def _maybe_trigger_insight_refresh(entries_count: int) -> None:
         if entries_count - last >= AUTO_REFRESH_EVERY:
             state["last_count"] = entries_count
             _save_autorefresh_state(state)
-            _refresh_all_insights_async()
+            _refresh_all_insights_async(soon=False)  # waits until you've stopped using the AI
     except Exception as e:
         # Never let auto-refresh failures break /save.
         print(f"[autorefresh] error: {e}")
@@ -663,6 +711,141 @@ def _gemini_error(r) -> str:
     return f"[LLM error: Gemini {r.status_code} {msg}]".strip()
 
 
+# ---------------------------------------------------------------------------
+# Who gets the model first
+#
+# Ollama answers one request at a time, and on an 8 GB computer the chat model
+# fills the memory, so every switch to another model reloads it (4-18 s).
+# Requests from the person (saving, chat, safety checks, reviews) go first.
+# Background insight jobs run one at a time, wait until nobody has used the AI
+# for a while, and give way the moment the person needs it: their request is
+# cancelled and asked again later. Measured before this existed: a save made
+# while the insight jobs ran took 233 s and its reading failed, and safety
+# checks timed out behind them (docs/AI_V2_PROGRESS.md, "Speed and safety").
+# ---------------------------------------------------------------------------
+
+BACKGROUND_QUIET_SECONDS = 45   # automatic refreshes wait this long after the last AI use
+BACKGROUND_SOON_SECONDS = 3     # refreshes the person asked for start almost at once
+_BACKGROUND_ATTEMPTS = 30       # times a background request may give way before it gives up
+_FG_LOCK = threading.Lock()
+_FG_STATE = {"active": 0, "last": 0.0}
+_FG_BUSY = threading.Event()    # set while any request from the person is with the model
+_BACKGROUND = threading.local()  # .quiet is set inside background job threads
+
+
+@contextlib.contextmanager
+def _foreground_ai():
+    """Marks a request from the person: background work waits and gives way."""
+    with _FG_LOCK:
+        _FG_STATE["active"] += 1
+        _FG_STATE["last"] = time.time()
+        _FG_BUSY.set()
+    try:
+        yield
+    finally:
+        with _FG_LOCK:
+            _FG_STATE["active"] -= 1
+            _FG_STATE["last"] = time.time()
+            if _FG_STATE["active"] <= 0:
+                _FG_STATE["active"] = 0
+                _FG_BUSY.clear()
+
+
+def _in_background_job() -> bool:
+    return getattr(_BACKGROUND, "quiet", None) is not None
+
+
+def _wait_for_turn(quiet: float) -> None:
+    """Block a background job until no request from the person is with the
+    model and none has been for `quiet` seconds."""
+    while True:
+        with _FG_LOCK:
+            busy = _FG_STATE["active"] > 0
+            idle_for = time.time() - _FG_STATE["last"]
+        if not busy and idle_for >= quiet:
+            return
+        time.sleep(0.5 if busy else min(0.5, max(0.1, quiet - idle_for)))
+
+
+class _GaveWay(Exception):
+    """A background request was cancelled so the person could use the model."""
+
+
+def _cancellable_generate(payload: dict, timeout: int) -> str:
+    """Stream one generate request, cancelling it as soon as the person needs
+    the model. Closing the connection makes Ollama stop at once, even while it
+    is still loading the model or reading the prompt."""
+    import asyncio
+    import httpx
+
+    async def ask() -> str:
+        limits = httpx.Timeout(timeout, connect=10.0)
+        async with httpx.AsyncClient(timeout=limits) as client:
+            async with client.stream("POST", OLLAMA_URL, json={**payload, "stream": True}) as r:
+                parts: List[str] = []
+                async for line in r.aiter_lines():
+                    if not line:
+                        continue
+                    obj = json.loads(line)
+                    if obj.get("error"):
+                        return f"[LLM error: {obj['error']}]"
+                    parts.append(obj.get("response", ""))
+                    if obj.get("done"):
+                        break
+                return "".join(parts).strip()
+
+    async def guarded() -> str:
+        task = asyncio.ensure_future(ask())
+        while not task.done():
+            if _FG_BUSY.is_set():
+                task.cancel()
+                with contextlib.suppress(BaseException):
+                    await task
+                raise _GaveWay()
+            await asyncio.sleep(0.2)
+        return task.result()
+
+    try:
+        return asyncio.run(guarded())
+    except _GaveWay:
+        raise
+    except Exception as e:
+        return f"[LLM error: {e}]"
+
+
+def _background_generate(payload: dict, timeout: int) -> str:
+    quiet = getattr(_BACKGROUND, "quiet", BACKGROUND_QUIET_SECONDS)
+    for _ in range(_BACKGROUND_ATTEMPTS):
+        _wait_for_turn(quiet)
+        try:
+            return _cancellable_generate(payload, timeout)
+        except _GaveWay:
+            continue
+    return "[LLM error: the model stayed busy with your own requests; try again later]"
+
+
+class AIUnavailable(RuntimeError):
+    """The model could not answer: not running, busy or too slow."""
+
+
+AI_UNAVAILABLE_TEXT = ("The AI couldn't answer just now. It may be busy, still loading or not "
+                       "running. Nothing was changed; try again in a minute.")
+
+
+@app.exception_handler(AIUnavailable)
+async def _ai_unavailable_handler(request, exc):
+    return JSONResponse(status_code=503, content={"detail": AI_UNAVAILABLE_TEXT})
+
+
+def _ai_failed(raw: str) -> bool:
+    return (raw or "").lstrip().startswith("[LLM error")
+
+
+def _ai_text(raw: str) -> str:
+    """A model reply for the person, or a plain sentence when it failed."""
+    return AI_UNAVAILABLE_TEXT if _ai_failed(raw) or not (raw or "").strip() else raw
+
+
 def call_llama(prompt: str, system: str = "", temperature: float = 0.7, timeout: int = 180,
                model: str = "") -> str:
     limited = _ai_call_allowed()
@@ -678,19 +861,25 @@ def call_llama(prompt: str, system: str = "", temperature: float = 0.7, timeout:
             return _gemini_text(r.json()).strip()
         except Exception as e:
             return f"[LLM error: {e}]"
-    try:
-        payload = {
-            "model": model or MODEL,
-            "prompt": prompt,
-            "stream": False,
-            "options": {"temperature": temperature},
-        }
-        if system:
-            payload["system"] = system
-        r = requests.post(OLLAMA_URL, json=payload, timeout=timeout)
-        return r.json().get("response", "").strip()
-    except Exception as e:
-        return f"[LLM error: {e}]"
+    payload = {
+        "model": model or MODEL,
+        "prompt": prompt,
+        "stream": False,
+        "options": {"temperature": temperature},
+    }
+    if system:
+        payload["system"] = system
+    if _in_background_job():
+        return _background_generate(payload, timeout)
+    with _foreground_ai():
+        try:
+            r = requests.post(OLLAMA_URL, json=payload, timeout=timeout)
+            body = r.json()
+            if body.get("error"):  # e.g. the model is not installed
+                return f"[LLM error: {body['error']}]"
+            return body.get("response", "").strip()
+        except Exception as e:
+            return f"[LLM error: {e}]"
 
 
 def call_llama_stream(prompt: str, system: str = "", temperature: float = 0.7):
@@ -719,30 +908,34 @@ def call_llama_stream(prompt: str, system: str = "", temperature: float = 0.7):
         except Exception as e:
             yield f"[LLM error: {e}]"
         return
-    try:
-        payload = {
-            "model": MODEL,
-            "prompt": prompt,
-            "stream": True,
-            "options": {"temperature": temperature},
-        }
-        if system:
-            payload["system"] = system
-        with requests.post(OLLAMA_URL, json=payload, stream=True, timeout=300) as r:
-            for line in r.iter_lines():
-                if not line:
-                    continue
-                try:
-                    obj = json.loads(line.decode("utf-8"))
-                    chunk = obj.get("response", "")
-                    if chunk:
-                        yield chunk
-                    if obj.get("done"):
-                        break
-                except Exception:
-                    continue
-    except Exception as e:
-        yield f"[LLM error: {e}]"
+    payload = {
+        "model": MODEL,
+        "prompt": prompt,
+        "stream": True,
+        "options": {"temperature": temperature},
+    }
+    if system:
+        payload["system"] = system
+    with _foreground_ai():
+        try:
+            with requests.post(OLLAMA_URL, json=payload, stream=True, timeout=300) as r:
+                for line in r.iter_lines():
+                    if not line:
+                        continue
+                    try:
+                        obj = json.loads(line.decode("utf-8"))
+                        if obj.get("error"):
+                            yield f"[LLM error: {obj['error']}]"
+                            break
+                        chunk = obj.get("response", "")
+                        if chunk:
+                            yield chunk
+                        if obj.get("done"):
+                            break
+                    except Exception:
+                        continue
+        except Exception as e:
+            yield f"[LLM error: {e}]"
 
 
 def embed(text: str) -> Optional[List[float]]:
@@ -767,6 +960,14 @@ def embed(text: str) -> Optional[List[float]]:
         except Exception:
             pass
         return None
+    if _in_background_job():  # short, so it waits its turn but never needs to give way
+        _wait_for_turn(getattr(_BACKGROUND, "quiet", BACKGROUND_QUIET_SECONDS))
+        return _ollama_embed(text)
+    with _foreground_ai():
+        return _ollama_embed(text)
+
+
+def _ollama_embed(text: str) -> Optional[List[float]]:
     try:
         r = requests.post(
             OLLAMA_EMBED_URL,
@@ -1473,7 +1674,9 @@ def save_journal(data: EntryInput):
     # Auto-refresh insights after every N new entries (in the background).
     _maybe_trigger_insight_refresh(entries_count=len(entries))
 
-    return {"status": "saved", "entry": _strip_embedding(entry), "safety": crisis_check(text)}
+    safety, safety_check = start_safety_check(text)
+    return {"status": "saved", "entry": _strip_embedding(entry), "safety": safety,
+            "safety_check": safety_check}
 
 
 @app.get("/journal")
@@ -1672,9 +1875,59 @@ def build_system_prompt(mode: str, personality: str) -> str:
 # user always gets an answer — we just attach a `safety` block so the UI can
 # surface resources alongside it.
 
+# Long enough for the chat model to load on an 8 GB computer (up to 18 s seen)
+# and read the message. A 20 s limit gave up mid-load, and the message was
+# then checked by word lists only (docs/AI_V2_PROGRESS.md, "Speed and safety").
+SAFETY_CHECK_TIMEOUT = 120
+
+
 def crisis_check(text: str) -> Optional[dict]:
     """Help lines to attach to the reply, or None. See innerbloom_core/safety.py."""
-    return assess_crisis(text, lambda prompt: call_llama(prompt, temperature=0.0, timeout=20))
+    return assess_crisis(text, lambda prompt: call_llama(prompt, temperature=0.0,
+                                                         timeout=SAFETY_CHECK_TIMEOUT))
+
+
+# A saved entry shows its reading straight away; the model's safety check runs
+# right after and the page asks for its result. Clear words still alert at
+# once, before anything else (assess with classify=None).
+_SAFETY_RESULTS: Dict[str, dict] = {}
+_SAFETY_RESULTS_LOCK = threading.Lock()
+_SAFETY_RESULT_TTL = 3600
+
+
+def start_safety_check(text: str) -> tuple:
+    """(what to show now, id to ask for the full result or None)."""
+    instant = assess_crisis(text, None)
+    if instant or SANDBOX_MODE:
+        # Clear words need no model. The demo is serverless, so it checks inline.
+        return (instant or crisis_check(text)), None
+    check_id = uuid.uuid4().hex
+    now = time.time()
+    with _SAFETY_RESULTS_LOCK:
+        for k in [k for k, v in _SAFETY_RESULTS.items() if now - v["at"] > _SAFETY_RESULT_TTL]:
+            _SAFETY_RESULTS.pop(k, None)
+        _SAFETY_RESULTS[check_id] = {"status": "pending", "safety": None, "at": now}
+
+    def run():
+        try:
+            result = crisis_check(text)
+        except Exception:  # assess never raises; this only keeps the record honest
+            result = {"level": "soft", "reason": "could not check; showing support lines to be safe",
+                      "resources": GENTLE_RESOURCES, "message": _SAFETY_SOFT_MESSAGE}
+        with _SAFETY_RESULTS_LOCK:
+            _SAFETY_RESULTS[check_id] = {"status": "done", "safety": result, "at": time.time()}
+
+    threading.Thread(target=run, name="safety-check", daemon=True).start()
+    return None, check_id
+
+
+@app.get("/safety/result/{check_id}")
+def safety_result(check_id: str):
+    with _SAFETY_RESULTS_LOCK:
+        rec = _SAFETY_RESULTS.get(check_id)
+    if not rec:
+        return {"status": "unknown", "safety": None}
+    return {"status": rec["status"], "safety": rec["safety"]}
 
 
 @app.post("/safety/check")
@@ -1878,7 +2131,7 @@ def classify_message(msg: str, history: List[dict]) -> Dict[str, Any]:
     )
     system = "You are a fast, strict JSON classifier. Output JSON only."
     try:
-        raw = call_llama(prompt, system=system, temperature=0.0, timeout=15)
+        raw = call_llama(prompt, system=system, temperature=0.0, timeout=60)
         obj = extract_json(raw) or {}
         if not isinstance(obj, dict):
             return fallback
@@ -1967,7 +2220,7 @@ def _chat_memory_for_mode(msg: str, mode: str) -> Dict[str, List[dict]]:
 # ---------------------------------------------------------------------------
 # Agent — structured planner + tool loop
 #
-# Two-stage architecture (more reliable on a 3B model than ReAct):
+# Two-stage architecture (more reliable on a small local model than ReAct):
 #   1) Planner LLM picks 0–3 tools to run, or asks a clarifying question
 #   2) We execute the tools deterministically (Python, no LLM)
 #   3) Drafter LLM writes the reply with the observations as context
@@ -2148,6 +2401,64 @@ def run_tool(name: str, args: dict) -> Any:
 
 # --- planner ---------------------------------------------------------------
 
+# The planner's own routing rules for the commonest questions, applied
+# without the model: instant, and always the tool the rules name. On 24
+# fictional messages the 7B planner missed three of these (hardest day,
+# happiest, how was my week), and merging it with the classifier made it worse
+# for little gain (docs/AI_V2_PROGRESS.md, "Speed and safety"). Short, plain
+# messages only; anything longer or more specific goes to the planner.
+_RULE_MAX_WORDS = 10
+_RULE_FEELINGS = "|".join(sorted(EMOTIONS, key=len, reverse=True))
+_RULE_WHEN = r"(?: (?:this|last|past) (?:week|month|year)| recently| lately| so far| ever)?"
+_RULE_END = r"\s*[?.!]*\s*$"
+_RULE_LEAD = r"^(?:so,? |and |ok,? |hey,? )?(?:can you |please |could you )?"
+
+
+def _rule(pattern: str):
+    return re.compile(_RULE_LEAD + pattern + _RULE_END, re.I)
+
+
+# Each rule must match the whole message, so "how have I been sleeping?" or
+# "my hardest day with Sam" still go to the planner.
+_RULES = [
+    (_rule(r"(?:show me |open |read |find )?(?:what i wrote |what did i write |what happened |my entry |the entry )?(?:on |from )?(\d{4}-\d{2}-\d{2})"),
+     lambda m: ("get_entry", {"ref": m.group(1)}, "fetch the entry from that date")),
+    (_rule(r"(?:show me |what (?:was|were) |when (?:was|were) |tell me about )?(?:my |the )?(?:happiest|best) (?:day|days|week|weeks|moment|moments|time|times)" + _RULE_WHEN),
+     lambda m: ("emotion_extremes", {"emotion": "positive", "k": 5}, "find the brightest entries")),
+    (_rule(r"when (?:was|were|have) i (?:been )?(?:at my )?happiest" + _RULE_WHEN),
+     lambda m: ("emotion_extremes", {"emotion": "positive", "k": 5}, "find the brightest entries")),
+    (_rule(r"(?:show me |what (?:was|were) |when (?:was|were) |tell me about )?(?:my |the )?(?:hardest|saddest|worst|toughest|lowest) (?:day|days|week|weeks|moment|moments|time|times)" + _RULE_WHEN),
+     lambda m: ("emotion_extremes", {"emotion": "negative", "k": 5}, "find the heaviest entries")),
+    (_rule(r"when (?:was|were|have) i (?:been )?(?:at my )?(?:saddest|lowest)" + _RULE_WHEN),
+     lambda m: ("emotion_extremes", {"emotion": "negative", "k": 5}, "find the heaviest entries")),
+    (_rule(r"when (?:was|did) i (?:feel )?(?:the )?most (" + _RULE_FEELINGS + r")" + _RULE_WHEN),
+     lambda m: ("emotion_extremes", {"emotion": m.group(1).lower(), "k": 5},
+                f"find when {m.group(1).lower()} was strongest")),
+    (_rule(r"how (?:was|is|has been) my (week|month)(?: been)?(?: so far)?"),
+     lambda m: ("period_summary", {"period": m.group(1).lower()}, f"summarise the {m.group(1).lower()}")),
+    (_rule(r"how (?:have|'ve) i been(?: doing| feeling)?(?: lately| recently| this (?:week|month))?"),
+     lambda m: ("period_summary", {"period": "week"}, "summarise the last week")),
+    (_rule(r"(?:what|which) (?:themes|topics|patterns|things) (?:keep coming up|come up|keep showing up|do i (?:write|talk) about)(?: the most| most)?(?: in my journal)?" + _RULE_WHEN),
+     lambda m: ("list_themes", {"period_days": 60}, "list the recurring themes")),
+    (_rule(r"what do i (?:write|talk) about(?: the most| most)?" + _RULE_WHEN),
+     lambda m: ("list_themes", {"period_days": 60}, "list the recurring themes")),
+]
+
+
+def rule_plan(message: str) -> Optional[dict]:
+    """A plan from the routing rules, or None when the planner should decide."""
+    text = (message or "").strip()
+    if not text or len(text.split()) > _RULE_MAX_WORDS:
+        return None
+    for rx, make in _RULES:
+        m = rx.match(text)
+        if m:
+            name, args, thinking = make(m)
+            return {"thinking": thinking, "tools": [{"name": name, "args": args}], "ask_back": None,
+                    "source": "rules"}
+    return None
+
+
 def plan_tools(message: str) -> dict:
     """Planner: returns {thinking, tools, ask_back}.
 
@@ -2195,7 +2506,12 @@ Respond with this JSON shape exactly (no prose, no fences):
 {schema_hint}
 """
     raw = call_llama(prompt, system=system, temperature=0.2, timeout=60)
-    obj = extract_json(raw) or {}
+    obj = None if _ai_failed(raw) else extract_json(raw)
+    if not isinstance(obj, dict):
+        # The model didn't answer: a plain search keeps the reply grounded
+        # in the journal instead of answering with no context at all.
+        return {"thinking": "search the journal for the message", "ask_back": None,
+                "tools": [{"name": "search_entries", "args": {"query": message[:200], "k": 5}}]}
     tools_out = []
     for t in (obj.get("tools") or [])[:3]:
         if isinstance(t, dict) and t.get("name") in TOOLS:
@@ -2340,22 +2656,48 @@ def chat_agent(data: ChatInput):
 
     personality = _resolve_personality(data.personality)
     system = build_system_prompt("journal", personality)
-    safety = crisis_check(msg)
-
-    # Classify the message once. The result drives small-talk fast-path,
-    # brevity hint, and follow-up retrieval rewriting.
     _history_for_class = load_file(CHAT_FILE)
-    classified = classify_message(msg, _history_for_class)
 
     def event(obj: dict) -> str:
         return json.dumps(obj) + "\n"
 
     def gen():
-        # 1) Safety up front so the UI can render the resources card immediately.
+        # 0) Show progress at once: the safety check and reading the message
+        # take a few seconds (longer while the model loads), and used to run
+        # before the reply began, with nothing but typing dots on screen.
+        yield event({"type": "step", "id": "plan", "kind": "plan",
+                     "label": "Reading the question", "status": "running"})
+
+        # 1) Safety first, so the UI can show the help card before the reply.
+        safety = crisis_check(msg)
         if safety:
             yield event({"type": "safety", "safety": safety})
 
-        # 1a) Small-talk fast-path — classifier says this is a casual one-liner.
+        # 2) Read the message. Plain small talk ("hey", "thanks") and the
+        # commonest questions ("how was my week", "hardest day") are settled
+        # by rules, with no model call; everything else gets the classifier
+        # and then the planner, as before. For follow-ups the planner gets a
+        # combined query so it doesn't search for the literal "tell me more".
+        plan = None
+        if is_smalltalk(msg):
+            classified = {"small_talk": True, "follow_up": False, "brevity": False, "source": "rules"}
+        else:
+            plan = rule_plan(msg)
+            if plan:
+                classified = {"small_talk": False, "follow_up": False,
+                              "brevity": bool(detect_brevity(msg)), "source": "rules"}
+            else:
+                classified = classify_message(msg, _history_for_class)
+                if not classified.get("small_talk"):
+                    planner_msg = (classifier_followup_query(msg, classified, _history_for_class)
+                                   if classified.get("follow_up") else msg)
+                    plan = plan_tools(planner_msg)
+        plan = plan or {"thinking": "", "tools": [], "ask_back": None}
+        yield event({"type": "step", "id": "plan", "kind": "plan",
+                     "label": "Reading the question", "status": "done",
+                     "detail": plan.get("thinking") or "—"})
+
+        # 2a) Small-talk fast-path — a casual one-liner gets a short reply.
         if classified.get("small_talk"):
             yield event({"type": "manifest", "candidates": [],
                          "mode": "journal", "personality": personality})
@@ -2383,18 +2725,7 @@ def chat_agent(data: ChatInput):
             yield event({"type": "done", "citations": []})
             return
 
-        # 2) Planning step. For follow-up questions, hand the planner a
-        # combined query so it doesn't search the journal for the literal
-        # phrase "tell me more".
-        planner_msg = classifier_followup_query(msg, classified, _history_for_class) if classified.get("follow_up") else msg
-        yield event({"type": "step", "id": "plan", "kind": "plan",
-                     "label": "Reading the question", "status": "running"})
-        plan = plan_tools(planner_msg)
-        yield event({"type": "step", "id": "plan", "kind": "plan",
-                     "label": "Reading the question", "status": "done",
-                     "detail": plan.get("thinking") or "—"})
-
-        # 2a) Ask-back path: stream the question back as the reply, no drafter.
+        # 2b) Ask-back path: stream the question back as the reply, no drafter.
         if plan.get("ask_back"):
             ab = plan["ask_back"]
             yield event({"type": "manifest", "candidates": [],
@@ -2784,7 +3115,7 @@ Structure your response with these four sections (use **bold** headers):
 Entries:
 {combined}
 """
-    return {"result": call_llama(prompt, temperature=0.6)}
+    return {"result": _ai_text(call_llama(prompt, temperature=0.6))}
 
 
 @app.get("/weekly-review")
@@ -2812,7 +3143,7 @@ Use these sections (bold headers):
 Entries:
 {combined}
 """
-    return {"result": call_llama(prompt, temperature=0.6)}
+    return {"result": _ai_text(call_llama(prompt, temperature=0.6))}
 
 
 @app.get("/monthly-review")
@@ -2842,7 +3173,7 @@ Sections (bold headers, 2-3 sentences each):
 Journal summaries:
 {summaries}
 """
-    return {"result": call_llama(prompt, temperature=0.6)}
+    return {"result": _ai_text(call_llama(prompt, temperature=0.6))}
 
 
 @app.get("/reflect/{entry_id}")
@@ -2870,6 +3201,8 @@ Entry:
 \"\"\"{entry['text']}\"\"\"
 """
     raw = call_llama(prompt, temperature=0.7)
+    if _ai_failed(raw):
+        return {"questions": [], "error": AI_UNAVAILABLE_TEXT}
     questions = [q.strip("-•* ").strip() for q in raw.splitlines() if q.strip()][:3]
     return {"questions": questions}
 
@@ -2963,7 +3296,8 @@ Hard rules:
 - Don't quote them directly. Don't name people from their entries.
 - Don't include the word "journal", "reflect", or "today" unless they actually fit.
 - No preamble. No quotes around it. Just the sentence."""
-    out = call_llama(prompt, temperature=0.92).strip().strip('"').strip("`").strip()
+    out = call_llama(prompt, temperature=0.92)
+    out = "" if _ai_failed(out) else out.strip().strip('"').strip("`").strip()
     out = out.splitlines()[0].strip(" -•") if out else random.choice(_COLD_START_PROMPTS)
     # Final safety: if the model produced something obviously wrong (too long / starts with 'Here'),
     # fall back to a generic opener rather than ship gibberish.
@@ -3131,7 +3465,8 @@ Schema (JSON exactly, no fences):
         "spread": spread,
         "then": {"date_center": target.date().isoformat(), **then_summary},
         "now":  {"date_center": now.date().isoformat(), **now_summary},
-        "reflection": reflection_text or None,
+        # An empty or failed reflection is left out rather than shown as blank sections.
+        "reflection": reflection_text if reflection_text and any(reflection_text.values()) else None,
         "reflection_citations": reflection_citations,
     }
 
@@ -3980,7 +4315,7 @@ No medical advice. No pathologizing.
 Data:
 {chr(10).join(lines)}
 """
-        return {"insight": call_llama(prompt, temperature=0.5), "degraded": True}
+        return {"insight": _ai_text(call_llama(prompt, temperature=0.5)), "degraded": True}
 
     # Full audio-features path
     lines = []
@@ -4010,7 +4345,7 @@ Data:
 
 Averages: valence={val}, energy={en}.
 """
-    return {"insight": call_llama(prompt, temperature=0.5), "degraded": False}
+    return {"insight": _ai_text(call_llama(prompt, temperature=0.5)), "degraded": False}
 
 
 # ---------------------------------------------------------------------------
@@ -4041,6 +4376,19 @@ def _save_insights(data: dict):
 # at once would clobber each other's keys (lost update). This lock makes the
 # merge atomic.
 INSIGHTS_FILE_LOCK = threading.Lock()
+
+
+def _with_refresh_note(kind: str, data: dict) -> dict:
+    """Say so when the last refresh failed, so an old or empty result is never
+    mistaken for a fresh finding."""
+    with INSIGHT_STATUS_LOCK:
+        failed = INSIGHT_STATUS.get(kind) == "failed"
+        err = dict(INSIGHT_LAST_ERROR.get(kind) or {})
+    if not failed or not err:
+        return data
+    note = ("The last refresh couldn't finish because the AI didn't answer in time. "
+            + ("This is the previous result." if data.get("generated_at") else "Try refreshing again in a minute."))
+    return {**data, "refresh_failed": {"at": err.get("at"), "message": note}}
 
 
 def _update_insight(key: str, value: dict) -> None:
@@ -4205,7 +4553,7 @@ def _date_to_int(s: str) -> int:
 def compute_contradictions(window_days: int = 60) -> dict:
     """Surface gaps between stated intentions and actual behavior.
 
-    Two-pass approach because the 3B model can't be trusted to extract
+    Two-pass approach because a small local model can't be trusted to extract
     intentions reliably — it hallucinates "I'll meditate every morning"
     type lines that never appear in the data.
 
@@ -4232,7 +4580,7 @@ def compute_contradictions(window_days: int = 60) -> dict:
 
     # Compact entry list for the LLM. Cap at the 35 most-recent entries and
     # trim each snippet so the prompt fits inside the model's context plus
-    # 240s timeout budget on a 3B.
+    # 240s timeout budget on a small local model.
     recent_window = sorted(window, key=lambda e: e.get("timestamp", ""), reverse=True)[:35]
     recent_window.reverse()  # oldest-first within the slice for chronology
     lines = []
@@ -4293,6 +4641,8 @@ Schema (JSON only, no prose, no fences):
 {schema}
 """
     raw = call_llama(prompt, system=system, temperature=0.2, timeout=240)
+    if _ai_failed(raw):  # keep the last result rather than report "nothing found"
+        raise AIUnavailable(raw.strip("[]")[:200])
     obj = extract_json(raw) or {}
     if isinstance(obj, list):
         obj = {"items": obj}
@@ -4489,7 +4839,7 @@ def get_contradictions():
     data = cache.get("contradictions") or {
         "items": [], "generated_at": None, "window_days": 60, "entry_count": 0,
     }
-    return data
+    return _with_refresh_note("contradictions", data)
 
 
 @app.post("/insights/contradictions/refresh")
@@ -4668,6 +5018,8 @@ Schema (JSON exactly, no fences):
 {schema}
 """
     raw = call_llama(prompt, system=system, temperature=0.4, timeout=240)
+    if _ai_failed(raw):
+        raise AIUnavailable(raw.strip("[]")[:200])
     obj = extract_json(raw) or {}
 
     items: List[dict] = []
@@ -4753,9 +5105,9 @@ Schema (JSON exactly, no fences):
 @app.get("/insights/triggers")
 def get_triggers():
     cache = _load_insights()
-    return cache.get("triggers") or {
+    return _with_refresh_note("triggers", cache.get("triggers") or {
         "items": [], "generated_at": None, "window_days": 90, "entry_count": 0,
-    }
+    })
 
 
 @app.post("/insights/triggers/refresh")
@@ -5047,6 +5399,24 @@ def refresh_wellbeing(window_days: int = 14, wait: bool = False):
 # All claims must cite real entries — anti-hallucination guard rejects items
 # whose evidence ids don't resolve.
 
+NARRATIVE_MAX_CHARS = 9000  # about 2,400 tokens of entries
+
+
+def _fit_lines(lines: List[str], max_chars: int) -> List[str]:
+    """Keep lines in order, thinned evenly so their total stays under max_chars.
+    The newest line is always kept."""
+    total = sum(len(l) + 1 for l in lines)
+    if total <= max_chars or len(lines) <= 2:
+        return lines
+    keep = max(2, int(len(lines) * max_chars / total))
+    step = (len(lines) - 1) / (keep - 1)
+    picked = sorted({round(i * step) for i in range(keep)} | {len(lines) - 1})
+    out = [lines[i] for i in picked]
+    while sum(len(l) + 1 for l in out) > max_chars and len(out) > 2:
+        out.pop(len(out) // 2)  # rounding can leave it a little over
+    return out
+
+
 def compute_narrative(window_days: int = 120) -> dict:
     entries = _entries_for_window(window_days)
     if len(entries) < 6:
@@ -5056,7 +5426,9 @@ def compute_narrative(window_days: int = 120) -> dict:
                 "window_days": window_days, "entry_count": len(entries),
                 "note": "Need a few more entries before a real narrative emerges."}
 
-    # Compact entry lines
+    # Compact entry lines, oldest first. A long window is thinned evenly
+    # across time so the prompt stays inside the model's 4,096-token window
+    # (with room for the instructions and the reply) and still spans the arc.
     lines = []
     for e in entries:
         snippet = (e.get("summary") or e.get("text", ""))[:220].replace("\n", " ").strip()
@@ -5064,6 +5436,7 @@ def compute_narrative(window_days: int = 120) -> dict:
             f"[id={e['id'][:8]} | {(e.get('timestamp') or '')[:10]} | "
             f"emotion={e.get('emotion','?')}/{e.get('intensity',5)}] {snippet}"
         )
+    lines = _fit_lines(lines, NARRATIVE_MAX_CHARS)
     journal_block = "\n".join(lines)
 
     schema = (
@@ -5106,6 +5479,8 @@ Entries:
 {journal_block}
 """
     raw = call_llama(prompt, system=system, temperature=0.45, timeout=300)
+    if _ai_failed(raw):
+        raise AIUnavailable(raw.strip("[]")[:200])
     obj = extract_json(raw) or {}
 
     by_id = {e["id"]: e for e in load_file(JOURNAL_FILE)}
@@ -5151,10 +5526,10 @@ Entries:
 @app.get("/insights/narrative")
 def get_narrative():
     cache = _load_insights()
-    return cache.get("narrative") or {
+    return _with_refresh_note("narrative", cache.get("narrative") or {
         "identity_lines": [], "current_arcs": [], "values_in_action": [],
         "tensions": [], "becoming": "", "generated_at": None,
-    }
+    })
 
 
 @app.post("/insights/narrative/refresh")
