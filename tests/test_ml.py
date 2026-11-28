@@ -456,3 +456,22 @@ class DesktopSetup(unittest.TestCase):
         from desktop import launcher
         self.assertEqual(launcher.data_dir().name, "Innerbloom")
         self.assertNotIn(str(ROOT), str(launcher.data_dir()))
+
+    def test_backend_uses_the_user_folder(self):
+        """setup_routes imports app.py, which fixes its data folder on import, so the
+        launcher must set the folder before that import or the journal lands in the app."""
+        import inspect
+        import os
+        import subprocess
+        from desktop import launcher
+        main = inspect.getsource(launcher.main)
+        self.assertLess(main.index("use_user_data_folder()"), main.index("setup_routes"))
+        with tempfile.TemporaryDirectory() as home:
+            env = {k: v for k, v in os.environ.items() if k != "INNERBLOOM_DATA_DIR"}
+            env.update(HOME=home, APPDATA=home, XDG_DATA_HOME=home)
+            code = ("import desktop.launcher as l; l.use_user_data_folder(); "
+                    "from desktop.setup_routes import ready; import app; "
+                    "print(app.DATA_DIR == str(l.data_dir()), app.DATA_DIR.startswith(%r))" % home)
+            out = subprocess.run([sys.executable, "-c", code], cwd=ROOT, env=env, capture_output=True,
+                                 text=True, timeout=120)
+            self.assertEqual(out.stdout.split()[-2:], ["True", "True"], out.stderr[-500:])

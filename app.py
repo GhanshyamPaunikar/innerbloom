@@ -269,17 +269,47 @@ class PersonNoteInput(BaseModel):
 # File helpers
 # ---------------------------------------------------------------------------
 
+def _read_json(real_path):
+    with open(real_path, encoding="utf-8") as f:
+        return json.load(f)
+
+
 def load_file(path, default=None):
+    """A missing file gives `default`. A file that exists but isn't valid JSON
+    is moved aside first (see _set_aside_unreadable), so the next save can't
+    replace it. Any other read error is raised rather than treated as empty."""
     if default is None:
         default = []
-    path = _data_path(path)
-    if os.path.exists(path):
+    real = _data_path(path)
+    try:
+        return _read_json(real)
+    except FileNotFoundError:
+        return default
+    except ValueError:  # bad JSON or bad bytes
+        _set_aside_unreadable(path, real)
+        return default
+
+
+def _set_aside_unreadable(path, real) -> None:
+    """Keep an unreadable data file (a hand edit, a sync conflict) under a dated
+    name such as journal.json.unreadable-20261128-0930, and start a new one."""
+    with file_lock(path):
         try:
-            with open(path) as f:
-                return json.load(f)
-        except Exception:
-            return default
-    return default
+            _read_json(real)
+            return  # replaced with a good copy meanwhile
+        except FileNotFoundError:
+            return
+        except ValueError:
+            pass
+        try:
+            if os.path.getsize(real) == 0:
+                return  # nothing in it to keep
+            aside = f"{real}.unreadable-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+            os.replace(real, aside)
+        except OSError:
+            return
+        print(f"[innerbloom] {os.path.basename(real)} couldn't be read, so it was kept as "
+              f"{os.path.basename(aside)} and a new one was started.", flush=True)
 
 _FILE_LOCKS: Dict[str, threading.RLock] = {}
 _FILE_LOCKS_GUARD = threading.Lock()
@@ -302,6 +332,8 @@ def save_file(path, data):
         try:
             with os.fdopen(fd, "w") as f:
                 json.dump(data, f, indent=2)
+                f.flush()
+                os.fsync(f.fileno())  # on disk before it replaces the old copy
             os.replace(tmp, path)
         except BaseException:
             with contextlib.suppress(OSError):
@@ -411,15 +443,33 @@ def _create_sandbox(box: str) -> None:
                 save_file(os.path.join(box, name), data)
 
 
+SANDBOX_MAX = 300  # about 190 MB of sample journals
+
+
 def _sweep_sandboxes(root: str) -> None:
+    """Drop sandboxes unused for SANDBOX_TTL, and the oldest beyond SANDBOX_MAX
+    (leaving room for the one about to be made), so the disk can't fill up."""
     cutoff = time.time() - SANDBOX_TTL
+    kept = []
     for name in os.listdir(root):
         path = os.path.join(root, name)
         try:
-            if os.path.getmtime(path) < cutoff:
-                shutil.rmtree(path, ignore_errors=True)
+            mtime = os.path.getmtime(path)
         except OSError:
-            pass
+            continue
+        if mtime < cutoff:
+            shutil.rmtree(path, ignore_errors=True)
+        else:
+            kept.append((mtime, path))
+    for _, path in sorted(kept)[:max(0, len(kept) - SANDBOX_MAX + 1)]:
+        shutil.rmtree(path, ignore_errors=True)
+
+
+# Requests that never touch a visitor's data, and the page itself, which only
+# needs the cookie: neither makes a copy of the sample journal. Otherwise every
+# image, health check or crawler hit without a cookie made a 600 KB sandbox.
+_NO_VISITOR_DATA = {"/", "/health", "/favicon.ico", "/robots.txt", "/docs", "/openapi.json"}
+_PAGES = {"/app", "/index.html"}
 
 
 def _ai_call_allowed(kind: str = "generate") -> Optional[str]:
@@ -466,6 +516,9 @@ class SandboxMiddleware:
             _CLIENT_TZ.reset(tz_token)
 
     async def _handle(self, scope, receive, send, headers):
+        path = scope.get("path", "")
+        if path in _NO_VISITOR_DATA or path.startswith("/assets/"):
+            return await self.inner(scope, receive, send)
         cookies = dict(part.strip().split("=", 1) for part in headers.get("cookie", "").split(";") if "=" in part)
         sandbox_id = cookies.get(SANDBOX_COOKIE, "")
         root = os.path.join(DATA_DIR, "sandboxes")
@@ -473,15 +526,15 @@ class SandboxMiddleware:
         if not re.fullmatch(r"[0-9a-f]{32}", sandbox_id):
             sandbox_id = uuid.uuid4().hex
         box = os.path.join(root, sandbox_id)
-        if not os.path.isdir(box):
-            _sweep_sandboxes(root)
-            _create_sandbox(box)
-        else:
-            os.utime(box)
+        if path not in _PAGES:  # the first data request makes the copy
+            if not os.path.isdir(box):
+                _sweep_sandboxes(root)
+                _create_sandbox(box)
+            else:
+                os.utime(box)
         ip = (headers.get("x-forwarded-for", "").split(",")[0].strip()
               or (scope.get("client") or ("unknown",))[0])
 
-        path = scope.get("path", "")
         if "/spotify/" in path:
             ok = path.endswith("/spotify/status")
             body = json.dumps({"connected": False, "has_client_id": False, "demo": True} if ok
@@ -844,6 +897,83 @@ def _ai_failed(raw: str) -> bool:
 def _ai_text(raw: str) -> str:
     """A model reply for the person, or a plain sentence when it failed."""
     return AI_UNAVAILABLE_TEXT if _ai_failed(raw) or not (raw or "").strip() else raw
+
+
+def _model_json(raw: str, list_key: str = "items") -> dict:
+    """A model's JSON reply as an object, whatever shape it came in: a bare list
+    becomes {list_key: list}, anything else that isn't an object (or an error)
+    becomes {}, and nulls become "" so a missing value never shows as 'None'."""
+    def clean(value):
+        if value is None:
+            return ""
+        if isinstance(value, dict):
+            return {k: clean(v) for k, v in value.items()}
+        if isinstance(value, list):
+            return [clean(v) for v in value if v is not None]
+        return value
+    obj = None if _ai_failed(raw) else extract_json(raw)
+    if isinstance(obj, list):
+        obj = {list_key: obj}
+    return clean(obj) if isinstance(obj, dict) else {}
+
+
+def _dicts(value) -> list:
+    """A model's list of objects: one object alone counts as a list of one, and
+    anything that isn't an object is dropped."""
+    if isinstance(value, dict):
+        value = [value]
+    return [v for v in value if isinstance(v, dict)] if isinstance(value, list) else []
+
+
+def _strings(value) -> list:
+    """A model's list of lines: one string alone counts as a list of one."""
+    if isinstance(value, str):
+        value = [value]
+    return [str(v) for v in value if isinstance(v, (str, int, float)) and str(v).strip()] \
+        if isinstance(value, list) else []
+
+
+def _safe_chunks(stream, failed: list):
+    """A streamed model reply for the person. An error from the model becomes
+    the plain 'AI unavailable' sentence and `failed` gets an item, so the raw
+    error is never shown, saved, or fed into later prompts. The model stream is
+    closed when this one is (a reply abandoned half-way included)."""
+    shown = False
+    with contextlib.closing(stream):
+        for chunk in stream:
+            if _ai_failed(chunk):
+                failed.append(chunk)
+                yield ("\n\n" if shown else "") + AI_UNAVAILABLE_TEXT
+                return
+            shown = shown or bool(chunk.strip())
+            yield chunk
+
+
+class _ClosingStream(StreamingResponse):
+    """A streamed reply whose generator is closed however the response ends, the
+    person closing the page half-way included. Starlette leaves a plain generator
+    open, and what it holds (the 'person is using the AI' marker, the model's
+    stream) then waits for the garbage collector, which can keep background
+    insights waiting for minutes."""
+
+    def __init__(self, gen, media_type: str):
+        super().__init__(gen, media_type=media_type)
+        self._gen = gen
+
+    async def __call__(self, scope, receive, send):
+        try:
+            await super().__call__(scope, receive, send)
+        finally:
+            try:
+                self._gen.close()
+            except ValueError:  # still running in a worker thread; it ends on its own
+                pass
+
+
+# Added to the reply prompt when the safety check flagged the message.
+CARE_NOTE = ("\n\nThe safety check flagged this message as possibly heavy, whatever its tone. "
+             "Answer with warmth and care: take it seriously, no jokes and no breezy sign-off, "
+             "and gently say the support lines shown above are there if they need them.")
 
 
 def call_llama(prompt: str, system: str = "", temperature: float = 0.7, timeout: int = 180,
@@ -1719,9 +1849,14 @@ def update_entry(entry_id: str, data: EntryUpdate):
         raise HTTPException(404, "Entry not found")
 
     # Model work happens before taking the lock; only the write is locked.
+    # The editor always sends the text, so only a real change is read again:
+    # re-reading unchanged text could swap a good reading for a failed one.
     reread = None
-    if data.text is not None:
-        reread = {"text": data.text.strip()}
+    text = data.text.strip() if data.text is not None else None
+    if text == "":
+        raise HTTPException(400, "Entry is empty.")
+    if text is not None and text != (current.get("text") or "").strip():
+        reread = {"text": text}
         _apply_analysis(reread, analyze_entry(reread["text"]))
         reread["embedding"] = embed(_entry_embed_text(reread))
         reread["embedding_version"] = EMBED_VERSION
@@ -2132,8 +2267,8 @@ def classify_message(msg: str, history: List[dict]) -> Dict[str, Any]:
     system = "You are a fast, strict JSON classifier. Output JSON only."
     try:
         raw = call_llama(prompt, system=system, temperature=0.0, timeout=60)
-        obj = extract_json(raw) or {}
-        if not isinstance(obj, dict):
+        obj = _model_json(raw)  # {} when the model failed or answered something else
+        if not any(k in obj for k in ("small_talk", "follow_up", "brevity")):
             return fallback
         # Validate + coerce
         out = {
@@ -2506,19 +2641,20 @@ Respond with this JSON shape exactly (no prose, no fences):
 {schema_hint}
 """
     raw = call_llama(prompt, system=system, temperature=0.2, timeout=60)
-    obj = None if _ai_failed(raw) else extract_json(raw)
-    if not isinstance(obj, dict):
+    obj = _model_json(raw, "tools")
+    if not obj:
         # The model didn't answer: a plain search keeps the reply grounded
         # in the journal instead of answering with no context at all.
         return {"thinking": "search the journal for the message", "ask_back": None,
                 "tools": [{"name": "search_entries", "args": {"query": message[:200], "k": 5}}]}
     tools_out = []
-    for t in (obj.get("tools") or [])[:3]:
-        if isinstance(t, dict) and t.get("name") in TOOLS:
+    for t in _dicts(obj.get("tools"))[:3]:
+        if t.get("name") in TOOLS:
             args = t.get("args") if isinstance(t.get("args"), dict) else {}
             tools_out.append({"name": t["name"], "args": args})
-    ask_back = obj.get("ask_back")
-    ask_back = str(ask_back).strip() if ask_back else None
+    ask_back = str(obj.get("ask_back") or "").strip()
+    if ask_back.lower().strip(".") in ("null", "none", "n/a", "no", "false"):
+        ask_back = ""
     return {
         "thinking": str(obj.get("thinking", "")).strip()[:240],
         "tools": tools_out,
@@ -2692,6 +2828,10 @@ def chat_agent(data: ChatInput):
                     planner_msg = (classifier_followup_query(msg, classified, _history_for_class)
                                    if classified.get("follow_up") else msg)
                     plan = plan_tools(planner_msg)
+        if safety:
+            # A flagged message ("thanks for everything. goodbye.") never gets
+            # the breezy one-line small-talk reply.
+            classified["small_talk"] = False
         plan = plan or {"thinking": "", "tools": [], "ask_back": None}
         yield event({"type": "step", "id": "plan", "kind": "plan",
                      "label": "Reading the question", "status": "done",
@@ -2710,9 +2850,13 @@ def chat_agent(data: ChatInput):
                 "Just say hi back, like a person would."
             )
             collected: List[str] = []
-            for chunk in call_llama_stream(msg, system=smalltalk_system, temperature=0.7):
+            failed: List[str] = []
+            for chunk in _safe_chunks(call_llama_stream(msg, system=smalltalk_system, temperature=0.7), failed):
                 collected.append(chunk)
                 yield event({"type": "token", "value": chunk})
+            if failed:  # nothing to keep: the model didn't answer
+                yield event({"type": "done", "citations": []})
+                return
             reply = scrub_banned_phrases(clean_reply("".join(collected)))
             turn = {
                 "id": str(uuid.uuid4()), "user": msg, "ai": reply,
@@ -2806,18 +2950,23 @@ def chat_agent(data: ChatInput):
             "No bullet lists. No preamble."
             if classified.get("brevity") else None
         )
-        drafter_system = system + ("\n\n" + brevity_hint if brevity_hint else "")
+        drafter_system = (system + ("\n\n" + brevity_hint if brevity_hint else "")
+                          + (CARE_NOTE if safety else ""))
         yield event({"type": "step", "id": "draft", "kind": "draft",
                      "label": "Drafting the reply", "status": "running"})
         # For follow-up messages, give the drafter the prior turn so 'that' / 'more' resolves.
         _prior = _history_for_class[-1] if (classified.get("follow_up") and _history_for_class) else None
         prompt = build_agent_prompt(msg, observations, prior_turn=_prior)
         collected: List[str] = []
-        for chunk in call_llama_stream(prompt, system=drafter_system, temperature=0.6):
+        failed: List[str] = []
+        for chunk in _safe_chunks(call_llama_stream(prompt, system=drafter_system, temperature=0.6), failed):
             collected.append(chunk)
             yield event({"type": "token", "value": chunk})
         yield event({"type": "step", "id": "draft", "kind": "draft",
                      "label": "Drafting the reply", "status": "done"})
+        if failed:  # nothing to keep: the model didn't answer
+            yield event({"type": "done", "citations": []})
+            return
 
         raw = "".join(collected)
 
@@ -2844,7 +2993,7 @@ def chat_agent(data: ChatInput):
 
         yield event({"type": "done", "citations": citations})
 
-    return StreamingResponse(gen(), media_type="application/x-ndjson")
+    return _ClosingStream(gen(), "application/x-ndjson")
 
 
 @app.post("/chat")
@@ -2861,8 +3010,11 @@ def chat(data: ChatInput):
     history = load_file(CHAT_FILE)
     classified = classify_message(msg, history)
 
-    # Small-talk fast path — skip journal retrieval entirely.
-    if classified.get("small_talk") and mode == "journal":
+    unavailable = {"reply": AI_UNAVAILABLE_TEXT, "citations": [], "safety": safety, "turn": None}
+
+    # Small-talk fast path — skip journal retrieval entirely. Never for a
+    # message the safety check flagged.
+    if classified.get("small_talk") and mode == "journal" and not safety:
         smalltalk_system = (
             system +
             "\n\nThe user just sent a casual greeting or short conversational message. "
@@ -2870,6 +3022,8 @@ def chat(data: ChatInput):
             "Do NOT reference their journal entries. Do NOT analyse mood."
         )
         raw = call_llama(msg, system=smalltalk_system, temperature=0.7)
+        if _ai_failed(raw):
+            return unavailable  # shown, not saved
         reply = scrub_banned_phrases(clean_reply(raw))
         turn = {
             "id": str(uuid.uuid4()), "user": msg, "ai": reply, "citations": [],
@@ -2892,8 +3046,10 @@ def chat(data: ChatInput):
         "The user explicitly asked for a SHORT reply. Maximum 2 sentences. No bullet lists. No preamble."
         if classified.get("brevity") else None
     )
-    drafter_system = system + ("\n\n" + brevity_hint if brevity_hint else "")
+    drafter_system = system + ("\n\n" + brevity_hint if brevity_hint else "") + (CARE_NOTE if safety else "")
     raw = call_llama(prompt, system=drafter_system, temperature=0.6)
+    if _ai_failed(raw):
+        return unavailable  # shown, not saved
     citations = extract_citations(raw, relevant)
     reply = scrub_banned_phrases(clean_reply(raw))
 
@@ -2958,10 +3114,14 @@ def chat_stream(data: ChatInput):
             "The user explicitly asked for a SHORT reply. Maximum 2 sentences. No bullet lists. No preamble."
             if classified.get("brevity") else None
         )
-        drafter_system = system + ("\n\n" + brevity_hint if brevity_hint else "")
-        for chunk in call_llama_stream(prompt, system=drafter_system, temperature=0.6):
+        drafter_system = (system + ("\n\n" + brevity_hint if brevity_hint else "")
+                          + (CARE_NOTE if safety else ""))
+        failed: List[str] = []
+        for chunk in _safe_chunks(call_llama_stream(prompt, system=drafter_system, temperature=0.6), failed):
             collected.append(chunk)
             yield chunk
+        if failed:  # nothing to keep: the model didn't answer
+            return
         raw = "".join(collected)
         citations = extract_citations(raw, relevant)
         reply = scrub_banned_phrases(clean_reply(raw))
@@ -2978,7 +3138,7 @@ def chat_stream(data: ChatInput):
         turn["embedding"] = embed(_chat_embed_text(turn))
         append_chat_turn(turn)
 
-    return StreamingResponse(gen(), media_type="text/plain")
+    return _ClosingStream(gen(), "text/plain")
 
 
 @app.get("/chat")
@@ -3445,7 +3605,7 @@ Schema (JSON exactly, no fences):
 {schema}
 """
         raw = call_llama(prompt, system=system, temperature=0.4, timeout=180)
-        obj = extract_json(raw) or {}
+        obj = _model_json(raw)
         reflection_text = {
             "same":     str(obj.get("same", "")).strip()[:400],
             "shifted":  str(obj.get("shifted", "")).strip()[:400],
@@ -4643,15 +4803,13 @@ Schema (JSON only, no prose, no fences):
     raw = call_llama(prompt, system=system, temperature=0.2, timeout=240)
     if _ai_failed(raw):  # keep the last result rather than report "nothing found"
         raise AIUnavailable(raw.strip("[]")[:200])
-    obj = extract_json(raw) or {}
-    if isinstance(obj, list):
-        obj = {"items": obj}
+    obj = _model_json(raw)
 
     # Translate the new schema (stated_id / stated_quote / etc.) into the
     # old shape (stated / behavior / evidence) that the rest of the function
     # and the frontend already speak.
     cand_by_id = {c["entry_id"]: c for c in candidates}
-    raw_items_new = (obj.get("items") or [])
+    raw_items_new = _dicts(obj.get("items"))
     translated: List[dict] = []
     for it in raw_items_new:
         if not isinstance(it, dict):
@@ -5020,12 +5178,10 @@ Schema (JSON exactly, no fences):
     raw = call_llama(prompt, system=system, temperature=0.4, timeout=240)
     if _ai_failed(raw):
         raise AIUnavailable(raw.strip("[]")[:200])
-    obj = extract_json(raw) or {}
+    obj = _model_json(raw)
 
     items: List[dict] = []
-    for it in (obj.get("items") or [])[:8]:
-        if not isinstance(it, dict):
-            continue
+    for it in _dicts(obj.get("items"))[:8]:
         label = str(it.get("label", "")).strip()
         if not label:
             continue
@@ -5302,7 +5458,7 @@ Write the JSON exactly:
 {schema}
 """
     raw = call_llama(prompt, system=system, temperature=0.4, timeout=120)
-    obj = extract_json(raw) or {}
+    obj = _model_json(raw)
 
     def _clean(s: str) -> str:
         """Strip [id...] tokens the model leaves in literally, plus banned
@@ -5481,16 +5637,14 @@ Entries:
     raw = call_llama(prompt, system=system, temperature=0.45, timeout=300)
     if _ai_failed(raw):
         raise AIUnavailable(raw.strip("[]")[:200])
-    obj = extract_json(raw) or {}
+    obj = _model_json(raw)
 
     by_id = {e["id"]: e for e in load_file(JOURNAL_FILE)}
 
     def _enriched_items(arr, fields):
         out = []
-        for it in (arr or [])[:6]:
-            if not isinstance(it, dict):
-                continue
-            ev = _enrich_evidence(it.get("evidence") or [], by_id)
+        for it in _dicts(arr)[:6]:
+            ev = _enrich_evidence(_strings(it.get("evidence")), by_id)
             if not ev:
                 continue  # require real evidence
             cleaned = {f: str(it.get(f, "")).strip()[:300] for f in fields}
@@ -5499,7 +5653,7 @@ Entries:
         return out
 
     identity_lines = []
-    for line in (obj.get("identity_lines") or [])[:6]:
+    for line in _strings(obj.get("identity_lines"))[:6]:
         s = str(line).strip()
         if s:
             identity_lines.append(s[:200])
@@ -5661,6 +5815,8 @@ Heading:"""
     try:
         raw = call_llama(prompt, temperature=0.4, timeout=60).strip()
     except Exception:
+        return None
+    if _ai_failed(raw):  # never cache an error as a cluster's name
         return None
 
     # Take just the first line, strip common prefixes the model leaks

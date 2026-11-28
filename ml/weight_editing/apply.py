@@ -35,11 +35,20 @@ def main(argv=None) -> int:
     out = args.out or args.gguf.with_name(args.gguf.stem.replace("-f16", "") + "-edited-f16.gguf")
 
     from transformers import AutoTokenizer
-    from ml.weight_editing.probe import first_tokens
+    from ml.weight_editing.probe import first_tokens, model_fingerprint
+    # The offsets and hbar only fit the model they were measured on.
+    model_id = model_fingerprint(args.gguf)
+    probe = np.load(work / "probe_train.npz")
+    fitted = json.loads((work / "offsets.json").read_text())
+    made_with = {str(probe["model"]) if "model" in probe.files else "unrecorded", fitted.get("model", "unrecorded")}
+    if made_with != {model_id}:
+        print(f"probe_train.npz and offsets.json were not both made with {args.gguf.name}. "
+              f"Run probe --gguf {args.gguf} --split train, then fit, and try again.", file=sys.stderr)
+        return 1
     tok = AutoTokenizer.from_pretrained(str(args.gguf.parent), gguf_file=args.gguf.name)
     ids16 = first_tokens(tok)
-    offsets = json.loads((work / "offsets.json").read_text())["offsets"]
-    hbar = np.load(work / "hbar.npy")
+    offsets = fitted["offsets"]
+    hbar = probe["states"].astype(np.float64).mean(0).astype(np.float32)  # same entries the offsets came from
     step = hbar / (hbar @ hbar)
 
     reader = gguf.GGUFReader(str(args.gguf))

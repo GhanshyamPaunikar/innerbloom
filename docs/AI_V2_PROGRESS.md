@@ -351,3 +351,46 @@ Measured on the M1 with 8 GB, running the real app against the 40 fictional demo
 
 - On 8 GB every switch between the 7B and another model still costs a reload; the fixes keep switches out of the person's way rather than removing them. A single 1.5B model doing reading, chat and insights would fit with room to spare (reader and memory model together are 2.7 GB), but the reader's safety result shows a model trained for one job doesn't pick up others: each job would need its own data and test.
 - These timings are one Mac with whatever else was open; memory pressure varies.
+
+## Code check (2026-11-28)
+
+Ten reviewers read the whole codebase from different angles (line by line, front end, training code, what the last two pull requests removed, contracts between files, language pitfalls, wrappers and caches) and raised about 75 candidates. The most serious were reproduced with small scripts against the real code (fictional data, no network), then fixed.
+
+### Fixed
+
+| Area | What went wrong | Now |
+|---|---|---|
+| Journal file | A data file that failed to parse read as empty, and the next save overwrote it | It is moved aside as `journal.json.unreadable-<date>` and kept; other read errors are raised; saves are flushed to disk before replacing the old copy |
+| Editing | Saving an unchanged edit re-read the entry; with the model down the good reading became "neutral 5"; empty text was accepted | Unchanged text is not re-read; empty text is refused |
+| Desktop app | The journal was written inside the app (setup_routes imported app.py before the data folder was set), so an update deleted it | The folder is set first in `main()`; a test checks the order and the folder |
+| Safety: long entries | The classifier saw only the first 1,500 characters | Long texts are read in overlapping parts; the worst answer counts |
+| Safety: word lists | Double spaces, no-break spaces, line breaks, `´`/`` ` `` apostrophes, "my self", -ing forms, hanging, wrists, overdose, jumping were missed | Text is normalised first and the phrases added (plain mentions as warning signs, first-person intent as clear) |
+| Safety: negation | "I'm not okay. I want to die." counted as negated (the check crossed sentence ends); "of course", "in the past few days", "my friend found me after I..." counted as distance | Negation counts only in the same clause, at most three words before; "can't stop/help" don't count |
+| Safety: false alarms | "Ran 5 kms", "did not wake up until noon", "going to die of embarrassment", "goodbye note", "no future for me at this company" gave the full alert with no model check | Tightened or moved to warning signs, so the classifier decides |
+| Chat and safety | A flagged message could get the one-line small-talk reply | Flagged messages skip small talk, and the reply prompt asks for care, no jokes |
+| Chat errors | "[LLM error: ...]" was shown as the reply, saved, embedded and fed back; the classifier never fell back to its word rules | The plain "AI couldn't answer" sentence is shown and nothing is saved; the classifier falls back |
+| Model JSON | A planner `tools` object, a bare list, a null field or `"people": true` crashed chat, insights or saving, or showed "None" | `_model_json`, `_dicts`, `_strings` and a stricter `analysis.parse` read any shape |
+| Streaming | Closing the page mid-reply left the "person is using the AI" marker raised until garbage collection (Starlette doesn't close generators), so insights waited | `_ClosingStream` closes the generator however the response ends |
+| Public demo | Every request without a cookie (assets, health checks, crawlers) copied the sample journal for 6 hours | Only data requests make a copy, the page just sets the cookie, and at most 300 copies are kept |
+| Weight edit | `probe` resumed by entry id only, so a new model reused the round-1 rows; `apply` used an `hbar.npy` nothing wrote | The probe file records its model and starts over for another; `apply` refuses mismatched files and computes hbar from the probe (`hbar.npy` is no longer used) |
+| Training | The loss and gradients were 4 times too big with gradient accumulation 4 (Trainer skipped the division) | `model_accepts_loss_kwargs = False`; on a tiny model the logged loss went 22.2 to 5.6 |
+| Training reruns | Re-running a finished seed (e.g. after a Colab disconnect) trained it further | A finished run is skipped; a resumed run keeps its early-stopping count |
+
+Also fixed along the way: the desktop window kept no saved draft or settings between launches (pywebview's private mode) and could move port after a quick relaunch; the safety classifier's answer is read even after a prefix ("Answer: CRISIS"); `--seed` now seeds the adapter's starting weights; a new adapter deletes the tag's old evaluation replies; an error is never cached as a memory-map cluster name.
+
+Checks: 88 tests pass (new ones cover each fix). Safety set with the model off: crisis messages with any help 77.5% to 80%, harmless with a full alarm 0 to 0, harmless with the gentle lines 42.5% to 45%, everyday 0 to 0. Live on the 8 GB Mac with fictional entries: save reading 9 s, safety check 23 s, "How was my week?" 25 s, and an abandoned reply released the model at once.
+
+### Found, not fixed yet
+
+- Public demo: insight refresh status and errors are shared by every visitor on one server instance.
+- Insights: a refresh that finds too little data leaves the old result up; a deleted entry's words stay in the narrative and wellbeing text; a job can write a just-deleted entry back as evidence.
+- Background model calls have no overall time limit, so one runaway job holds up the others.
+- Wellbeing's "last two weeks" falls back to the newest 25 entries of any age.
+- Triggers can take the direction of the wrong label; contradictions accept a "behaviour" dated before the promise and show repeated evidence.
+- Chat rules drop "this week/month" ("hardest day this week" searches everything; "this month" summarises a week); an empty lookup leaves the drafter told not to say nothing was found.
+- Saved chat replies lose their line breaks (`scrub_banned_phrases`), and its banned-phrase list can never match (the `x` flag).
+- Front end: Cmd/Ctrl-S can save an entry twice; reflection answers can be saved against new questions or another entry; the chat history can show twice; the command palette can open the wrong entry; several dates show a day early west of UTC and "Yesterday" counts 48 hours; a failed chat stream leaves the typing dots; hidden people can't be unhidden; Entries stops at 500.
+- A 29 February birthday can't be saved; Spotify plays are bucketed by UTC.
+- Memory embeddings: a failing embed model retries every chat turn on every message; chat turns are saved without their embedding version; single-chunk long entries count as stale forever.
+- ML: `safety_eval --model` reports the word-rule fallback as the model's numbers when the classifier fails; public examples end on a different token from full ones; two validation scenes are reworded in training-only data; `eval_hf` reuses old replies; notebook 02 needs `BASE`/`OUT` re-set after a runtime restart, and notebook 03 clones a merged branch; `innerbloom-ai-v2/notebooks/02_emotion_training.ipynb` is a stale Colab copy that writes to the same Drive folder.
+- Smaller: `release_reader.py --upload` sends the whole `--out` folder; the desktop build doesn't run for changes to `innerbloom_core/`, `index.html` or `assets/`; the launcher can't find a Homebrew-only Ollama when opened from Finder; `tests/test_public_demo.py` makes real Gemini calls.

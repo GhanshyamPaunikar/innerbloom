@@ -62,7 +62,8 @@ def main() -> int:
         before.append(macro_f1(L[te].argmax(1), y[te]))
         after.append(macro_f1((L[te] + b).argmax(1), y[te]))
     b = fit(L, y)
-    result = {"entries": int(len(y)),
+    result = {"model": str(d["model"]) if "model" in d.files else "unrecorded",  # apply.py checks it
+              "entries": int(len(y)),
               "cv_macro_f1_before": round(float(np.mean(before)), 3),
               "cv_macro_f1_after": round(float(np.mean(after)), 3),
               "offsets": {e: float(v) for e, v in zip(EMOTIONS, b)},
