@@ -39,9 +39,18 @@ def data_dir() -> Path:
     return base / "Innerbloom"
 
 
+def use_user_data_folder() -> None:
+    """Point the backend at the person's own folder. app.py reads this once, when
+    it is first imported (setup_routes imports it too), so call it before both:
+    otherwise the journal ends up inside the app and an update deletes it."""
+    os.environ.setdefault("INNERBLOOM_DATA_DIR", str(data_dir()))
+
+
 def free_port(preferred: int) -> int:
     for port in [preferred, *range(preferred + 1, preferred + 20)]:
         with socket.socket() as s:
+            if os.name != "nt":  # a port left in TIME_WAIT by the last run is still ours to use
+                s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             try:
                 s.bind(("127.0.0.1", port))
                 return port
@@ -84,7 +93,7 @@ def start_ollama() -> bool:
 
 
 def build_app():
-    os.environ.setdefault("INNERBLOOM_DATA_DIR", str(data_dir()))
+    use_user_data_folder()
     from app import app  # noqa: E402  (reads INNERBLOOM_DATA_DIR on import)
     from desktop.setup_routes import router
     app.include_router(router)
@@ -106,6 +115,7 @@ def serve(app, port: int) -> None:
 
 
 def main() -> int:
+    use_user_data_folder()  # first: the next import loads app.py
     from desktop.setup_routes import ready
     app = build_app()
     port = free_port(PORT)
@@ -125,7 +135,9 @@ def main() -> int:
     if webview is not None:
         try:
             webview.create_window("Innerbloom", url, width=1280, height=840, min_size=(900, 600))
-            webview.start()
+            # pywebview's default private mode wipes the page's saved draft and
+            # settings on every launch; keep them in the person's own folder.
+            webview.start(private_mode=False, storage_path=str(data_dir() / "webview"))
             return 0
         except Exception as exc:  # no system web view (e.g. WebView2 missing): fall back to the browser
             print(f"window failed ({exc}); opening in the browser", file=sys.stderr)

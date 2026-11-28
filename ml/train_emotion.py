@@ -332,6 +332,14 @@ def _trainer(model, tok, train_ds, val_ds, out_dir: Path, max_steps: int = -1, f
     set_seed(SEED)
 
     class WeightedTrainer(Trainer):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            # compute_loss averages each micro-batch itself, so Trainer must still
+            # divide by gradient_accumulation_steps. It skips that when it thinks
+            # the model's own loss takes num_items_in_batch (Qwen2 does), which
+            # made the logged loss and the gradients 4 times too big.
+            self.model_accepts_loss_kwargs = False
+
         def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
             labels, weights = inputs.pop("labels"), inputs.pop("loss_weights")
             outputs = model(**inputs)
@@ -359,6 +367,7 @@ def _trainer(model, tok, train_ds, val_ds, out_dir: Path, max_steps: int = -1, f
         greater_is_better=bool(f1_entries),
         gradient_checkpointing=True, gradient_checkpointing_kwargs={"use_reentrant": False},
         report_to=[], optim="paged_adamw_8bit",
+        restore_callback_states_from_checkpoint=True,  # a resumed run keeps its early-stopping count
         remove_unused_columns=False)  # keep loss_weights for compute_loss
     tok.padding_side = "right"
     callbacks = [ValidationF1()]  # first, so the metric exists for what follows
@@ -370,7 +379,9 @@ def _trainer(model, tok, train_ds, val_ds, out_dir: Path, max_steps: int = -1, f
 
 
 def stage_smoke(out: Path, base: str):
+    from transformers import set_seed
     started = time.time()
+    set_seed(SEED)  # before the adapter is made, so --seed decides its starting weights
     model, tok = load_model(train=True, base=base)
     out = _base_dir(out, base)
     train_ds, val_ds, weights = _datasets(out.parent, tok, limit=CONFIG["smoke_examples"])
@@ -401,7 +412,15 @@ def stage_smoke(out: Path, base: str):
 
 
 def stage_train(out: Path, base: str):
+    from transformers import set_seed
+    finished = _base_dir(out, base) / "adapter" / "training.json"
+    if finished.exists():
+        # Running the cell again after a disconnect must not train a finished run
+        # further; unfinished runs still resume from their last checkpoint.
+        print(f"Already trained, skipping: {finished.parent} (delete that folder to train this tag again).")
+        return
     started = time.time()
+    set_seed(SEED)  # before the adapter is made, so --seed decides its starting weights
     model, tok = load_model(train=True, base=base)
     train_ds, val_ds, weights = _datasets(out, tok)
     out = _base_dir(out, base)
@@ -412,6 +431,8 @@ def stage_train(out: Path, base: str):
     adapter = out / "adapter"
     trainer.model.save_pretrained(str(adapter))
     tok.save_pretrained(str(adapter))
+    # Replies an earlier adapter of this tag wrote must not be scored as this one's.
+    (out / "eval_tuned_validation.jsonl").unlink(missing_ok=True)
     (adapter / "training.json").write_text(json.dumps({
         "base_model": BASES[base][0], "teacher": BASES[TEACHER][0], "config": CONFIG, "seed": SEED,
         "train_examples": len(train_ds), "validation_examples": len(val_ds),

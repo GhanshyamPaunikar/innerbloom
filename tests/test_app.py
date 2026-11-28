@@ -1001,6 +1001,125 @@ def test_insight_failure_is_honest():
 # Run
 # =========================================================================
 
+def test_code_check_fixes():
+    section("Code check fixes (2026-11-28)")
+    down = lambda *a, **kw: "[LLM error: connection refused]"
+
+    # An unreadable journal is kept under a dated name, never overwritten.
+    path = innerbloom_app.JOURNAL_FILE
+    with open(path, "w") as f:
+        f.write('[{"id": "a", "text": "old entry"},]')
+    check("unreadable journal reads as empty", client.get("/journal").json()["total"] == 0)
+    kept = [n for n in os.listdir(innerbloom_app.DATA_DIR) if n.startswith("journal.json.unreadable-")]
+    check("unreadable journal is kept aside", len(kept) == 1, str(kept))
+    with patch.object(innerbloom_app, "call_llama", side_effect=fake_llama), \
+         patch.object(innerbloom_app, "embed", return_value=None):
+        client.post("/save", json={"text": "A new day."})
+    with open(os.path.join(innerbloom_app.DATA_DIR, kept[0])) as f:
+        check("the kept copy still holds the old entry", "old entry" in f.read())
+    for name in kept:
+        os.remove(os.path.join(innerbloom_app.DATA_DIR, name))
+
+    # Saving an unchanged edit keeps the reading; an empty edit is refused.
+    entry = innerbloom_app.load_file(path)[-1]
+    with patch.object(innerbloom_app, "call_llama", side_effect=down), \
+         patch.object(innerbloom_app, "embed", return_value=None):
+        r = client.put(f"/journal/{entry['id']}", json={"text": entry["text"]})
+        empty = client.put(f"/journal/{entry['id']}", json={"text": "  "})
+    check("unchanged edit keeps the reading", r.json()["entry"]["emotion"] == "happy"
+          and r.json()["entry"].get("analysis_status") != "failed", r.text[:200])
+    check("empty edit is refused", empty.status_code == 400, str(empty.status_code))
+
+    # A failed reply is shown as a plain sentence and not saved.
+    turns_before = len(innerbloom_app.load_file(innerbloom_app.CHAT_FILE))
+
+    def stream_down(*a, **kw):
+        yield "[LLM error: connection refused]"
+    events = _agent_events("What did I write about work?", down, stream_down)
+    text = "".join(e.get("value", "") for e in events if e["type"] == "token")
+    check("agent: the raw error is never shown", "[LLM error" not in text
+          and innerbloom_app.AI_UNAVAILABLE_TEXT in text, text[:160])
+    check("agent: a failed reply is not saved",
+          len(innerbloom_app.load_file(innerbloom_app.CHAT_FILE)) == turns_before)
+    with patch.object(innerbloom_app, "call_llama", side_effect=down), \
+         patch.object(innerbloom_app, "embed", return_value=None):
+        r = client.post("/chat", json={"message": "How was work?"}).json()
+    check("/chat: a failed reply is a plain sentence and not saved",
+          r["reply"] == innerbloom_app.AI_UNAVAILABLE_TEXT
+          and len(innerbloom_app.load_file(innerbloom_app.CHAT_FILE)) == turns_before, str(r)[:160])
+    with patch.object(innerbloom_app, "call_llama", side_effect=down):
+        c = innerbloom_app.classify_message("tell me more", [])
+    check("classifier falls back to the word rules", c["source"] == "fallback" and c["follow_up"], str(c))
+
+    # A flagged message gets the careful reply, never the small-talk one.
+    systems = []
+
+    def stream_capture(prompt, system="", temperature=0.7, **kw):
+        systems.append(system)
+        yield "I'm here with you."
+
+    def flag(prompt, system="", temperature=0.7, timeout=180, model=""):
+        return "CRISIS" if "self-harm risk" in prompt else "{}"
+    _agent_events("thanks for everything. goodbye.", flag, stream_capture)
+    check("agent: a flagged goodbye is answered with care",
+          systems and innerbloom_app.CARE_NOTE in systems[-1], str(systems)[:200])
+
+    # Odd model JSON is read instead of crashing.
+    plan_reply = '{"tools": {"name": "search_entries", "args": {"query": "work"}}, "ask_back": "null"}'
+    with patch.object(innerbloom_app, "call_llama", return_value=plan_reply):
+        plan = innerbloom_app.plan_tools("work")
+    check("planner: one tool object counts as a list", [t["name"] for t in plan["tools"]] == ["search_entries"], str(plan))
+    check("planner: 'null' is no question to ask back", plan["ask_back"] is None, str(plan))
+    check("model JSON: a bare list and nulls are read",
+          innerbloom_app._model_json('[{"a": null}]') == {"items": [{"a": ""}]})
+
+    # A streamed reply is closed when the page goes away half-way.
+    import asyncio
+    closed = []
+
+    def gen():
+        try:
+            yield "a"
+            yield "b"
+            yield "c"
+        finally:
+            closed.append(True)
+    sent = []
+
+    async def send(message):
+        if message["type"] == "http.response.body":
+            if sent:
+                raise OSError("client went away")
+            sent.append(message)
+
+    async def receive():
+        await asyncio.sleep(5)
+        return {"type": "http.disconnect"}
+    try:
+        asyncio.run(innerbloom_app._ClosingStream(gen(), "text/plain")(
+            {"type": "http", "asgi": {"spec_version": "2.4"}}, receive, send))
+    except Exception:
+        pass
+    check("stream: closed when the client leaves", closed == [True], str(closed))
+
+    # The public demo copies the sample journal only for data requests.
+    root = os.path.join(innerbloom_app.DATA_DIR, "sandboxes")
+    shutil.rmtree(root, ignore_errors=True)
+    boxes = lambda: len(os.listdir(root)) if os.path.isdir(root) else 0
+    with patch.object(innerbloom_app, "SANDBOX_MODE", True):
+        demo = TestClient(innerbloom_app.app, base_url="http://127.0.0.1:5000")
+        demo.get("/health")
+        demo.get("/assets/base.css")
+        demo.get("/")
+        check("demo: health, assets and status make no copy", boxes() == 0, str(boxes()))
+        page = demo.get("/app")
+        check("demo: the page sets the cookie without a copy", boxes() == 0
+              and innerbloom_app.SANDBOX_COOKIE in page.headers.get("set-cookie", ""), str(boxes()))
+        demo.get("/journal")
+        check("demo: the first data request makes one copy", boxes() == 1, str(boxes()))
+    shutil.rmtree(root, ignore_errors=True)
+
+
 if __name__ == "__main__":
     t0 = time.time()
     try:
@@ -1024,6 +1143,7 @@ if __name__ == "__main__":
         test_save_safety_follow_up()
         test_background_jobs()
         test_insight_failure_is_honest()
+        test_code_check_fixes()
     finally:
         shutil.rmtree(TMP, ignore_errors=True)
 

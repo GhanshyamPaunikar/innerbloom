@@ -160,3 +160,50 @@ class AtADistance(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CodeCheckFixes(unittest.TestCase):
+    """Cases found by the full code check (2026-11-28)."""
+
+    def test_spacing_apostrophes_and_spellings_still_match(self):
+        for text in ("I want to  die", "I want to die", "kill myself", "I want to\ndie",
+                     "I don´t want to live anymore", "I don`t want to live anymore",
+                     "I want to kill my self", "I keep burning myself on purpose",
+                     "I've been scratching my arms until it bled", "I want to hang myself",
+                     "I want to be dead", "I cut my wrists last night", "I want to jump off a bridge",
+                     "I am going to overdose tonight", "I hope I never wake up"):
+            with self.subTest(text=text):
+                self.assertEqual(level(text, None), "high")
+
+    def test_negation_stays_in_its_own_clause(self):
+        for text in ("I'm not okay. I want to die.", "No. I want to die.",
+                     "I can't stop thinking about killing myself", "Of course I want to die",
+                     "In the past few days I've been suicidal",
+                     "My friend found me after I tried to kill myself last night"):
+            with self.subTest(text=text):
+                self.assertEqual(level(text, None), "high")
+        for text in ("I don't want to die", "I never really wanted to kill myself",
+                     "I'm not going to kill myself", "My friend is suicidal and I'm scared for her"):
+            with self.subTest(text=text):
+                self.assertIsNone(level(text, None))
+
+    def test_everyday_sentences_are_left_to_the_classifier(self):
+        for text in ("Ran 5 kms this morning before work", "I did not wake up until noon",
+                     "Why do I never wake up rested?", "I'm going to die of embarrassment",
+                     "Wrote a goodbye note for Priya's leaving card",
+                     "There's no future for me at this company", "I'd better not wake up the baby"):
+            with self.subTest(text=text):
+                self.assertIsNone(level(text, None))
+                self.assertIsNone(level(text, none))
+
+    def test_long_entries_are_read_to_the_end(self):
+        seen = []
+        text = "Normal day at work. " * 90 + "I gave my things away and said goodbye. I have a plan now."
+        classify = lambda prompt: seen.append(prompt) or ("CRISIS" if "plan now" in prompt else "NONE")
+        self.assertEqual(level(text, classify), "high")
+        self.assertGreater(len(seen), 1)
+        self.assertEqual(len(safety._windows("x" * 20000, lambda part: False)), 2)
+
+    def test_label_found_after_a_prefix(self):
+        self.assertEqual(safety._verdict("Answer: CRISIS"), "CRISIS")
+        self.assertEqual(safety._verdict("NONE - not a crisis"), "NONE")

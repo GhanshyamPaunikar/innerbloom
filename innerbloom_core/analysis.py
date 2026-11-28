@@ -7,7 +7,7 @@ as a placeholder reading marked analysis_status "failed".
 import json
 import re
 import unicodedata
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 EMOTIONS = [
     "happy", "sad", "anxious", "calm", "grateful", "frustrated",
@@ -18,26 +18,45 @@ EMOTIONS = [
 TEMPERATURE = 0.3
 
 
-def extract_json(text: str) -> Optional[dict]:
+def _loads(blob: str) -> Any:
+    try:
+        return json.loads(blob)
+    except Exception:
+        return None
+
+
+def extract_json(text: str) -> Any:
+    """The JSON in a model reply: the whole reply, else the {...} inside it, then
+    the same without trailing commas, and with ' swapped for " only as a last
+    resort (it breaks any apostrophe, as in "Mom's call"). Callers must check
+    the type: a reply can be any JSON value."""
     if not text:
         return None
-    try:
-        return json.loads(text)
-    except Exception:
-        pass
+    whole = _loads(text)
+    if whole is not None:
+        return whole
     match = re.search(r"\{.*\}", text, re.DOTALL)
     if not match:
         return None
     blob = match.group(0)
-    try:
-        return json.loads(blob)
-    except Exception:
-        cleaned = re.sub(r",\s*([}\]])", r"\1", blob)
-        cleaned = cleaned.replace("'", '"')
-        try:
-            return json.loads(cleaned)
-        except Exception:
-            return None
+    no_trailing = re.sub(r",\s*([}\]])", r"\1", blob)
+    for candidate in (blob, no_trailing, no_trailing.replace("'", '"')):
+        value = _loads(candidate)
+        if value is not None:
+            return value
+    return None
+
+
+def _items(value) -> list:
+    """A list field from the reply: "a, b" is split; anything else that isn't a
+    list (true, 3, an object) counts as empty."""
+    if isinstance(value, str):
+        return [v.strip() for v in value.split(",")]
+    return value if isinstance(value, list) else []
+
+
+# Placeholders a model writes when nobody is named.
+_NOBODY = {"none", "n/a", "na", "nobody", "no one", "null", "unknown", "nil"}
 
 
 def _tag(value) -> str:
@@ -99,6 +118,8 @@ def error_text(raw: str) -> str:
 
 def parse(raw: str) -> Dict[str, Any]:
     data = extract_json(raw)
+    if isinstance(data, list) and len(data) == 1 and isinstance(data[0], dict):
+        data = data[0]  # a reading wrapped in a list
     # No usable reading (model down, rate-limited or unparsable): keep the
     # placeholders below for the UI, but mark the entry so it is not counted
     # as a genuine neutral feeling and can be read again later.
@@ -106,34 +127,28 @@ def parse(raw: str) -> Dict[str, Any]:
     if not isinstance(data, dict):
         data = {}
 
-    emotion = str(data.get("emotion", "neutral")).lower().strip()
+    emotion = re.sub(r"[^a-z]", "", str(data.get("emotion") or "").lower())  # "Anxious." -> anxious
     if emotion not in EMOTIONS:
+        failed = True  # "stressed" is not a reading the app can count
         emotion = "neutral"
-    try:
-        intensity = int(data.get("intensity", 5))
-        intensity = max(1, min(10, intensity))
-    except Exception:
-        intensity = 5
-    summary = str(data.get("summary", "")).strip()[:280]
-    tags = data.get("tags") or []
-    themes = data.get("themes") or []
-    people = data.get("people") or []
-    if isinstance(tags, str):
-        tags = [t.strip() for t in tags.split(",")]
-    if isinstance(themes, str):
-        themes = [t.strip() for t in themes.split(",")]
-    if isinstance(people, str):
-        people = [p.strip() for p in people.split(",")]
-    tags = [_tag(t) for t in tags if t][:5]
+    number = re.match(r"\s*(\d+(?:\.\d+)?)", str(data.get("intensity", "")))
+    intensity = max(1, min(10, round(float(number.group(1))))) if number else 5
+    summary = str(data.get("summary") or "").strip()[:280]
+    tags = _items(data.get("tags"))
+    themes = _items(data.get("themes"))
+    people = _items(data.get("people"))
+    tags = [_tag(t) for t in tags if t and not isinstance(t, (dict, list))][:5]
     tags = [t for t in tags if t]
-    themes = [str(t).strip()[:40] for t in themes if t][:3]
+    themes = [str(t).strip()[:40] for t in themes if t and not isinstance(t, (dict, list))][:3]
     # People are case-preserved (Title Case), de-duplicated, max 6
     seen_people = set()
     cleaned_people: List[str] = []
     for p in people:
-        if not p: continue
+        if isinstance(p, dict):
+            p = p.get("name") or ""
+        if not p or isinstance(p, list): continue
         name = _name(p)
-        if not name or len(name) > 40:
+        if not name or len(name) > 40 or name.lower() in _NOBODY:
             continue
         # Title case but keep all-caps initials etc.
         key = name.lower()
